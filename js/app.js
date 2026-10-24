@@ -556,9 +556,12 @@ document.addEventListener("keydown",e=>{
 const MAKER_ON=false;
 function quizUrl(id){return location.origin+location.pathname+"?quiz="+id}
 function setQuizParam(){try{history.replaceState(null,"",BANK.id==="socio"?location.pathname:"?quiz="+BANK.id)}catch(e){}}
-function renderMyQuizzes(){
+async function renderMyQuizzes(){
+  let all=[];
+  if(sb){const {data}=await sb.from("quizzes").select("id,title").order("created_at",{ascending:false}).limit(50);all=data||[]}
+  const seen=new Set(),list=[{id:"socio",title:window.BANK_SOCIO.title}].concat(myQuizzes(),all).filter(q=>!seen.has(q.id)&&seen.add(q.id));
   const box=$("myQuizList");box.textContent="";
-  [{id:"socio",title:window.BANK_SOCIO.title}].concat(myQuizzes()).forEach(q=>{
+  list.forEach(q=>{
     const row=el("div","gamerow"),left=el("div");
     left.appendChild(el("div",null,q.title));if(BANK.id===q.id)left.appendChild(el("div","muted","Quiz en cours"));
     const b=el("button","btn dark","Jouer");
