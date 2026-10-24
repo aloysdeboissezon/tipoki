@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Tipoki · Révise en défiant tes potes</title>
+<meta name="description" content="Envoie ton cours, Tipoki en fait un quiz. Joue seul ou en multi avec tes potes.">
+<meta name="theme-color" content="#07080D">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2307080D'/%3E%3Crect x='10' y='18' width='44' height='28' rx='6' fill='%23FFE14D' transform='skewX(-8) translate(4 0)'/%3E%3Ctext x='33' y='41' font-family='Arial Black,Arial' font-weight='900' font-size='22' text-anchor='middle' fill='%2307080D'%3E%3F%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+<div class="stagebg" aria-hidden="true"><div class="photo"></div><div class="beam b1"></div><div class="beam b2"></div><div class="beam b3"></div><div class="floor"></div><div class="grain"></div></div>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">Tipo<mark>ki</mark></div>
+    <div class="topr"><button id="soundBtn" aria-pressed="true" title="Activer / couper le son">Son</button><span class="label" id="status"></span></div>
+  </div>
+
+  <!-- HOME -->
+  <section id="home" style="display:flex;flex-direction:column;gap:16px">
+    <div>
+      <h1><span class="outline">Tipo</span><mark>ki</mark></h1>
+      <p style="font-family:var(--f-display);font-weight:800;font-size:clamp(24px,5vw,36px);text-transform:uppercase;margin-top:10px;line-height:1">Envoie ton cours, défie tes potes</p>
+      <div class="ticker" aria-hidden="true" style="margin-top:14px"><div id="tickerTxt"></div></div>
+    </div>
+    <div class="panel bankpanel">
+      <div class="row between"><div style="min-width:0"><div class="label">Quiz en cours</div><h2 id="bankTitle" style="margin:4px 0 0"></h2><div class="muted" id="bankSub"></div></div>
+        <div class="row"><button class="btn ghost" id="shareQuizBtn" hidden>Partager</button><button class="btn dark" id="bankBtn">Changer de quiz</button></div></div>
+      <p class="muted" style="margin:0"><span id="qCount"></span> questions : QCM, vrai/faux et réponses tapées (fautes tolérées). Plus tu réponds vite et juste, plus tu marques.</p>
+    </div>
+    <div class="panel">
+      <label class="label" for="nick">Ton pseudo</label>
+      <input type="text" id="nick" maxlength="18" placeholder="Ex. Aloys" autocomplete="off">
+    </div>
+    <div class="grid2">
+      <div class="panel" id="createPanel">
+        <h2>Créer une partie</h2>
+        <div><div class="label" style="margin-bottom:6px">Sessions</div><div class="chips" id="sessChips"></div></div>
+        <div><div class="label" style="margin-bottom:6px">Format</div><div class="chips" id="fmtChips"></div></div>
+        <div><div class="label" style="margin-bottom:6px">Questions</div><div class="chips" id="lenChips"></div></div>
+        <div><div class="label" style="margin-bottom:6px">Temps par question</div><div class="chips" id="timeChips"></div></div>
+        <div class="row">
+          <button class="btn big" id="createBtn">Créer la partie</button>
+          <button class="btn ghost" id="soloBtn">Jouer en solo</button>
+          <button class="btn ghost" id="missBtn" hidden></button>
+        </div>
+        <p class="err" id="createErr" hidden></p>
+      </div>
+      <div class="panel" id="joinPanel">
+        <h2>Rejoindre</h2>
+        <input type="text" id="codeIn" class="codein" maxlength="4" placeholder="CODE" autocomplete="off">
+        <button class="btn dark" id="joinBtn">Rejoindre</button>
+        <p class="err" id="joinErr" hidden></p>
+        <div class="label">Parties ouvertes</div>
+        <div class="games" id="openGames"><p class="muted">Aucune partie ouverte pour l'instant.</p></div>
+      </div>
+    </div>
+    <p class="note" id="multiNote" hidden></p>
+  </section>
+
+  <!-- MAKE / PICK A QUIZ -->
+  <section id="make" hidden style="display:flex;flex-direction:column;gap:16px">
+    <div class="panel">
+      <h2>Crée un quiz depuis ton cours</h2>
+      <p class="muted" style="margin:0">Dépose ton PDF (cours, slides, fiches) ou colle ton texte. L'IA en tire les notions clés et fabrique les questions.</p>
+      <div><label class="label" for="mkTitle">Nom du quiz</label><input type="text" id="mkTitle" maxlength="60" placeholder="Ex. Macroéconomie, chapitres 1 à 4" autocomplete="off"></div>
+      <label class="drop" id="mkDrop"><input type="file" id="mkFile" accept=".pdf,.txt,.md,application/pdf,text/plain" hidden><span id="mkFileTxt">Clique ou glisse un PDF ici (20 Mo max)</span></label>
+      <div><label class="label" for="mkText">Ou colle ton cours</label><textarea id="mkText" rows="7" placeholder="Colle ici tes notes, ton plan de cours, tes définitions…"></textarea></div>
+      <div class="row"><button class="btn big" id="mkGo">Générer le quiz</button><button class="btn ghost" id="mkBack">Retour</button></div>
+      <p class="note" id="mkStatus" hidden></p>
+      <p class="err" id="mkErr" hidden></p>
+    </div>
+    <div class="panel">
+      <h2>Mes quiz</h2>
+      <div class="games" id="myQuizList"></div>
+    </div>
+  </section>
+
+  <!-- LOBBY -->
+  <section id="lobby" class="panel" hidden>
+    <div class="label">Code de la partie</div>
+    <div class="bigcode" id="lobbyCode"></div>
+    <p class="muted" id="lobbyInfo"></p>
+    <div class="invite"><button class="btn dark" id="inviteBtn">Copier le lien d'invitation</button><code id="inviteUrl"></code></div>
+    <div class="label" id="lobbyCount"></div>
+    <div class="players" id="lobbyPlayers"></div>
+    <div class="row between">
+      <button class="btn ghost" id="lobbyLeave">Quitter</button>
+      <button class="btn big" id="lobbyStart" hidden>Lancer la partie</button>
+      <span class="waiting" id="lobbyWait" hidden>En attente de l'hôte…</span>
+    </div>
+  </section>
+
+  <!-- QUESTION -->
+  <section id="question" class="panel" hidden>
+    <div class="intro" id="qIntro" hidden><div><span id="qIntroType"></span><b>Question <mark id="qIntroN"></mark></b></div></div>
+    <div class="hud">
+      <div class="row"><span class="stag" id="qSess"></span><span class="label" id="qNum"></span><span class="streakchip" id="qStreak" hidden></span></div>
+      <span class="timer" id="qTimer"></span>
+    </div>
+    <div class="tbar"><i id="qBar"></i></div>
+    <p class="qtext" id="qText"></p>
+    <figure class="qimg" id="qImgBox" hidden><img id="qImg" alt=""><figcaption id="qHint"></figcaption></figure>
+    <div class="tiles" id="qTiles"></div>
+    <div class="typed" id="qType" hidden><input type="text" id="qInput" placeholder="Tape ta réponse…" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="btn big" id="qSend">Valider</button></div>
+    <p class="waiting" id="qWait" hidden></p>
+    <div class="players mini" id="qPlayers" aria-label="Joueurs ayant répondu"></div>
+    <div class="row end" id="qHostRow" hidden><button class="btn ghost" id="qSkip">Révéler maintenant</button></div>
+    <div class="row end" id="qTakeRow" hidden><span class="muted">L'hôte ne répond plus ?</span><button class="btn ghost" id="qTake">Prendre la main</button></div>
+  </section>
+
+  <!-- REVEAL -->
+  <section id="reveal" class="panel" hidden>
+    <div class="hud"><div class="row"><span class="stag" id="rSess"></span><span class="label" id="rNum"></span></div></div>
+    <div class="verdict" id="rVerdict"></div>
+    <p class="qtext" id="rText" style="font-size:clamp(18px,3.8vw,22px)"></p>
+    <figure class="qimg small" id="rImgBox" hidden><img id="rImg" alt=""></figure>
+    <div class="tiles" id="rTiles"></div>
+    <div id="rTyped" hidden style="display:flex;flex-direction:column;gap:10px"><div class="label">Réponse attendue</div><div class="goodans" id="rGood"></div><div class="ansl" id="rAns"></div></div>
+    <p class="fast" id="rFast" hidden></p>
+    <div class="expl"><p id="rExpl"></p></div>
+    <div class="label">Classement</div>
+    <div class="board" id="rBoard"></div>
+    <div class="row end">
+      <span class="waiting" id="rWait" hidden>L'hôte lance la suite…</span>
+      <button class="btn ghost" id="rEnd" hidden>Terminer la partie</button>
+      <button class="btn big" id="rNext" hidden>Suivante</button>
+    </div>
+  </section>
+
+  <!-- END -->
+  <section id="end" class="panel" hidden>
+    <div class="label">Résultats finaux</div>
+    <h1 id="endTitle"></h1>
+    <p class="muted" id="endSess"></p>
+    <div class="podium" id="podium"></div>
+    <div class="board" id="endBoard"></div>
+    <div class="row">
+      <button class="btn big" id="endAgain" hidden>Revanche</button>
+      <button class="btn ghost" id="endMissBtn" hidden>Rejouer mes erreurs</button>
+      <button class="btn ghost" id="endHome">Accueil</button>
+      <span class="waiting" id="endWait" hidden>L'hôte peut lancer une revanche…</span>
+    </div>
+    <div id="endMissWrap"><div class="label" style="margin-top:6px">Tes erreurs à revoir</div><div class="miss" id="endMiss"></div></div>
+  </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="js/banks/socio.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
