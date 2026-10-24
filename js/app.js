@@ -552,6 +552,8 @@ document.addEventListener("keydown",e=>{
   else if(!$("reveal").hidden&&e.key==="Enter"&&isHost()&&!$("rNext").hidden)$("rNext").click();
 });
 // ---------- quiz maker ----------
+// AI generation needs the ANTHROPIC_API_KEY secret on Supabase; until then quizzes are added by hand and the upload form is hidden
+const MAKER_ON=false;
 function quizUrl(id){return location.origin+location.pathname+"?quiz="+id}
 function setQuizParam(){try{history.replaceState(null,"",BANK.id==="socio"?location.pathname:"?quiz="+BANK.id)}catch(e){}}
 function renderMyQuizzes(){
@@ -563,6 +565,7 @@ function renderMyQuizzes(){
     b.onclick=async()=>{b.disabled=true;const ok=await useBank(q.id);b.disabled=false;if(!ok){toast("Quiz introuvable");return}setQuizParam();show("home")};
     row.append(left,b);box.appendChild(row)});
 }
+$("makePanel").hidden=!MAKER_ON;
 $("bankBtn").onclick=()=>{renderMyQuizzes();show("make")};
 $("mkBack").onclick=()=>show("home");
 $("shareQuizBtn").onclick=async()=>{const u=quizUrl(BANK.id);try{await navigator.clipboard.writeText(u);toast("Lien du quiz copié")}catch(e){prompt("Lien du quiz",u)}};

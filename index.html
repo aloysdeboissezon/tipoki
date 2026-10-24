@@ -64,7 +64,7 @@
 
   <!-- MAKE / PICK A QUIZ -->
   <section id="make" hidden style="display:flex;flex-direction:column;gap:16px">
-    <div class="panel">
+    <div class="panel" id="makePanel">
       <h2>Crée un quiz depuis ton cours</h2>
       <p class="muted" style="margin:0">Dépose ton PDF (cours, slides, fiches) ou colle ton texte. L'IA en tire les notions clés et fabrique les questions.</p>
       <div><label class="label" for="mkTitle">Nom du quiz</label><input type="text" id="mkTitle" maxlength="60" placeholder="Ex. Macroéconomie, chapitres 1 à 4" autocomplete="off"></div>
@@ -75,7 +75,7 @@
       <p class="err" id="mkErr" hidden></p>
     </div>
     <div class="panel">
-      <h2>Mes quiz</h2>
+      <h2>Les quiz</h2>
       <div class="games" id="myQuizList"></div>
     </div>
   </section>
