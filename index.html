@@ -5,32 +5,32 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Tipoki · Révise en défiant tes potes</title>
 <meta name="description" content="Envoie ton cours, Tipoki en fait un quiz. Joue seul ou en multi avec tes potes.">
-<meta name="theme-color" content="#07080D">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2307080D'/%3E%3Crect x='10' y='18' width='44' height='28' rx='6' fill='%23FFE14D' transform='skewX(-8) translate(4 0)'/%3E%3Ctext x='33' y='41' font-family='Arial Black,Arial' font-weight='900' font-size='22' text-anchor='middle' fill='%2307080D'%3E%3F%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#4B2FE0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%234B2FE0'/%3E%3Ccircle cx='50' cy='14' r='12' fill='%23FFE36E'/%3E%3Ctext x='30' y='46' font-family='Arial Black,Arial' font-weight='900' font-size='34' text-anchor='middle' fill='%23fff'%3Et%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Nunito:wght@500;600;700;800&display=swap">
 <link rel="stylesheet" href="css/style.css">
 
 </head>
 <body>
-<div class="stagebg" aria-hidden="true"><div class="photo"></div><div class="beam b1"></div><div class="beam b2"></div><div class="beam b3"></div><div class="floor"></div><div class="grain"></div></div>
 <div class="wrap">
   <div class="top">
-    <div class="brand">Tipo<mark>ki</mark></div>
+    <div class="brand">tipoki<mark>.</mark></div>
     <div class="topr"><button id="soundBtn" aria-pressed="true" title="Activer / couper le son">Son</button><span class="label" id="status"></span></div>
   </div>
 
   <!-- HOME -->
   <section id="home" style="display:flex;flex-direction:column;gap:16px">
-    <div>
-      <h1><span class="outline">Tipo</span><mark>ki</mark></h1>
-      <p style="font-family:var(--f-display);font-weight:800;font-size:clamp(24px,5vw,36px);text-transform:uppercase;margin-top:10px;line-height:1">Envoie ton cours, défie tes potes</p>
-      <div class="ticker" aria-hidden="true" style="margin-top:14px"><div id="tickerTxt"></div></div>
+    <div class="hero">
+      <h1>Révise en battant tes potes.</h1>
+      <p>Choisis un quiz, partage un code, et que le plus rapide gagne.</p>
     </div>
+    <div class="ticker" aria-hidden="true"><div id="tickerTxt"></div></div>
     <div class="panel bankpanel">
-      <div class="row between"><div style="min-width:0"><div class="label">Quiz en cours</div><h2 id="bankTitle" style="margin:4px 0 0"></h2><div class="muted" id="bankSub"></div></div>
-        <div class="row"><button class="btn ghost" id="shareQuizBtn" hidden>Partager</button><button class="btn dark" id="bankBtn">Changer de quiz</button></div></div>
-      <p class="muted" style="margin:0"><span id="qCount"></span> questions : QCM, vrai/faux et réponses tapées (fautes tolérées). Plus tu réponds vite et juste, plus tu marques.</p>
+      <div class="bk-ico" aria-hidden="true">?</div>
+      <div class="bk-main"><div class="muted" style="font-size:14px;font-weight:700">Quiz en cours</div><h2 id="bankTitle"></h2><div class="muted" id="bankSub"></div></div>
+      <div class="row"><button class="btn ghost" id="shareQuizBtn" hidden>Partager</button><button class="btn ghost" id="bankBtn">Changer</button></div>
+      <p class="muted bk-foot"><span id="qCount"></span> questions : QCM, vrai/faux et réponses tapées (fautes tolérées). Plus tu réponds vite et juste, plus tu marques.</p>
     </div>
     <div class="panel">
       <label class="label" for="nick">Ton pseudo</label>
@@ -39,10 +39,10 @@
     <div class="grid2">
       <div class="panel" id="createPanel">
         <h2>Créer une partie</h2>
-        <div><div class="label" style="margin-bottom:6px">Sessions</div><div class="chips" id="sessChips"></div></div>
-        <div><div class="label" style="margin-bottom:6px">Format</div><div class="chips" id="fmtChips"></div></div>
-        <div><div class="label" style="margin-bottom:6px">Questions</div><div class="chips" id="lenChips"></div></div>
-        <div><div class="label" style="margin-bottom:6px">Temps par question</div><div class="chips" id="timeChips"></div></div>
+        <div><div class="label" style="margin-bottom:8px">Sessions</div><div class="chips" id="sessChips"></div></div>
+        <div><div class="label" style="margin-bottom:8px">Format</div><div class="chips" id="fmtChips"></div></div>
+        <div><div class="label" style="margin-bottom:8px">Questions</div><div class="chips" id="lenChips"></div></div>
+        <div><div class="label" style="margin-bottom:8px">Temps par question</div><div class="chips" id="timeChips"></div></div>
         <div class="row">
           <button class="btn big" id="createBtn">Créer la partie</button>
           <button class="btn ghost" id="soloBtn">Jouer en solo</button>
