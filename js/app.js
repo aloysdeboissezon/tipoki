@@ -250,7 +250,7 @@ document.addEventListener("pointerdown",()=>{if(soundOn&&!actx){try{actx=new (wi
 // ---------- confetti ----------
 const RM=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
 function confetti(n){if(RM)return;let c=$("fx");if(!c){c=document.createElement("canvas");c.id="fx";document.body.appendChild(c)}
-  const x=c.getContext("2d"),W=c.width=innerWidth,H=c.height=innerHeight,cols=["#FFE14D","#D9482B","#2373A8","#3F8F57","#E3A21A"];
+  const x=c.getContext("2d"),W=c.width=innerWidth,H=c.height=innerHeight,cols=["#4B2FE0","#E8492B","#1F6FE0","#158A4A","#FFC21A","#FFE36E"];
   const ps=Array.from({length:n},()=>({x:W/2+(Math.random()-.5)*W*.3,y:H*.35,vx:(Math.random()-.5)*14,vy:-Math.random()*14-4,r:Math.random()*6+4,c:cols[Math.floor(Math.random()*5)],a:Math.random()*6,va:(Math.random()-.5)*.4}));
   let f=0;(function step(){x.clearRect(0,0,W,H);ps.forEach(p=>{p.vy+=.35;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.a+=p.va;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.fillStyle=p.c;x.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);x.restore()});
     if(++f<150)requestAnimationFrame(step);else x.clearRect(0,0,W,H)})()}
