@@ -431,7 +431,7 @@ function startSolo(customDeck){
 function leaveGame(silent){
   if(chan){try{sb.removeChannel(chan)}catch(e){}chan=null}
   if(pollT){clearInterval(pollT);pollT=null}
-  if(!silent){mode=null;code=null;G=null;P={};show("home");if(sb)refreshOpen()}
+  if(!silent){mode=null;code=null;G=null;P={};show("topic");if(sb)refreshOpen()}   // back to the quiz you just played, ready for another round
 }
 function isHost(){return G&&G.host===me}
 

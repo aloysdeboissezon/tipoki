@@ -27,7 +27,7 @@
 }
 /* narrow phones: the header has no room for the word, the note sign alone opens the player */
 @media (max-width:380px){
-  #musicBtn{font-size:0;padding:6px 0;width:44px}
+  #musicBtn{font-size:0;padding:6px 0;width:44px;flex:none}
   #musicBtn::before{font-size:18px;margin:0}
 }
 .mu-note{margin:8px 4px 0;font-size:12.5px}
