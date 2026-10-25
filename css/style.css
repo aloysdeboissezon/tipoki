@@ -60,7 +60,9 @@ label.label{display:block;margin-bottom:6px}
 .note{font-size:14px;font-weight:600;background:var(--soft);border-radius:14px;padding:10px 14px;color:var(--muted)}
 .err{color:var(--bad);font-size:14px;font-weight:700}
 .games{display:flex;flex-direction:column;gap:8px}
-.gamerow{display:flex;align-items:center;justify-content:space-between;gap:10px;border:2px solid var(--line);border-radius:16px;padding:10px 12px;background:var(--card);animation:slideIn .4s both}
+.gamerow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;border:2px solid var(--line);border-radius:16px;padding:10px 12px;background:var(--card);animation:slideIn .4s both}
+.gamerow>div:first-child{flex:1 1 170px;min-width:0}
+.gamerow>.btn{margin-left:auto}
 .gamerow .code{font-family:var(--f-display);font-weight:800;letter-spacing:.14em;color:var(--hl);font-size:18px}
 /* home hero */
 .hero{background:var(--hl);color:var(--hl-ink);border-radius:28px;padding:clamp(22px,5vw,40px);display:flex;flex-direction:column;gap:14px;position:relative;overflow:hidden}
@@ -106,7 +108,7 @@ label.label{display:block;margin-bottom:6px}
   transition:transform .1s,box-shadow .1s,opacity .25s,filter .15s}
 @media (max-width:560px){.tile{min-height:132px;font-size:16px;padding:14px 14px 16px}}
 .tile .k{flex:none;min-width:30px;height:28px;padding:0 9px;border-radius:9px;background:rgba(255,255,255,.24);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:15px}
-.tile span:last-child{min-width:0;overflow-wrap:anywhere}
+.tile>span:not(.k):not(.cnt){max-width:100%;min-width:0;overflow-wrap:break-word;hyphens:auto}
 .t0{background:var(--a0);box-shadow:0 6px 0 var(--s0)}
 .t1{background:var(--a1);box-shadow:0 6px 0 var(--s1)}
 .t2{background:var(--a2);box-shadow:0 6px 0 var(--s2);color:#241900}
@@ -147,6 +149,7 @@ label.label{display:block;margin-bottom:6px}
 .brow .nm{font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .brow .pts{font-family:var(--f-display);font-weight:800;font-variant-numeric:tabular-nums}
 .brow .gain{font-size:13px;font-weight:800;color:var(--ok);font-variant-numeric:tabular-nums;min-width:4.5ch;text-align:right}
+.brow .gain:empty{min-width:0}
 /* podium */
 .podium{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:end;padding-top:20px}
 .pod{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;min-width:0}
@@ -193,3 +196,27 @@ textarea:focus{border-color:var(--hl);box-shadow:0 0 0 4px var(--hl-soft);outlin
 .drop{display:flex;align-items:center;justify-content:center;text-align:center;min-height:96px;padding:16px;border:2px dashed var(--line2);border-radius:18px;color:var(--muted);font-weight:700;cursor:pointer;transition:border-color .15s,background .15s}
 .drop:hover,.drop.over{border-color:var(--hl);background:var(--hl-soft);color:var(--ink)}
 .drop.has{border-style:solid;border-color:var(--hl);color:var(--ink)}
+/* small phones (iPhone SE, 360px Android): keep the header on one line, the leaderboard names readable and the 4 answer tiles above the fold */
+@media (max-width:420px){
+  .top{flex-wrap:nowrap}
+  .brand{font-size:26px}
+  .topr{min-width:0;gap:6px}
+  #status{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:6px 10px;font-size:13px}
+  #soundBtn{padding:6px 12px}
+  .panel{padding:18px}
+  .tiles{row-gap:14px}
+  .brow{grid-template-columns:auto 28px minmax(0,1fr) auto auto;gap:8px;padding:9px 10px}
+  .brow .rk{font-size:18px}
+  .brow .av{width:28px;height:28px}
+}
+@media (max-width:360px){
+  .panel{padding:16px}
+  .tile{font-size:15px;padding:12px 12px 14px}
+  .qtext{font-size:22px}
+}
+/* short screens (iPhone SE): smaller tiles and timer so a question fits without scrolling */
+@media (max-width:560px) and (max-height:700px){
+  .tile{min-height:104px;gap:10px}
+  .timer{width:56px;height:56px;font-size:24px}
+  #question{gap:12px}
+}

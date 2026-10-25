@@ -166,6 +166,8 @@ function loadBank(raw){
   if(b.facts&&b.facts.length)expandFacts(b.facts,b.lang);
   ALL_S=Object.keys(SESS).map(Number).sort((x,y)=>x-y);
   settings.sess=new Set(ALL_S);
+  // questions are in the quiz's language (often English): lets the browser hyphenate long words in the right language
+  ["question","reveal","end"].forEach(id=>$(id).lang=b.lang||"fr");
   renderBankUI();
 }
 function renderBankUI(){
@@ -377,7 +379,7 @@ function renderScreen(){
   else if(G.status==="end"){show("end");renderEnd()}
 }
 function show(id){["home","make","lobby","question","reveal","end"].forEach(s=>$(s).hidden=s!==id);
-  $("status").textContent=code?("Partie "+code):(mode==="solo"?"Solo":"Midterm · 22/10");window.scrollTo(0,0)}
+  $("status").textContent=code?("Partie "+code):(mode==="solo"?"Solo":"");window.scrollTo(0,0)}
 function nameOf(id){const p=P[id];return (p&&p.nick)||(profiles[id]&&profiles[id].name)||"Joueur"}
 
 // ---------- scoring ----------
