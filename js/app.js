@@ -6,7 +6,10 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor
 function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
 function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
 function hue(s){let h=0;for(const c of String(s))h=(h*31+c.charCodeAt(0))>>>0;return h%360}
-function avatar(id,name){const a=el("div","av",(name||"?").trim().charAt(0).toUpperCase()||"?");a.style.background="hsl("+hue(id)+" 55% 42%)";return a}
+// profile pictures: small JPEG data URLs, by player id (avs[me] comes from this device)
+let avs={};
+function avatar(id,name){const a=el("div","av",(name||"?").trim().charAt(0).toUpperCase()||"?");a.style.background="hsl("+hue(id)+" 55% 42%)";paintAv(a,avs[id]);return a}
+function paintAv(a,src){if(!src)return;a.textContent="";a.classList.add("photo");a.style.backgroundImage="url("+JSON.stringify(src)+")"}
 
 // ---------- state ----------
 let db=null,user=null,room=null,groom=null,me=null,canWrite=null;
@@ -34,8 +37,31 @@ function setMultiNote(ok){
 // ---------- home ----------
 
 $("nick").value=lsGet("socio-nick")||"";
-$("nick").addEventListener("change",()=>lsSet("socio-nick",$("nick").value.trim()));
+$("nick").addEventListener("input",()=>{lsSet("socio-nick",$("nick").value.trim());showErr("nickErr","");renderMe()});
 function myNick(){return ($("nick").value.trim()||"Joueur").slice(0,18)}
+// multiplayer needs a real name, so friends know who is who
+function needNick(){if($("nick").value.trim())return false;showErr("nickErr","Entre ton prénom pour que tes potes te reconnaissent.");$("nick").focus();$("nick").scrollIntoView({block:"center"});return true}
+
+// ---------- profile picture ----------
+function myAv(){return lsGet("tpk-avatar")||null}
+if(myAv())avs[me]=myAv();
+function renderMe(){
+  const a=$("pfpAv");a.className="av big";a.removeAttribute("style");a.style.background="hsl("+hue(me)+" 55% 42%)";
+  a.textContent=($("nick").value.trim()||"?").charAt(0).toUpperCase();paintAv(a,myAv());
+  $("pfpPick").textContent=myAv()?"Changer la photo":"Ajouter une photo";$("pfpDel").hidden=!myAv();
+}
+// center-crop to a square and shrink to 128 px JPEG (~5 Ko), so it fits in the players row
+function shrinkImg(file){return new Promise((ok,ko)=>{const u=URL.createObjectURL(file),img=new Image();
+  img.onload=()=>{const S=128,c=document.createElement("canvas");c.width=c.height=S;const s=Math.min(img.naturalWidth,img.naturalHeight);
+    const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,S,S);x.drawImage(img,(img.naturalWidth-s)/2,(img.naturalHeight-s)/2,s,s,0,0,S,S);
+    URL.revokeObjectURL(u);ok(c.toDataURL("image/jpeg",.8))};
+  img.onerror=()=>{URL.revokeObjectURL(u);ko(new Error("img"))};img.src=u})}
+$("pfpPick").onclick=()=>$("pfpIn").click();
+$("pfpIn").onchange=async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;showErr("nickErr","");
+  try{const d=await shrinkImg(f);lsSet("tpk-avatar",d);if(lsGet("tpk-avatar")!==d)throw new Error("ls");avs[me]=d;renderMe()}
+  catch(err){showErr("nickErr","Impossible d'utiliser cette image, essaie une autre photo (JPG ou PNG).")}};
+$("pfpDel").onclick=()=>{try{localStorage.removeItem("tpk-avatar")}catch(e){}delete avs[me];renderMe()};
+renderMe();
 function renderSettings(){
   const sc=$("sessChips");sc.textContent="";
   const all=el("button","chip","Toutes");all.setAttribute("aria-pressed",settings.sess.size===ALL_S.length);
@@ -294,7 +320,7 @@ async function insertGame(g){
   throw new Error("code");
 }
 async function createGame(){
-  showErr("createErr","");
+  showErr("createErr","");if(needNick())return;
   if(!settings.sess.size){showErr("createErr","Choisis au moins "+unit(2)+".");return}
   lsSet("socio-nick",myNick());
   $("createBtn").disabled=true;
@@ -312,6 +338,17 @@ async function loadPlayers(){
   if(error||!data)return;
   const n={};data.forEach(r=>n[r.pid]=rowToPlayer(r));
   if(JSON.stringify(n)!==JSON.stringify(P)){P=n;onPlayers()}
+  loadAvatars(Object.keys(n));
+}
+// photos are only fetched once per player (polling skips them to save bandwidth)
+let avAsked=new Set(),avCol=true;
+async function loadAvatars(ids){
+  ids=ids.filter(id=>id!==me&&!avAsked.has(id));if(!avCol||!ids.length)return;
+  ids.forEach(id=>avAsked.add(id));const c=code;
+  const {data,error}=await sb.from("players").select("pid,avatar").eq("code",c).in("pid",ids);
+  if(error){avCol=false;return}
+  let got=false;(data||[]).forEach(r=>{if(r.avatar&&avs[r.pid]!==r.avatar){avs[r.pid]=r.avatar;got=true}});
+  if(got&&code===c)onPlayers();
 }
 async function poll(){
   if(mode!=="multi"||!code)return;
@@ -320,7 +357,7 @@ async function poll(){
   await loadPlayers();
 }
 async function joinGame(c){
-  showErr("joinErr","");
+  showErr("joinErr","");if(needNick())return;
   lsSet("socio-nick",myNick());
   const {data,error}=await sb.from("games").select("state").eq("code",c).maybeSingle();
   if(error){showErr("joinErr","Connexion impossible, réessaie.");return}
@@ -329,12 +366,14 @@ async function joinGame(c){
   leaveGame(true);
   mode="multi";code=c;G=data.state;P={};local={qi:-1,shownAt:0,revealing:false,lastStatus:null};
   const {data:mine}=await sb.from("players").select("pid").eq("code",c).eq("pid",me).maybeSingle();
-  const res=mine?await sb.from("players").update({nick:myNick()}).eq("code",c).eq("pid",me)
-                :await sb.from("players").insert({code:c,pid:me,nick:myNick()});
+  avAsked=new Set();
+  const save=row=>mine?sb.from("players").update(row).eq("code",c).eq("pid",me):sb.from("players").insert({code:c,pid:me,...row});
+  let res=await save(avCol?{nick:myNick(),avatar:myAv()}:{nick:myNick()});
+  if(res.error&&avCol){avCol=false;res=await save({nick:myNick()})}   // no avatar column yet: play without photos
   if(res.error){mode=null;code=null;show("home");showErr("joinErr","Impossible de rejoindre, réessaie.");return}
   chan=sb.channel("g-"+c)
     .on("postgres_changes",{event:"*",schema:"public",table:"games",filter:"code=eq."+c},p=>{if(code===c&&p.new&&p.new.state)applyGame(p.new.state)})
-    .on("postgres_changes",{event:"*",schema:"public",table:"players",filter:"code=eq."+c},p=>{if(code===c&&p.new&&p.new.pid){P={...P,[p.new.pid]:rowToPlayer(p.new)};onPlayers()}})
+    .on("postgres_changes",{event:"*",schema:"public",table:"players",filter:"code=eq."+c},p=>{if(code===c&&p.new&&p.new.pid){if(p.new.avatar&&p.new.pid!==me)avs[p.new.pid]=p.new.avatar;P={...P,[p.new.pid]:rowToPlayer(p.new)};onPlayers()}})
     .subscribe();
   pollT=setInterval(poll,2500);
   await loadPlayers();
@@ -475,10 +514,31 @@ setInterval(()=>{
   if(isHost()&&!local.revealing&&(left<-800||all)){local.revealing=true;setTimeout(()=>writeGame({status:"reveal"}),all?600:0)}
   $("qTakeRow").hidden=!(mode==="multi"&&!isHost()&&left<-10000);
 },150);
+// after each answer reveal, the next question starts by itself after AUTO_MS (the host's clock drives everyone)
+const AUTO_MS=5000;
+setInterval(()=>{
+  if(!G||G.status!=="reveal"||$("reveal").hidden||!local.autoAt)return;
+  const left=local.paused?local.autoLeft:local.autoAt-performance.now();
+  renderAuto(left);
+  if(isHost()&&!local.paused&&left<=0&&!local.autoFired){local.autoFired=true;goNext()}
+},150);
+function renderAuto(left){
+  const sec=Math.max(0,Math.ceil(left/1000)),host=isHost(),b=$("rAuto");
+  $("rBar").style.width=Math.max(0,Math.min(1,left/AUTO_MS))*100+"%";
+  const last=!G.inf&&G.qi>=G.deck.length-1,what=last?"Podium":"Suite";
+  b.disabled=!host;b.classList.toggle("paused",!!local.paused);
+  b.textContent=local.paused?"En pause · Reprendre":(sec>0?what+" dans "+sec+" s":what+"…")+(host&&sec>0?" · Pause":"");
+  if(!host)$("rWait").textContent=sec>0?(last?"Podium":"Question suivante")+" dans "+sec+" s…":"L'hôte lance la suite…";
+}
+$("rAuto").onclick=()=>{if(!isHost()||!local.autoAt||local.autoFired)return;
+  if(local.paused){local.paused=false;local.autoAt=performance.now()+Math.max(1500,local.autoLeft)}
+  else{local.paused=true;local.autoLeft=local.autoAt-performance.now()}
+  renderAuto(local.paused?local.autoLeft:local.autoAt-performance.now())};
 
 // ---------- reveal ----------
 function renderReveal(){
   show("reveal");
+  if(local.autoQ!==G.qi){local.autoQ=G.qi;local.autoAt=performance.now()+AUTO_MS;local.paused=false;local.autoFired=false}
   const item=G.deck[G.qi],q=qOf(G.qi),cp=correctPos(G.qi),a=myAns(),typed=isT(G.qi);
   $("rSess").textContent=sLabel(q.s);$("rNum").textContent="Question "+(G.qi+1)+" / "+(G.inf?"∞":G.deck.length)+" · "+(typed?"Réponse tapée":q.t);
   const v=$("rVerdict");
@@ -507,6 +567,7 @@ function renderReveal(){
   $("rEnd").hidden=!(G.inf&&isHost());
   $("rNext").hidden=!isHost();$("rNext").textContent=last?"Voir le podium":"Question suivante";
   $("rWait").hidden=isHost();
+  renderAuto(local.paused?local.autoLeft:local.autoAt-performance.now());
 }
 function renderBoard(box,rows,gains){
   box.textContent="";
@@ -514,11 +575,12 @@ function renderBoard(box,rows,gains){
     d.append(el("span","rk",(i+1)+"."),avatar(r.id,nameOf(r.id)),el("span","nm",nameOf(r.id)+(r.id===me?" (toi)":"")),
       el("span","gain",gains&&r.gain?"+"+r.gain:""),el("span","pts",r.t+" pts"));box.appendChild(d);if(gains&&r.gain)countUp(d.lastChild,r.t-r.gain,r.t)});
 }
-$("rNext").onclick=()=>{
-  if(!isHost())return;$("rNext").disabled=true;setTimeout(()=>$("rNext").disabled=false,800);
+$("rNext").onclick=()=>{if(!isHost()||local.autoFired)return;local.autoFired=true;goNext()};
+function goNext(){
+  if(!isHost()||G.status!=="reveal")return;$("rNext").disabled=true;setTimeout(()=>$("rNext").disabled=false,800);
   if(G.inf){const p={status:"q",qi:G.qi+1};if(G.qi+1>=G.deck.length-5)p.deck=G.deck.concat(buildDeck(G.sess||[...settings.sess],LEN_INF,G.fmt||settings.fmt,{exclude:G.deck,more:true}));writeGame(p);return}
   if(G.qi>=G.deck.length-1)writeGame({status:"end"});else writeGame({status:"q",qi:G.qi+1});
-};
+}
 $("rEnd").onclick=()=>{if(isHost())writeGame({status:"end",deck:G.deck.slice(0,G.qi+1),inf:false})};
 
 // ---------- end ----------
@@ -628,4 +690,4 @@ if(sb){setMultiNote(true);watchOpenGames()}else setMultiNote(false);
   if(!c||c.length!==4)return;$("codeIn").value=c;
   try{history.replaceState(null,"",location.pathname)}catch(e){}
   if(sb&&lsGet("socio-nick"))joinGame(c);
-  else{$("nick").focus();showErr("joinErr","Entre ton pseudo, puis clique sur Rejoindre.");$("joinErr").style.color="var(--hl)"}})();
+  else{$("nick").focus();showErr("joinErr","Entre ton prénom, puis clique sur Rejoindre.");$("joinErr").style.color="var(--hl)"}})();
