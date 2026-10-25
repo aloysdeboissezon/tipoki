@@ -8,8 +8,8 @@ function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
 function hue(s){let h=0;for(const c of String(s))h=(h*31+c.charCodeAt(0))>>>0;return h%360}
 // profile pictures: small JPEG data URLs, by player id (avs[me] comes from this device)
 let avs={};
-function avatar(id,name){const a=el("div","av",(name||"?").trim().charAt(0).toUpperCase()||"?");a.style.background="hsl("+hue(id)+" 55% 42%)";paintAv(a,avs[id]);return a}
-function paintAv(a,src){if(!src)return;a.textContent="";a.classList.add("photo");a.style.backgroundImage="url("+JSON.stringify(src)+")"}
+function avatar(id,name){const a=el("div","av",(name||"?").trim().charAt(0).toUpperCase()||"?");a.style.backgroundColor="hsl("+hue(id)+" 55% 42%)";paintAv(a,avs[id]);return a}
+function paintAv(a,src){if(!src)return;a.textContent="";a.classList.add("photo");a.style.backgroundImage="url("+JSON.stringify(src)+")";a.style.backgroundSize="cover";a.style.backgroundPosition="center";a.style.backgroundRepeat="no-repeat"}
 
 // ---------- state ----------
 let db=null,user=null,room=null,groom=null,me=null,canWrite=null;
@@ -46,7 +46,7 @@ function needNick(){if($("nick").value.trim())return false;showErr("nickErr","En
 function myAv(){return lsGet("tpk-avatar")||null}
 if(myAv())avs[me]=myAv();
 function renderMe(){
-  const a=$("pfpAv");a.className="av big";a.removeAttribute("style");a.style.background="hsl("+hue(me)+" 55% 42%)";
+  const a=$("pfpAv");a.className="av big";a.removeAttribute("style");a.style.backgroundColor="hsl("+hue(me)+" 55% 42%)";
   a.textContent=($("nick").value.trim()||"?").charAt(0).toUpperCase();paintAv(a,myAv());
   $("pfpPick").textContent=myAv()?"Changer la photo":"Ajouter une photo";$("pfpDel").hidden=!myAv();
 }
@@ -459,7 +459,9 @@ function renderScreen(){
   else if(G.status==="reveal"){show("reveal");renderReveal()}
   else if(G.status==="end"){show("end");renderEnd()}
 }
-function show(id){["home","make","lobby","question","reveal","end"].forEach(s=>$(s).hidden=s!==id);
+function show(id){["home","topic","make","lobby","question","reveal","end"].forEach(s=>$(s).hidden=s!==id);
+  // the name + photo panel follows the player between the two start screens
+  const slot=id==="home"?$("meHome"):id==="topic"?$("meTopic"):null,me=document.querySelector(".me-panel");if(slot&&me.parentNode!==slot)slot.appendChild(me);
   $("status").textContent=code?("Partie "+code):(mode==="solo"?"Solo":"");window.scrollTo(0,0)}
 function nameOf(id){const p=P[id];return (p&&p.nick)||(profiles[id]&&profiles[id].name)||"Joueur"}
 
@@ -668,21 +670,28 @@ document.addEventListener("keydown",e=>{
 const MAKER_ON=false;
 function quizUrl(id){return location.origin+location.pathname+"?quiz="+id}
 function setQuizParam(){try{history.replaceState(null,"",BANK.id==="socio"?location.pathname:"?quiz="+BANK.id)}catch(e){}}
+// step 1 of the start flow: one card per quiz, tapping it opens the settings / create screen
+async function openQuiz(id,btn){
+  if(btn)btn.disabled=true;const ok=await useBank(id);if(btn)btn.disabled=false;
+  if(!ok){toast("Quiz introuvable");return}
+  setQuizParam();show("topic");
+}
+function quizList(extra){const seen=new Set();return Object.keys(BUILTIN).map(id=>({id,title:BUILTIN[id]().title,subject:BUILTIN[id]().subject})).concat(myQuizzes(),extra||[]).filter(q=>!seen.has(q.id)&&seen.add(q.id))}
+function renderQuizGrid(list){
+  const box=$("quizGrid");box.textContent="";
+  list.forEach(q=>{const c=el("button","qcard");c.type="button";
+    const ico=el("span","qico",(q.title||"?").trim().charAt(0).toUpperCase());ico.style.background="hsl("+hue(q.id||q.title||"")+" 90% 80%)";
+    const t=el("span","qtxt");t.append(el("b",null,q.title));if(q.subject)t.append(el("small",null,q.subject));
+    c.append(ico,t,el("span","qgo","›"));c.onclick=()=>openQuiz(q.id,c);box.appendChild(c)});
+}
 async function renderMyQuizzes(){
-  let all=[];
-  if(sb){const {data}=await sb.from("quizzes").select("id,title").order("created_at",{ascending:false}).limit(50);all=data||[]}
-  const seen=new Set(),list=Object.keys(BUILTIN).map(id=>({id,title:BUILTIN[id]().title})).concat(myQuizzes(),all).filter(q=>!seen.has(q.id)&&seen.add(q.id));
-  const box=$("myQuizList");box.textContent="";
-  list.forEach(q=>{
-    const row=el("div","gamerow"),left=el("div");
-    left.appendChild(el("div",null,q.title));if(BANK.id===q.id)left.appendChild(el("div","muted","Quiz en cours"));
-    const b=el("button","btn dark","Jouer");
-    b.onclick=async()=>{b.disabled=true;const ok=await useBank(q.id);b.disabled=false;if(!ok){toast("Quiz introuvable");return}setQuizParam();show("home")};
-    row.append(left,b);box.appendChild(row)});
+  renderQuizGrid(quizList());
+  if(!sb)return;
+  const {data}=await sb.from("quizzes").select("id,title").order("created_at",{ascending:false}).limit(50);
+  if(data&&data.length)renderQuizGrid(quizList(data));
 }
 $("makePanel").hidden=!MAKER_ON;
-$("bankBtn").onclick=()=>{renderMyQuizzes();show("make")};
-$("mkBack").onclick=()=>show("home");
+$("topicBack").onclick=()=>{show("home");renderMyQuizzes()};
 $("shareQuizBtn").onclick=async()=>{const u=quizUrl(BANK.id);try{await navigator.clipboard.writeText(u);toast("Lien du quiz copié")}catch(e){prompt("Lien du quiz",u)}};
 let mkFile=null;
 function setMkFile(f){
@@ -717,16 +726,17 @@ $("mkGo").onclick=async()=>{
     if(!out||!out.id)throw new Error((out&&out.error)||"La génération a échoué, réessaie.");
     if(!await useBank(out.id))throw new Error("Quiz créé mais impossible de le charger.");
     setQuizParam();mkFile=null;setMkFile(null);$("mkText").value="";$("mkTitle").value="";
-    show("home");toast("Quiz prêt : "+(Q.length+TQ.length)+" questions");
+    show("topic");toast("Quiz prêt : "+(Q.length+TQ.length)+" questions");
   }catch(e){showErr("mkErr",e.message||"La génération a échoué, réessaie.")}
   finally{clearInterval(tick);st.hidden=true;$("mkGo").disabled=false}
 };
 
-loadBank(window.BANK_SOCIO);
+loadBank(window.BANK_SOCIO);renderMyQuizzes();
 if(sb){setMultiNote(true);watchOpenGames()}else setMultiNote(false);
 (async()=>{let id=null;try{id=new URLSearchParams(location.search).get("quiz")}catch(e){}
   if(!id||!(BUILTIN[id]||/^[0-9a-f-]{36}$/i.test(id)))return;
-  if(!await useBank(id))toast("Quiz introuvable");})();
+  if(!await useBank(id)){toast("Quiz introuvable");return}
+  show("topic")})();
 (()=>{let c=null;try{c=(new URLSearchParams(location.search).get("code")||"").toUpperCase().replace(/[^A-Z]/g,"").slice(0,4)}catch(e){}
   if(!c||c.length!==4)return;$("codeIn").value=c;
   try{history.replaceState(null,"",location.pathname)}catch(e){}

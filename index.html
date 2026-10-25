@@ -23,19 +23,17 @@
     <div class="topr"><button id="soundBtn" aria-pressed="true" title="Activer / couper le son">Son</button><span class="label" id="status"></span></div>
   </div>
 
-  <!-- HOME -->
+  <!-- HOME: 1) pick what to revise -->
   <section id="home" style="display:flex;flex-direction:column;gap:16px">
     <div class="hero">
       <h1>Révise en battant tes potes.</h1>
-      <p>Choisis un quiz, partage un code, et que le plus rapide gagne.</p>
+      <p>Choisis ce que tu veux réviser, puis joue seul ou en multi.</p>
     </div>
-    <div class="ticker" aria-hidden="true"><div id="tickerTxt"></div></div>
-    <div class="panel bankpanel">
-      <div class="bk-ico" id="bankIco" aria-hidden="true">?</div>
-      <div class="bk-main"><div class="muted" style="font-size:14px;font-weight:700">Quiz en cours</div><h2 id="bankTitle"></h2><div class="muted" id="bankSub"></div></div>
-      <div class="row"><button class="btn ghost" id="shareQuizBtn" hidden>Partager</button><button class="btn ghost" id="bankBtn">Changer</button></div>
-      <p class="muted bk-foot"><span id="qCount"></span> questions : QCM, vrai/faux et réponses tapées (fautes tolérées). Plus tu réponds vite et juste, plus tu marques.</p>
+    <div class="panel" id="pickPanel">
+      <div class="steph"><span class="stepn">1</span><h2>Que veux-tu réviser ?</h2></div>
+      <div class="quizgrid" id="quizGrid"></div>
     </div>
+    <div id="meHome">
     <div class="panel me-panel">
       <label class="pfp" id="pfpBtn" title="Ajouter ta photo de profil"><input type="file" id="pfpIn" accept="image/*" hidden><span class="av big" id="pfpAv"></span><span class="pfp-add" aria-hidden="true">+</span></label>
       <div class="me-main">
@@ -45,9 +43,32 @@
         <p class="err" id="nickErr" hidden></p>
       </div>
     </div>
-    <div class="grid2">
+    </div>
+    <div class="panel" id="joinPanel">
+      <h2>Rejoindre</h2>
+      <input type="text" id="codeIn" class="codein" maxlength="4" placeholder="CODE" autocomplete="off">
+      <button class="btn dark" id="joinBtn">Rejoindre</button>
+      <p class="err" id="joinErr" hidden></p>
+      <div class="label">Parties ouvertes</div>
+      <div class="games" id="openGames"><p class="muted">Aucune partie ouverte pour l'instant.</p></div>
+    </div>
+
+    <p class="note" id="multiNote" hidden></p>
+  </section>
+
+  <!-- TOPIC: 2) settings, create / solo for the chosen quiz -->
+  <section id="topic" hidden style="display:flex;flex-direction:column;gap:16px">
+    <div><button class="btn ghost back" id="topicBack">← Autres quiz</button></div>
+    <div class="panel bankpanel">
+      <div class="bk-ico" id="bankIco" aria-hidden="true">?</div>
+      <div class="bk-main"><div class="muted" style="font-size:14px;font-weight:700">Tu révises</div><h2 id="bankTitle"></h2><div class="muted" id="bankSub"></div></div>
+      <div class="row"><button class="btn ghost" id="shareQuizBtn" hidden>Partager</button></div>
+      <p class="muted bk-foot"><span id="qCount"></span> questions : QCM, vrai/faux et réponses tapées (fautes tolérées). Plus tu réponds vite et juste, plus tu marques.</p>
+    </div>
+    <div class="ticker" aria-hidden="true"><div id="tickerTxt"></div></div>
+    <div id="meTopic"></div>
       <div class="panel" id="createPanel">
-        <h2>Créer une partie</h2>
+        <div class="steph"><span class="stepn">2</span><h2>Lance ta partie</h2></div>
         <div class="row actions">
           <button class="btn big" id="createBtn">Créer la partie</button>
           <button class="btn ghost" id="soloBtn">Jouer en solo</button>
@@ -64,16 +85,6 @@
         </details>
         <p class="err" id="createErr" hidden></p>
       </div>
-      <div class="panel" id="joinPanel">
-        <h2>Rejoindre</h2>
-        <input type="text" id="codeIn" class="codein" maxlength="4" placeholder="CODE" autocomplete="off">
-        <button class="btn dark" id="joinBtn">Rejoindre</button>
-        <p class="err" id="joinErr" hidden></p>
-        <div class="label">Parties ouvertes</div>
-        <div class="games" id="openGames"><p class="muted">Aucune partie ouverte pour l'instant.</p></div>
-      </div>
-    </div>
-    <p class="note" id="multiNote" hidden></p>
   </section>
 
   <!-- MAKE / PICK A QUIZ -->
@@ -88,11 +99,6 @@
       <p class="note" id="mkStatus" hidden></p>
       <p class="err" id="mkErr" hidden></p>
     </div>
-    <div class="panel">
-      <h2>Les quiz</h2>
-      <div class="games" id="myQuizList"></div>
-    </div>
-    <div class="row"><button class="btn ghost" id="mkBack">Retour</button></div>
   </section>
 
   <!-- LOBBY -->

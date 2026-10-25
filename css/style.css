@@ -293,3 +293,24 @@ body.noscroll{overflow:hidden}
   .bankpanel>.row .btn{flex:1}
 }
 .me-sub{gap:0 16px}.linkbtn{min-height:36px;padding:6px 0}
+
+/* start flow: 1) pick a quiz, 2) settings + create */
+.steph{display:flex;align-items:center;gap:12px}
+.steph h2{margin:0}
+.stepn{flex:none;width:30px;height:30px;border-radius:50%;background:var(--hl);color:#fff;display:grid;place-items:center;font:800 16px var(--f-display)}
+.quizgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.qcard{display:flex;align-items:center;gap:14px;text-align:left;font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:20px;padding:12px 14px;min-height:76px;cursor:pointer;box-shadow:0 4px 0 var(--line);transition:transform .12s,border-color .12s,box-shadow .12s;animation:slideIn .4s both}
+.qcard:hover{border-color:var(--hl);transform:translateY(-2px);box-shadow:0 6px 0 var(--hl-soft)}
+.qcard:active{transform:translateY(3px);box-shadow:0 1px 0 var(--line)}
+.qcard:focus-visible{outline:3px solid var(--hl);outline-offset:3px}
+.qcard:disabled{opacity:.6;cursor:wait}
+.qico{flex:none;width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font:800 22px var(--f-display)}
+.qtxt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.qtxt b{font-family:var(--f-display);font-size:18px;line-height:1.2;overflow-wrap:anywhere}
+.qtxt small{font-size:13px;font-weight:700;color:var(--muted);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.qgo{flex:none;font:800 28px/1 var(--f-display);color:var(--hl)}
+.back{padding:8px 16px;min-height:44px;font-size:16px}
+#topic .bankpanel{grid-template-columns:52px minmax(0,1fr)}
+#topic .bankpanel>.row{grid-column:1/-1}
+#topic .bankpanel>.row:not(:has(.btn:not([hidden]))){display:none}
+@media (max-width:420px){.quizgrid{grid-template-columns:1fr}.qtxt b{font-size:17px}}
