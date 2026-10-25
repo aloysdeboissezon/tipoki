@@ -47,7 +47,7 @@
     </div>
     <div class="grid2">
       <div class="panel" id="createPanel">
-        <h2>Créer une partie</h2>
+        <h2>Jouer</h2>
         <div class="row actions">
           <button class="btn big" id="createBtn">Créer la partie</button>
           <button class="btn ghost" id="soloBtn">Jouer en solo</button>
@@ -65,9 +65,9 @@
         <p class="err" id="createErr" hidden></p>
       </div>
       <div class="panel" id="joinPanel">
-        <h2>Rejoindre</h2>
-        <input type="text" id="codeIn" class="codein" maxlength="4" placeholder="CODE" autocomplete="off">
-        <button class="btn dark" id="joinBtn">Rejoindre</button>
+        <h2>Rejoindre une partie</h2>
+        <p class="muted joinhelp">Un pote a créé une partie ? Tape son code à 4 lettres.</p>
+        <div class="joinrow"><input type="text" id="codeIn" class="codein" maxlength="4" placeholder="CODE" autocomplete="off" autocapitalize="characters" aria-label="Code de la partie"><button class="btn dark" id="joinBtn">Entrer</button></div>
         <p class="err" id="joinErr" hidden></p>
         <div class="label">Parties ouvertes</div>
         <div class="games" id="openGames"><p class="muted">Aucune partie ouverte pour l'instant.</p></div>
