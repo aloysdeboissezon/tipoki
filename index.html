@@ -31,7 +31,7 @@
     </div>
     <div class="ticker" aria-hidden="true"><div id="tickerTxt"></div></div>
     <div class="panel bankpanel">
-      <div class="bk-ico" aria-hidden="true">?</div>
+      <div class="bk-ico" id="bankIco" aria-hidden="true">?</div>
       <div class="bk-main"><div class="muted" style="font-size:14px;font-weight:700">Quiz en cours</div><h2 id="bankTitle"></h2><div class="muted" id="bankSub"></div></div>
       <div class="row"><button class="btn ghost" id="shareQuizBtn" hidden>Partager</button><button class="btn ghost" id="bankBtn">Changer</button></div>
       <p class="muted bk-foot"><span id="qCount"></span> questions : QCM, vrai/faux et réponses tapées (fautes tolérées). Plus tu réponds vite et juste, plus tu marques.</p>
@@ -48,15 +48,20 @@
     <div class="grid2">
       <div class="panel" id="createPanel">
         <h2>Créer une partie</h2>
-        <div><div class="label" style="margin-bottom:8px" id="sessLbl">Sessions</div><div class="chips" id="sessChips"></div></div>
-        <div><div class="label" style="margin-bottom:8px">Format</div><div class="chips" id="fmtChips"></div></div>
-        <div><div class="label" style="margin-bottom:8px">Questions</div><div class="chips" id="lenChips"></div></div>
-        <div><div class="label" style="margin-bottom:8px">Temps par question</div><div class="chips" id="timeChips"></div></div>
-        <div class="row">
+        <div class="row actions">
           <button class="btn big" id="createBtn">Créer la partie</button>
           <button class="btn ghost" id="soloBtn">Jouer en solo</button>
           <button class="btn ghost" id="missBtn" hidden></button>
         </div>
+        <details class="opts">
+          <summary>Réglages de la partie</summary>
+          <div class="optsbody">
+            <div><div class="label" style="margin-bottom:8px" id="sessLbl">Sessions</div><div class="chips multi" id="sessChips"></div></div>
+            <div><div class="label" style="margin-bottom:8px">Format</div><div class="chips" id="fmtChips"></div></div>
+            <div><div class="label" style="margin-bottom:8px">Questions</div><div class="chips" id="lenChips"></div></div>
+            <div><div class="label" style="margin-bottom:8px">Temps par question</div><div class="chips" id="timeChips"></div></div>
+          </div>
+        </details>
         <p class="err" id="createErr" hidden></p>
       </div>
       <div class="panel" id="joinPanel">
