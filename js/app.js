@@ -8,7 +8,7 @@ function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
 function hue(s){let h=0;for(const c of String(s))h=(h*31+c.charCodeAt(0))>>>0;return h%360}
 // profile pictures: small JPEG data URLs, by player id (avs[me] comes from this device)
 let avs={};
-function avatar(id,name){const a=el("div","av",(name||"?").trim().charAt(0).toUpperCase()||"?");a.style.backgroundColor="hsl("+hue(id)+" 55% 42%)";paintAv(a,avs[id]);return a}
+function avatar(id,name){const a=el("div","av",(name||"?").trim().charAt(0).toUpperCase()||"?");a.style.background="hsl("+hue(id)+" 55% 42%)";paintAv(a,avs[id]);return a}
 function paintAv(a,src){if(!src)return;a.textContent="";a.classList.add("photo");a.style.backgroundImage="url("+JSON.stringify(src)+")"}
 
 // ---------- state ----------
@@ -46,7 +46,7 @@ function needNick(){if($("nick").value.trim())return false;showErr("nickErr","En
 function myAv(){return lsGet("tpk-avatar")||null}
 if(myAv())avs[me]=myAv();
 function renderMe(){
-  const a=$("pfpAv");a.className="av big";a.removeAttribute("style");a.style.backgroundColor="hsl("+hue(me)+" 55% 42%)";
+  const a=$("pfpAv");a.className="av big";a.removeAttribute("style");a.style.background="hsl("+hue(me)+" 55% 42%)";
   a.textContent=($("nick").value.trim()||"?").charAt(0).toUpperCase();paintAv(a,myAv());
   $("pfpPick").textContent=myAv()?"Changer la photo":"Ajouter une photo";$("pfpDel").hidden=!myAv();
 }
@@ -239,7 +239,7 @@ function loadBank(raw){
 }
 function renderBankUI(){
   $("bankTitle").textContent=BANK.title;
-  $("bankIco").textContent=(BANK.title||"?").trim().charAt(0).toUpperCase();$("bankIco").style.backgroundColor="hsl("+hue(BANK.id||BANK.title||"")+" 90% 80%)";
+  $("bankIco").textContent=(BANK.title||"?").trim().charAt(0).toUpperCase();$("bankIco").style.background="hsl("+hue(BANK.id||BANK.title||"")+" 90% 80%)";
   $("bankSub").textContent=BANK.subject||"";
   try{$("qCount").textContent=(Q.length+TQ.length).toLocaleString("fr-FR")}catch(e){}
   const w=BANK.ticker||(BANK.facts||[]).map(f=>f[3]).filter(t=>t&&t.length<=28);
