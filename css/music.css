@@ -23,10 +23,12 @@
 #music.min #muEdit{display:none}
 @media (max-width:700px){
   #music{left:max(10px,env(safe-area-inset-left,0px));right:max(10px,env(safe-area-inset-right,0px));bottom:max(10px,env(safe-area-inset-bottom,0px));width:auto;max-width:none}
-  body.has-music{padding-bottom:260px}
+  body.has-music{padding-bottom:320px}
 }
 /* narrow phones: the header has no room for the word, the note sign alone opens the player */
 @media (max-width:380px){
   #musicBtn{font-size:0;padding:6px 0;width:44px}
   #musicBtn::before{font-size:18px;margin:0}
 }
+.mu-note{margin:8px 4px 0;font-size:12.5px}
+.mu-note a{color:var(--hl);font-weight:800}

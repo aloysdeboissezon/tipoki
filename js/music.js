@@ -10,9 +10,9 @@ function parse(raw){
   const s=String(raw||"").trim();if(!s)return {err:"Colle un lien de playlist."};
   let m=s.match(/^spotify:(playlist|album|track|artist|show|episode):([A-Za-z0-9]+)/);
   if(!m)m=s.match(/open\.spotify\.com\/(?:intl-[a-z-]+\/)?(?:embed\/)?(playlist|album|track|artist|show|episode)\/([A-Za-z0-9]+)/i);
-  if(m)return {src:"https://open.spotify.com/embed/"+m[1].toLowerCase()+"/"+m[2]+"?utm_source=generator",h:152,name:"Spotify"};
+  if(m)return {src:"https://open.spotify.com/embed/"+m[1].toLowerCase()+"/"+m[2]+"?utm_source=generator",open:"https://open.spotify.com/"+m[1].toLowerCase()+"/"+m[2],h:152,name:"Spotify"};
   m=s.match(/deezer\.com\/(?:[a-z]{2}\/)?(playlist|album|track|artist)\/(\d+)/i);
-  if(m)return {src:"https://widget.deezer.com/widget/auto/"+m[1].toLowerCase()+"/"+m[2]+"?tracklist=false",h:152,name:"Deezer"};
+  if(m)return {src:"https://widget.deezer.com/widget/auto/"+m[1].toLowerCase()+"/"+m[2]+"?tracklist=false",open:"https://www.deezer.com/"+m[1].toLowerCase()+"/"+m[2],h:152,name:"Deezer"};
   if(/spotify\.link|link\.deezer\.com|deezer\.page\.link/i.test(s))
     return {err:"C'est un lien court : ouvre-le dans ton navigateur, puis copie l'adresse complète de la page."};
   return {err:"Lien non reconnu. Colle un lien de playlist, d'album ou de titre Spotify ou Deezer."};
@@ -33,7 +33,8 @@ box.innerHTML='<div class="mu-head"><span class="mu-title" id="muTitle">Musique<
   '<div class="mu-row"><input type="text" id="muUrl" placeholder="https://open.spotify.com/playlist/…" autocomplete="off" spellcheck="false"><button class="btn" type="submit">Écouter</button></div>'+
   '<p class="err" id="muErr" hidden></p>'+
   '<p class="muted mu-tip">Dans l\'app : Partager puis Copier le lien. Connecte-toi à Spotify ou Deezer dans ce navigateur pour écouter les titres en entier (sinon, extraits de 30 s).</p>'+
-  '</form><div class="mu-frame" id="muFrame"></div></div>';
+  '</form><div class="mu-frame" id="muFrame"></div>'+
+  '<p class="muted mu-tip mu-note" id="muNote">Ça change de titre toutes les 30 s ? Ce sont des extraits : connecte-toi à <span class="muName"></span> dans ce navigateur, ou <a id="muOpen" target="_blank" rel="noopener">ouvre la playlist dans l\'app <span class="muName"></span></a>, elle continue en fond pendant que tu joues.</p></div>';
 document.body.appendChild(box);
 
 let cur=null;
@@ -45,7 +46,7 @@ function setState(st){
   lsSet("tipoki-music-state",cur?st:null);
 }
 function editMode(on){
-  $("muForm").hidden=!on;$("muFrame").hidden=on;$("muEdit").hidden=on||!cur;
+  $("muForm").hidden=!on;$("muFrame").hidden=on;$("muNote").hidden=on||!cur;$("muEdit").hidden=on||!cur;
   if(on){$("muErr").hidden=true;$("muUrl").value=lsGet("tipoki-music")||"";setTimeout(()=>$("muUrl").focus(),0)}
 }
 function play(raw){
@@ -55,6 +56,7 @@ function play(raw){
   f.src=p.src;f.height=p.h;f.title="Lecteur "+p.name;f.loading="lazy";
   f.allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
   $("muFrame").replaceChildren(f);$("muTitle").textContent="Musique · "+p.name;
+  $("muOpen").href=p.open;document.querySelectorAll(".muName").forEach(e=>e.textContent=p.name);
   editMode(false);return true;
 }
 function stop(){cur=null;$("muFrame").replaceChildren();$("muTitle").textContent="Musique"}
@@ -67,6 +69,9 @@ $("muForm").onsubmit=e=>{e.preventDefault();if(play($("muUrl").value))setState("
 $("muEdit").onclick=()=>{editMode(true);setState("open")};
 $("muMin").onclick=()=>{if(!cur){setState("closed");return}setState(box.classList.contains("min")?"open":"min")};
 $("muClose").onclick=()=>{stop();setState("closed")};
+// Music now comes from the Spotify/Deezer app: stop the embed so both don't play, and let the game's sound effects mix with the app
+// instead of interrupting it (iPhone).
+$("muOpen").onclick=()=>{try{if(navigator.audioSession)navigator.audioSession.type="ambient"}catch(e){}stop();setState("closed")};
 
 // On phones the player would sit on top of the answer tiles: fold it away when a question starts.
 const q=$("question");
