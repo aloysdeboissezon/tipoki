@@ -50,15 +50,56 @@ function renderMe(){
   a.textContent=($("nick").value.trim()||"?").charAt(0).toUpperCase();paintAv(a,myAv());
   $("pfpPick").textContent=myAv()?"Changer la photo":"Ajouter une photo";$("pfpDel").hidden=!myAv();
 }
-// center-crop to a square and shrink to 128 px JPEG (~5 Ko), so it fits in the players row
-function shrinkImg(file){return new Promise((ok,ko)=>{const u=URL.createObjectURL(file),img=new Image();
-  img.onload=()=>{const S=128,c=document.createElement("canvas");c.width=c.height=S;const s=Math.min(img.naturalWidth,img.naturalHeight);
-    const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,S,S);x.drawImage(img,(img.naturalWidth-s)/2,(img.naturalHeight-s)/2,s,s,0,0,S,S);
-    URL.revokeObjectURL(u);ok(c.toDataURL("image/jpeg",.8))};
+// ---- cropper: drag + zoom (slider, wheel, pinch) in a square view shown through a circular mask ----
+const AV_OUT=256,AV_MAX=90000;   // saved size: 4x the biggest place it is shown (64 px) so it stays sharp on retina phones
+const crop={img:null,V:280,z:1,ox:0,oy:0,pts:new Map(),pinch0:null};
+function cropBase(){return crop.V/Math.min(crop.img.width,crop.img.height)}   // scale at which the photo just covers the square
+function cropClamp(){const k=cropBase()*crop.z,w=crop.img.width*k,h=crop.img.height*k;
+  crop.ox=Math.min(0,Math.max(crop.V-w,crop.ox));crop.oy=Math.min(0,Math.max(crop.V-h,crop.oy))}
+function cropDraw(){const c=$("cropCv"),dpr=window.devicePixelRatio||1,V=crop.V;
+  if(c.width!==Math.round(V*dpr)){c.width=c.height=Math.round(V*dpr);c.style.width=c.style.height=V+"px"}
+  const x=c.getContext("2d");x.setTransform(dpr,0,0,dpr,0,0);x.fillStyle="#fff";x.fillRect(0,0,V,V);x.imageSmoothingQuality="high";
+  const k=cropBase()*crop.z;x.drawImage(crop.img,crop.ox,crop.oy,crop.img.width*k,crop.img.height*k)}
+// zoom around a point of the view so the photo does not jump
+function cropZoomTo(z,fx,fy){z=Math.min(4,Math.max(1,z));const k0=cropBase()*crop.z,k1=cropBase()*z;
+  crop.ox=fx-(fx-crop.ox)*k1/k0;crop.oy=fy-(fy-crop.oy)*k1/k0;crop.z=z;$("cropZoom").value=z;cropClamp();cropDraw()}
+// big photos are shrunk once, in steps, so the final downscale stays crisp
+function loadForCrop(file){return new Promise((ok,ko)=>{const u=URL.createObjectURL(file),img=new Image();
+  img.onload=()=>{let w=img.naturalWidth,h=img.naturalHeight;if(!w||!h){URL.revokeObjectURL(u);ko(new Error("img"));return}
+    const M=1600,r=Math.min(1,M/Math.max(w,h));
+    const c=document.createElement("canvas");c.width=Math.round(w*r);c.height=Math.round(h*r);const x=c.getContext("2d");x.imageSmoothingQuality="high";x.drawImage(img,0,0,c.width,c.height);
+    URL.revokeObjectURL(u);ok(c)};   // always go through a canvas: the photo is then decoded and EXIF-rotated once, whatever its size
   img.onerror=()=>{URL.revokeObjectURL(u);ko(new Error("img"))};img.src=u})}
+function openCrop(img){
+  crop.img=img;crop.pts.clear();crop.pinch0=null;
+  crop.V=Math.max(200,Math.min(300,innerWidth-72,innerHeight-300));
+  $("cropStage").style.width=$("cropStage").style.height=crop.V+"px";
+  crop.z=1;const k=cropBase();crop.ox=(crop.V-img.width*k)/2;crop.oy=(crop.V-img.height*k)/2;
+  $("cropZoom").value=1;$("crop").hidden=false;document.body.classList.add("noscroll");cropDraw();$("cropOk").focus()}
+function closeCrop(){$("crop").hidden=true;document.body.classList.remove("noscroll");crop.img=null;crop.pts.clear()}
+const cst=$("cropStage");
+cst.addEventListener("pointerdown",e=>{cst.setPointerCapture(e.pointerId);crop.pts.set(e.pointerId,{x:e.clientX,y:e.clientY});crop.pinch0=null});
+cst.addEventListener("pointermove",e=>{const p=crop.pts.get(e.pointerId);if(!p||!crop.img)return;
+  if(crop.pts.size===1){crop.ox+=e.clientX-p.x;crop.oy+=e.clientY-p.y;p.x=e.clientX;p.y=e.clientY;cropClamp();cropDraw()}
+  else{p.x=e.clientX;p.y=e.clientY;const [a,b]=[...crop.pts.values()],d=Math.hypot(a.x-b.x,a.y-b.y);
+    if(!crop.pinch0)crop.pinch0={d,z:crop.z};
+    const r=cst.getBoundingClientRect();cropZoomTo(crop.pinch0.z*d/Math.max(1,crop.pinch0.d),(a.x+b.x)/2-r.left,(a.y+b.y)/2-r.top)}});
+["pointerup","pointercancel"].forEach(t=>cst.addEventListener(t,e=>{crop.pts.delete(e.pointerId);crop.pinch0=null;
+}));
+cst.addEventListener("wheel",e=>{e.preventDefault();const r=cst.getBoundingClientRect();cropZoomTo(crop.z*Math.exp(-e.deltaY*.002),e.clientX-r.left,e.clientY-r.top)},{passive:false});
+$("cropZoom").addEventListener("input",e=>cropZoomTo(+e.target.value,crop.V/2,crop.V/2));
+$("cropCancel").onclick=closeCrop;
+$("crop").addEventListener("keydown",e=>{if(e.key==="Escape")closeCrop()});
+$("cropOk").onclick=()=>{if(!crop.img)return;
+  const c=document.createElement("canvas");c.width=c.height=AV_OUT;const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,AV_OUT,AV_OUT);x.imageSmoothingQuality="high";
+  const f=AV_OUT/crop.V,k=cropBase()*crop.z*f;x.drawImage(crop.img,crop.ox*f,crop.oy*f,crop.img.width*k,crop.img.height*k);
+  let d=c.toDataURL("image/jpeg",.9);for(let q=.8;d.length>AV_MAX&&q>.4;q-=.1)d=c.toDataURL("image/jpeg",q);   // keep it under the database limit
+  lsSet("tpk-avatar",d);
+  if(lsGet("tpk-avatar")!==d){closeCrop();showErr("nickErr","Impossible d'enregistrer la photo sur cet appareil.");return}
+  avs[me]=d;closeCrop();renderMe()};
 $("pfpPick").onclick=()=>$("pfpIn").click();
 $("pfpIn").onchange=async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;showErr("nickErr","");
-  try{const d=await shrinkImg(f);lsSet("tpk-avatar",d);if(lsGet("tpk-avatar")!==d)throw new Error("ls");avs[me]=d;renderMe()}
+  try{openCrop(await loadForCrop(f))}
   catch(err){showErr("nickErr","Impossible d'utiliser cette image, essaie une autre photo (JPG ou PNG).")}};
 $("pfpDel").onclick=()=>{try{localStorage.removeItem("tpk-avatar")}catch(e){}delete avs[me];renderMe()};
 renderMe();
@@ -210,7 +251,7 @@ function renderBankUI(){
 }
 function sLabel(s){return BANK.tags?BANK.tags[s]:(BANK.id==="socio"?"S":"Ch.")+s}
 function unit(k){return (BANK.unit||(BANK.id==="socio"?["session","sessions","une session"]:["chapitre","chapitres","un chapitre"]))[k]}
-const BUILTIN={socio:()=>window.BANK_SOCIO,culture:()=>window.BANK_CULTURE};
+const BUILTIN={socio:()=>window.BANK_SOCIO,culture:()=>window.BANK_CULTURE,energie:()=>window.BANK_ENERGIE};
 const bankCache={};
 async function useBank(id){
   id=id||"socio";if(BANK&&BANK.id===id)return true;
