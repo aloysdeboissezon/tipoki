@@ -172,6 +172,7 @@ function loadBank(raw){
 }
 function renderBankUI(){
   $("bankTitle").textContent=BANK.title;
+  $("bankIco").textContent=(BANK.title||"?").trim().charAt(0).toUpperCase();$("bankIco").style.background="hsl("+hue(BANK.id||BANK.title||"")+" 90% 80%)";
   $("bankSub").textContent=BANK.subject||"";
   try{$("qCount").textContent=(Q.length+TQ.length).toLocaleString("fr-FR")}catch(e){}
   const w=BANK.ticker||(BANK.facts||[]).map(f=>f[3]).filter(t=>t&&t.length<=28);
@@ -497,7 +498,7 @@ function renderReveal(){
   const counts=[0,0,0,0];if(!typed)Object.values(P).forEach(p=>{const x=p.ans&&p.ans[G.qi];if(x&&x.c!=null)counts[x.c]++});
   if(!typed)item.o.forEach((oi,k)=>{const b=el("button","tile t"+k);b.disabled=true;
     b.append(el("span","k",LETTERS[k]),el("span",null,q.o[oi]));
-    if(k===cp)b.classList.add("right");else b.classList.add("dim");
+    if(k===cp)b.classList.add("right");else b.classList.add("dim");if(a&&a.c===k&&k!==cp)b.classList.add("mine");
     if(mode==="multi")b.appendChild(el("span","cnt",counts[k]+" ✓".replace(" ✓","")+(counts[k]>1?" joueurs":" joueur")));
     box.appendChild(b)});
   $("rExpl").textContent=q.e;

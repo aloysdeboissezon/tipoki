@@ -189,6 +189,32 @@ label.label{display:block;margin-bottom:6px}
 @keyframes tick{50%{transform:scale(1.1)}}
 @keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+/* home: game settings fold under the main buttons */
+.actions .btn{flex:1 1 180px}
+.opts{border-top:2px solid var(--line);padding-top:4px}
+.opts summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;font-weight:800;font-size:15px;color:var(--ink)}
+.opts summary::-webkit-details-marker{display:none}
+.opts summary::after{content:"";width:9px;height:9px;border-right:2.5px solid currentColor;border-bottom:2.5px solid currentColor;transform:rotate(45deg) translate(-2px,-2px);transition:transform .2s}
+.opts[open] summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
+.opts summary:focus-visible{outline:3px solid var(--hl);outline-offset:3px;border-radius:8px}
+.optsbody{display:flex;flex-direction:column;gap:16px;padding:8px 0 4px}
+/* multi-select chips (sessions): soft fill so "all selected" doesn't read as a wall of violet */
+.chips.multi .chip[aria-pressed="true"]{background:var(--hl-soft);color:var(--hl);border-color:var(--hl)}
+/* reveal: mark the player's own wrong pick */
+.tile.mine{opacity:.9;filter:none;outline:4px solid var(--bad);outline-offset:4px}
+.tile.right::after,.tile.mine::after{position:absolute;right:12px;top:12px;font-size:12px;font-weight:800;padding:3px 9px;border-radius:999px;background:#fff}
+.tile.right::after{content:"Bonne réponse";color:var(--ok)}
+.tile.mine::after{content:"Ta réponse";color:var(--bad)}
+.tile.right .cnt,.tile.mine .cnt{top:auto;bottom:10px}
+@media (max-width:560px){
+  .hero{gap:8px}
+  .hero h1{font-size:34px}
+  .bankpanel{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px}
+  .bankpanel>.row{gap:8px}
+  .bankpanel .bk-foot{grid-column:1/-1}
+  .bankpanel h2{font-size:19px}
+  .bankpanel #bankBtn{padding:10px 14px;min-height:44px;font-size:15px}
+}
 /* Tipoki: quiz maker */
 textarea{font:inherit;font-size:16px;padding:13px 16px;border-radius:16px;border:2px solid var(--line);background:#FAFAFD;color:var(--ink);width:100%;min-width:0;resize:vertical;margin-top:6px}
 textarea:focus{border-color:var(--hl);box-shadow:0 0 0 4px var(--hl-soft);outline:none}
