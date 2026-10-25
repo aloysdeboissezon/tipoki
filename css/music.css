@@ -1,0 +1,26 @@
+/* Music mini player: fixed card bottom-right on desktop, full-width bar on phones; folds to its header when minimized */
+#musicBtn{font-size:14px;font-weight:800;border:2px solid var(--line);background:var(--card);color:var(--ink);padding:6px 14px;min-height:40px;border-radius:999px;cursor:pointer}
+#musicBtn::before{content:"♪";margin-right:6px;color:var(--hl)}
+#musicBtn[aria-pressed="true"]{border-color:var(--hl);background:var(--hl-soft)}
+#music{position:fixed;z-index:40;right:max(16px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));width:360px;max-width:calc(100vw - 32px);
+  background:var(--card);border:2px solid var(--line);border-radius:var(--r);box-shadow:0 12px 32px rgba(23,22,43,.18);overflow:hidden;animation:fadeUp .3s both}
+.mu-head{display:flex;align-items:center;gap:6px;padding:8px 8px 8px 14px}
+.mu-title{flex:1;min-width:0;font-family:var(--f-display);font-weight:800;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mu-title::before{content:"♪ ";color:var(--hl)}
+.mu-ic{flex:none;min-width:36px;height:36px;padding:0 10px;border:2px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink);font-size:14px;font-weight:800;cursor:pointer;line-height:1}
+.mu-ic:hover{border-color:var(--line2)}
+.mu-body{padding:0 10px 10px}
+.mu-form{display:flex;flex-direction:column;gap:8px;padding:0 4px 4px}
+.mu-form .err{margin:0}
+.mu-row{display:flex;gap:8px}
+.mu-row input[type=text]{font-size:16px;padding:10px 12px;border-radius:14px}
+.mu-row .btn{flex:none;font-size:16px;min-height:46px;padding:10px 16px;border-radius:14px;box-shadow:0 4px 0 var(--hl-dk)}
+.mu-tip{margin:0;font-size:13px;line-height:1.4}
+.mu-frame iframe{display:block;width:100%;border:0;border-radius:12px;background:var(--soft)}
+/* minimized: keep the iframe loaded (music keeps playing), just fold it out of view */
+#music.min .mu-body{height:0;padding:0;overflow:hidden}
+#music.min #muEdit{display:none}
+@media (max-width:700px){
+  #music{left:max(10px,env(safe-area-inset-left,0px));right:max(10px,env(safe-area-inset-right,0px));bottom:max(10px,env(safe-area-inset-bottom,0px));width:auto;max-width:none}
+  body.has-music{padding-bottom:260px}
+}
