@@ -65,7 +65,7 @@ function buildDeck(sessArr,len,fmt,opt){
   const seen=seenGet(),ex=(opt&&opt.exclude)||[];
   const exM=new Set(ex.filter(d=>d.t==null).map(d=>d.id)),exT=new Set(ex.filter(d=>d.t!=null).map(d=>d.t));
   const used=new Set(ex.map(d=>(d.t!=null?TQ[d.t]:Q[d.id]).q));
-  const mids=orderPool(Q.map((q,i)=>i).filter(i=>ss.has(Q[i].s)&&!exM.has(i)),i=>i<NHQ,seen.m);
+  const mids=orderPool(Q.map((q,i)=>i).filter(i=>ss.has(Q[i].s)&&!exM.has(i)&&!buried(Q[i])),i=>i<NHQ,seen.m);
   const tids=orderPool(TQ.map((q,i)=>i).filter(i=>ss.has(TQ[i].s)&&!exT.has(i)),i=>i<NHT,seen.t);
   let a=0,b=0;
   const takeM=()=>{while(a<mids.length){const id=mids[a++],tx=Q[id].q;if(used.has(tx))continue;used.add(tx);return{id,o:Q[id].tf?(Q[id].o[0]==="Vrai"?[0,1]:[1,0]):shuffle([0,1,2,3])}}return null};
@@ -161,6 +161,7 @@ function loadBank(raw){
   const b=normBank(raw);
   BANK=b;SESS={...b.sess};Q=b.Q.slice();TQ=b.TQ.slice();NHQ=Q.length;NHT=TQ.length;
   if(b.facts&&b.facts.length)expandFacts(b.facts,b.lang);
+  commIdx={};
   ALL_S=Object.keys(SESS).map(Number).sort((x,y)=>x-y);
   settings.sess=new Set(ALL_S);
   renderBankUI();
@@ -169,6 +170,8 @@ function renderBankUI(){
   $("bankTitle").textContent=BANK.title;
   $("bankSub").textContent=BANK.subject||"";
   try{$("qCount").textContent=(Q.length+TQ.length).toLocaleString("fr-FR")}catch(e){}
+  const nc=Object.keys(commIdx).length;
+  $("commLine").textContent=nc?"Dont "+nc+(nc>1?" questions ajoutées":" question ajoutée")+" par la promo. Ajoute les tiennes, vote pour les meilleures.":"Aucune question de la promo pour l'instant. Sois le premier à en ajouter une !";
   const w=(BANK.facts||[]).map(f=>f[3]).filter(t=>t&&t.length<=28);
   const words=shuffle(w).slice(0,28).map((t,i)=>i%2?esc(t):"<b>"+esc(t)+"</b>");
   const h=words.join("  ·  ")+"  ·  ";$("tickerTxt").innerHTML=words.length?h+h:"";
@@ -179,13 +182,36 @@ function sLabel(s){return (BANK.id==="socio"?"S":"Ch.")+s}
 const bankCache={};
 async function useBank(id){
   id=id||"socio";if(BANK&&BANK.id===id)return true;
-  if(id==="socio"){loadBank(window.BANK_SOCIO);return true}
+  if(id==="socio"){loadBank(window.BANK_SOCIO);await refreshCommunity();return true}
   let b=bankCache[id];
   if(!b){if(!sb)return false;
     const {data,error}=await sb.from("quizzes").select("id,title,subject,lang,data").eq("id",id).maybeSingle();
     if(error||!data)return false;
     b=bankCache[id]={...data.data,id:data.id,title:data.title,subject:data.subject,lang:data.lang}}
-  loadBank(b);rememberQuiz(b);return true;
+  loadBank(b);rememberQuiz(b);await refreshCommunity();return true;
+}
+
+// ---------- questions written by players ----------
+// They are appended to Q in id order and never removed (moderation sets hidden=true), so every device
+// that has refreshed sees the same indices and multiplayer decks stay in sync.
+let commIdx={};
+const BURY=-3;
+function buried(q){return q.cq!=null&&(q.hidden||q.score<=BURY)}
+function myVotes(){try{return JSON.parse(lsGet("tpk-votes")||"{}")}catch(e){return {}}}
+async function refreshCommunity(){
+  if(!sb||!BANK)return;
+  const bid=BANK.id;
+  const {data,error}=await sb.from("community_questions").select("id,s,kind,q,o,v,e,author_nick,author_pid,hidden,question_votes(v)").eq("quiz_id",bid).order("id",{ascending:true}).limit(2000);
+  if(error||!data||!BANK||BANK.id!==bid)return;
+  for(const r of data){
+    const score=(r.question_votes||[]).reduce((t,x)=>t+x.v,0);
+    if(commIdx[r.id]!=null){const q=Q[commIdx[r.id]];q.score=score;q.hidden=r.hidden;continue}
+    const base={s:r.s,q:r.q,a:0,e:r.e||"",cq:r.id,by:r.author_nick,mine:r.author_pid===me,score,hidden:r.hidden};
+    const q=r.kind==="tf"?{...base,t:"Vrai ou faux",o:r.v?["Vrai","Faux"]:["Faux","Vrai"],tf:true}:{...base,t:"QCM",o:r.o};
+    if(!q.tf&&!(Array.isArray(q.o)&&q.o.length===4))continue;
+    commIdx[r.id]=Q.length;Q.push(q);
+  }
+  renderBankUI();
 }
 function myQuizzes(){try{return JSON.parse(lsGet("tpk-quizzes")||"[]")}catch(e){return []}}
 function rememberQuiz(b){if(b.id==="socio")return;const l=myQuizzes().filter(x=>x.id!==b.id);l.unshift({id:b.id,title:b.title});lsSet("tpk-quizzes",JSON.stringify(l.slice(0,30)))}
@@ -284,13 +310,16 @@ async function insertGame(g){
     if(!error)return c;if(error.code!=="23505")throw error}
   throw new Error("code");
 }
+const EMPTY_MSG="Pas encore assez de questions ici (ou pas dans ce format). Ajoute-en avec « Ajouter une question ».";
 async function createGame(){
   showErr("createErr","");
   if(!settings.sess.size){showErr("createErr","Choisis au moins une session.");return}
   lsSet("socio-nick",myNick());
   $("createBtn").disabled=true;
   try{
-    const g={host:me,hostNick:myNick(),bank:BANK.id,bankTitle:BANK.title,status:"lobby",qi:0,deck:buildDeck(),T:settings.T,created:Date.now(),seq:1,sess:[...settings.sess],fmt:settings.fmt,inf:settings.len===LEN_INF};
+    const deck=buildDeck();
+    if(!deck.length){showErr("createErr",EMPTY_MSG);return}
+    const g={host:me,hostNick:myNick(),bank:BANK.id,bankTitle:BANK.title,status:"lobby",qi:0,deck,T:settings.T,created:Date.now(),seq:1,sess:[...settings.sess],fmt:settings.fmt,inf:settings.len===LEN_INF};
     const c=await insertGame(g);
     await joinGame(c);
   }catch(e){showErr("createErr","Impossible de créer la partie. Vérifie ta connexion.")}
@@ -317,6 +346,8 @@ async function joinGame(c){
   if(error){showErr("joinErr","Connexion impossible, réessaie.");return}
   if(!data){showErr("joinErr","Aucune partie avec ce code.");return}
   if(!await useBank(data.state.bank)){showErr("joinErr","Impossible de charger le quiz de cette partie.");return}
+  await refreshCommunity();
+  if(data.state.deck.some(d=>d.t!=null?!TQ[d.t]:!Q[d.id])){showErr("joinErr","Impossible de charger le quiz de cette partie.");return}
   leaveGame(true);
   mode="multi";code=c;G=data.state;P={};local={qi:-1,shownAt:0,revealing:false,lastStatus:null};
   const {data:mine}=await sb.from("players").select("pid").eq("code",c).eq("pid",me).maybeSingle();
@@ -333,9 +364,11 @@ async function joinGame(c){
 }
 function startSolo(customDeck){
   if(!customDeck&&!settings.sess.size){showErr("createErr","Choisis au moins une session.");return}
+  const deck=customDeck||buildDeck();
+  if(!deck.length){showErr("createErr",EMPTY_MSG);return}
   leaveGame(true);
   mode="solo";code=null;
-  G={host:me,status:"q",qi:0,deck:customDeck||buildDeck(),T:settings.T,created:Date.now(),seq:1,inf:!customDeck&&settings.len===LEN_INF,sess:[...settings.sess],fmt:settings.fmt};
+  G={host:me,status:"q",qi:0,deck,T:settings.T,created:Date.now(),seq:1,inf:!customDeck&&settings.len===LEN_INF,sess:[...settings.sess],fmt:settings.fmt};
   P={[me]:{nick:myNick(),joined:Date.now(),ans:{}}};local={qi:-1,shownAt:0,revealing:false,lastStatus:null};
   onGame(G);
 }
@@ -370,7 +403,7 @@ function renderScreen(){
   else if(G.status==="reveal"){show("reveal");renderReveal()}
   else if(G.status==="end"){show("end");renderEnd()}
 }
-function show(id){["home","make","lobby","question","reveal","end"].forEach(s=>$(s).hidden=s!==id);
+function show(id){["home","make","add","lobby","question","reveal","end"].forEach(s=>$(s).hidden=s!==id);
   $("status").textContent=code?("Partie "+code):(mode==="solo"?"Solo":"Midterm · 22/10");window.scrollTo(0,0)}
 function nameOf(id){const p=P[id];return (p&&p.nick)||(profiles[id]&&profiles[id].name)||"Joueur"}
 
@@ -386,7 +419,7 @@ function totals(upto){return Object.keys(P).map(id=>({id,...scoreRun(id,upto)}))
 function renderLobby(){
   show("lobby");
   $("lobbyCode").textContent=code;
-  $("lobbyInfo").textContent=({mix:"QCM + réponses tapées",mcq:"QCM",typed:"Réponses tapées"}[G.fmt||"mcq"])+" · "+(G.inf?"∞":G.deck.length)+" questions · "+G.T+" s par question · sessions "+(G.sess||[]).map(s=>"S"+s).join(", ");
+  $("lobbyInfo").textContent=({mix:"QCM + réponses tapées",mcq:"QCM",typed:"Réponses tapées"}[G.fmt||"mcq"])+" · "+(G.inf?"∞":G.deck.length)+" questions · "+G.T+" s par question · "+(BANK.id==="socio"?"sessions ":"chapitres ")+(G.sess||[]).map(sLabel).join(", ");
   const ids=Object.keys(P).sort((a,b)=>(P[a].joined||0)-(P[b].joined||0));
   $("lobbyCount").textContent=ids.length+(ids.length>1?" joueurs":" joueur");
   const box=$("lobbyPlayers");box.textContent="";
@@ -407,7 +440,7 @@ $("lobbyLeave").onclick=()=>leaveGame(false);
 function renderQuestion(){
   show("question");
   const item=G.deck[G.qi],q=qOf(G.qi),typed=isT(G.qi);
-  $("qSess").textContent="S"+q.s;$("qNum").textContent="Question "+(G.qi+1)+" / "+(G.inf?"∞":G.deck.length)+" · "+(typed?"Réponse tapée":q.t);
+  $("qSess").textContent=sLabel(q.s);$("qNum").textContent="Question "+(G.qi+1)+" / "+(G.inf?"∞":G.deck.length)+" · "+(typed?"Réponse tapée":q.t);
   $("qText").textContent=q.q;
   showImg("qImgBox","qImg",q,"qHint");
   const st=G.qi>0?scoreRun(me,G.qi-1).streak:0;$("qStreak").hidden=st<2;$("qStreak").textContent="SÉRIE ×"+st;
@@ -471,7 +504,7 @@ setInterval(()=>{
 function renderReveal(){
   show("reveal");
   const item=G.deck[G.qi],q=qOf(G.qi),cp=correctPos(G.qi),a=myAns(),typed=isT(G.qi);
-  $("rSess").textContent="S"+q.s;$("rNum").textContent="Question "+(G.qi+1)+" / "+(G.inf?"∞":G.deck.length)+" · "+(typed?"Réponse tapée":q.t);
+  $("rSess").textContent=sLabel(q.s);$("rNum").textContent="Question "+(G.qi+1)+" / "+(G.inf?"∞":G.deck.length)+" · "+(typed?"Réponse tapée":q.t);
   const v=$("rVerdict");
   if(!a){v.textContent="Pas de réponse";v.className="verdict bad"}
   if(local.sfxQ!==G.qi){local.sfxQ=G.qi;if(a&&isRight(a,G.qi)){sfx("ok");buzz(40)}else{sfx("bad");buzz([60,40,60])}}
@@ -492,7 +525,8 @@ function renderReveal(){
     if(k===cp)b.classList.add("right");else b.classList.add("dim");
     if(mode==="multi")b.appendChild(el("span","cnt",counts[k]+" ✓".replace(" ✓","")+(counts[k]>1?" joueurs":" joueur")));
     box.appendChild(b)});
-  $("rExpl").textContent=q.e;
+  $("rExpl").textContent=q.e||(typed?"":"Bonne réponse : "+q.o[q.a]+".");
+  renderVote(q);
   renderBoard($("rBoard"),totals(G.qi).slice(0,mode==="solo"?1:6),true);
   const last=!G.inf&&G.qi>=G.deck.length-1;
   $("rEnd").hidden=!(G.inf&&isHost());
@@ -511,6 +545,22 @@ $("rNext").onclick=()=>{
   if(G.qi>=G.deck.length-1)writeGame({status:"end"});else writeGame({status:"q",qi:G.qi+1});
 };
 $("rEnd").onclick=()=>{if(isHost())writeGame({status:"end",deck:G.deck.slice(0,G.qi+1),inf:false})};
+
+function renderVote(q){
+  const box=$("rVote");box.hidden=q.cq==null;if(q.cq==null)return;
+  $("rBy").textContent="Question de "+(q.mine?"toi":q.by||"la promo")+" · "+(q.score>0?"+":"")+(q.score||0);
+  const v=myVotes()[q.cq]||0;
+  $("rUp").setAttribute("aria-pressed",v===1);$("rDown").setAttribute("aria-pressed",v===-1);
+  $("rUp").disabled=$("rDown").disabled=!!q.mine;
+}
+function vote(dir){
+  if(!G)return;const q=qOf(G.qi);if(q.cq==null||q.mine)return;
+  const vs=myVotes(),old=vs[q.cq]||0,nv=old===dir?0:dir;
+  if(nv)vs[q.cq]=nv;else delete vs[q.cq];lsSet("tpk-votes",JSON.stringify(vs));
+  q.score=(q.score||0)-old+nv;renderVote(q);
+  if(sb)sb.rpc("vote_question",{p_id:q.cq,p_pid:me,p_v:nv}).then(({error})=>{if(error)toast("Vote non enregistré, réessaie")});
+}
+$("rUp").onclick=()=>vote(1);$("rDown").onclick=()=>vote(-1);
 
 // ---------- end ----------
 function renderEnd(){
@@ -558,17 +608,83 @@ function quizUrl(id){return location.origin+location.pathname+"?quiz="+id}
 function setQuizParam(){try{history.replaceState(null,"",BANK.id==="socio"?location.pathname:"?quiz="+BANK.id)}catch(e){}}
 async function renderMyQuizzes(){
   let all=[];
-  if(sb){const {data}=await sb.from("quizzes").select("id,title").order("created_at",{ascending:false}).limit(50);all=data||[]}
-  const seen=new Set(),list=[{id:"socio",title:window.BANK_SOCIO.title}].concat(myQuizzes(),all).filter(q=>!seen.has(q.id)&&seen.add(q.id));
+  const term=norm($("quizSearch").value||"");
+  if(sb){let rq=sb.from("quizzes").select("id,title,subject").order("created_at",{ascending:false}).limit(50);
+    const raw=($("quizSearch").value||"").trim().replace(/[%,()*]/g," ").slice(0,40);
+    if(raw)rq=rq.or("title.ilike.%"+raw+"%,subject.ilike.%"+raw+"%");
+    const {data}=await rq;all=data||[]}
+  const seen=new Set(),list=[{id:"socio",title:window.BANK_SOCIO.title,subject:window.BANK_SOCIO.subject}].concat(myQuizzes(),all)
+    .filter(q=>!seen.has(q.id)&&seen.add(q.id)).filter(q=>!term||norm(q.title+" "+(q.subject||"")).includes(term));
   const box=$("myQuizList");box.textContent="";
+  if(!list.length)box.appendChild(el("p","muted","Aucun quiz trouvé. Crée celui de ton cours juste au-dessus !"));
   list.forEach(q=>{
     const row=el("div","gamerow"),left=el("div");
-    left.appendChild(el("div",null,q.title));if(BANK.id===q.id)left.appendChild(el("div","muted","Quiz en cours"));
+    left.appendChild(el("div",null,q.title));
+    const sub=[q.subject,BANK.id===q.id?"Quiz en cours":""].filter(Boolean).join(" · ");if(sub)left.appendChild(el("div","muted",sub));
     const b=el("button","btn dark","Jouer");
     b.onclick=async()=>{b.disabled=true;const ok=await useBank(q.id);b.disabled=false;if(!ok){toast("Quiz introuvable");return}setQuizParam();show("home")};
     row.append(left,b);box.appendChild(row)});
 }
 $("makePanel").hidden=!MAKER_ON;
+let searchT=null;$("quizSearch").addEventListener("input",()=>{clearTimeout(searchT);searchT=setTimeout(renderMyQuizzes,300)});
+$("crBack").onclick=()=>show("home");
+$("crGo").onclick=async()=>{
+  showErr("crErr","");
+  const title=$("crTitle").value.trim(),school=$("crSchool").value.trim();
+  if(title.length<3){showErr("crErr","Donne un nom à ton cours.");return}
+  if(!sb){showErr("crErr","Connexion au serveur impossible.");return}
+  const chaps=$("crChaps").value.split("\n").map(x=>x.trim()).filter(Boolean).slice(0,20);
+  $("crGo").disabled=true;
+  try{
+    const {data,error}=await sb.rpc("create_course",{p_title:title,p_school:school,p_chapters:chaps});
+    if(error||!data)throw error||new Error("create");
+    if(!await useBank(data))throw new Error("load");
+    setQuizParam();$("crTitle").value="";$("crSchool").value="";$("crChaps").value="";
+    openAdd("Ton quiz est créé ! Partage-le à ta promo avec le bouton Partager, et ajoute la première question.");
+  }catch(e){showErr("crErr","Impossible de créer le quiz, réessaie.")}
+  finally{$("crGo").disabled=false}
+};
+
+// ---------- add a question ----------
+let ad={s:null,kind:"mcq",v:true};
+function renderAddForm(){
+  const sc=$("adSess");sc.textContent="";
+  for(const s of ALL_S){const b=el("button","chip",ALL_S.length>1?sLabel(s)+" · "+SESS[s]:SESS[s]);b.setAttribute("aria-pressed",ad.s===s);b.onclick=()=>{ad.s=s;renderAddForm()};sc.appendChild(b)}
+  const kc=$("adKind");kc.textContent="";
+  [["mcq","QCM (4 choix)"],["tf","Vrai ou faux"]].forEach(([k,l])=>{const b=el("button","chip",l);b.setAttribute("aria-pressed",ad.kind===k);b.onclick=()=>{ad.kind=k;renderAddForm()};kc.appendChild(b)});
+  const tc=$("adTfChips");tc.textContent="";
+  [[true,"Vraie"],[false,"Fausse"]].forEach(([v,l])=>{const b=el("button","chip",l);b.setAttribute("aria-pressed",ad.v===v);b.onclick=()=>{ad.v=v;renderAddForm()};tc.appendChild(b)});
+  $("adMcq").hidden=ad.kind!=="mcq";$("adTf").hidden=ad.kind!=="tf";
+  $("adQ").placeholder=ad.kind==="tf"?"Ex. Pour Durkheim, le suicide est un fait social.":"Ex. Pour Weber, qu'est-ce qu'un idéal-type ?";
+}
+function openAdd(okMsg){
+  if(ad.s==null||!SESS[ad.s])ad.s=ALL_S[0];
+  $("adFor").textContent="Pour « "+BANK.title+" ». Elle sera jouée par tout le monde, et les autres pourront voter.";
+  showErr("adErr","");const ok=$("adOk");ok.hidden=!okMsg;ok.textContent=okMsg||"";
+  renderAddForm();show("add");
+}
+$("addQBtn").onclick=()=>openAdd();
+$("adBack").onclick=()=>show("home");
+$("adGo").onclick=async()=>{
+  showErr("adErr","");$("adOk").hidden=true;
+  const q=$("adQ").value.trim(),e=$("adE").value.trim(),o=[0,1,2,3].map(i=>$("adO"+i).value.trim());
+  if(q.length<5){showErr("adErr","Écris la question.");return}
+  if(ad.kind==="mcq"){
+    if(o.some(x=>!x)){showErr("adErr","Il faut la bonne réponse et 3 mauvaises.");return}
+    if(new Set(o.map(x=>x.toLowerCase())).size<4){showErr("adErr","Les 4 réponses doivent être différentes.");return}
+  }
+  if(!sb){showErr("adErr","Connexion au serveur impossible.");return}
+  lsSet("socio-nick",myNick());
+  $("adGo").disabled=true;
+  try{
+    const {error}=await sb.rpc("add_question",{p_quiz:BANK.id,p_s:ad.s,p_kind:ad.kind,p_q:q,p_o:ad.kind==="mcq"?o:null,p_v:ad.kind==="tf"?ad.v:null,p_e:e,p_pid:me,p_nick:myNick()});
+    if(error)throw error;
+    await refreshCommunity();
+    ["adQ","adE","adO0","adO1","adO2","adO3"].forEach(i=>$(i).value="");
+    const ok=$("adOk");ok.hidden=false;ok.textContent="Question ajoutée, merci ! Tu peux en écrire une autre.";$("adQ").focus();
+  }catch(err){showErr("adErr",/rate/.test(err&&err.message||"")?"Doucement ! Réessaie dans un moment.":"Impossible d'ajouter la question, réessaie.")}
+  finally{$("adGo").disabled=false}
+};
 $("bankBtn").onclick=()=>{renderMyQuizzes();show("make")};
 $("mkBack").onclick=()=>show("home");
 $("shareQuizBtn").onclick=async()=>{const u=quizUrl(BANK.id);try{await navigator.clipboard.writeText(u);toast("Lien du quiz copié")}catch(e){prompt("Lien du quiz",u)}};
@@ -610,7 +726,7 @@ $("mkGo").onclick=async()=>{
   finally{clearInterval(tick);st.hidden=true;$("mkGo").disabled=false}
 };
 
-loadBank(window.BANK_SOCIO);
+loadBank(window.BANK_SOCIO);refreshCommunity();
 if(sb){setMultiNote(true);watchOpenGames()}else setMultiNote(false);
 (async()=>{let id=null;try{id=new URLSearchParams(location.search).get("quiz")}catch(e){}
   if(!id||!/^[0-9a-f-]{36}$/i.test(id))return;
