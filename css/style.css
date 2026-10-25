@@ -193,3 +193,5 @@ textarea:focus{border-color:var(--hl);box-shadow:0 0 0 4px var(--hl-soft);outlin
 .drop{display:flex;align-items:center;justify-content:center;text-align:center;min-height:96px;padding:16px;border:2px dashed var(--line2);border-radius:18px;color:var(--muted);font-weight:700;cursor:pointer;transition:border-color .15s,background .15s}
 .drop:hover,.drop.over{border-color:var(--hl);background:var(--hl-soft);color:var(--ink)}
 .drop.has{border-style:solid;border-color:var(--hl);color:var(--ink)}
+.vote{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.vote .muted{font-size:14px;font-weight:700;margin-right:auto}

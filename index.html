@@ -30,6 +30,8 @@
       <div class="bk-ico" aria-hidden="true">?</div>
       <div class="bk-main"><div class="muted" style="font-size:14px;font-weight:700">Quiz en cours</div><h2 id="bankTitle"></h2><div class="muted" id="bankSub"></div></div>
       <div class="row"><button class="btn ghost" id="shareQuizBtn" hidden>Partager</button><button class="btn ghost" id="bankBtn">Changer</button></div>
+      <p class="muted bk-foot" id="commLine"></p>
+      <div class="row bk-foot"><button class="btn dark" id="addQBtn">Ajouter une question</button></div>
       <p class="muted bk-foot"><span id="qCount"></span> questions : QCM, vrai/faux et réponses tapées (fautes tolérées). Plus tu réponds vite et juste, plus tu marques.</p>
     </div>
     <div class="panel">
@@ -64,6 +66,15 @@
 
   <!-- MAKE / PICK A QUIZ -->
   <section id="make" hidden style="display:flex;flex-direction:column;gap:16px">
+    <div class="panel" id="coursePanel">
+      <h2>Crée le quiz de ton cours</h2>
+      <p class="muted" style="margin:0">Un quiz pour ta promo : tu le crées, tu partages le lien, et chacun ajoute ses questions. Les meilleures montent, les mauvaises disparaissent.</p>
+      <div><label class="label" for="crTitle">Nom du cours</label><input type="text" id="crTitle" maxlength="60" placeholder="Ex. Sociologie des organisations" autocomplete="off"></div>
+      <div><label class="label" for="crSchool">Fac et promo</label><input type="text" id="crSchool" maxlength="60" placeholder="Ex. Nanterre · L2 Socio · 2026" autocomplete="off"></div>
+      <div><label class="label" for="crChaps">Chapitres (un par ligne, facultatif)</label><textarea id="crChaps" rows="4" placeholder="Ch. 1 Weber&#10;Ch. 2 Durkheim"></textarea></div>
+      <div class="row"><button class="btn big" id="crGo">Créer le quiz</button><button class="btn ghost" id="crBack">Retour</button></div>
+      <p class="err" id="crErr" hidden></p>
+    </div>
     <div class="panel" id="makePanel">
       <h2>Crée un quiz depuis ton cours</h2>
       <p class="muted" style="margin:0">Dépose ton PDF (cours, slides, fiches) ou colle ton texte. L'IA en tire les notions clés et fabrique les questions.</p>
@@ -76,8 +87,29 @@
     </div>
     <div class="panel">
       <h2>Les quiz</h2>
+      <input type="text" id="quizSearch" maxlength="60" placeholder="Cherche ton cours ou ta fac…" autocomplete="off">
       <div class="games" id="myQuizList"></div>
     </div>
+  </section>
+
+  <!-- ADD A QUESTION -->
+  <section id="add" class="panel" hidden>
+    <h2>Ajoute une question</h2>
+    <p class="muted" style="margin:0" id="adFor"></p>
+    <div><div class="label" style="margin-bottom:8px">Chapitre</div><div class="chips" id="adSess"></div></div>
+    <div><div class="label" style="margin-bottom:8px">Type</div><div class="chips" id="adKind"></div></div>
+    <div><label class="label" for="adQ">Question</label><textarea id="adQ" rows="3" maxlength="300" placeholder="Ex. Pour Weber, qu'est-ce qu'un idéal-type ?"></textarea></div>
+    <div id="adMcq" style="display:flex;flex-direction:column;gap:10px">
+      <div><label class="label" for="adO0">Bonne réponse</label><input type="text" id="adO0" maxlength="120" autocomplete="off"></div>
+      <div><label class="label" for="adO1">Mauvaises réponses</label><input type="text" id="adO1" maxlength="120" autocomplete="off" placeholder="Mauvaise réponse 1"></div>
+      <input type="text" id="adO2" maxlength="120" autocomplete="off" placeholder="Mauvaise réponse 2">
+      <input type="text" id="adO3" maxlength="120" autocomplete="off" placeholder="Mauvaise réponse 3">
+    </div>
+    <div id="adTf" hidden><div class="label" style="margin-bottom:8px">La phrase est…</div><div class="chips" id="adTfChips"></div></div>
+    <div><label class="label" for="adE">Explication (facultatif)</label><textarea id="adE" rows="2" maxlength="400" placeholder="Pourquoi c'est la bonne réponse, d'où ça vient dans le cours"></textarea></div>
+    <div class="row"><button class="btn big" id="adGo">Ajouter</button><button class="btn ghost" id="adBack">Retour</button></div>
+    <p class="note" id="adOk" hidden></p>
+    <p class="err" id="adErr" hidden></p>
   </section>
 
   <!-- LOBBY -->
@@ -123,6 +155,7 @@
     <div id="rTyped" hidden style="display:flex;flex-direction:column;gap:10px"><div class="label">Réponse attendue</div><div class="goodans" id="rGood"></div><div class="ansl" id="rAns"></div></div>
     <p class="fast" id="rFast" hidden></p>
     <div class="expl"><p id="rExpl"></p></div>
+    <div class="vote" id="rVote" hidden><span class="muted" id="rBy"></span><button class="chip" id="rUp" aria-pressed="false">👍 Bonne question</button><button class="chip" id="rDown" aria-pressed="false">👎 Pas claire ou fausse</button></div>
     <div class="label">Classement</div>
     <div class="board" id="rBoard"></div>
     <div class="row end">
