@@ -74,7 +74,7 @@
       <div><label class="label" for="mkTitle">Nom du quiz</label><input type="text" id="mkTitle" maxlength="60" placeholder="Ex. Macroéconomie, chapitres 1 à 4" autocomplete="off"></div>
       <label class="drop" id="mkDrop"><input type="file" id="mkFile" accept=".pdf,.txt,.md,application/pdf,text/plain" hidden><span id="mkFileTxt">Clique ou glisse un PDF ici (20 Mo max)</span></label>
       <div><label class="label" for="mkText">Ou colle ton cours</label><textarea id="mkText" rows="7" placeholder="Colle ici tes notes, ton plan de cours, tes définitions…"></textarea></div>
-      <div class="row"><button class="btn big" id="mkGo">Générer le quiz</button><button class="btn ghost" id="mkBack">Retour</button></div>
+      <div class="row"><button class="btn big" id="mkGo">Générer le quiz</button></div>
       <p class="note" id="mkStatus" hidden></p>
       <p class="err" id="mkErr" hidden></p>
     </div>
@@ -82,6 +82,7 @@
       <h2>Les quiz</h2>
       <div class="games" id="myQuizList"></div>
     </div>
+    <div class="row"><button class="btn ghost" id="mkBack">Retour</button></div>
   </section>
 
   <!-- LOBBY -->
