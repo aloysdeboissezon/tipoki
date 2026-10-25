@@ -67,21 +67,18 @@
     <div class="ticker" aria-hidden="true"><div id="tickerTxt"></div></div>
     <div id="meTopic"></div>
       <div class="panel" id="createPanel">
-        <div class="steph"><span class="stepn">2</span><h2>Lance ta partie</h2></div>
+        <div class="steph"><span class="stepn">2</span><h2>Règle ta partie</h2></div>
+        <div class="optsbody setgrid">
+          <div><div class="label" id="sessLbl">Sessions</div><div class="chips multi" id="sessChips"></div></div>
+          <div><div class="label">Format</div><div class="chips" id="fmtChips"></div></div>
+          <div><div class="label">Questions</div><div class="chips" id="lenChips"></div></div>
+          <div><div class="label">Temps par question</div><div class="chips" id="timeChips"></div></div>
+        </div>
+        <div class="row"><button class="btn ghost" id="missBtn" hidden></button></div>
         <div class="row actions">
           <button class="btn big" id="createBtn">Créer la partie</button>
           <button class="btn ghost" id="soloBtn">Jouer en solo</button>
-          <button class="btn ghost" id="missBtn" hidden></button>
         </div>
-        <details class="opts">
-          <summary>Réglages de la partie</summary>
-          <div class="optsbody">
-            <div><div class="label" style="margin-bottom:8px" id="sessLbl">Sessions</div><div class="chips multi" id="sessChips"></div></div>
-            <div><div class="label" style="margin-bottom:8px">Format</div><div class="chips" id="fmtChips"></div></div>
-            <div><div class="label" style="margin-bottom:8px">Questions</div><div class="chips" id="lenChips"></div></div>
-            <div><div class="label" style="margin-bottom:8px">Temps par question</div><div class="chips" id="timeChips"></div></div>
-          </div>
-        </details>
         <p class="err" id="createErr" hidden></p>
       </div>
   </section>
