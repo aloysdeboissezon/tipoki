@@ -52,11 +52,14 @@ function renderSettings(){
 
 function seenGet(){try{const s=JSON.parse(lsGet(lsKey("seen"))||"{}");return{m:new Set(s.m||[]),t:new Set(s.t||[])}}catch(e){return{m:new Set(),t:new Set()}}}
 function seenSave(s){lsSet(lsKey("seen"),JSON.stringify({m:[...s.m],t:[...s.t]}))}
-function orderPool(ids,isHand,seen){
+// round-robin over shuffled groups, so big banks alternate between themes (and kinds of question within a theme)
+function interleave(groups){groups=shuffle(groups.map(shuffle));const o=[];for(let k=0;groups.some(g=>k<g.length);k++)groups.forEach(g=>{if(k<g.length)o.push(g[k])});return o}
+function groupBy(ids,f){const m={};ids.forEach(i=>{const k=f(i);(m[k]=m[k]||[]).push(i)});return Object.values(m)}
+function orderPool(ids,isHand,seen,src){
   let un=ids.filter(i=>!seen.has(i));
   if(!un.length&&ids.length){ids.forEach(i=>seen.delete(i));un=ids.slice()}   // everything seen -> start over
   const se=ids.filter(i=>seen.has(i));
-  const mix=arr=>{const h=shuffle(arr.filter(isHand)),g=shuffle(arr.filter(i=>!isHand(i))),o=[];let a=0,b=0;while(a<h.length||b<g.length){if(a<h.length)o.push(h[a++]);if(b<g.length)o.push(g[b++])}return o};
+  const mix=BANK.balance?arr=>interleave(groupBy(arr,i=>src[i].s).map(g=>interleave(groupBy(g,i=>src[i].t||"")))):arr=>{const h=shuffle(arr.filter(isHand)),g=shuffle(arr.filter(i=>!isHand(i))),o=[];let a=0,b=0;while(a<h.length||b<g.length){if(a<h.length)o.push(h[a++]);if(b<g.length)o.push(g[b++])}return o};
   return mix(un).concat(mix(se));
 }
 function buildDeck(sessArr,len,fmt,opt){
@@ -64,12 +67,12 @@ function buildDeck(sessArr,len,fmt,opt){
   const inf=len===LEN_INF,n=inf?(opt&&opt.more?30:40):len;
   const seen=seenGet(),ex=(opt&&opt.exclude)||[];
   const exM=new Set(ex.filter(d=>d.t==null).map(d=>d.id)),exT=new Set(ex.filter(d=>d.t!=null).map(d=>d.t));
-  const used=new Set(ex.map(d=>(d.t!=null?TQ[d.t]:Q[d.id]).q));
-  const mids=orderPool(Q.map((q,i)=>i).filter(i=>ss.has(Q[i].s)&&!exM.has(i)),i=>i<NHQ,seen.m);
-  const tids=orderPool(TQ.map((q,i)=>i).filter(i=>ss.has(TQ[i].s)&&!exT.has(i)),i=>i<NHT,seen.t);
+  const qk=q=>q.q+(q.img||""),used=new Set(ex.map(d=>qk(d.t!=null?TQ[d.t]:Q[d.id])));
+  const mids=orderPool(Q.map((q,i)=>i).filter(i=>ss.has(Q[i].s)&&!exM.has(i)),i=>i<NHQ,seen.m,Q);
+  const tids=orderPool(TQ.map((q,i)=>i).filter(i=>ss.has(TQ[i].s)&&!exT.has(i)),i=>i<NHT,seen.t,TQ);
   let a=0,b=0;
-  const takeM=()=>{while(a<mids.length){const id=mids[a++],tx=Q[id].q;if(used.has(tx))continue;used.add(tx);return{id,o:Q[id].tf?(Q[id].o[0]==="Vrai"?[0,1]:[1,0]):shuffle([0,1,2,3])}}return null};
-  const takeT=()=>{while(b<tids.length){const t=tids[b++],tx=TQ[t].q;if(used.has(tx))continue;used.add(tx);return{t}}return null};
+  const takeM=()=>{while(a<mids.length){const id=mids[a++],tx=qk(Q[id]);if(used.has(tx))continue;used.add(tx);return{id,o:Q[id].tf?(Q[id].o[0]==="Vrai"?[0,1]:[1,0]):shuffle([0,1,2,3])}}return null};
+  const takeT=()=>{while(b<tids.length){const t=tids[b++],tx=qk(TQ[t]);if(used.has(tx))continue;used.add(tx);return{t}}return null};
   const out=[];
   while(out.length<n){
     const it=fmt==="mcq"?takeM():fmt==="typed"?takeT():(out.length%2===1?(takeT()||takeM()):(takeM()||takeT()));
@@ -169,17 +172,20 @@ function renderBankUI(){
   $("bankTitle").textContent=BANK.title;
   $("bankSub").textContent=BANK.subject||"";
   try{$("qCount").textContent=(Q.length+TQ.length).toLocaleString("fr-FR")}catch(e){}
-  const w=(BANK.facts||[]).map(f=>f[3]).filter(t=>t&&t.length<=28);
+  const w=BANK.ticker||(BANK.facts||[]).map(f=>f[3]).filter(t=>t&&t.length<=28);
+  $("sessLbl").textContent=unit(1).charAt(0).toUpperCase()+unit(1).slice(1);
   const words=shuffle(w).slice(0,28).map((t,i)=>i%2?esc(t):"<b>"+esc(t)+"</b>");
   const h=words.join("  ·  ")+"  ·  ";$("tickerTxt").innerHTML=words.length?h+h:"";
   $("shareQuizBtn").hidden=BANK.id==="socio";
   renderSettings();renderMissBtn();
 }
-function sLabel(s){return (BANK.id==="socio"?"S":"Ch.")+s}
+function sLabel(s){return BANK.tags?BANK.tags[s]:(BANK.id==="socio"?"S":"Ch.")+s}
+function unit(k){return (BANK.unit||(BANK.id==="socio"?["session","sessions","une session"]:["chapitre","chapitres","un chapitre"]))[k]}
+const BUILTIN={socio:()=>window.BANK_SOCIO,culture:()=>window.BANK_CULTURE};
 const bankCache={};
 async function useBank(id){
   id=id||"socio";if(BANK&&BANK.id===id)return true;
-  if(id==="socio"){loadBank(window.BANK_SOCIO);return true}
+  if(BUILTIN[id]){loadBank(BUILTIN[id]());return true}
   let b=bankCache[id];
   if(!b){if(!sb)return false;
     const {data,error}=await sb.from("quizzes").select("id,title,subject,lang,data").eq("id",id).maybeSingle();
@@ -188,7 +194,7 @@ async function useBank(id){
   loadBank(b);rememberQuiz(b);return true;
 }
 function myQuizzes(){try{return JSON.parse(lsGet("tpk-quizzes")||"[]")}catch(e){return []}}
-function rememberQuiz(b){if(b.id==="socio")return;const l=myQuizzes().filter(x=>x.id!==b.id);l.unshift({id:b.id,title:b.title});lsSet("tpk-quizzes",JSON.stringify(l.slice(0,30)))}
+function rememberQuiz(b){if(BUILTIN[b.id])return;const l=myQuizzes().filter(x=>x.id!==b.id);l.unshift({id:b.id,title:b.title});lsSet("tpk-quizzes",JSON.stringify(l.slice(0,30)))}
 function esc(t){return String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 function genCode(){const A="ABCDEFGHJKLMNPQRSTUVWXYZ";let s="";for(let i=0;i<4;i++)s+=A[Math.floor(Math.random()*A.length)];return s}
 
@@ -286,7 +292,7 @@ async function insertGame(g){
 }
 async function createGame(){
   showErr("createErr","");
-  if(!settings.sess.size){showErr("createErr","Choisis au moins une session.");return}
+  if(!settings.sess.size){showErr("createErr","Choisis au moins "+unit(2)+".");return}
   lsSet("socio-nick",myNick());
   $("createBtn").disabled=true;
   try{
@@ -332,7 +338,7 @@ async function joinGame(c){
   onGame(G);
 }
 function startSolo(customDeck){
-  if(!customDeck&&!settings.sess.size){showErr("createErr","Choisis au moins une session.");return}
+  if(!customDeck&&!settings.sess.size){showErr("createErr","Choisis au moins "+unit(2)+".");return}
   leaveGame(true);
   mode="solo";code=null;
   G={host:me,status:"q",qi:0,deck:customDeck||buildDeck(),T:settings.T,created:Date.now(),seq:1,inf:!customDeck&&settings.len===LEN_INF,sess:[...settings.sess],fmt:settings.fmt};
@@ -386,7 +392,7 @@ function totals(upto){return Object.keys(P).map(id=>({id,...scoreRun(id,upto)}))
 function renderLobby(){
   show("lobby");
   $("lobbyCode").textContent=code;
-  $("lobbyInfo").textContent=({mix:"QCM + réponses tapées",mcq:"QCM",typed:"Réponses tapées"}[G.fmt||"mcq"])+" · "+(G.inf?"∞":G.deck.length)+" questions · "+G.T+" s par question · sessions "+(G.sess||[]).map(s=>"S"+s).join(", ");
+  $("lobbyInfo").textContent=({mix:"QCM + réponses tapées",mcq:"QCM",typed:"Réponses tapées"}[G.fmt||"mcq"])+" · "+(G.inf?"∞":G.deck.length)+" questions · "+G.T+" s par question · "+unit(1)+" : "+(G.sess||[]).map(sLabel).join(", ");
   const ids=Object.keys(P).sort((a,b)=>(P[a].joined||0)-(P[b].joined||0));
   $("lobbyCount").textContent=ids.length+(ids.length>1?" joueurs":" joueur");
   const box=$("lobbyPlayers");box.textContent="";
@@ -407,7 +413,7 @@ $("lobbyLeave").onclick=()=>leaveGame(false);
 function renderQuestion(){
   show("question");
   const item=G.deck[G.qi],q=qOf(G.qi),typed=isT(G.qi);
-  $("qSess").textContent="S"+q.s;$("qNum").textContent="Question "+(G.qi+1)+" / "+(G.inf?"∞":G.deck.length)+" · "+(typed?"Réponse tapée":q.t);
+  $("qSess").textContent=sLabel(q.s);$("qNum").textContent="Question "+(G.qi+1)+" / "+(G.inf?"∞":G.deck.length)+" · "+(typed?"Réponse tapée":q.t);
   $("qText").textContent=q.q;
   showImg("qImgBox","qImg",q,"qHint");
   const st=G.qi>0?scoreRun(me,G.qi-1).streak:0;$("qStreak").hidden=st<2;$("qStreak").textContent="SÉRIE ×"+st;
@@ -471,7 +477,7 @@ setInterval(()=>{
 function renderReveal(){
   show("reveal");
   const item=G.deck[G.qi],q=qOf(G.qi),cp=correctPos(G.qi),a=myAns(),typed=isT(G.qi);
-  $("rSess").textContent="S"+q.s;$("rNum").textContent="Question "+(G.qi+1)+" / "+(G.inf?"∞":G.deck.length)+" · "+(typed?"Réponse tapée":q.t);
+  $("rSess").textContent=sLabel(q.s);$("rNum").textContent="Question "+(G.qi+1)+" / "+(G.inf?"∞":G.deck.length)+" · "+(typed?"Réponse tapée":q.t);
   const v=$("rVerdict");
   if(!a){v.textContent="Pas de réponse";v.className="verdict bad"}
   if(local.sfxQ!==G.qi){local.sfxQ=G.qi;if(a&&isRight(a,G.qi)){sfx("ok");buzz(40)}else{sfx("bad");buzz([60,40,60])}}
@@ -520,7 +526,7 @@ function renderEnd(){
   const correct=G.deck.filter((d,i)=>isRight(P[me]&&P[me].ans&&P[me].ans[i],i)).length;
   $("endTitle").textContent=mode==="solo"?(correct+" / "+G.deck.length+" bonnes réponses"):myRank<1?"Fin de la partie":(myRank===1?"Tu gagnes !":"Tu finis "+myRank+"e");
   const bys={};G.deck.forEach((d,i)=>{const s=(d.t!=null?TQ[d.t]:Q[d.id]).s;bys[s]=bys[s]||[0,0];bys[s][1]++;if(isRight(P[me]&&P[me].ans&&P[me].ans[i],i))bys[s][0]++});
-  $("endSess").textContent=(BANK.id==="socio"?"Ton score par session : ":"Ton score par chapitre : ")+Object.keys(bys).sort((a,b)=>a-b).map(s=>sLabel(s)+" "+bys[s][0]+"/"+bys[s][1]).join(" · ");
+  $("endSess").textContent="Ton score par "+unit(0)+" : "+Object.keys(bys).sort((a,b)=>a-b).map(s=>sLabel(s)+" "+bys[s][0]+"/"+bys[s][1]).join(" · ");
   const pod=$("podium");pod.textContent="";pod.hidden=mode==="solo";
   [1,0,2].forEach(i=>{const r=t[i];const d=el("div","pod p"+(i+1));if(r){d.append(avatar(r.id,nameOf(r.id)),el("div","nm",nameOf(r.id)),el("div","pts",r.t+" pts"))}d.appendChild(el("div","blk",r?String(i+1):""));pod.appendChild(d)});
   renderBoard($("endBoard"),t,false);
@@ -559,7 +565,7 @@ function setQuizParam(){try{history.replaceState(null,"",BANK.id==="socio"?locat
 async function renderMyQuizzes(){
   let all=[];
   if(sb){const {data}=await sb.from("quizzes").select("id,title").order("created_at",{ascending:false}).limit(50);all=data||[]}
-  const seen=new Set(),list=[{id:"socio",title:window.BANK_SOCIO.title}].concat(myQuizzes(),all).filter(q=>!seen.has(q.id)&&seen.add(q.id));
+  const seen=new Set(),list=Object.keys(BUILTIN).map(id=>({id,title:BUILTIN[id]().title})).concat(myQuizzes(),all).filter(q=>!seen.has(q.id)&&seen.add(q.id));
   const box=$("myQuizList");box.textContent="";
   list.forEach(q=>{
     const row=el("div","gamerow"),left=el("div");
@@ -613,7 +619,7 @@ $("mkGo").onclick=async()=>{
 loadBank(window.BANK_SOCIO);
 if(sb){setMultiNote(true);watchOpenGames()}else setMultiNote(false);
 (async()=>{let id=null;try{id=new URLSearchParams(location.search).get("quiz")}catch(e){}
-  if(!id||!/^[0-9a-f-]{36}$/i.test(id))return;
+  if(!id||!(BUILTIN[id]||/^[0-9a-f-]{36}$/i.test(id)))return;
   if(!await useBank(id))toast("Quiz introuvable");})();
 (()=>{let c=null;try{c=(new URLSearchParams(location.search).get("code")||"").toUpperCase().replace(/[^A-Z]/g,"").slice(0,4)}catch(e){}
   if(!c||c.length!==4)return;$("codeIn").value=c;
