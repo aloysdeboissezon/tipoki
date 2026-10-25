@@ -274,37 +274,6 @@ textarea:focus{border-color:var(--hl);box-shadow:0 0 0 4px var(--hl-soft);outlin
   .tile{font-size:14px;padding:12px 10px 14px}
 }
 
-/* home, all sizes: the join code and its button on one line; cards keep their own height on desktop */
-.grid2{align-items:start}
-.joinrow{display:flex;gap:10px}
-.joinrow .codein{flex:1 1 auto;min-width:0}
-.joinrow .btn{flex:none}
-.joinhelp{font-size:14px;margin-top:-6px}
-.actions .btn{white-space:nowrap;padding-left:16px;padding-right:16px}
-.actions .btn.big{font-size:20px}
-.gamerow .btn{font-size:16px;padding:10px 16px;min-height:44px}
-/* phones: the play buttons come up into the first screen (smaller hero, no ticker, no small print) */
-@media (max-width:560px){
-  #home{gap:12px!important}
-  .hero{padding:20px 20px 22px;border-radius:24px}
-  .hero h1{font-size:30px}
-  .hero p{font-size:15px;padding-right:48px}
-  .hero::after{width:96px;height:96px;right:-34px;bottom:-40px}
-  .hero::before{width:48px;height:48px;right:58px;bottom:-24px;border-radius:14px}
-  .ticker,.bankpanel .bk-foot{display:none}
-  .bankpanel,.me-panel{padding:16px}
-  .bankpanel .bk-ico{width:44px;height:44px;font-size:21px;border-radius:14px}
-  .bankpanel{grid-template-columns:44px minmax(0,1fr)}
-  .me-panel{gap:12px}
-  .me-panel .av.big,.me-panel .pfp{width:56px;height:56px}
-  #createPanel h2,#joinPanel h2{font-size:22px}
-  .codein{font-size:24px!important;letter-spacing:.3em}
-}
-@media (min-width:361px) and (max-width:560px){
-  .gamerow{flex-wrap:nowrap}
-  .gamerow>div:first-child{flex:1 1 0}
-}
-
 /* photo cropper */
 body.noscroll{overflow:hidden}
 .crop{position:fixed;inset:0;z-index:100;background:rgba(23,22,43,.62);display:grid;place-items:center;padding:16px;overflow:auto}
