@@ -36,9 +36,14 @@
       <div class="row"><button class="btn ghost" id="shareQuizBtn" hidden>Partager</button><button class="btn ghost" id="bankBtn">Changer</button></div>
       <p class="muted bk-foot"><span id="qCount"></span> questions : QCM, vrai/faux et réponses tapées (fautes tolérées). Plus tu réponds vite et juste, plus tu marques.</p>
     </div>
-    <div class="panel">
-      <label class="label" for="nick">Ton pseudo</label>
-      <input type="text" id="nick" maxlength="18" placeholder="Ex. Aloys" autocomplete="off">
+    <div class="panel me-panel">
+      <label class="pfp" id="pfpBtn" title="Ajouter ta photo de profil"><input type="file" id="pfpIn" accept="image/*" hidden><span class="av big" id="pfpAv"></span><span class="pfp-add" aria-hidden="true">+</span></label>
+      <div class="me-main">
+        <label class="label" for="nick">Ton prénom ou pseudo</label>
+        <input type="text" id="nick" maxlength="18" placeholder="Ex. Aloys" autocomplete="given-name">
+        <div class="me-sub"><button type="button" class="linkbtn" id="pfpPick">Ajouter une photo</button><button type="button" class="linkbtn" id="pfpDel" hidden>Retirer la photo</button></div>
+        <p class="err" id="nickErr" hidden></p>
+      </div>
     </div>
     <div class="grid2">
       <div class="panel" id="createPanel">
@@ -120,7 +125,8 @@
 
   <!-- REVEAL -->
   <section id="reveal" class="panel" hidden>
-    <div class="hud"><div class="row"><span class="stag" id="rSess"></span><span class="label" id="rNum"></span></div></div>
+    <div class="hud"><div class="row"><span class="stag" id="rSess"></span><span class="label" id="rNum"></span></div><button type="button" class="autonext" id="rAuto"></button></div>
+    <div class="tbar"><i id="rBar"></i></div>
     <div class="verdict" id="rVerdict"></div>
     <p class="qtext" id="rText" style="font-size:clamp(18px,3.8vw,22px)"></p>
     <figure class="qimg small" id="rImgBox" hidden><img id="rImg" alt=""></figure>
