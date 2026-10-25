@@ -165,6 +165,17 @@
   </section>
 </div>
 
+<!-- PROFILE PICTURE CROPPER -->
+<div class="crop" id="crop" hidden role="dialog" aria-modal="true" aria-labelledby="cropTitle">
+  <div class="crop-card">
+    <h2 id="cropTitle">Ta photo</h2>
+    <p class="muted crop-help">Glisse pour déplacer, pince ou utilise le curseur pour zoomer.</p>
+    <div class="crop-stage" id="cropStage"><canvas id="cropCv"></canvas><div class="crop-mask" aria-hidden="true"></div></div>
+    <input type="range" id="cropZoom" min="1" max="4" step="0.01" value="1" aria-label="Zoom">
+    <div class="row crop-actions"><button type="button" class="btn ghost" id="cropCancel">Annuler</button><button type="button" class="btn" id="cropOk">Valider</button></div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script src="js/banks/socio.js"></script>
 <script src="js/banks/culture.js"></script>
