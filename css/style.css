@@ -78,7 +78,7 @@ label.label{display:block;margin-bottom:6px}
 .bankpanel{flex-direction:row;flex-wrap:wrap;align-items:center;gap:14px}
 .bankpanel .bk-ico{width:52px;height:52px;border-radius:16px;background:var(--sun);display:grid;place-items:center;flex:none;font-family:var(--f-display);font-weight:800;font-size:24px}
 .bankpanel .bk-main{flex:1 1 220px;min-width:0}
-.bankpanel h2{overflow-wrap:anywhere;font-size:22px}
+.bankpanel h2{overflow-wrap:break-word;font-size:22px}
 .bankpanel .bk-foot{flex-basis:100%;font-size:14px}
 /* lobby */
 .bigcode{font-family:var(--f-display);font-weight:800;font-size:clamp(54px,16vw,110px);letter-spacing:.18em;line-height:1;background:var(--hl);color:var(--hl-ink);padding:16px 12px 16px 30px;border-radius:24px;align-self:flex-start;box-shadow:0 8px 0 var(--hl-dk);animation:zoomIn .6s cubic-bezier(.2,.8,.3,1.3) both}
@@ -202,15 +202,17 @@ label.label{display:block;margin-bottom:6px}
 .chips.multi .chip[aria-pressed="true"]{background:var(--hl-soft);color:var(--hl);border-color:var(--hl)}
 /* reveal: mark the player's own wrong pick */
 .tile.mine{opacity:.9;filter:none;outline:4px solid var(--bad);outline-offset:4px}
-.tile.right::after,.tile.mine::after{position:absolute;right:12px;top:12px;font-size:12px;font-weight:800;padding:3px 9px;border-radius:999px;background:#fff}
+/* the tag straddles the tile's top edge so it never covers the letter, the answer or the player count */
+.tile.right::after,.tile.mine::after{position:absolute;right:10px;top:-12px;font-size:12px;font-weight:800;line-height:1.2;padding:3px 9px;border-radius:999px;background:#fff;box-shadow:0 0 0 2px currentColor;white-space:nowrap}
 .tile.right::after{content:"Bonne réponse";color:var(--ok)}
 .tile.mine::after{content:"Ta réponse";color:var(--bad)}
-.tile.right .cnt,.tile.mine .cnt{top:auto;bottom:10px}
 @media (max-width:560px){
   .hero{gap:8px}
   .hero h1{font-size:34px}
-  .bankpanel{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px}
-  .bankpanel>.row{gap:8px}
+  /* buttons go under the title: beside it, two buttons squeezed the title to one letter per line */
+  .bankpanel{display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px}
+  .bankpanel>.row{grid-column:1/-1;gap:8px}
+  .bankpanel>.row .btn{flex:1 1 0}
   .bankpanel .bk-foot{grid-column:1/-1}
   .bankpanel h2{font-size:19px}
   .bankpanel #bankBtn{padding:10px 14px;min-height:44px;font-size:15px}
@@ -262,4 +264,12 @@ textarea:focus{border-color:var(--hl);box-shadow:0 0 0 4px var(--hl-soft);outlin
 .autonext:disabled{cursor:default;opacity:1;border-color:var(--line2);background:var(--soft);color:var(--muted)}
 .autonext.paused{background:var(--sun);color:var(--ink);border-color:var(--sun)}
 #rBar{transition:width .15s linear}
+/* reveal header: the countdown pill drops under the question number instead of squeezing it */
+#reveal .hud{flex-wrap:wrap;row-gap:8px}
+#reveal .hud>.row{flex:1 1 200px}
 .me-main .label{align-self:flex-start}
+/* iPhone SE 1st gen (320px): a bit more room inside the tiles so words like "Functionalism" fit on one line */
+@media (max-width:340px){
+  #question,#reveal{padding:14px}
+  .tile{font-size:14px;padding:12px 10px 14px}
+}
