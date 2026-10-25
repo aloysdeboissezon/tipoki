@@ -220,3 +220,20 @@ textarea:focus{border-color:var(--hl);box-shadow:0 0 0 4px var(--hl-soft);outlin
   .timer{width:56px;height:56px;font-size:24px}
   #question{gap:12px}
 }
+
+/* profile picture + first name */
+.av.photo{background-size:cover;background-position:center;color:transparent}
+.me-panel{flex-direction:row;align-items:center;gap:16px}
+.me-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.pfp{position:relative;flex:none;cursor:pointer;width:64px;height:64px;border-radius:50%}
+.av.big{width:64px;height:64px;font-size:28px;border:3px solid var(--card);box-shadow:0 0 0 2px var(--line2)}
+.pfp-add{position:absolute;right:-4px;bottom:-4px;width:26px;height:26px;border-radius:50%;background:var(--hl);color:#fff;font:800 18px/26px var(--f-display);text-align:center;border:2px solid var(--card)}
+.me-sub{display:flex;gap:14px;flex-wrap:wrap}
+.linkbtn{background:none;border:none;padding:8px 0;min-height:40px;font:800 14px var(--f-body);color:var(--hl);cursor:pointer;text-decoration:underline}
+.pod .av.photo,.mini .av.photo{background-size:cover}
+/* auto-advance countdown on the reveal screen */
+.autonext{flex:none;font:800 14px var(--f-body);border:2px solid var(--hl);background:var(--hl-soft);color:var(--hl);border-radius:999px;padding:8px 14px;min-height:40px;cursor:pointer;font-variant-numeric:tabular-nums}
+.autonext:disabled{cursor:default;opacity:1;border-color:var(--line2);background:var(--soft);color:var(--muted)}
+.autonext.paused{background:var(--sun);color:var(--ink);border-color:var(--sun)}
+#rBar{transition:width .15s linear}
+.me-main .label{align-self:flex-start}
