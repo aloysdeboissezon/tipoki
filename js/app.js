@@ -210,7 +210,7 @@ function renderBankUI(){
 }
 function sLabel(s){return BANK.tags?BANK.tags[s]:(BANK.id==="socio"?"S":"Ch.")+s}
 function unit(k){return (BANK.unit||(BANK.id==="socio"?["session","sessions","une session"]:["chapitre","chapitres","un chapitre"]))[k]}
-const BUILTIN={socio:()=>window.BANK_SOCIO,culture:()=>window.BANK_CULTURE};
+const BUILTIN={socio:()=>window.BANK_SOCIO,culture:()=>window.BANK_CULTURE,energie:()=>window.BANK_ENERGIE};
 const bankCache={};
 async function useBank(id){
   id=id||"socio";if(BANK&&BANK.id===id)return true;

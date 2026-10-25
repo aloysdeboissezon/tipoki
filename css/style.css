@@ -211,9 +211,12 @@ label.label{display:block;margin-bottom:6px}
   .hero h1{font-size:34px}
   .bankpanel{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px}
   .bankpanel>.row{gap:8px}
+  /* two buttons (Partager + Changer) leave no room for the title: give them their own line */
+  .bankpanel:has(#shareQuizBtn:not([hidden]))>.row{grid-column:1/-1}
+  .bankpanel:has(#shareQuizBtn:not([hidden]))>.row>.btn{flex:1;min-height:44px}
   .bankpanel .bk-foot{grid-column:1/-1}
   .bankpanel h2{font-size:19px}
-  .bankpanel #bankBtn{padding:10px 14px;min-height:44px;font-size:15px}
+  .bankpanel #bankBtn,.bankpanel #shareQuizBtn{padding:10px 14px;min-height:44px;font-size:15px}
 }
 /* Tipoki: quiz maker */
 textarea{font:inherit;font-size:16px;padding:13px 16px;border-radius:16px;border:2px solid var(--line);background:#FAFAFD;color:var(--ink);width:100%;min-width:0;resize:vertical;margin-top:6px}
