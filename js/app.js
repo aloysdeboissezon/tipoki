@@ -711,6 +711,14 @@ async function renderMyQuizzes(){
 }
 $("makePanel").hidden=!MAKER_ON;
 $("topicBack").onclick=()=>{show("home");renderMyQuizzes()};
+// the logo goes back to the quiz grid from any screen; a game still running asks first
+$("brandHome").onclick=e=>{
+  if(e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;   // let "open in a new tab" work
+  e.preventDefault();
+  if(G&&(G.status==="q"||G.status==="reveal")&&!confirm(mode==="multi"?"Quitter la partie en cours ? Les autres joueurs continueront sans toi.":"Quitter la partie en cours ? Ta progression sera perdue."))return;
+  if(mode){leaveGame(true);mode=null;code=null;G=null;P={}}
+  try{history.replaceState(null,"",location.pathname)}catch(e){}
+  show("home");renderMyQuizzes();if(sb)refreshOpen()};
 $("shareQuizBtn").onclick=async()=>{const u=quizUrl(BANK.id);try{await navigator.clipboard.writeText(u);toast("Lien du quiz copié")}catch(e){prompt("Lien du quiz",u)}};
 let mkFile=null;
 function setMkFile(f){
