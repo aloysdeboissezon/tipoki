@@ -20,7 +20,7 @@ let ALL_S=[];
 // current question bank (built-in socio, or a quiz generated from someone's course)
 let BANK=null,SESS={},Q=[],TQ=[],NHQ=0,NHT=0;
 const LEN_INF="inf";
-let settings={sess:new Set(),len:15,T:20,fmt:"mix"};
+let settings={sess:new Set(),len:15,T:20,fmt:"mix",fcSide:"term",fcSet:"all",fcOrd:"shuffle"};
 let writeChain=Promise.resolve();
 
 // ---------- backend (Supabase) ----------
@@ -115,6 +115,7 @@ function renderSettings(){
   [["mix","Mix"],["mcq","Multiple choice"],["typed","Typed answer"]].forEach(([k,l])=>{const b=el("button","chip",l);b.setAttribute("aria-pressed",settings.fmt===k);b.onclick=()=>{settings.fmt=k;renderSettings()};fc.appendChild(b)});
   const tc=$("timeChips");tc.textContent="";
   [15,20,30].forEach(n=>{const b=el("button","chip",n+" s");b.setAttribute("aria-pressed",settings.T===n);b.onclick=()=>{settings.T=n;renderSettings()};tc.appendChild(b)});
+  renderCardsPanel();
 }
 
 function seenGet(){try{const s=JSON.parse(lsGet(lsKey("seen"))||"{}");return{m:new Set(s.m||[]),t:new Set(s.t||[])}}catch(e){return{m:new Set(),t:new Set()}}}
@@ -237,7 +238,7 @@ function loadBank(raw){
   ALL_S=Object.keys(SESS).map(Number).sort((x,y)=>x-y);
   settings.sess=new Set(ALL_S);
   // questions are in the quiz's language (often English): lets the browser hyphenate long words in the right language
-  ["question","reveal","end"].forEach(id=>$(id).lang=b.lang||"fr");
+  ["question","reveal","end","cards"].forEach(id=>$(id).lang=b.lang||"fr");
   renderBankUI();
 }
 function renderBankUI(){
@@ -462,7 +463,7 @@ function renderScreen(){
   else if(G.status==="reveal"){show("reveal");renderReveal()}
   else if(G.status==="end"){show("end");renderEnd()}
 }
-function show(id){["home","topic","make","lobby","question","reveal","end"].forEach(s=>$(s).hidden=s!==id);
+function show(id){["home","topic","make","lobby","question","reveal","end","cards"].forEach(s=>$(s).hidden=s!==id);
   // the name + photo panel follows the player between the two start screens
   const slot=id==="home"?$("meHome"):id==="topic"?$("meTopic"):null,me=document.querySelector(".me-panel");if(slot&&me.parentNode!==slot)slot.appendChild(me);
   $("status").textContent=code?("Game "+code):(mode==="solo"?"Solo":"");window.scrollTo(0,0)}
@@ -668,6 +669,99 @@ $("endAgain").onclick=async()=>{
 document.addEventListener("keydown",e=>{
   if(!$("question").hidden&&/^[1-4]$/.test(e.key)&&document.activeElement!==$("qInput"))pick(+e.key-1);
   else if(!$("reveal").hidden&&e.key==="Enter"&&isHost()&&!$("rNext").hidden)$("rNext").click();
+});
+// ---------- flashcards (built from the quiz's facts: term on one side, definition on the other) ----------
+let FC={deck:[],i:0,flip:false,res:{}};
+function fcStore(){try{return JSON.parse(lsGet(lsKey("cards"))||"{}")}catch(e){return {}}}   // term -> 1 got it, 0 not yet
+function fcMark(f,ok){const st=fcStore();st[f[3]]=ok?1:0;lsSet(lsKey("cards"),JSON.stringify(st))}
+function fcPool(){return (BANK.facts||[]).filter(f=>settings.sess.has(Number(f[0])))}
+function fcPick(){const st=fcStore(),pool=fcPool();
+  return settings.fcSet==="todo"?pool.filter(f=>st[f[3]]!==1):settings.fcSet==="bad"?pool.filter(f=>st[f[3]]===0):pool}
+function renderCardsPanel(){
+  const has=!!(BANK&&BANK.facts&&BANK.facts.length);$("cardsPanel").hidden=$("cardsJump").hidden=!has;if(!has)return;
+  const st=fcStore(),pool=fcPool(),nTodo=pool.filter(f=>st[f[3]]!==1).length,nBad=pool.filter(f=>st[f[3]]===0).length;
+  if(settings.fcSet==="bad"&&!nBad)settings.fcSet="all";
+  $("fcUnits").textContent=unit(1);
+  const chips=(box,key,opts)=>{const c=$(box);c.textContent="";opts.forEach(([k,l,t])=>{const b=el("button","chip",l);if(t)b.title=t;b.setAttribute("aria-pressed",settings[key]===k);b.onclick=()=>{settings[key]=k;renderCardsPanel()};c.appendChild(b)})};
+  chips("fcSideChips","fcSide",[["term","Term"],["def","Definition"]]);
+  const sets=[["all","All ("+pool.length+")"],["todo","Not known yet ("+nTodo+")","Skips the cards you marked “Got it”"]];
+  if(nBad)sets.push(["bad","To review ("+nBad+")","Only the cards you marked “Not yet”"]);
+  chips("fcSetChips","fcSet",sets);
+  chips("fcOrdChips","fcOrd",[["shuffle","Shuffled"],["course","Course order"]]);
+  const n=fcPick().length;$("fcGo").textContent=n?"Study "+n+" card"+(n>1?"s":""):"Study flashcards";
+  showErr("fcErr","");
+}
+function startCards(list){
+  if(!list){if(!settings.sess.size){showErr("fcErr","Choose at least "+unit(2)+".");return}
+    list=fcPick();if(!list.length){showErr("fcErr",settings.fcSet==="all"?"No cards in these "+unit(1)+".":"You know all these cards. Pick “All” to go through them again.");return}}
+  list=settings.fcOrd==="course"?list.slice().sort((a,b)=>a[0]-b[0]):shuffle(list);
+  FC={deck:list,i:0,flip:false,res:{}};
+  show("cards");renderCard();
+}
+function renderCard(){
+  const n=FC.deck.length,done=FC.i>=n;
+  $("fcPlay").hidden=done;$("fcDone").hidden=!done;
+  $("fcBar").style.width=(100*Math.min(FC.i,n)/n)+"%";
+  if(done){
+    const bad=FC.deck.filter((f,i)=>FC.res[i]===0).length,ok=n-bad;
+    $("fcSess").hidden=true;$("fcNum").textContent=n+" card"+(n>1?"s":"")+" studied";
+    $("fcDoneTitle").textContent=bad?"Round done! "+bad+" card"+(bad>1?"s":"")+" to go over again.":"Round done! You know them all.";
+    $("fcDoneOk").textContent=ok;$("fcDoneBad").textContent=bad;
+    $("fcRedo").hidden=!bad;$("fcRedo").textContent="Review the "+bad+" again";
+    if(!bad){sfx("win");confetti(80)}
+    return;
+  }
+  const f=FC.deck[FC.i],P=f[2]==="p",term=f[3],def=f[4],byDef=settings.fcSide==="def";
+  $("fcSess").hidden=false;$("fcSess").textContent=sLabel(f[0]);$("fcSess").title=SESS[f[0]]||"";
+  $("fcNum").textContent="Card "+(FC.i+1)+" / "+n;
+  $("fcKindF").textContent=byDef?(P?"Who is it?":"Which concept?"):(P?"Person":"Concept");
+  $("fcKindB").textContent=byDef?(P?"Person":"Concept"):"Definition";
+  $("fcFront").textContent=byDef?def:term;$("fcBack").textContent=byDef?term:def;$("fcBackSub").textContent=byDef?def:term;
+  $("fcCard").classList.toggle("def",byDef);
+  fcSetFlip(false,true);
+  $("fcPrev").disabled=FC.i===0;
+}
+function fcSetFlip(v,instant){
+  FC.flip=v;const c=$("fcCard");
+  if(instant){c.classList.add("noanim");c.style.transform="";void c.offsetWidth}
+  c.classList.toggle("flipped",v);c.setAttribute("aria-label",v?"Answer shown":"Flip the card");
+  if(instant)requestAnimationFrame(()=>c.classList.remove("noanim"));
+  $("fcFlip").hidden=v;$("fcAgain").hidden=!v;$("fcGot").hidden=!v;
+}
+function fcAnswer(ok){
+  if(!FC.flip||FC.i>=FC.deck.length)return;
+  FC.res[FC.i]=ok?1:0;fcMark(FC.deck[FC.i],ok);buzz(ok?15:[10,40,10]);
+  const c=$("fcCard");c.classList.add(ok?"out-r":"out-l");
+  setTimeout(()=>{c.classList.remove("out-r","out-l");FC.i++;renderCard()},RM?0:220);
+}
+$("fcGo").onclick=()=>startCards();
+$("cardsJump").onclick=()=>$("cardsPanel").scrollIntoView({behavior:RM?"auto":"smooth",block:"start"});
+$("fcCard").onclick=()=>{if(fcDrag.moved)return;fcSetFlip(!FC.flip)};
+$("fcFlip").onclick=()=>fcSetFlip(true);
+$("fcGot").onclick=()=>fcAnswer(true);
+$("fcAgain").onclick=()=>fcAnswer(false);
+$("fcPrev").onclick=()=>{if(FC.i>0){FC.i--;renderCard()}};
+$("fcRedo").onclick=()=>startCards(FC.deck.filter((f,i)=>FC.res[i]===0));
+$("fcRestart").onclick=()=>startCards(FC.deck.slice());
+$("fcQuit").onclick=$("fcHome").onclick=()=>{show("topic");renderCardsPanel()};
+// swipe the flipped card: right = got it, left = not yet
+const fcDrag={x:0,y:0,on:false,moved:false};
+$("fcCard").addEventListener("pointerdown",e=>{fcDrag.on=true;fcDrag.moved=false;fcDrag.x=e.clientX;fcDrag.y=e.clientY});
+$("fcCard").addEventListener("pointermove",e=>{if(!fcDrag.on||!FC.flip)return;const dx=e.clientX-fcDrag.x;
+  if(!fcDrag.moved&&Math.abs(dx)>10&&Math.abs(dx)>Math.abs(e.clientY-fcDrag.y)){fcDrag.moved=true;try{$("fcCard").setPointerCapture(e.pointerId)}catch(err){}}
+  if(fcDrag.moved){const c=$("fcCard");c.classList.add("noanim");c.style.transform="translateX("+dx+"px) rotate("+(dx/20)+"deg) rotateY(180deg)";c.dataset.swipe=dx>40?"ok":dx<-40?"bad":""}});
+function fcDragEnd(e){if(!fcDrag.on)return;fcDrag.on=false;if(!fcDrag.moved)return;
+  const c=$("fcCard"),dx=e.clientX-fcDrag.x;c.classList.remove("noanim");c.style.transform="";delete c.dataset.swipe;
+  if(Math.abs(dx)>90)fcAnswer(dx>0);
+  setTimeout(()=>{fcDrag.moved=false},0)}
+$("fcCard").addEventListener("pointerup",fcDragEnd);
+$("fcCard").addEventListener("pointercancel",fcDragEnd);
+document.addEventListener("keydown",e=>{
+  if($("cards").hidden||!$("fcDone").hidden||e.metaKey||e.ctrlKey||e.altKey)return;
+  const onBtn=document.activeElement&&document.activeElement.tagName==="BUTTON";   // a focused button already reacts to Space / Enter
+  if((e.key===" "||e.key==="Enter")&&!onBtn){e.preventDefault();fcSetFlip(!FC.flip)}
+  else if(e.key==="ArrowRight"){e.preventDefault();FC.flip?fcAnswer(true):fcSetFlip(true)}
+  else if(e.key==="ArrowLeft"){e.preventDefault();FC.flip?fcAnswer(false):$("fcPrev").click()}
 });
 // ---------- quiz maker ----------
 // AI generation needs the ANTHROPIC_API_KEY secret on Supabase; until then quizzes are added by hand and the upload form is hidden

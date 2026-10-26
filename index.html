@@ -77,7 +77,7 @@
     <div class="panel bankpanel">
       <div class="bk-ico" id="bankIco" aria-hidden="true">?</div>
       <div class="bk-main"><div class="muted" style="font-size:14px;font-weight:700">You're studying</div><h2 id="bankTitle"></h2><div class="muted" id="bankSub"></div></div>
-      <div class="row"><button class="btn ghost" id="shareQuizBtn" hidden>Share</button></div>
+      <div class="row"><button class="btn ghost" id="cardsJump" hidden>Flashcards</button><button class="btn ghost" id="shareQuizBtn" hidden>Share</button></div>
       <p class="muted bk-foot"><span id="qCount"></span> questions: multiple choice, true/false and typed answers (typos forgiven). The faster and more accurately you answer, the more you score.</p>
     </div>
     <div class="ticker" aria-hidden="true"><div id="tickerTxt"></div></div>
@@ -97,6 +97,17 @@
         </div>
         <p class="err" id="createErr" hidden></p>
       </div>
+      <div class="panel" id="cardsPanel" hidden>
+        <div class="steph"><span class="stepn fc-ico" aria-hidden="true"></span><h2>Study with flashcards</h2></div>
+        <p class="muted fc-intro">Flip each card, then be honest: got it, or not yet. Uses the <span id="fcUnits">sessions</span> picked above.</p>
+        <div class="optsbody setgrid fc-set">
+          <div><div class="label">Front of the card</div><div class="chips" id="fcSideChips"></div></div>
+          <div><div class="label">Cards</div><div class="chips" id="fcSetChips"></div></div>
+          <div><div class="label">Order</div><div class="chips" id="fcOrdChips"></div></div>
+        </div>
+        <div class="row actions"><button class="btn dark big" id="fcGo">Study flashcards</button></div>
+        <p class="err" id="fcErr" hidden></p>
+      </div>
   </section>
 
   <!-- MAKE / PICK A QUIZ -->
@@ -110,6 +121,36 @@
       <div class="row"><button class="btn big" id="mkGo">Generate quiz</button></div>
       <p class="note" id="mkStatus" hidden></p>
       <p class="err" id="mkErr" hidden></p>
+    </div>
+  </section>
+
+  <!-- FLASHCARDS -->
+  <section id="cards" class="panel" hidden>
+    <div class="hud"><div class="row"><span class="stag" id="fcSess"></span><span class="label" id="fcNum"></span></div><button type="button" class="btn ghost fc-quit" id="fcQuit">Done</button></div>
+    <div class="tbar"><i id="fcBar"></i></div>
+    <div id="fcPlay" class="fc-play">
+      <div class="fc-stage">
+        <button type="button" class="fc-card" id="fcCard" aria-label="Flip the card">
+          <span class="fc-face fc-front"><span class="fc-kind" id="fcKindF"></span><span class="fc-txt" id="fcFront"></span><span class="fc-hint">Tap to flip</span></span>
+          <span class="fc-face fc-back"><span class="fc-kind" id="fcKindB"></span><span class="fc-txt" id="fcBack"></span><span class="fc-sub" id="fcBackSub"></span></span>
+        </button>
+      </div>
+      <div class="fc-acts">
+        <button type="button" class="btn ghost fc-prev" id="fcPrev" aria-label="Previous card" title="Previous card"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M15 5 8 12l7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button type="button" class="btn big fc-flip" id="fcFlip">Show answer</button>
+        <button type="button" class="btn fc-again" id="fcAgain" hidden>Not yet</button>
+        <button type="button" class="btn fc-got" id="fcGot" hidden>Got it</button>
+      </div>
+      <p class="muted fc-keys">Space flips the card · ← not yet · → got it · swipe works too</p>
+    </div>
+    <div id="fcDone" class="fc-done" hidden>
+      <h2 id="fcDoneTitle"></h2>
+      <div class="fc-stats"><div class="fc-stat ok"><b id="fcDoneOk">0</b><span>Got it</span></div><div class="fc-stat bad"><b id="fcDoneBad">0</b><span>To review</span></div></div>
+      <div class="row actions">
+        <button type="button" class="btn big" id="fcRedo">Review again</button>
+        <button type="button" class="btn ghost" id="fcRestart">Start over</button>
+        <button type="button" class="btn ghost" id="fcHome">Back to the quiz</button>
+      </div>
     </div>
   </section>
 
