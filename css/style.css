@@ -21,8 +21,8 @@ button{font-family:inherit}
 /* layout */
 .wrap{max-width:920px;margin:0 auto;display:flex;flex-direction:column;gap:18px;position:relative}
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.brand{font-family:var(--f-display);font-weight:800;font-size:30px;letter-spacing:-.03em;line-height:1}
-.brand mark{background:none;color:var(--hl);padding:0}
+.brand{line-height:0}
+.brand img{height:40px;width:auto;display:block}
 .label{font-family:var(--f-body);font-size:14px;font-weight:800;color:var(--ink)}
 #status{background:var(--card);border:2px solid var(--line);padding:6px 12px;border-radius:999px;font-size:14px;font-weight:700;color:var(--muted)}
 #status:empty{display:none}
@@ -227,7 +227,7 @@ textarea:focus{border-color:var(--hl);box-shadow:0 0 0 4px var(--hl-soft);outlin
 /* small phones (iPhone SE, 360px Android): keep the header on one line, the leaderboard names readable and the 4 answer tiles above the fold */
 @media (max-width:420px){
   .top{flex-wrap:nowrap}
-  .brand{font-size:26px}
+  .brand img{height:34px}
   .topr{min-width:0;gap:6px}
   #status{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:6px 10px;font-size:13px}
   #soundBtn{padding:6px 12px}
