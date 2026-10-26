@@ -338,52 +338,52 @@ const TX = [
 {s:6,q:"Which bloc adopted the AI Act?",a:["EU","European Union","Europe"],e:"First comprehensive AI regulation by a major regulator."}
 ];
 
-Q.push(...QX, ...TF.map(x=>({s:x.s,t:"Vrai ou faux",q:x.q,o:x.v?["Vrai","Faux"]:["Faux","Vrai"],a:0,e:x.e,tf:true})));
+Q.push(...QX, ...TF.map(x=>({s:x.s,t:"True or false",q:x.q,o:x.v?["True","False"]:["False","True"],a:0,e:x.e,tf:true})));
 // ---- varied formats: portraits, odd one out, which paradigm, chronology ----
 const QY = [
-// Qui est-ce ? (public-domain portraits loaded from Wikipedia)
-{s:1,t:"Qui est-ce ?",img:"Karl_Marx",hint:"Indice : bourgeoisie vs prolétariat",q:"Qui est-ce ?",o:["Karl Marx","Émile Durkheim","Max Weber","Auguste Comte"],a:0,e:"Marx: class conflict, ownership of the means of production, economics as the engine of change (conflict theory)."},
-{s:1,t:"Qui est-ce ?",img:"Émile_Durkheim",hint:"Indice : Le Suicide, cohésion sociale",q:"Qui est-ce ?",o:["Émile Durkheim","Karl Marx","Herbert Spencer","George Herbert Mead"],a:0,e:"Durkheim: functionalism, integration + regulation → cohesion, deviance is functional, study of suicide."},
-{s:1,t:"Qui est-ce ?",img:"Max_Weber",hint:"Indice : 4 types d'action sociale",q:"Qui est-ce ?",o:["Max Weber","Karl Marx","Auguste Comte","Thorstein Veblen"],a:0,e:"Weber: ideal types, rationalisation, bureaucracy, Protestant ethic, class/status/power."},
-{s:1,t:"Qui est-ce ?",img:"Auguste_Comte",hint:"Indice : a inventé le mot « sociologie »",q:"Qui est-ce ?",o:["Auguste Comte","Émile Durkheim","Max Weber","Charles Horton Cooley"],a:0,e:"Comte: social statics & dynamics, 'Order and Progress'."},
-{s:1,t:"Qui est-ce ?",img:"Harriet_Martineau",hint:"Indice : a traduit Comte, « Society in America »",q:"Qui est-ce ?",o:["Harriet Martineau","Judith Butler","Sylvia Walby","Cecilia Ridgeway"],a:0,e:"Martineau: first woman sociologist, women's lives, abolition."},
-{s:2,t:"Qui est-ce ?",img:"George_Herbert_Mead",hint:"Indice : play stage, game stage",q:"Qui est-ce ?",o:["George Herbert Mead","Charles Horton Cooley","Max Weber","Robert K. Merton"],a:0,e:"Mead: symbolic interactionism, taking the role of the other, generalised other."},
-{s:2,t:"Qui est-ce ?",img:"Charles_Horton_Cooley",hint:"Indice : looking-glass self (1902)",q:"Qui est-ce ?",o:["Charles Horton Cooley","George Herbert Mead","Thorstein Veblen","Talcott Parsons"],a:0,e:"Cooley: we see ourselves through how we imagine others see us."},
-{s:2,t:"Qui est-ce ?",img:"Thorstein_Veblen",hint:"Indice : conspicuous consumption (1899)",q:"Qui est-ce ?",o:["Thorstein Veblen","Karl Marx","Charles Horton Cooley","Auguste Comte"],a:0,e:"Veblen: The Theory of the Leisure Class."},
-{s:1,t:"Qui est-ce ?",img:"Ibn_Khaldun",hint:"Indice : asabiyyah, Muqaddimah",q:"Qui est représenté ici ?",o:["Ibn Khaldun","Auguste Comte","Harriet Martineau","Max Weber"],a:0,e:"Ibn Khaldun (1332–1406): early founding father, rise and fall of dynasties."},
-{s:3,t:"Image",img:"Panopticon",hint:"Indice : une prison circulaire avec une tour centrale",q:"Quel concept de Foucault cette architecture illustre-t-elle ?",o:["The panopticon: feeling always watched → self-discipline","Cultural lag","The looking-glass self","Conspicuous consumption"],a:0,e:"Bentham's design; Foucault uses it for modern disciplinary society (cameras, blurred public/private)."},
-// L'intrus
-{s:1,t:"L'intrus",q:"Which one is NOT a functionalist?",o:["Karl Marx","Talcott Parsons","Robert K. Merton","Herbert Spencer"],a:0,e:"Marx = conflict theory."},
-{s:1,t:"L'intrus",q:"Which one is NOT one of Weber's ideal types of action?",o:["Coercive action","Instrumental rationality","Affectual action","Traditional action"],a:0,e:"The four: instrumental, value, affectual, traditional."},
-{s:2,t:"L'intrus",q:"Which one is NOT a stage in Mead's development of the self?",o:["Mirror stage","Preparatory stage","Play stage","Game stage"],a:0,e:"Preparatory → play → game."},
-{s:2,t:"L'intrus",q:"Which one is NOT a total institution?",o:["A university","A prison","The army","A psychiatric hospital"],a:0,e:"Total institutions resocialise: prison, military, mental institutions."},
-{s:3,t:"L'intrus",q:"Which one is NOT a characteristic of social institutions?",o:["Flexibility","Externality","Moral authority","Historicity"],a:0,e:"Externality, objectivity, coercion, moral authority, historicity."},
-{s:3,t:"L'intrus",q:"Which one is NOT a dark pattern from class?",o:["Cultural lag","Nagging","Sneaking","Obstruction"],a:0,e:"Cultural lag is Ogburn (session 7)."},
-{s:4,t:"L'intrus",q:"Which one is NOT one of Bourdieu's forms of capital?",o:["Emotional capital","Economic capital","Social capital","Symbolic capital"],a:0,e:"Economic, cultural, social, symbolic."},
-{s:5,t:"L'intrus",q:"Which one is NOT one of the five gender biases?",o:["Scapegoating bias","Likeability bias","Attribution bias","Parenting bias"],a:0,e:"Likeability, attribution, performance, parenting, affinity."},
-{s:6,t:"L'intrus",q:"Which one is NOT one of the five theories of prejudice in class?",o:["Labelling theory","Scapegoating","Authoritarian personality","Race-conflict theory"],a:0,e:"The five: scapegoating, authoritarian personality, cultural theory, race-conflict, intersectionality."},
-{s:7,t:"L'intrus",q:"Which one is NOT a component of culture?",o:["Social class","Symbols","Values","Norms"],a:0,e:"Material culture, symbols, language, values, beliefs, norms."},
-{s:7,t:"L'intrus",q:"Which one is NOT a counterculture example from class?",o:["Opera lovers","Hippies","Punks","Radical environmentalists"],a:0,e:"Opera = high culture, not a counterculture."},
-// Quel paradigme ?
-{s:1,t:"Quel paradigme ?",q:"'Social media keeps teens connected and integrated into society.'",o:["Functionalism","Conflict theory","Symbolic interactionism","Postmodernism"],a:0,e:"Functions and integration → functionalism."},
-{s:1,t:"Quel paradigme ?",q:"'Platforms profit from minors' attention while families pay the cost.'",o:["Conflict theory","Functionalism","Symbolic interactionism","Postmodernism"],a:0,e:"Who benefits, who loses → conflict."},
-{s:1,t:"Quel paradigme ?",q:"'Teens build different identities on Instagram, TikTok and LinkedIn; there is no single true self.'",o:["Postmodernism","Functionalism","Conflict theory","Durkheimian positivism"],a:0,e:"Fragmented, fluid identities and narratives → postmodernism."},
-{s:1,t:"Quel paradigme ?",q:"'A \"like\" means approval, and teens adapt their posts to the meaning they read in reactions.'",o:["Symbolic interactionism","Functionalism","Conflict theory","Postmodernism"],a:0,e:"Meanings in everyday interaction → symbolic interactionism."},
-{s:3,t:"Quel paradigme ?",q:"'Punishing a crime reminds everyone where the moral boundaries are.'",o:["Functionalism","Conflict theory","Symbolic interactionism","Postmodernism"],a:0,e:"Deviance clarifies rules and unites the group (Durkheim)."},
-{s:3,t:"Quel paradigme ?",q:"'Tax fraud by the rich is punished lightly; petty theft by the poor heavily.'",o:["Conflict theory","Functionalism","Symbolic interactionism","Structural functionalism"],a:0,e:"Laws reflect the interests of the powerful."},
-{s:4,t:"Quel paradigme ?",q:"'Surgeons earn more because society needs to attract talent to vital jobs.'",o:["Functionalism","Conflict theory","Symbolic interactionism","Postmodernism"],a:0,e:"Davis & Moore."},
-{s:4,t:"Quel paradigme ?",q:"'Wearing a luxury watch sends a message about your class to others.'",o:["Symbolic interactionism","Functionalism","Conflict theory","Marxism"],a:0,e:"Conspicuous consumption as everyday signal."},
-{s:5,t:"Quel paradigme ?",q:"'Men and women have complementary roles that keep the family stable.'",o:["Functionalism (Parsons)","Conflict theory (feminist)","Symbolic interactionism","Postmodernism (Butler)"],a:0,e:"Parsons' complementary roles."},
-{s:5,t:"Quel paradigme ?",q:"'Gender categories are fluid; the binary itself must be deconstructed.'",o:["Postmodernism (Butler)","Functionalism (Parsons)","Conflict theory","Symbolic interactionism"],a:0,e:"Butler: performativity, fluid identities."},
-{s:6,t:"Quel paradigme ?",q:"'Racism persists because it keeps a cheap labour force divided.'",o:["Race-conflict theory","Cultural theory of prejudice","Authoritarian personality","Functionalism"],a:0,e:"Rooted in Marx: competition and exploitation."},
-{s:7,t:"Quel paradigme ?",q:"'Shared values hold society together and give it stability.'",o:["Functionalism","Conflict theory","Postmodernism","Symbolic interactionism"],a:0,e:"Culture as integration."},
+// Who is this? (public-domain portraits loaded from Wikipedia)
+{s:1,t:"Who is this?",img:"Karl_Marx",hint:"Hint: bourgeoisie vs proletariat",q:"Who is this?",o:["Karl Marx","Émile Durkheim","Max Weber","Auguste Comte"],a:0,e:"Marx: class conflict, ownership of the means of production, economics as the engine of change (conflict theory)."},
+{s:1,t:"Who is this?",img:"Émile_Durkheim",hint:"Hint: Suicide, social cohesion",q:"Who is this?",o:["Émile Durkheim","Karl Marx","Herbert Spencer","George Herbert Mead"],a:0,e:"Durkheim: functionalism, integration + regulation → cohesion, deviance is functional, study of suicide."},
+{s:1,t:"Who is this?",img:"Max_Weber",hint:"Hint: 4 types of social action",q:"Who is this?",o:["Max Weber","Karl Marx","Auguste Comte","Thorstein Veblen"],a:0,e:"Weber: ideal types, rationalisation, bureaucracy, Protestant ethic, class/status/power."},
+{s:1,t:"Who is this?",img:"Auguste_Comte",hint:"Hint: coined the word “sociology”",q:"Who is this?",o:["Auguste Comte","Émile Durkheim","Max Weber","Charles Horton Cooley"],a:0,e:"Comte: social statics & dynamics, 'Order and Progress'."},
+{s:1,t:"Who is this?",img:"Harriet_Martineau",hint:"Hint: translated Comte, “Society in America”",q:"Who is this?",o:["Harriet Martineau","Judith Butler","Sylvia Walby","Cecilia Ridgeway"],a:0,e:"Martineau: first woman sociologist, women's lives, abolition."},
+{s:2,t:"Who is this?",img:"George_Herbert_Mead",hint:"Hint: play stage, game stage",q:"Who is this?",o:["George Herbert Mead","Charles Horton Cooley","Max Weber","Robert K. Merton"],a:0,e:"Mead: symbolic interactionism, taking the role of the other, generalised other."},
+{s:2,t:"Who is this?",img:"Charles_Horton_Cooley",hint:"Hint: looking-glass self (1902)",q:"Who is this?",o:["Charles Horton Cooley","George Herbert Mead","Thorstein Veblen","Talcott Parsons"],a:0,e:"Cooley: we see ourselves through how we imagine others see us."},
+{s:2,t:"Who is this?",img:"Thorstein_Veblen",hint:"Hint: conspicuous consumption (1899)",q:"Who is this?",o:["Thorstein Veblen","Karl Marx","Charles Horton Cooley","Auguste Comte"],a:0,e:"Veblen: The Theory of the Leisure Class."},
+{s:1,t:"Who is this?",img:"Ibn_Khaldun",hint:"Hint: asabiyyah, Muqaddimah",q:"Who is shown here?",o:["Ibn Khaldun","Auguste Comte","Harriet Martineau","Max Weber"],a:0,e:"Ibn Khaldun (1332–1406): early founding father, rise and fall of dynasties."},
+{s:3,t:"Image",img:"Panopticon",hint:"Hint: a circular prison with a central tower",q:"Which Foucault concept does this building illustrate?",o:["The panopticon: feeling always watched → self-discipline","Cultural lag","The looking-glass self","Conspicuous consumption"],a:0,e:"Bentham's design; Foucault uses it for modern disciplinary society (cameras, blurred public/private)."},
+// Odd one out
+{s:1,t:"Odd one out",q:"Which one is NOT a functionalist?",o:["Karl Marx","Talcott Parsons","Robert K. Merton","Herbert Spencer"],a:0,e:"Marx = conflict theory."},
+{s:1,t:"Odd one out",q:"Which one is NOT one of Weber's ideal types of action?",o:["Coercive action","Instrumental rationality","Affectual action","Traditional action"],a:0,e:"The four: instrumental, value, affectual, traditional."},
+{s:2,t:"Odd one out",q:"Which one is NOT a stage in Mead's development of the self?",o:["Mirror stage","Preparatory stage","Play stage","Game stage"],a:0,e:"Preparatory → play → game."},
+{s:2,t:"Odd one out",q:"Which one is NOT a total institution?",o:["A university","A prison","The army","A psychiatric hospital"],a:0,e:"Total institutions resocialise: prison, military, mental institutions."},
+{s:3,t:"Odd one out",q:"Which one is NOT a characteristic of social institutions?",o:["Flexibility","Externality","Moral authority","Historicity"],a:0,e:"Externality, objectivity, coercion, moral authority, historicity."},
+{s:3,t:"Odd one out",q:"Which one is NOT a dark pattern from class?",o:["Cultural lag","Nagging","Sneaking","Obstruction"],a:0,e:"Cultural lag is Ogburn (session 7)."},
+{s:4,t:"Odd one out",q:"Which one is NOT one of Bourdieu's forms of capital?",o:["Emotional capital","Economic capital","Social capital","Symbolic capital"],a:0,e:"Economic, cultural, social, symbolic."},
+{s:5,t:"Odd one out",q:"Which one is NOT one of the five gender biases?",o:["Scapegoating bias","Likeability bias","Attribution bias","Parenting bias"],a:0,e:"Likeability, attribution, performance, parenting, affinity."},
+{s:6,t:"Odd one out",q:"Which one is NOT one of the five theories of prejudice in class?",o:["Labelling theory","Scapegoating","Authoritarian personality","Race-conflict theory"],a:0,e:"The five: scapegoating, authoritarian personality, cultural theory, race-conflict, intersectionality."},
+{s:7,t:"Odd one out",q:"Which one is NOT a component of culture?",o:["Social class","Symbols","Values","Norms"],a:0,e:"Material culture, symbols, language, values, beliefs, norms."},
+{s:7,t:"Odd one out",q:"Which one is NOT a counterculture example from class?",o:["Opera lovers","Hippies","Punks","Radical environmentalists"],a:0,e:"Opera = high culture, not a counterculture."},
+// Which paradigm?
+{s:1,t:"Which paradigm?",q:"'Social media keeps teens connected and integrated into society.'",o:["Functionalism","Conflict theory","Symbolic interactionism","Postmodernism"],a:0,e:"Functions and integration → functionalism."},
+{s:1,t:"Which paradigm?",q:"'Platforms profit from minors' attention while families pay the cost.'",o:["Conflict theory","Functionalism","Symbolic interactionism","Postmodernism"],a:0,e:"Who benefits, who loses → conflict."},
+{s:1,t:"Which paradigm?",q:"'Teens build different identities on Instagram, TikTok and LinkedIn; there is no single true self.'",o:["Postmodernism","Functionalism","Conflict theory","Durkheimian positivism"],a:0,e:"Fragmented, fluid identities and narratives → postmodernism."},
+{s:1,t:"Which paradigm?",q:"'A \"like\" means approval, and teens adapt their posts to the meaning they read in reactions.'",o:["Symbolic interactionism","Functionalism","Conflict theory","Postmodernism"],a:0,e:"Meanings in everyday interaction → symbolic interactionism."},
+{s:3,t:"Which paradigm?",q:"'Punishing a crime reminds everyone where the moral boundaries are.'",o:["Functionalism","Conflict theory","Symbolic interactionism","Postmodernism"],a:0,e:"Deviance clarifies rules and unites the group (Durkheim)."},
+{s:3,t:"Which paradigm?",q:"'Tax fraud by the rich is punished lightly; petty theft by the poor heavily.'",o:["Conflict theory","Functionalism","Symbolic interactionism","Structural functionalism"],a:0,e:"Laws reflect the interests of the powerful."},
+{s:4,t:"Which paradigm?",q:"'Surgeons earn more because society needs to attract talent to vital jobs.'",o:["Functionalism","Conflict theory","Symbolic interactionism","Postmodernism"],a:0,e:"Davis & Moore."},
+{s:4,t:"Which paradigm?",q:"'Wearing a luxury watch sends a message about your class to others.'",o:["Symbolic interactionism","Functionalism","Conflict theory","Marxism"],a:0,e:"Conspicuous consumption as everyday signal."},
+{s:5,t:"Which paradigm?",q:"'Men and women have complementary roles that keep the family stable.'",o:["Functionalism (Parsons)","Conflict theory (feminist)","Symbolic interactionism","Postmodernism (Butler)"],a:0,e:"Parsons' complementary roles."},
+{s:5,t:"Which paradigm?",q:"'Gender categories are fluid; the binary itself must be deconstructed.'",o:["Postmodernism (Butler)","Functionalism (Parsons)","Conflict theory","Symbolic interactionism"],a:0,e:"Butler: performativity, fluid identities."},
+{s:6,t:"Which paradigm?",q:"'Racism persists because it keeps a cheap labour force divided.'",o:["Race-conflict theory","Cultural theory of prejudice","Authoritarian personality","Functionalism"],a:0,e:"Rooted in Marx: competition and exploitation."},
+{s:7,t:"Which paradigm?",q:"'Shared values hold society together and give it stability.'",o:["Functionalism","Conflict theory","Postmodernism","Symbolic interactionism"],a:0,e:"Culture as integration."},
 // Chronologie
-{s:1,t:"Chronologie",q:"Who was born FIRST?",o:["Ibn Khaldun","Auguste Comte","Karl Marx","Max Weber"],a:0,e:"Ibn Khaldun 1332; Comte 1798; Marx 1818; Weber 1864."},
-{s:1,t:"Chronologie",q:"Which came FIRST?",o:["Veblen's Theory of the Leisure Class","Cooley's looking-glass self","Bourdieu's Distinction","Prensky's 'digital natives'"],a:0,e:"1899 → 1902 → 1979 → 2001."},
-{s:2,t:"Chronologie",q:"Which came LAST?",o:["Prensky's 'digital natives'","Harlow's monkey experiments","Cooley's looking-glass self","Veblen's leisure class"],a:0,e:"1899, 1902, 1962, 2001."},
-{s:5,t:"Chronologie",q:"When was the term 'manosphere' coined?",o:["Around 2009","In the 1970s","In 2020","In 1995"],a:0,e:"Roots in 1960s–70s men's liberation; term ~2009; mainstreamed 2020–2025."},
-{s:6,t:"Chronologie",q:"Which came FIRST?",o:["Gobineau's Essay on the Inequality of Races","Dutch algorithm registry","EU AI Act","Amazon's AI recruiting tool"],a:0,e:"Gobineau 19th century; Amazon tool 2014; Dutch registry 2022; AI Act 2024."},
-{s:1,t:"Chronologie",q:"Which social media ban came into force FIRST?",o:["Australia (under 16)","France (under 15)","Spain","Denmark"],a:0,e:"Australia Dec 2025, France July 2026; Spain, Portugal, Denmark moving toward it."}
+{s:1,t:"Timeline",q:"Who was born FIRST?",o:["Ibn Khaldun","Auguste Comte","Karl Marx","Max Weber"],a:0,e:"Ibn Khaldun 1332; Comte 1798; Marx 1818; Weber 1864."},
+{s:1,t:"Timeline",q:"Which came FIRST?",o:["Veblen's Theory of the Leisure Class","Cooley's looking-glass self","Bourdieu's Distinction","Prensky's 'digital natives'"],a:0,e:"1899 → 1902 → 1979 → 2001."},
+{s:2,t:"Timeline",q:"Which came LAST?",o:["Prensky's 'digital natives'","Harlow's monkey experiments","Cooley's looking-glass self","Veblen's leisure class"],a:0,e:"1899, 1902, 1962, 2001."},
+{s:5,t:"Timeline",q:"When was the term 'manosphere' coined?",o:["Around 2009","In the 1970s","In 2020","In 1995"],a:0,e:"Roots in 1960s–70s men's liberation; term ~2009; mainstreamed 2020–2025."},
+{s:6,t:"Timeline",q:"Which came FIRST?",o:["Gobineau's Essay on the Inequality of Races","Dutch algorithm registry","EU AI Act","Amazon's AI recruiting tool"],a:0,e:"Gobineau 19th century; Amazon tool 2014; Dutch registry 2022; AI Act 2024."},
+{s:1,t:"Timeline",q:"Which social media ban came into force FIRST?",o:["Australia (under 16)","France (under 15)","Spain","Denmark"],a:0,e:"Australia Dec 2025, France July 2026; Spain, Portugal, Denmark moving toward it."}
 ];
 // ---- extra typed: complete the concept ----
 const TY = [
@@ -500,19 +500,19 @@ const Q810 = [
 {s:10,t:"Bauman",q:"'Desire desires desire' (Taylor & Saarinen) means consumers value…",o:["Desire more than satisfaction","Saving money","Long-term commitments","Duty"],a:0,e:"Satisfaction must be instant and end fast."},
 {s:10,t:"Bauman",q:"Consumer society is 'Aristotelian' rather than 'Platonian' because…",o:["It is pragmatic, run by rules of thumb (phronesis)","It follows fixed ideal patterns","It rejects advertising","It values tradition"],a:0,e:"A paradise for advisers, advertising and gurus."},
 // Varied formats S8–10
-{s:8,t:"L'intrus",q:"Which one is NOT one of Illich's types of iatrogenesis?",o:["Genetic","Clinical","Social","Cultural"],a:0,e:"Clinical, social (medicalisation), cultural."},
-{s:9,t:"L'intrus",q:"Which one is NOT one of the 4 crowd types?",o:["Digital","Casual","Conventional","Acting"],a:0,e:"Casual, conventional, expressive, acting."},
-{s:10,t:"L'intrus",q:"Which one is NOT a feature of postmorality?",o:["Duties over rights","Pluralism and moral relativism","Emotions over reason","Weaker commitments"],a:0,e:"Postmorality = rights over duties."},
-{s:8,t:"Quel paradigme ?",q:"'Poor workers couldn't work from home during COVID and died more.'",o:["Conflict theory","Functionalism","Symbolic interactionism","Postmodernism"],a:0,e:"Who bears the health costs?"},
-{s:8,t:"Quel paradigme ?",q:"'A burnout diagnosis is negotiated, and the employee fears being labelled weak.'",o:["Symbolic interactionism","Functionalism","Conflict theory","Postmodernism"],a:0,e:"Meaning, labels and stigma."},
-{s:9,t:"Quel paradigme ?",q:"'School teaches children to belong, behave and recognise authority.'",o:["Institutional / functionalist (Durkheim)","Material / conflict (Marx)","Symbolic (Bourdieu)","Postmodern (Lyotard)"],a:0,e:"Reproduction as integration and stability."},
-{s:9,t:"Quel paradigme ?",q:"'Inherited wealth and unequal schools keep the same families on top.'",o:["Material / conflict (Marx)","Institutional (Durkheim)","Symbolic (Butler)","Structuration (Giddens)"],a:0,e:"Ownership of resources → class reproduction."},
-{s:10,t:"Quelle posture ?",q:"'We must return to family, religion and homeland to escape nihilism.'",o:["Neo-traditionalist","Postmodernist","Neo-modernist","Marxist"],a:0,e:"Modernity failed; past values hold the key."},
-{s:10,t:"Quelle posture ?",q:"'Progress, rationality and solidarity are still valid; we must reform modernity.'",o:["Neo-modernist","Postmodernist","Neo-traditionalist","Nihilist"],a:0,e:"Habermas: modernity as an unfinished project."},
-{s:9,t:"Qui est-ce ?",img:"Paul_Lafargue",hint:"Indice : The Right to Be Lazy (1880), gendre de Marx",q:"Qui est-ce ?",o:["Paul Lafargue","Karl Marx","Émile Durkheim","Max Weber"],a:0,e:"Lafargue: the 'dogma of work' as a ruling-class ideology."},
-{s:10,t:"Qui est-ce ?",img:"Ferdinand_Tönnies",hint:"Indice : Gemeinschaft / Gesellschaft",q:"Qui est-ce ?",o:["Ferdinand Tönnies","Émile Durkheim","Max Weber","Georg Simmel"],a:0,e:"Community (traditional) vs association (modern)."},
-{s:9,t:"Qui est-ce ?",img:"Gustave_Le_Bon",hint:"Indice : la foule transforme les individus (contagion)",q:"Qui est-ce ?",o:["Gustave Le Bon","Paul Lafargue","Auguste Comte","Ferdinand Tönnies"],a:0,e:"The Crowd (1895): contagion theory."},
-{s:10,t:"Chronologie",q:"Put in order: which came FIRST?",o:["Lafargue, The Right to Be Lazy","Bourdieu & Passeron, Reproduction","Lyotard, The Postmodern Condition","Wilkinson & Pickett, The Spirit Level"],a:0,e:"1880 → 1970 → 1979 → 2009."}
+{s:8,t:"Odd one out",q:"Which one is NOT one of Illich's types of iatrogenesis?",o:["Genetic","Clinical","Social","Cultural"],a:0,e:"Clinical, social (medicalisation), cultural."},
+{s:9,t:"Odd one out",q:"Which one is NOT one of the 4 crowd types?",o:["Digital","Casual","Conventional","Acting"],a:0,e:"Casual, conventional, expressive, acting."},
+{s:10,t:"Odd one out",q:"Which one is NOT a feature of postmorality?",o:["Duties over rights","Pluralism and moral relativism","Emotions over reason","Weaker commitments"],a:0,e:"Postmorality = rights over duties."},
+{s:8,t:"Which paradigm?",q:"'Poor workers couldn't work from home during COVID and died more.'",o:["Conflict theory","Functionalism","Symbolic interactionism","Postmodernism"],a:0,e:"Who bears the health costs?"},
+{s:8,t:"Which paradigm?",q:"'A burnout diagnosis is negotiated, and the employee fears being labelled weak.'",o:["Symbolic interactionism","Functionalism","Conflict theory","Postmodernism"],a:0,e:"Meaning, labels and stigma."},
+{s:9,t:"Which paradigm?",q:"'School teaches children to belong, behave and recognise authority.'",o:["Institutional / functionalist (Durkheim)","Material / conflict (Marx)","Symbolic (Bourdieu)","Postmodern (Lyotard)"],a:0,e:"Reproduction as integration and stability."},
+{s:9,t:"Which paradigm?",q:"'Inherited wealth and unequal schools keep the same families on top.'",o:["Material / conflict (Marx)","Institutional (Durkheim)","Symbolic (Butler)","Structuration (Giddens)"],a:0,e:"Ownership of resources → class reproduction."},
+{s:10,t:"Which stance?",q:"'We must return to family, religion and homeland to escape nihilism.'",o:["Neo-traditionalist","Postmodernist","Neo-modernist","Marxist"],a:0,e:"Modernity failed; past values hold the key."},
+{s:10,t:"Which stance?",q:"'Progress, rationality and solidarity are still valid; we must reform modernity.'",o:["Neo-modernist","Postmodernist","Neo-traditionalist","Nihilist"],a:0,e:"Habermas: modernity as an unfinished project."},
+{s:9,t:"Who is this?",img:"Paul_Lafargue",hint:"Hint: The Right to Be Lazy (1880), Marx's son-in-law",q:"Who is this?",o:["Paul Lafargue","Karl Marx","Émile Durkheim","Max Weber"],a:0,e:"Lafargue: the 'dogma of work' as a ruling-class ideology."},
+{s:10,t:"Who is this?",img:"Ferdinand_Tönnies",hint:"Hint: Gemeinschaft / Gesellschaft",q:"Who is this?",o:["Ferdinand Tönnies","Émile Durkheim","Max Weber","Georg Simmel"],a:0,e:"Community (traditional) vs association (modern)."},
+{s:9,t:"Who is this?",img:"Gustave_Le_Bon",hint:"Hint: the crowd transforms individuals (contagion)",q:"Who is this?",o:["Gustave Le Bon","Paul Lafargue","Auguste Comte","Ferdinand Tönnies"],a:0,e:"The Crowd (1895): contagion theory."},
+{s:10,t:"Timeline",q:"Put in order: which came FIRST?",o:["Lafargue, The Right to Be Lazy","Bourdieu & Passeron, Reproduction","Lyotard, The Postmodern Condition","Wilkinson & Pickett, The Spirit Level"],a:0,e:"1880 → 1970 → 1979 → 2009."}
 ];
 const TF810 = [
 {s:8,q:"The WHO definition of health has been criticised as too utopian.",v:true,e:"But it allows comparisons and public-health policy."},
@@ -559,7 +559,7 @@ const T810 = [
 {s:10,q:"Living only in the here and now: postmodern ___.",a:["presentism","presentisme"],e:"Future uncertain, past loses authority."},
 {s:10,q:"German word Bauman uses for 'what I live through' (collected experiences)?",a:["Erlebnis","Erlebnisse"],e:"Vs Erfahrung, 'what happens to me'.",n:["Erfahrung"]}
 ];
-Q.push(...Q810, ...TF810.map(x=>({s:x.s,t:"Vrai ou faux",q:x.q,o:x.v?["Vrai","Faux"]:["Faux","Vrai"],a:0,e:x.e,tf:true})));
+Q.push(...Q810, ...TF810.map(x=>({s:x.s,t:"True or false",q:x.q,o:x.v?["True","False"]:["False","True"],a:0,e:x.e,tf:true})));
 TQ.push(...T810);
 // [session, category, kind (c=concept, p=person/work), term, definition, aliases ";"-separated]
 const FACTS=[

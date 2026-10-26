@@ -8,7 +8,7 @@ const TAGS={1:"S14 Definition",2:"S14 The people",3:"S14 Work & ethnicity",4:"S1
 const Q=[],TQ=[];
 // MCQ: first option is the right one (shuffled on screen)
 const m=(s,t,q,ok,wr,e)=>Q.push({s,t,q,o:[ok,...wr],a:0,e});
-const vf=(s,q,v,e)=>Q.push({s,t:"Vrai ou faux",q,o:v?["Vrai","Faux"]:["Faux","Vrai"],a:0,e,tf:true});
+const vf=(s,q,v,e)=>Q.push({s,t:"True or false",q,o:v?["True","False"]:["False","True"],a:0,e,tf:true});
 const ty=(s,q,a,e,n)=>TQ.push(n?{s,q,a,e,n}:{s,q,a,e});
 
 // ===================== S14 · 1. What populism is =====================
@@ -37,15 +37,15 @@ m(1,"Analogy","Which analogy does Müller use to show that self-labelling does n
 m(1,"People's Party","Which historical template does Müller warn against using as the model for every form of populism?","The American People's Party",["The French Jacobins","The Russian Bolsheviks","The Roman Republic"],"Theory cannot root itself in one historical experience, “with, for example, every form of populism presumed to fit the template of the American People's Party.”");
 m(1,"Latin America","Why does a glance at Latin America reinforce the idea that populism must be “popular” (favouring the least advantaged)?","Advocates stressed its inclusionary, emancipatory character in a very unequal continent",["Populist parties there have always been on the far right","Populism there has always been defined by ethnic nationalism","It is the most economically equal continent on the globe"],"Latin America: advocates stressed populism's “inclusionary and emancipatory character in what remains the most economically unequal continent on the globe.”");
 
-vf(1,"For Müller, anyone who criticizes the powerful and the status quo is a populist.",false,"Faux : criticizing elites is necessary but not sufficient. Populists must also be antipluralist.");
-vf(1,"According to Müller, populists claim that they, and only they, represent the people.",true,"Vrai : this is their antipluralism.");
-vf(1,"Müller argues that populism arises with the introduction of representative democracy.",true,"Vrai : “it is its shadow”.");
-vf(1,"The populist claim to represent the whole people is, for Müller, an empirical claim (based on votes or polls).",false,"Faux : it is a moral claim, “as opposed to empirical”.");
-vf(1,"Müller says a good understanding of populism may exclude movements that explicitly called themselves populists.",true,"Vrai : just as socialism need not include National Socialism.");
-vf(1,"Once in government, populists recognize the opposition as legitimate.",false,"Faux : “when in government, they will not recognize anything like a legitimate opposition.”");
-vf(1,"The concept of “holism” that Müller uses comes from Claude Lefort.",false,"Faux : it comes from Nancy Rosenblum. Lefort is the one who said the real people is “extracted” from all citizens.");
-vf(1,"For Müller, the pure and unified people that populists invoke is ultimately fictional.",true,"Vrai : “morally pure and fully unified – but ultimately fictional – people”.");
-vf(1,"For Müller, populism must by definition favour the least advantaged.",false,"Faux : that is a common association (reinforced by Latin America), but Müller's definition is antielitism + moralized antipluralism.");
+vf(1,"For Müller, anyone who criticizes the powerful and the status quo is a populist.",false,"False: criticizing elites is necessary but not sufficient. Populists must also be antipluralist.");
+vf(1,"According to Müller, populists claim that they, and only they, represent the people.",true,"True: this is their antipluralism.");
+vf(1,"Müller argues that populism arises with the introduction of representative democracy.",true,"True: “it is its shadow”.");
+vf(1,"The populist claim to represent the whole people is, for Müller, an empirical claim (based on votes or polls).",false,"False: it is a moral claim, “as opposed to empirical”.");
+vf(1,"Müller says a good understanding of populism may exclude movements that explicitly called themselves populists.",true,"True: just as socialism need not include National Socialism.");
+vf(1,"Once in government, populists recognize the opposition as legitimate.",false,"False: “when in government, they will not recognize anything like a legitimate opposition.”");
+vf(1,"The concept of “holism” that Müller uses comes from Claude Lefort.",false,"False: it comes from Nancy Rosenblum. Lefort is the one who said the real people is “extracted” from all citizens.");
+vf(1,"For Müller, the pure and unified people that populists invoke is ultimately fictional.",true,"True: “morally pure and fully unified – but ultimately fictional – people”.");
+vf(1,"For Müller, populism must by definition favour the least advantaged.",false,"False: that is a common association (reinforced by Latin America), but Müller's definition is antielitism + moralized antipluralism.");
 
 ty(1,"Who wrote “What Is Populism?” (the author of the populism chapter)?",["Müller","Jan-Werner Müller","Mueller"],"Jan-Werner Müller, What Is Populism? (Penguin Books).",["Dryzek"]);
 ty(1,"Populists are always ___: they claim that they, and only they, represent the people.",["antipluralist","anti-pluralist","antipluralists","antipluralistic"],"Antipluralist. Core claim = a moralized form of antipluralism.");
@@ -85,15 +85,15 @@ m(2,"Florence","In Machiavelli's Florence, which of these would be populism?","S
 m(2,"Vocabulary","In Machiavelli's Florence, the popolo was opposed to the…","Grandi",["Plebs","Patricians","Narodniki"],"Popolo vs. grandi in Florence; plebs vs. patricians in Rome.");
 m(2,"Vocabulary","In ancient Rome, the plebs (the common people) were distinguished from the…","Patrician class",["Grandi of the city","Narodniki","Populares"],"“Only the plebs (as opposed to the patrician class, never mind the slaves) is the populus Romanus.”");
 
-vf(2,"For Müller, Wallace's populism lay mainly in his defence of segregation.",false,"Faux : segregation was racism. His populism was his claim to speak exclusively in the name of “the greatest people that have ever trod this earth”.");
-vf(2,"Farage's “victory for real people” implicitly questioned whether those who voted against Brexit were proper members of the political community.",true,"Vrai : it made the 48 percent “somehow less than real”.");
-vf(2,"For Müller, every appeal to “the people” is populism.",false,"Faux : “It is plainly inadequate to say that all appeals to ‘the people’ qualify as populism.”");
-vf(2,"Fighting for the interests of the plebs in ancient Rome would already count as populism for Müller.",false,"Faux : only claiming that the plebs alone is the populus Romanus (and only certain populares represent it) is populism.");
-vf(2,"The Russian narodniki understood populism as an idealization of the people.",true,"Vrai : in the late nineteenth century.");
-vf(2,"Wallace claimed that virtually all Founding Fathers had been Southerners.",true,"Vrai : toward the end of his inauguration address.");
-vf(2,"Trump's remark that “the other people don't mean anything” caused a huge media scandal.",false,"Faux : it “went virtually unnoticed”, given how often he made outrageous statements.");
-vf(2,"In Wallace's speech, “tyranny” meant the Kennedy administration and everyone working to end segregation.",true,"Vrai.");
-vf(2,"Wallace excluded the people of New England and the Midwest from “the real America”.",false,"Faux : he invited them in: “you are Southerners too”. The real America was the Southern mind and spirit.");
+vf(2,"For Müller, Wallace's populism lay mainly in his defence of segregation.",false,"False: segregation was racism. His populism was his claim to speak exclusively in the name of “the greatest people that have ever trod this earth”.");
+vf(2,"Farage's “victory for real people” implicitly questioned whether those who voted against Brexit were proper members of the political community.",true,"True: it made the 48 percent “somehow less than real”.");
+vf(2,"For Müller, every appeal to “the people” is populism.",false,"False: “It is plainly inadequate to say that all appeals to ‘the people’ qualify as populism.”");
+vf(2,"Fighting for the interests of the plebs in ancient Rome would already count as populism for Müller.",false,"False: only claiming that the plebs alone is the populus Romanus (and only certain populares represent it) is populism.");
+vf(2,"The Russian narodniki understood populism as an idealization of the people.",true,"True: in the late nineteenth century.");
+vf(2,"Wallace claimed that virtually all Founding Fathers had been Southerners.",true,"True: toward the end of his inauguration address.");
+vf(2,"Trump's remark that “the other people don't mean anything” caused a huge media scandal.",false,"False: it “went virtually unnoticed”, given how often he made outrageous statements.");
+vf(2,"In Wallace's speech, “tyranny” meant the Kennedy administration and everyone working to end segregation.",true,"True.");
+vf(2,"Wallace excluded the people of New England and the Midwest from “the real America”.",false,"False: he invited them in: “you are Southerners too”. The real America was the Southern mind and spirit.");
 
 ty(2,"Governor of Alabama who spoke “in the name of the greatest people that have ever trod this earth”",["Wallace","George Wallace"],"George Wallace, at his inauguration as governor of Alabama.");
 ty(2,"Wallace: “segregation now… segregation tomorrow… segregation ___”",["forever"],"“…segregation forever.”");
@@ -132,15 +132,15 @@ m(3,"Constant","Whatever the criterion, what must always be present in populism?
 m(3,"Other antipluralists","What distinguishes populists from other antipluralists such as Leninists or highly intolerant religious actors?","Only populists see the people as morally pure and unerring",["Only populists accept pluralism and opposition","Only populists reject all elections","Only populists are on the far right"],"Leninists and highly intolerant religious actors “do not think of the people as morally pure and unerring in its will.”");
 m(3,"Other antipluralists","Which actors does Müller give as antipluralists who are NOT populists?","Leninists and intolerant religious actors",["Liberals and social democrats","The Russian narodniki of the 19th century","Jobbik and the American birthers"],"“Not everyone who rejects pluralism is a populist.”");
 
-vf(3,"For Müller, populism always turns out to be a form of nationalism or ethnic chauvinism.",false,"Faux : “it's a mistake” to think so; there are many ways to distinguish moral and immoral.");
-vf(3,"In right-wing populism, the people are pitted against both the elite above and the very bottom of society.",true,"Vrai : those at the bottom are said not to really work either and to live like parasites.");
-vf(3,"Leninists are populists because they reject pluralism.",false,"Faux : they are antipluralists but do not see the people as morally pure and unerring. Not every antipluralist is a populist.");
-vf(3,"For Müller, not everyone who rejects pluralism is a populist.",true,"Vrai : the last sentence of the passage.");
-vf(3,"Jobbik is a far-right populist party in Poland.",false,"Faux : Hungary.");
-vf(3,"Berlusconi cast “Communists” and illegal immigrants as outside the people.",true,"Vrai.");
-vf(3,"The birthers wanted to prove that Obama was an illegal, and not only an illegitimate, office holder.",true,"Vrai : “not just symbolically an illegitimate office holder but plainly an illegal one”.");
-vf(3,"The criterion populists use to separate the pure people from the rest must always be work.",false,"Faux : if work is indeterminate, ethnic markers can “come to the rescue”, among a variety of other ways.");
-vf(3,"Right-wingers calling Bill Clinton “your president” went further than the birthers' obsession with Obama.",false,"Faux : the birthers' obsession “went far beyond” it, though the impulse was similar.");
+vf(3,"For Müller, populism always turns out to be a form of nationalism or ethnic chauvinism.",false,"False: “it's a mistake” to think so; there are many ways to distinguish moral and immoral.");
+vf(3,"In right-wing populism, the people are pitted against both the elite above and the very bottom of society.",true,"True: those at the bottom are said not to really work either and to live like parasites.");
+vf(3,"Leninists are populists because they reject pluralism.",false,"False: they are antipluralists but do not see the people as morally pure and unerring. Not every antipluralist is a populist.");
+vf(3,"For Müller, not everyone who rejects pluralism is a populist.",true,"True: the last sentence of the passage.");
+vf(3,"Jobbik is a far-right populist party in Poland.",false,"False: Hungary.");
+vf(3,"Berlusconi cast “Communists” and illegal immigrants as outside the people.",true,"True.");
+vf(3,"The birthers wanted to prove that Obama was an illegal, and not only an illegitimate, office holder.",true,"True: “not just symbolically an illegitimate office holder but plainly an illegal one”.");
+vf(3,"The criterion populists use to separate the pure people from the rest must always be work.",false,"False: if work is indeterminate, ethnic markers can “come to the rescue”, among a variety of other ways.");
+vf(3,"Right-wingers calling Bill Clinton “your president” went further than the birthers' obsession with Obama.",false,"False: the birthers' obsession “went far beyond” it, though the impulse was similar.");
 
 ty(3,"Ideology that pits the pure, hardworking people against those who do not really work",["producerism"],"Producerism.");
 ty(3,"US president whose followers opposed “aristocrats” above and Native Americans and slaves below",["Jackson","Andrew Jackson"],"Andrew Jackson.");
@@ -177,15 +177,15 @@ m(4,"Psychology","Which branch of psychology offers the more positive assessment
 m(4,"Diagnosis","According to the authors, the novel aspect of today's crisis of democracy is that it is a crisis of…","Communication, not of individual reasoning",["Individual reasoning, not of communication","Economic growth","Constitutional law"],"“…a crisis of communication, not of individual reasoning, the virtues and flaws of which remain much as they have always been.”");
 m(4,"Group life","Complete: “Human life is indeed group life, but not in…”","Pathological form",["Isolated form","Digital form","Democratic form"],"“Human life is indeed group life, but not in pathological form.”");
 
-vf(4,"The authors argue that having more opportunities than ever to express views can be a problem for democracy.",true,"Vrai : the overabundance overloads policymakers and citizens (signal vs. noise).");
-vf(4,"For the authors, the best response to the crisis is to ask elites to behave better.",false,"Faux : that is “futile” as long as the public is ripe to be polarized; ordinary citizens must be involved.");
-vf(4,"According to the article, all survey research is “monological”.",true,"Vrai : it studies only the individual in isolation.");
-vf(4,"For the authors, today's crisis of democracy is mainly a crisis of individual reasoning.",false,"Faux : it is a crisis of communication; individual reasoning is much as it always was.");
-vf(4,"Psychological research shows that bad solitary reasoners can be good group problem-solvers.",true,"Vrai.");
-vf(4,"Declining civility among elected representatives increases citizens' trust in democratic institutions.",false,"Faux : it decreases it.");
-vf(4,"“Epistocracy” means government by wise elites.",true,"Vrai : an argument fuelled by skeptical views of citizen competence.");
-vf(4,"Uncivil elite behavior and pathological mass communication reinforce each other.",true,"Vrai : a vicious cycle.");
-vf(4,"The more polarized politics gets, the more citizens listen to the content of messages.",false,"Faux : they listen less to content and follow partisan cues more, or drop out.");
+vf(4,"The authors argue that having more opportunities than ever to express views can be a problem for democracy.",true,"True: the overabundance overloads policymakers and citizens (signal vs. noise).");
+vf(4,"For the authors, the best response to the crisis is to ask elites to behave better.",false,"False: that is “futile” as long as the public is ripe to be polarized; ordinary citizens must be involved.");
+vf(4,"According to the article, all survey research is “monological”.",true,"True: it studies only the individual in isolation.");
+vf(4,"For the authors, today's crisis of democracy is mainly a crisis of individual reasoning.",false,"False: it is a crisis of communication; individual reasoning is much as it always was.");
+vf(4,"Psychological research shows that bad solitary reasoners can be good group problem-solvers.",true,"True.");
+vf(4,"Declining civility among elected representatives increases citizens' trust in democratic institutions.",false,"False: it decreases it.");
+vf(4,"“Epistocracy” means government by wise elites.",true,"True: an argument fuelled by skeptical views of citizen competence.");
+vf(4,"Uncivil elite behavior and pathological mass communication reinforce each other.",true,"True: a vicious cycle.");
+vf(4,"The more polarized politics gets, the more citizens listen to the content of messages.",false,"False: they listen less to content and follow partisan cues more, or drop out.");
 
 ty(4,"First-named author of “The crisis of democracy and the science of deliberation”",["Dryzek","John Dryzek","John S. Dryzek"],"John S. Dryzek (Univ. of Canberra) et al.",["Müller"]);
 ty(4,"Scientific journal that published the article in March 2019",["Science"],"Science, 15 March 2019.");
@@ -234,16 +234,16 @@ m(5,"Storytelling","Besides abstract argument, justification in deliberation can
 m(5,"Storytelling","Why do storytelling and personal experience matter for inclusion?","They're more available to marginalized and less formally educated people",["They are much faster than formal arguments, so meetings are shorter","They let experts and politicians dominate the discussion","They avoid all disagreement between participants"],"Such forms “may be more available to those not used to arguing in more formal terms”.");
 m(5,"Rhetoric","How do the authors now see rhetoric, once dismissed as the opposite of reason?","It can be productive if it engages listeners, isn't demagogic and builds bridges",["It must be banned from deliberation, as the opposite of reason","It is always demagoguery and must be replaced by formal argument","It is acceptable only when used by experts and political leaders"],"Rhetoric can be productive “provided it is not used in demagogic ways and can build bridges across perspectives”.");
 
-vf(5,"In deliberative conditions, groups of like-minded partisans become more extreme.",false,"Faux : they become less extreme. Without deliberative conditions, they become more extreme.");
-vf(5,"The Irish Constitutional Convention was made up of a majority of politicians.",false,"Faux : a majority of lay citizens and a minority of politicians.");
-vf(5,"In Mongolia, any constitutional amendment must be preceded by a deliberative poll.",true,"Vrai : with several hundred ordinary citizens.");
-vf(5,"The article says India's gram sabhas are arguably the world's biggest deliberative institution.",true,"Vrai.");
-vf(5,"Europolis showed that classic deliberative standards are utopian standards only very few citizens can achieve.",false,"Faux : exactly the opposite.");
-vf(5,"In “What's Next California”, support for a part-time legislature rose after deliberation.",false,"Faux : it dropped massively.");
-vf(5,"The authors say rhetoric must always be excluded from deliberation as the opposite of reason.",false,"Faux : rhetoric can be productive if not demagogic and if it builds bridges.");
-vf(5,"Research shows most people refuse to participate in politics, even when meaningful deliberation is offered.",false,"Faux : that claim “proves false” once meaningful deliberation is offered.");
-vf(5,"Empirical research supports the key claims of deliberative democratic theory, though not uncritically.",true,"Vrai.");
-vf(5,"Deliberation reduces extremism even more when it engages different sides.",true,"Vrai.");
+vf(5,"In deliberative conditions, groups of like-minded partisans become more extreme.",false,"False: they become less extreme. Without deliberative conditions, they become more extreme.");
+vf(5,"The Irish Constitutional Convention was made up of a majority of politicians.",false,"False: a majority of lay citizens and a minority of politicians.");
+vf(5,"In Mongolia, any constitutional amendment must be preceded by a deliberative poll.",true,"True: with several hundred ordinary citizens.");
+vf(5,"The article says India's gram sabhas are arguably the world's biggest deliberative institution.",true,"True.");
+vf(5,"Europolis showed that classic deliberative standards are utopian standards only very few citizens can achieve.",false,"False: exactly the opposite.");
+vf(5,"In “What's Next California”, support for a part-time legislature rose after deliberation.",false,"False: it dropped massively.");
+vf(5,"The authors say rhetoric must always be excluded from deliberation as the opposite of reason.",false,"False: rhetoric can be productive if not demagogic and if it builds bridges.");
+vf(5,"Research shows most people refuse to participate in politics, even when meaningful deliberation is offered.",false,"False: that claim “proves false” once meaningful deliberation is offered.");
+vf(5,"Empirical research supports the key claims of deliberative democratic theory, though not uncritically.",true,"True.");
+vf(5,"Deliberation reduces extremism even more when it engages different sides.",true,"True.");
 
 ty(5,"Ancient philosopher who grounded practical reason in collective political life",["Aristotle","Aristote"],"Aristotle.");
 ty(5,"Village assemblies in India, arguably the world's biggest deliberative institution",["gram sabhas","gram sabha"],"Gram sabhas.");
@@ -285,15 +285,15 @@ m(6,"Healthy Democracy","Which organization runs the Oregon review process?","He
 m(6,"Conclusion","What is the article's conclusion?","Citizens can deliberate well, but it won't happen on its own",["Citizens can't deliberate, so experts must govern","Deliberation will spread on its own through social media","Representative democracy must be abolished"],"“The citizenry is quite capable of sound deliberation. But deliberative democratization will not just happen.”");
 m(6,"Reconstruction","How should the political reconstruction ideally be carried out?","Deliberatively and democratically, with citizens and leaders",["By social scientists and experts alone","By a strong leader with a clear mandate","By the courts, through constitutional rulings"],"“That political reconstruction itself would ideally be deliberative and democratic.”");
 
-vf(6,"The article blames social media per se for uncivil politics.",false,"Faux : the problem is how social media is implemented and organized.");
-vf(6,"Stuttgart 21 led to official guidelines making citizen deliberation compulsory for large infrastructure projects in Baden-Württemberg.",true,"Vrai.");
-vf(6,"According to the article, India constitutionalizes and China promotes local deliberative exercises.",true,"Vrai : not the other way round.");
-vf(6,"Deliberative development usually happens spontaneously.",false,"Faux : it is rare.");
-vf(6,"Introducing deliberative elements may sometimes slow decision-making down.",true,"Vrai : but it can also generate smart and sustainable solutions.");
-vf(6,"The Oregon Citizens' Initiative Review was imposed on the legislature by a citizens' protest.",false,"Faux : it was authorized by a legislature tired of ill-thought referendum measures.");
-vf(6,"The authors think deliberative democratization will happen on its own.",false,"Faux : “deliberative democratization will not just happen.”");
-vf(6,"A major improvement to the deliberative system would be to multiply opportunities for expression.",false,"Faux : processes are already overwhelmed by a surfeit of expression. The improvement is more moments of listening and reflection.");
-vf(6,"Governments may use deliberative moments as symbolic cover for business as usual.",true,"Vrai : one of the risks to stay vigilant about.");
+vf(6,"The article blames social media per se for uncivil politics.",false,"False: the problem is how social media is implemented and organized.");
+vf(6,"Stuttgart 21 led to official guidelines making citizen deliberation compulsory for large infrastructure projects in Baden-Württemberg.",true,"True.");
+vf(6,"According to the article, India constitutionalizes and China promotes local deliberative exercises.",true,"True: not the other way round.");
+vf(6,"Deliberative development usually happens spontaneously.",false,"False: it is rare.");
+vf(6,"Introducing deliberative elements may sometimes slow decision-making down.",true,"True: but it can also generate smart and sustainable solutions.");
+vf(6,"The Oregon Citizens' Initiative Review was imposed on the legislature by a citizens' protest.",false,"False: it was authorized by a legislature tired of ill-thought referendum measures.");
+vf(6,"The authors think deliberative democratization will happen on its own.",false,"False: “deliberative democratization will not just happen.”");
+vf(6,"A major improvement to the deliberative system would be to multiply opportunities for expression.",false,"False: processes are already overwhelmed by a surfeit of expression. The improvement is more moments of listening and reflection.");
+vf(6,"Governments may use deliberative moments as symbolic cover for business as usual.",true,"True: one of the risks to stay vigilant about.");
 
 ty(6,"Train-station project whose conflicts made citizen deliberation compulsory for big infrastructure in Baden-Württemberg",["Stuttgart 21","Stuttgart"],"Stuttgart 21.");
 ty(6,"US state with a Citizens' Initiative Review",["Oregon"],"Oregon.");
@@ -343,5 +343,5 @@ const FACTS=[
 [6,"delib","c","#Ichbinhier","European movement applying standards of evidence-based argument and civility","Ichbinhier"]
 ];
 
-return {id:"populism",title:"Training Quiz 7 · Sessions 14 & 15",kw:"sociologie sociology socio populism populisme deliberation délibération démocratie democracy Müller Muller Dryzek science politique training quiz 7 session 14 15",subject:"Müller, The Logic of Populism · Dryzek et al., The crisis of democracy and the science of deliberation",lang:"en",sess:SESS,tags:TAGS,unit:["partie","parties","une partie"],balance:true,Q,TQ,facts:FACTS};
+return {id:"populism",title:"Training Quiz 7 · Sessions 14 & 15",kw:"sociologie sociology socio populism populisme deliberation délibération démocratie democracy Müller Muller Dryzek science politique training quiz 7 session 14 15",subject:"Müller, The Logic of Populism · Dryzek et al., The crisis of democracy and the science of deliberation",lang:"en",sess:SESS,tags:TAGS,unit:["part","parts","a part"],balance:true,Q,TQ,facts:FACTS};
 })();
