@@ -1335,5 +1335,5 @@ OL.forEach(([y,city])=>{const q="Quelle ville a accueilli les Jeux olympiques d'
   mcq(7,"JO",q,city,[OL.map(x=>x[1])],e);typed(7,"JO",q,[city],e)});
 
 const ticker=uniq(C.map(c=>c.cap).concat(PT.map(x=>x[1]),BK.map(x=>x[0]),GO.map(x=>x[0]),FI.map(x=>x[0]))).filter(t=>t.length<=28);
-return {id:"culture",title:"Culture générale",subject:"Des questions sans fin sur 8 thèmes",lang:"fr",sess:SESS,tags:TAGS,unit:["thème","thèmes","un thème"],balance:true,Q,TQ,ticker};
+return {id:"culture",title:"Culture générale",kw:"culture G quiz général connaissances trivia",subject:"Des questions sans fin sur 8 thèmes",lang:"fr",sess:SESS,tags:TAGS,unit:["thème","thèmes","un thème"],balance:true,Q,TQ,ticker};
 })();

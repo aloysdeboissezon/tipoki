@@ -41,7 +41,13 @@
     </div>
     <div class="panel" id="pickPanel">
       <div class="steph"><span class="stepn">1</span><h2>Que veux-tu réviser ?</h2></div>
-      <div class="quizgrid" id="quizGrid"></div>
+      <div class="qsearch" role="search">
+        <svg class="qs-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
+        <input type="search" id="quizSearch" placeholder="Rechercher un quiz…" title="Titre, matière, chapitre ou mot-clé" aria-label="Rechercher un quiz" aria-controls="quizGrid" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
+        <button type="button" class="qs-clear" id="quizSearchClear" aria-label="Effacer la recherche" hidden>×</button>
+      </div>
+      <div class="quizgrid" id="quizGrid" aria-live="polite"></div>
+      <div class="qempty" id="quizEmpty" hidden><p>Aucun quiz trouvé pour «&nbsp;<b id="quizEmptyQ"></b>&nbsp;».</p><button type="button" class="linkbtn" id="quizEmptyClear">Effacer la recherche</button></div>
     </div>
     <div id="meHome">
     <div class="panel me-panel">

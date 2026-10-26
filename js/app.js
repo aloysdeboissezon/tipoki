@@ -676,18 +676,37 @@ async function openQuiz(id,btn){
   if(!ok){toast("Quiz introuvable");return}
   setQuizParam();show("topic");
 }
-function quizList(extra){const seen=new Set();return Object.keys(BUILTIN).map(id=>({id,title:BUILTIN[id]().title,subject:BUILTIN[id]().subject})).concat(myQuizzes(),extra||[]).filter(q=>!seen.has(q.id)&&seen.add(q.id))}
+function quizList(extra){const seen=new Set();return Object.keys(BUILTIN).map(id=>{const b=BUILTIN[id]();return {id,title:b.title,subject:b.subject,kw:b.kw,sess:b.sess,tags:b.tags}}).concat(myQuizzes(),extra||[]).filter(q=>!seen.has(q.id)&&seen.add(q.id))}
+// search: lowercase, no accents, punctuation as spaces, so "energie" finds "Énergie électrique"
+function fold(s){return String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()}
+function quizHay(q){return fold([q.title,q.subject,q.kw].concat(Object.values(q.sess||(q.data&&q.data.sess)||{}),Object.values(q.tags||{})).join(" "))}
 function renderQuizGrid(list){
   const box=$("quizGrid");box.textContent="";
-  list.forEach(q=>{const c=el("button","qcard");c.type="button";
+  list.forEach(q=>{const c=el("button","qcard");c.type="button";c.dataset.hay=quizHay(q);
     const ico=el("span","qico",(q.title||"?").trim().charAt(0).toUpperCase());ico.style.background="hsl("+hue(q.id||q.title||"")+" 90% 80%)";
     const t=el("span","qtxt");t.append(el("b",null,q.title));if(q.subject)t.append(el("small",null,q.subject));
     c.append(ico,t,el("span","qgo","›"));c.onclick=()=>openQuiz(q.id,c);box.appendChild(c)});
+  filterQuizzes();
 }
+// every typed word must appear somewhere in the quiz's title, subject, keywords or chapter names
+function filterQuizzes(){
+  const raw=$("quizSearch").value,words=fold(raw).split(" ").filter(Boolean);let n=0;
+  $("quizGrid").querySelectorAll(".qcard").forEach(c=>{const ok=words.every(w=>c.dataset.hay.includes(w));c.hidden=!ok;if(ok)n++});
+  $("quizSearchClear").hidden=!raw;
+  $("quizEmpty").hidden=n>0||!words.length;$("quizEmptyQ").textContent=raw.trim();
+}
+function clearQuizSearch(focus){$("quizSearch").value="";filterQuizzes();if(focus)$("quizSearch").focus()}
+$("quizSearch").addEventListener("input",filterQuizzes);
+$("quizSearch").addEventListener("keydown",e=>{
+  if(e.key==="Escape"&&$("quizSearch").value){e.preventDefault();clearQuizSearch(true)}
+  else if(e.key==="Enter"){e.preventDefault();$("quizSearch").blur()}
+});
+$("quizSearchClear").onclick=()=>clearQuizSearch(true);
+$("quizEmptyClear").onclick=()=>clearQuizSearch(true);
 async function renderMyQuizzes(){
   renderQuizGrid(quizList());
   if(!sb)return;
-  const {data}=await sb.from("quizzes").select("id,title").order("created_at",{ascending:false}).limit(50);
+  const {data}=await sb.from("quizzes").select("id,title,subject,sess:data->sess").order("created_at",{ascending:false}).limit(50);
   if(data&&data.length)renderQuizGrid(quizList(data));
 }
 $("makePanel").hidden=!MAKER_ON;
