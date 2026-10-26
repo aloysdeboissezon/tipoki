@@ -1,17 +1,17 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Tipoki · Révise en défiant tes potes</title>
-<meta name="description" content="Envoie ton cours, Tipoki en fait un quiz. Joue seul ou en multi avec tes potes.">
+<title>Tipoki · Study by challenging your friends</title>
+<meta name="description" content="Send in your notes and Tipoki turns them into a quiz. Play solo or with your friends.">
 <meta name="theme-color" content="#4B2FE0">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Tipoki">
-<meta property="og:title" content="Tipoki · Révise en défiant tes potes">
-<meta property="og:description" content="Envoie ton cours, Tipoki en fait un quiz. Joue seul ou en multi avec tes potes.">
+<meta property="og:title" content="Tipoki · Study by challenging your friends">
+<meta property="og:description" content="Send in your notes and Tipoki turns them into a quiz. Play solo or with your friends.">
 <meta property="og:image" content="/img/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Nunito:wght@500;600;700;800&display=swap">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/music.css">
-<!-- Vercel Web Analytics (pages vues, visiteurs) -->
+<!-- Vercel Web Analytics (page views, visitors) -->
 <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};</script>
 <script defer src="/_vercel/insights/script.js"></script>
 
@@ -29,43 +29,43 @@
 <body>
 <div class="wrap">
   <div class="top">
-    <a class="brand" id="brandHome" href="./" title="Retour à l'accueil"><img src="img/logo.svg" alt="Tipoki, retour à l'accueil" width="432" height="118"></a>
-    <div class="topr"><button id="soundBtn" aria-pressed="true" title="Activer / couper le son">Son</button><span class="label" id="status"></span></div>
+    <a class="brand" id="brandHome" href="./" title="Back to home"><img src="img/logo.svg" alt="Tipoki, back to home" width="432" height="118"></a>
+    <div class="topr"><button id="soundBtn" aria-pressed="true" title="Turn sound on / off">Sound</button><span class="label" id="status"></span></div>
   </div>
 
   <!-- HOME: 1) pick what to revise -->
   <section id="home" style="display:flex;flex-direction:column;gap:16px">
     <div class="hero">
-      <h1>Révise en battant tes potes.</h1>
-      <p>Choisis ce que tu veux réviser, puis joue seul ou en multi.</p>
+      <h1>Study by beating your friends.</h1>
+      <p>Pick what you want to study, then play solo or with friends.</p>
     </div>
     <div class="panel" id="pickPanel">
-      <div class="steph"><span class="stepn">1</span><h2>Que veux-tu réviser ?</h2></div>
+      <div class="steph"><span class="stepn">1</span><h2>What do you want to study?</h2></div>
       <div class="qsearch" role="search">
         <svg class="qs-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
-        <input type="search" id="quizSearch" placeholder="Rechercher un quiz…" title="Titre, matière, chapitre ou mot-clé" aria-label="Rechercher un quiz" aria-controls="quizGrid" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
-        <button type="button" class="qs-clear" id="quizSearchClear" aria-label="Effacer la recherche" hidden>×</button>
+        <input type="search" id="quizSearch" placeholder="Search quizzes…" title="Title, subject, chapter or keyword" aria-label="Search quizzes" aria-controls="quizGrid" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
+        <button type="button" class="qs-clear" id="quizSearchClear" aria-label="Clear search" hidden>×</button>
       </div>
       <div class="quizgrid" id="quizGrid" aria-live="polite"></div>
-      <div class="qempty" id="quizEmpty" hidden><p>Aucun quiz trouvé pour «&nbsp;<b id="quizEmptyQ"></b>&nbsp;».</p><button type="button" class="linkbtn" id="quizEmptyClear">Effacer la recherche</button></div>
+      <div class="qempty" id="quizEmpty" hidden><p>No quiz found for “<b id="quizEmptyQ"></b>”.</p><button type="button" class="linkbtn" id="quizEmptyClear">Clear search</button></div>
     </div>
     <div id="meHome">
     <div class="panel me-panel">
-      <label class="pfp" id="pfpBtn" title="Ajouter ta photo de profil"><input type="file" id="pfpIn" accept="image/*" hidden><span class="av big" id="pfpAv"></span><span class="pfp-add" aria-hidden="true">+</span></label>
+      <label class="pfp" id="pfpBtn" title="Add your profile picture"><input type="file" id="pfpIn" accept="image/*" hidden><span class="av big" id="pfpAv"></span><span class="pfp-add" aria-hidden="true">+</span></label>
       <div class="me-main">
-        <label class="label" for="nick">Ton prénom ou pseudo</label>
-        <input type="text" id="nick" maxlength="18" placeholder="Ex. Aloys" autocomplete="given-name">
-        <div class="me-sub"><button type="button" class="linkbtn" id="pfpPick">Ajouter une photo</button><button type="button" class="linkbtn" id="pfpDel" hidden>Retirer la photo</button></div>
+        <label class="label" for="nick">Your first name or nickname</label>
+        <input type="text" id="nick" maxlength="18" placeholder="E.g. Alex" autocomplete="given-name">
+        <div class="me-sub"><button type="button" class="linkbtn" id="pfpPick">Add a photo</button><button type="button" class="linkbtn" id="pfpDel" hidden>Remove photo</button></div>
         <p class="err" id="nickErr" hidden></p>
       </div>
     </div>
     </div>
     <div class="panel" id="joinPanel">
-      <h2>Un pote t'a donné un code&nbsp;?</h2>
-      <div class="joinrow"><input type="text" id="codeIn" class="codein" maxlength="4" placeholder="CODE" autocomplete="off" autocapitalize="characters" aria-label="Code de la partie"><button class="btn dark" id="joinBtn">Rejoindre</button></div>
+      <h2>Got a code from a friend?</h2>
+      <div class="joinrow"><input type="text" id="codeIn" class="codein" maxlength="4" placeholder="CODE" autocomplete="off" autocapitalize="characters" aria-label="Game code"><button class="btn dark" id="joinBtn">Join</button></div>
       <p class="err" id="joinErr" hidden></p>
-      <div class="label">Parties ouvertes</div>
-      <div class="games" id="openGames"><p class="muted">Aucune partie ouverte pour l'instant.</p></div>
+      <div class="label">Open games</div>
+      <div class="games" id="openGames"><p class="muted">No open games right now.</p></div>
     </div>
 
     <p class="note" id="multiNote" hidden></p>
@@ -73,27 +73,27 @@
 
   <!-- TOPIC: 2) settings, create / solo for the chosen quiz -->
   <section id="topic" hidden style="display:flex;flex-direction:column;gap:16px">
-    <div><button class="btn ghost back" id="topicBack">← Autres quiz</button></div>
+    <div><button class="btn ghost back" id="topicBack">← Other quizzes</button></div>
     <div class="panel bankpanel">
       <div class="bk-ico" id="bankIco" aria-hidden="true">?</div>
-      <div class="bk-main"><div class="muted" style="font-size:14px;font-weight:700">Tu révises</div><h2 id="bankTitle"></h2><div class="muted" id="bankSub"></div></div>
-      <div class="row"><button class="btn ghost" id="shareQuizBtn" hidden>Partager</button></div>
-      <p class="muted bk-foot"><span id="qCount"></span> questions : QCM, vrai/faux et réponses tapées (fautes tolérées). Plus tu réponds vite et juste, plus tu marques.</p>
+      <div class="bk-main"><div class="muted" style="font-size:14px;font-weight:700">You're studying</div><h2 id="bankTitle"></h2><div class="muted" id="bankSub"></div></div>
+      <div class="row"><button class="btn ghost" id="shareQuizBtn" hidden>Share</button></div>
+      <p class="muted bk-foot"><span id="qCount"></span> questions: multiple choice, true/false and typed answers (typos forgiven). The faster and more accurately you answer, the more you score.</p>
     </div>
     <div class="ticker" aria-hidden="true"><div id="tickerTxt"></div></div>
     <div id="meTopic"></div>
       <div class="panel" id="createPanel">
-        <div class="steph"><span class="stepn">2</span><h2>Règle ta partie</h2></div>
+        <div class="steph"><span class="stepn">2</span><h2>Set up your game</h2></div>
         <div class="optsbody setgrid">
           <div><div class="label" id="sessLbl">Sessions</div><div class="chips multi" id="sessChips"></div></div>
           <div><div class="label">Format</div><div class="chips" id="fmtChips"></div></div>
           <div><div class="label">Questions</div><div class="chips" id="lenChips"></div></div>
-          <div><div class="label">Temps par question</div><div class="chips" id="timeChips"></div></div>
+          <div><div class="label">Time per question</div><div class="chips" id="timeChips"></div></div>
         </div>
         <div class="row"><button class="btn ghost" id="missBtn" hidden></button></div>
         <div class="row actions">
-          <button class="btn big" id="createBtn">Créer la partie</button>
-          <button class="btn ghost" id="soloBtn">Jouer en solo</button>
+          <button class="btn big" id="createBtn">Create game</button>
+          <button class="btn ghost" id="soloBtn">Play solo</button>
         </div>
         <p class="err" id="createErr" hidden></p>
       </div>
@@ -102,12 +102,12 @@
   <!-- MAKE / PICK A QUIZ -->
   <section id="make" hidden style="display:flex;flex-direction:column;gap:16px">
     <div class="panel" id="makePanel">
-      <h2>Crée un quiz depuis ton cours</h2>
-      <p class="muted" style="margin:0">Dépose ton PDF (cours, slides, fiches) ou colle ton texte. L'IA en tire les notions clés et fabrique les questions.</p>
-      <div><label class="label" for="mkTitle">Nom du quiz</label><input type="text" id="mkTitle" maxlength="60" placeholder="Ex. Macroéconomie, chapitres 1 à 4" autocomplete="off"></div>
-      <label class="drop" id="mkDrop"><input type="file" id="mkFile" accept=".pdf,.txt,.md,application/pdf,text/plain" hidden><span id="mkFileTxt">Clique ou glisse un PDF ici (20 Mo max)</span></label>
-      <div><label class="label" for="mkText">Ou colle ton cours</label><textarea id="mkText" rows="7" placeholder="Colle ici tes notes, ton plan de cours, tes définitions…"></textarea></div>
-      <div class="row"><button class="btn big" id="mkGo">Générer le quiz</button></div>
+      <h2>Make a quiz from your notes</h2>
+      <p class="muted" style="margin:0">Drop in your PDF (notes, slides, study sheets) or paste your text. The AI picks out the key ideas and writes the questions.</p>
+      <div><label class="label" for="mkTitle">Quiz name</label><input type="text" id="mkTitle" maxlength="60" placeholder="E.g. Macroeconomics, chapters 1 to 4" autocomplete="off"></div>
+      <label class="drop" id="mkDrop"><input type="file" id="mkFile" accept=".pdf,.txt,.md,application/pdf,text/plain" hidden><span id="mkFileTxt">Click or drop a PDF here (20 MB max)</span></label>
+      <div><label class="label" for="mkText">Or paste your notes</label><textarea id="mkText" rows="7" placeholder="Paste your notes, course outline, definitions…"></textarea></div>
+      <div class="row"><button class="btn big" id="mkGo">Generate quiz</button></div>
       <p class="note" id="mkStatus" hidden></p>
       <p class="err" id="mkErr" hidden></p>
     </div>
@@ -115,16 +115,16 @@
 
   <!-- LOBBY -->
   <section id="lobby" class="panel" hidden>
-    <div class="label">Code de la partie</div>
+    <div class="label">Game code</div>
     <div class="bigcode" id="lobbyCode"></div>
     <p class="muted" id="lobbyInfo"></p>
-    <div class="invite"><button class="btn dark" id="inviteBtn">Copier le lien d'invitation</button><code id="inviteUrl"></code></div>
+    <div class="invite"><button class="btn dark" id="inviteBtn">Copy invite link</button><code id="inviteUrl"></code></div>
     <div class="label" id="lobbyCount"></div>
     <div class="players" id="lobbyPlayers"></div>
     <div class="row between">
-      <button class="btn ghost" id="lobbyLeave">Quitter</button>
-      <button class="btn big" id="lobbyStart" hidden>Lancer la partie</button>
-      <span class="waiting" id="lobbyWait" hidden>En attente de l'hôte…</span>
+      <button class="btn ghost" id="lobbyLeave">Leave</button>
+      <button class="btn big" id="lobbyStart" hidden>Start game</button>
+      <span class="waiting" id="lobbyWait" hidden>Waiting for the host…</span>
     </div>
   </section>
 
@@ -139,11 +139,11 @@
     <p class="qtext" id="qText"></p>
     <figure class="qimg" id="qImgBox" hidden><img id="qImg" alt=""><figcaption id="qHint"></figcaption></figure>
     <div class="tiles" id="qTiles"></div>
-    <div class="typed" id="qType" hidden><input type="text" id="qInput" placeholder="Tape ta réponse…" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="btn big" id="qSend">Valider</button></div>
+    <div class="typed" id="qType" hidden><input type="text" id="qInput" placeholder="Type your answer…" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="btn big" id="qSend">Submit</button></div>
     <p class="waiting" id="qWait" hidden></p>
-    <div class="players mini" id="qPlayers" aria-label="Joueurs ayant répondu"></div>
-    <div class="row end" id="qHostRow" hidden><button class="btn ghost" id="qSkip">Révéler maintenant</button></div>
-    <div class="row end" id="qTakeRow" hidden><span class="muted">L'hôte ne répond plus ?</span><button class="btn ghost" id="qTake">Prendre la main</button></div>
+    <div class="players mini" id="qPlayers" aria-label="Players who have answered"></div>
+    <div class="row end" id="qHostRow" hidden><button class="btn ghost" id="qSkip">Reveal now</button></div>
+    <div class="row end" id="qTakeRow" hidden><span class="muted">Host not responding?</span><button class="btn ghost" id="qTake">Take over</button></div>
   </section>
 
   <!-- REVEAL -->
@@ -154,43 +154,43 @@
     <p class="qtext" id="rText" style="font-size:clamp(18px,3.8vw,22px)"></p>
     <figure class="qimg small" id="rImgBox" hidden><img id="rImg" alt=""></figure>
     <div class="tiles" id="rTiles"></div>
-    <div id="rTyped" hidden style="display:flex;flex-direction:column;gap:10px"><div class="label">Réponse attendue</div><div class="goodans" id="rGood"></div><div class="ansl" id="rAns"></div></div>
+    <div id="rTyped" hidden style="display:flex;flex-direction:column;gap:10px"><div class="label">Expected answer</div><div class="goodans" id="rGood"></div><div class="ansl" id="rAns"></div></div>
     <p class="fast" id="rFast" hidden></p>
     <div class="expl"><p id="rExpl"></p></div>
-    <div class="label">Classement</div>
+    <div class="label">Leaderboard</div>
     <div class="board" id="rBoard"></div>
     <div class="row end">
-      <span class="waiting" id="rWait" hidden>L'hôte lance la suite…</span>
-      <button class="btn ghost" id="rEnd" hidden>Terminer la partie</button>
-      <button class="btn big" id="rNext" hidden>Suivante</button>
+      <span class="waiting" id="rWait" hidden>The host is starting the next one…</span>
+      <button class="btn ghost" id="rEnd" hidden>End game</button>
+      <button class="btn big" id="rNext" hidden>Next</button>
     </div>
   </section>
 
   <!-- END -->
   <section id="end" class="panel" hidden>
-    <div class="label">Résultats finaux</div>
+    <div class="label">Final results</div>
     <h1 id="endTitle"></h1>
     <p class="muted" id="endSess"></p>
     <div class="podium" id="podium"></div>
     <div class="board" id="endBoard"></div>
     <div class="row">
-      <button class="btn big" id="endAgain" hidden>Revanche</button>
-      <button class="btn ghost" id="endMissBtn" hidden>Rejouer mes erreurs</button>
-      <button class="btn ghost" id="endHome">Accueil</button>
-      <span class="waiting" id="endWait" hidden>L'hôte peut lancer une revanche…</span>
+      <button class="btn big" id="endAgain" hidden>Rematch</button>
+      <button class="btn ghost" id="endMissBtn" hidden>Replay my mistakes</button>
+      <button class="btn ghost" id="endHome">Home</button>
+      <span class="waiting" id="endWait" hidden>The host can start a rematch…</span>
     </div>
-    <div id="endMissWrap"><div class="label" style="margin-top:6px">Tes erreurs à revoir</div><div class="miss" id="endMiss"></div></div>
+    <div id="endMissWrap"><div class="label" style="margin-top:6px">Your mistakes to review</div><div class="miss" id="endMiss"></div></div>
   </section>
 </div>
 
 <!-- PROFILE PICTURE CROPPER -->
 <div class="crop" id="crop" hidden role="dialog" aria-modal="true" aria-labelledby="cropTitle">
   <div class="crop-card">
-    <h2 id="cropTitle">Ta photo</h2>
-    <p class="muted crop-help">Glisse pour déplacer, pince ou utilise le curseur pour zoomer.</p>
+    <h2 id="cropTitle">Your photo</h2>
+    <p class="muted crop-help">Drag to move, pinch or use the slider to zoom.</p>
     <div class="crop-stage" id="cropStage"><canvas id="cropCv"></canvas><div class="crop-mask" aria-hidden="true"></div></div>
     <input type="range" id="cropZoom" min="1" max="4" step="0.01" value="1" aria-label="Zoom">
-    <div class="row crop-actions"><button type="button" class="btn ghost" id="cropCancel">Annuler</button><button type="button" class="btn" id="cropOk">Valider</button></div>
+    <div class="row crop-actions"><button type="button" class="btn ghost" id="cropCancel">Cancel</button><button type="button" class="btn" id="cropOk">Done</button></div>
   </div>
 </div>
 

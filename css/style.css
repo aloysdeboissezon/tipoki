@@ -207,8 +207,8 @@ label.label{display:block;margin-bottom:6px}
 .tile.mine{opacity:.9;filter:none;outline:4px solid var(--bad);outline-offset:4px}
 /* the tag straddles the tile's top edge so it never covers the letter, the answer or the player count */
 .tile.right::after,.tile.mine::after{position:absolute;right:10px;top:-12px;font-size:12px;font-weight:800;line-height:1.2;padding:3px 9px;border-radius:999px;background:#fff;box-shadow:0 0 0 2px currentColor;white-space:nowrap}
-.tile.right::after{content:"Bonne réponse";color:var(--ok)}
-.tile.mine::after{content:"Ta réponse";color:var(--bad)}
+.tile.right::after{content:"Correct answer";color:var(--ok)}
+.tile.mine::after{content:"Your answer";color:var(--bad)}
 @media (max-width:560px){
   .hero{gap:8px}
   .hero h1{font-size:34px}
