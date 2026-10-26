@@ -837,5 +837,5 @@ const FACTS=[
 [10,"s10","p","Jürgen Habermas","Modernity as an unfinished project","Habermas"],
 [10,"s10","c","Detraditionalisation","Traditions lose authority and people build 'DIY biographies'","detraditionalization"]
 ];
-return {id:"socio",title:"Socio Trivia · Sessions 1–10",subject:"Sociopolitical Context of Business",lang:"en",sess:SESS,Q,TQ,facts:FACTS};
+return {id:"socio",title:"Socio Trivia · Sessions 1–10",kw:"sociologie sociology socio sciences sociales société business",subject:"Sociopolitical Context of Business",lang:"en",sess:SESS,Q,TQ,facts:FACTS};
 })();

@@ -280,5 +280,5 @@ const FACTS=[
 [1,"mots","p","James Maxwell","Théorise l'induction électromagnétique en 1865","Maxwell;James Clerk Maxwell"]
 ];
 
-return {id:"energie",title:"Énergie électrique · Chapitre 1",subject:"Deux siècles d'énergie électrique : alternateur, photovoltaïque, calculs",lang:"fr",sess:SESS,tags:TAGS,unit:["partie","parties","une partie"],balance:true,Q,TQ,facts:FACTS};
+return {id:"energie",title:"Énergie électrique · Chapitre 1",kw:"physique électricité sciences physiques STI énergie renouvelable solaire",subject:"Deux siècles d'énergie électrique : alternateur, photovoltaïque, calculs",lang:"fr",sess:SESS,tags:TAGS,unit:["partie","parties","une partie"],balance:true,Q,TQ,facts:FACTS};
 })();
