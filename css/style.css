@@ -440,3 +440,27 @@ body.noscroll{overflow:hidden}
   .fc-acts .fc-prev{flex-basis:50px}
   .fc-face{padding:22px 16px}
 }
+
+/* ---------- class stats (teachers) ---------- */
+.st-h1{font-size:clamp(28px,6vw,44px);overflow-wrap:anywhere}
+.st-gate{display:flex;flex-direction:column;gap:8px}
+.st-gate .row input{flex:1 1 180px}
+.st-body{display:flex;flex-direction:column;gap:18px}
+.st-body>div:not(.st-tiles){display:flex;flex-direction:column;gap:10px}
+.st-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.st-tile{background:var(--hl-soft);border-radius:18px;padding:14px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.st-tile b{font-family:var(--f-display);font-weight:800;font-size:clamp(24px,6vw,34px);color:var(--hl);line-height:1.05}
+.st-tile span{font-size:14px;font-weight:700;color:var(--ink)}
+@media (max-width:560px){.st-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.st-days{display:flex;align-items:flex-end;gap:3px;height:90px;border-bottom:2px solid var(--line);padding-bottom:2px}
+.st-bar{flex:1 1 0;min-width:0;height:calc(var(--h)*100%);min-height:3px;background:var(--hl);border-radius:4px 4px 0 0}
+.st-bar.zero{background:var(--line)}
+.st-sess{display:flex;flex-direction:column;gap:8px}
+.st-row{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(60px,1fr) 48px;gap:10px;align-items:center;font-size:15px}
+.st-row .nm{font-weight:600;line-height:1.25;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere}
+.st-row .v{text-align:right;font-weight:800}
+.st-meter{height:12px;border-radius:99px;background:var(--line);overflow:hidden;position:relative}
+.st-meter::after{content:"";position:absolute;inset:0;width:calc(var(--p)*100%);background:var(--ok);border-radius:99px}
+.st-rate{float:right;color:var(--bad);font-weight:800}
+.st-n{font-size:13px}
+.st-note{font-size:13px}
