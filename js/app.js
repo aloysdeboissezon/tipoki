@@ -304,7 +304,7 @@ $("codeIn").addEventListener("keydown",e=>{if(e.key==="Enter")$("joinBtn").click
 $("joinBtn").onclick=()=>{const c=$("codeIn").value.trim();if(c.length!==4){showErr("joinErr","The code is 4 letters.");return}joinGame(c)};
 $("createBtn").onclick=createGame;
 $("soloBtn").onclick=()=>startSolo();
-$("missBtn").onclick=()=>{const deck=shuffle(missBank()).slice(0,30).map(k=>k[0]==="t"?{t:+k.slice(1)}:{id:+k.slice(1),o:Q[+k.slice(1)].tf?tfOrder(Q[+k.slice(1)]):shuffle([0,1,2,3])}).filter(d=>d.t!=null?TQ[d.t]:Q[d.id]);if(deck.length)startSolo(deck)};
+$("missBtn").onclick=()=>playMissed();
 function showErr(id,msg){const e=$(id);e.style.color="";e.textContent=msg;e.hidden=!msg}
 
 // ---------- images (public-domain portraits via Wikipedia) ----------
@@ -362,7 +362,16 @@ function writeGame(patch){
 function missKey(qi){const d=G.deck[qi];return d.t!=null?"t"+d.t:"m"+d.id}
 function missBank(){try{return JSON.parse(lsGet(lsKey("miss"))||"[]")}catch(e){return []}}
 function trackMiss(qi,ok){const k=missKey(qi);let b=missBank().filter(x=>x!==k);if(!ok)b.push(k);lsSet(lsKey("miss"),JSON.stringify(b.slice(-300)));renderMissBtn()}
-function renderMissBtn(){const n=missBank().length;const b=$("missBtn");b.hidden=!n;b.textContent="Review my mistakes ("+n+")"}
+// missed questions bank: keys "m<id>" / "t<id>" of questions answered wrong, a key leaves as soon as it is answered right
+function missLive(){return missBank().filter(k=>k[0]==="t"?TQ[+k.slice(1)]:Q[+k.slice(1)])}
+function missItem(k){if(k[0]==="t")return {t:+k.slice(1)};const id=+k.slice(1);return {id,o:Q[id].tf?tfOrder(Q[id]):shuffle([0,1,2,3])}}
+function playMissed(first){const all=missLive(),f=(first||[]).filter(k=>all.includes(k));
+  const keys=shuffle(f).concat(shuffle(all.filter(k=>!f.includes(k)))).slice(0,Math.max(MISS_RUN,f.length));
+  if(keys.length)startSolo(keys.map(missItem),{miss:all.length})}
+const MISS_RUN=30;
+function renderMissBtn(){const n=missLive().length;$("missPanel").hidden=!n;$("missN").textContent=n;
+  $("missTitle").textContent=n===1?"1 missed question":n+" missed questions";
+  $("missBtn").textContent=n>MISS_RUN?"Replay "+MISS_RUN:"Replay "+(n===1?"it":"them")}
 function writeAnswer(qi,entry){trackMiss(qi,isRight(entry,qi));
   P[me]={...(P[me]||{nick:myNick(),joined:Date.now()}),ans:{...((P[me]||{}).ans||{}),[qi]:entry}};onPlayers();
   if(mode==="solo")return;
@@ -440,11 +449,12 @@ async function joinGame(c){
   await loadPlayers();
   onGame(G);
 }
-function startSolo(customDeck){
+function startSolo(customDeck,opt){
   if(!customDeck&&!settings.sess.size){showErr("createErr","Choose at least "+unit(2)+".");return}
   leaveGame(true);
   mode="solo";code=null;
   G={host:me,status:"q",qi:0,deck:customDeck||buildDeck(),T:settings.T,created:Date.now(),seq:1,inf:!customDeck&&settings.len===LEN_INF,review:!!customDeck,sess:[...settings.sess],fmt:settings.fmt};
+  if(opt&&opt.miss)G.miss=opt.miss;   // replaying the missed questions: remembers how many there were
   P={[me]:{nick:myNick(),joined:Date.now(),ans:{}}};local={qi:-1,shownAt:0,revealing:false,lastStatus:null};
   onGame(G);
 }
@@ -630,6 +640,8 @@ function renderReveal(){
   if(local.sfxQ!==G.qi){local.sfxQ=G.qi;if(a&&isRight(a,G.qi)){sfx("ok");buzz(40)}else if(!late){sfx("bad");buzz([60,40,60])}}
   const winners=Object.keys(P).map(id=>({id,a:P[id].ans&&P[id].ans[G.qi]})).filter(x=>isRight(x.a,G.qi)).sort((x,y)=>x.a.ms-y.a.ms);
   $("rFast").hidden=mode!=="multi"||!winners.length;if(winners.length)$("rFast").textContent="Fastest: "+nameOf(winners[0].id)+" in "+(winners[0].a.ms/1000).toFixed(1)+" s";
+  const ok=isRight(a,G.qi);$("rMiss").hidden=!G.miss||!a;$("rMiss").className="missnote "+(ok?"ok":"bad");
+  $("rMiss").textContent=ok?"✓ Off your missed questions list":"Still on your missed questions list";
   if(late&&!a){v.textContent="You're in! You'll play from the next question";v.className="verdict late"}
   else if(isRight(a,G.qi)){const r=scoreRun(me,G.qi);v.textContent="Correct · +"+r.gain+(r.streak>=2?" · streak ×"+r.streak:"");if(local.confQ!==G.qi){local.confQ=G.qi;confetti(r.streak>=3?120:60)}v.className="verdict ok pop"}
   else if(!a){v.textContent="No answer";v.className="verdict bad pop"}
@@ -689,9 +701,16 @@ function renderEnd(){
     const x=el("div");x.append(el("div","label",sLabel(q.s)+" · "+(d.t!=null?"Typed answer":q.t)),el("div",null,q.q),el("div","a","→ "+(d.t!=null?q.a[0]:q.o[q.a])));miss.appendChild(x)});
   $("endMissWrap").hidden=!miss.children.length;
   $("endAgain").hidden=!isHost();$("endAgain").textContent=mode==="solo"?"Play again":"Rematch";$("endWait").hidden=isHost()||mode!=="multi";
-  $("endMissBtn").hidden=!miss.children.length;
+  const k=miss.children.length,n=missLive().length;
+  $("endBankBtn").hidden=!n;$("endBankBtn").textContent="Replay my missed questions ("+n+")";
+  $("endMissBtn").hidden=!k||k>=n||G.miss;$("endMissBtn").textContent="Replay this game's "+(k===1?"mistake":k+" mistakes");
+  if(G.miss){const fixed=G.deck.length-k;   // a missed-questions replay: say how much of the list got cleared
+    $("endAgain").hidden=!!n;   // replaying what is left comes first
+    $("endTitle").textContent=n?fixed+" / "+G.deck.length+" cleared":"All cleared!";
+    $("endSess").textContent=n?(n===1?"1 missed question left":n+" missed questions left")+". Answer one right and it leaves the list.":"No missed questions left on this quiz. Nice work."}
 }
 $("endHome").onclick=()=>leaveGame(false);
+$("endBankBtn").onclick=()=>playMissed(G.deck.map((d,i)=>i<(mode==="multi"&&local.joinQi||0)||isRight(P[me]&&P[me].ans&&P[me].ans[i],i)?null:d.t!=null?"t"+d.t:"m"+d.id).filter(Boolean));
 $("endMissBtn").onclick=()=>{const from=mode==="multi"&&local.joinQi||0;const deck=G.deck.filter((d,i)=>i>=from&&!isRight(P[me]&&P[me].ans&&P[me].ans[i],i)).map(d=>d.t!=null?{t:d.t}:{id:d.id,o:shuffle(d.o)});
   const fix=deck.map(d=>d.t==null&&Q[d.id].tf?{id:d.id,o:tfOrder(Q[d.id])}:d);if(fix.length)startSolo(shuffle(fix))};
 $("endAgain").onclick=async()=>{

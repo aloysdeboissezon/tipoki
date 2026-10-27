@@ -480,3 +480,13 @@ body.noscroll{overflow:hidden}
 .st-note{font-size:13px}
 .ach.pop{animation:zoomIn .3s both}
 .verdict.late{font-size:clamp(20px,4.5vw,26px);line-height:1.25;letter-spacing:0;color:var(--hl);background:var(--hl-soft)}
+/* missed questions: shortcut on the quiz page + note on the reveal of a replay */
+.misspanel{flex-direction:row;flex-wrap:wrap;align-items:center;gap:12px 14px;border:2px solid var(--bad-bg)}
+.misspanel .ms-n{flex:none;min-width:52px;height:52px;padding:0 10px;border-radius:16px;background:var(--bad-bg);color:var(--bad);display:grid;place-items:center;font:800 24px var(--f-display)}
+.misspanel .ms-main{flex:1 1 180px;min-width:0}
+.misspanel h2{font-size:19px;margin:0}
+.misspanel .muted{font-size:14px}
+.misspanel .btn{flex:none;min-height:44px}
+@media (max-width:480px){.misspanel .btn{flex:1 1 100%}}
+.missnote{margin:0;font-size:14px;font-weight:800}
+.missnote.ok{color:var(--ok)}.missnote.bad{color:var(--muted)}
