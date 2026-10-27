@@ -1,0 +1,10 @@
+/* weak points panel: same family as the missed questions card, in the violet of the app */
+.weakpanel{flex-direction:row;flex-wrap:wrap;align-items:center;gap:12px 14px;border:2px solid var(--hl-soft)}
+.weakpanel .wk-ico{flex:none;align-self:flex-start;width:52px;height:52px;border-radius:16px;background:var(--hl-soft);position:relative}
+.weakpanel .wk-ico::before{content:"";position:absolute;inset:13px;border-radius:50%;border:3px solid var(--hl);box-shadow:inset 0 0 0 4px var(--hl-soft),inset 0 0 0 7px var(--hl)}
+.weakpanel .wk-main{flex:1 1 180px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.weakpanel h2{font-size:19px;margin:0}
+.weakpanel .muted{font-size:14px}
+.weakpanel .chips{margin-top:2px}
+.weakpanel .btn{flex:none;min-height:44px}
+@media (max-width:480px){.weakpanel .btn{flex:1 1 100%}}

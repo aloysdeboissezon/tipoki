@@ -20,7 +20,7 @@ let ALL_S=[];
 // current question bank (built-in socio, or a quiz generated from someone's course)
 let BANK=null,SESS={},Q=[],TQ=[],NHQ=0,NHT=0;
 const LEN_INF="inf";
-let settings={sess:new Set(),len:15,T:20,fmt:"mix",fcSide:"term",fcSet:"all",fcOrd:"shuffle"};
+let settings={sess:new Set(),len:15,T:20,fmt:"mix",fcSide:"term",fcSet:"due",fcOrd:"shuffle"};
 let writeChain=Promise.resolve();
 
 // ---------- backend (Supabase) ----------
@@ -827,27 +827,39 @@ document.addEventListener("keydown",e=>{
 // ---------- flashcards (built from the quiz's facts: term on one side, definition on the other) ----------
 let FC={deck:[],i:0,flip:false,res:{}};
 function fcStore(){try{return JSON.parse(lsGet(lsKey("cards"))||"{}")}catch(e){return {}}}   // term -> 1 got it, 0 not yet
-function fcMark(f,ok){const st=fcStore();st[f[3]]=ok?1:0;lsSet(lsKey("cards"),JSON.stringify(st));markStudyDay()}
+// spaced repetition (Leitner boxes) kept apart from the 1/0 above: term -> {b: box, d: due timestamp, t: last review}
+const FC_GAPS=[0,1,3,7,16,35],FC_SOON=10*60e3,FC_DAY=864e5;   // days between reviews per box; a missed card is back in 10 min
+function fcSrStore(){try{return JSON.parse(lsGet(lsKey("cards-sr"))||"{}")}catch(e){return {}}}
+function fcDue(f,sr){const e=sr[f[3]];return !e||e.d<=Date.now()}   // never scheduled (new, or studied before this update) = due
+function fcSchedule(f,ok){const sr=fcSrStore(),st=fcStore(),e=sr[f[3]],now=Date.now();
+  let b=e?e.b:(st[f[3]]===1?1:0);b=ok?Math.min(b+1,FC_GAPS.length-1):0;
+  sr[f[3]]={b,d:now+(ok?FC_GAPS[b]*FC_DAY:FC_SOON),t:now};lsSet(lsKey("cards-sr"),JSON.stringify(sr))}
+function fcWhen(d){const m=Math.round((d-Date.now())/6e4);return m<=0?"now":m<60?"in "+m+" min":m<2880?"in "+Math.round(m/60)+" h":"in "+Math.round(m/1440)+" days"}
+function fcMark(f,ok){fcSchedule(f,ok);const st=fcStore();st[f[3]]=ok?1:0;lsSet(lsKey("cards"),JSON.stringify(st));markStudyDay()}
 function fcPool(){return (BANK.facts||[]).filter(f=>settings.sess.has(Number(f[0])))}
 function fcPick(){const st=fcStore(),pool=fcPool();
+  if(settings.fcSet==="due"){const sr=fcSrStore();return pool.filter(f=>fcDue(f,sr))}
   return settings.fcSet==="todo"?pool.filter(f=>st[f[3]]!==1):settings.fcSet==="bad"?pool.filter(f=>st[f[3]]===0):pool}
 function renderCardsPanel(){
   const has=!!(BANK&&BANK.facts&&BANK.facts.length);$("cardsPanel").hidden=$("cardsJump").hidden=!has;if(!has)return;
   const st=fcStore(),pool=fcPool(),nTodo=pool.filter(f=>st[f[3]]!==1).length,nBad=pool.filter(f=>st[f[3]]===0).length;
-  if(settings.fcSet==="bad"&&!nBad)settings.fcSet="all";
+  const sr=fcSrStore(),nDue=pool.filter(f=>fcDue(f,sr)).length;
+  if(settings.fcSet==="bad"&&!nBad||settings.fcSet==="due"&&!nDue)settings.fcSet="all";
   $("fcUnits").textContent=unit(1);
   const chips=(box,key,opts)=>{const c=$(box);c.textContent="";opts.forEach(([k,l,t])=>{const b=el("button","chip",l);if(t)b.title=t;b.setAttribute("aria-pressed",settings[key]===k);b.onclick=()=>{settings[key]=k;renderCardsPanel()};c.appendChild(b)})};
   chips("fcSideChips","fcSide",[["term","Term"],["def","Definition"]]);
-  const sets=[["all","All ("+pool.length+")"],["todo","Not known yet ("+nTodo+")","Skips the cards you marked “Got it”"]];
+  const sets=[["due","Due now ("+nDue+")","Cards you have not seen, plus the ones whose review time has come"],["all","All ("+pool.length+")"],["todo","Not known yet ("+nTodo+")","Skips the cards you marked “Got it”"]];
   if(nBad)sets.push(["bad","To review ("+nBad+")","Only the cards you marked “Not yet”"]);
   chips("fcSetChips","fcSet",sets);
+  const later=pool.map(f=>sr[f[3]]).filter(e=>e&&e.d>Date.now()).map(e=>e.d);
+  $("fcNext").textContent=!nDue&&later.length?"All caught up! Next review "+fcWhen(Math.min(...later))+".":"";
   chips("fcOrdChips","fcOrd",[["shuffle","Shuffled"],["course","Course order"]]);
   const n=fcPick().length;$("fcGo").textContent=n?"Study "+n+" card"+(n>1?"s":""):"Study flashcards";
   showErr("fcErr","");
 }
 function startCards(list){
   if(!list){if(!settings.sess.size){showErr("fcErr","Choose at least "+unit(2)+".");return}
-    list=fcPick();if(!list.length){showErr("fcErr",settings.fcSet==="all"?"No cards in these "+unit(1)+".":"You know all these cards. Pick “All” to go through them again.");return}}
+    list=fcPick();if(!list.length){showErr("fcErr",settings.fcSet==="all"?"No cards in these "+unit(1)+".":"Nothing to review right now. Pick “All” to go through them again.");return}}
   list=settings.fcOrd==="course"?list.slice().sort((a,b)=>a[0]-b[0]):shuffle(list);
   FC={deck:list,i:0,flip:false,res:{}};
   show("cards");renderCard();
