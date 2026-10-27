@@ -21,6 +21,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Nunito:wght@500;600;700;800&display=swap">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/music.css">
+<link rel="stylesheet" href="css/exam.css">
 <!-- Vercel Web Analytics (page views, visitors) -->
 <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};</script>
 <script defer src="/_vercel/insights/script.js"></script>
@@ -77,7 +78,7 @@
     <div class="panel bankpanel">
       <div class="bk-ico" id="bankIco" aria-hidden="true">?</div>
       <div class="bk-main"><div class="muted" style="font-size:14px;font-weight:700">You're studying</div><h2 id="bankTitle"></h2><div class="muted" id="bankSub"></div></div>
-      <div class="row"><button class="btn ghost" id="cardsJump" hidden>Flashcards</button><button class="btn ghost" id="shareQuizBtn" hidden>Share</button></div>
+      <div class="row"><button class="btn ghost" id="examJump">Exam</button><button class="btn ghost" id="cardsJump" hidden>Flashcards</button><button class="btn ghost" id="shareQuizBtn" hidden>Share</button></div>
       <p class="muted bk-foot"><span id="qCount"></span> questions: multiple choice, true/false and typed answers (typos forgiven). The faster and more accurately you answer, the more you score.</p>
     </div>
     <div class="panel misspanel" id="missPanel" hidden>
@@ -100,6 +101,17 @@
           <button class="btn ghost" id="soloBtn">Play solo</button>
         </div>
         <p class="err" id="createErr" hidden></p>
+      </div>
+      <div class="panel" id="examPanel" hidden>
+        <div class="steph"><span class="stepn ex-ico" aria-hidden="true"></span><h2>Exam mode</h2></div>
+        <p class="muted ex-intro">Like the real thing: random questions from the <span id="exUnits">sessions</span> and format picked above, one clock for the whole exam, no corrections until you hand in. You get a grade out of 20.</p>
+        <div class="optsbody setgrid ex-set">
+          <div><div class="label">Questions</div><div class="chips" id="exLenChips"></div></div>
+          <div><div class="label">Time per question</div><div class="chips" id="exPaceChips"></div></div>
+        </div>
+        <p class="ex-sum"><span id="exSum"></span><span class="ex-best" id="exBest" hidden></span></p>
+        <div class="row actions"><button class="btn dark big" id="exGo">Start the exam</button></div>
+        <p class="err" id="exErr" hidden></p>
       </div>
       <div class="panel" id="cardsPanel" hidden>
         <div class="steph"><span class="stepn fc-ico" aria-hidden="true"></span><h2>Study with flashcards</h2></div>
@@ -155,6 +167,38 @@
         <button type="button" class="btn ghost" id="fcRestart">Start over</button>
         <button type="button" class="btn ghost" id="fcHome">Back to the quiz</button>
       </div>
+    </div>
+  </section>
+
+  <!-- EXAM -->
+  <section id="exam" class="panel" hidden>
+    <div id="exPlay" class="ex-play">
+      <div class="hud"><div class="row"><span class="stag" id="exSess"></span><span class="label" id="exNum"></span></div><span class="ex-clock" id="exClock" role="timer" aria-label="Time left">--:--</span></div>
+      <div class="tbar"><i id="exBar"></i></div>
+      <p class="qtext ex-q" id="exText"></p>
+      <figure class="qimg" id="exImgBox" hidden><img id="exImg" alt=""><figcaption id="exHint"></figcaption></figure>
+      <div class="tiles ex-tiles" id="exTiles"></div>
+      <div class="typed" id="exType" hidden><input type="text" id="exInput" placeholder="Type your answer…" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="next" aria-label="Your answer"></div>
+      <div class="ex-nav"><button type="button" class="btn ghost" id="exPrev">← Previous</button><button type="button" class="btn" id="exNext">Next →</button></div>
+      <div class="ex-confirm" id="exConfirm" hidden role="alertdialog" aria-labelledby="exConfirmTxt"><p id="exConfirmTxt"></p><div class="row"><button type="button" class="btn ghost" id="exConfirmNo">Keep going</button><button type="button" class="btn dark" id="exConfirmOk">Hand in</button></div></div>
+      <details class="ex-map"><summary><span>All questions · <span id="exLeft"></span></span></summary><div class="ex-grid" id="exGrid"></div></details>
+      <div class="row between ex-foot"><button type="button" class="linkbtn" id="exQuit">Quit the exam</button><button type="button" class="btn ghost" id="exSubmit">Hand in now</button></div>
+    </div>
+    <div id="exDone" class="ex-done" hidden>
+      <div class="label">Exam results</div>
+      <p class="ex-timeup" id="exTimeUp" hidden>Time's up! Your answers were handed in.</p>
+      <div class="ex-grade" id="exGradeBox"><b id="exGrade"></b><span>/20</span></div>
+      <h2 id="exVerdict"></h2>
+      <div class="ex-stats"><div class="fc-stat ok"><b id="exOk">0</b><span>Correct</span></div><div class="fc-stat bad"><b id="exBad">0</b><span>Wrong</span></div><div class="fc-stat blank"><b id="exBlank">0</b><span>Blank</span></div></div>
+      <p class="muted" id="exMeta"></p>
+      <div class="row actions">
+        <button type="button" class="btn big" id="exRetake">New exam</button>
+        <button type="button" class="btn ghost" id="exMissBtn">Replay my mistakes</button>
+        <button type="button" class="btn ghost" id="exHome">Back to the quiz</button>
+      </div>
+      <div class="label">Review</div>
+      <div class="chips" id="exRevChips"></div>
+      <div class="ex-rev" id="exRev"></div>
     </div>
   </section>
 
@@ -271,6 +315,7 @@
 <script src="js/banks/populism.js"></script>
 <script src="js/app.js"></script>
 <script src="js/stats.js"></script>
+<script src="js/exam.js"></script>
 <script src="js/music.js"></script>
 
 </body>
