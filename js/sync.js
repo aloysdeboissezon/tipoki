@@ -5,7 +5,7 @@
 (()=>{
 if(typeof sb==="undefined"||!sb)return;   // no backend: the app stays local-only
 const ACCT="tpk-sync",DIRTY="tpk-sync-dirty";
-const NOSYNC=new Set(["socio-pid","socio-sound"]);   // per device
+const NOSYNC=new Set(["socio-pid","socio-sound","tpk-theme","tpk-resume","tpk-sid"]);   // per device (a paused solo game stays on its device)
 function synced(k){return /^(socio-|tpk-)/.test(k)&&!NOSYNC.has(k)&&!k.startsWith(ACCT)}
 const S=Storage.prototype,oGet=S.getItem,oSet=S.setItem,oDel=S.removeItem;
 function ls(){try{return window.localStorage}catch(e){return null}}
@@ -38,10 +38,17 @@ function mergeJ(a,b){   // a = this device, b = online
   if(a&&b&&typeof a==="object"&&typeof b==="object"&&!Array.isArray(a)&&!Array.isArray(b)){
     const o={...b};for(const k in a)o[k]=k in b&&b[k]&&typeof b[k]==="object"?mergeJ(a[k],b[k]):a[k];return o}
   return a}
+// keys whose generic merge would be wrong: best score = the better game, study days and exam history stay in order
+const better=(a,b)=>!b||a.c*b.n>b.c*a.n||(a.c*b.n===b.c*a.n&&a.pts>b.pts);
+function special(k,a,b){
+  if(k==="tpk-stats"){const best={...(b.best||{})};for(const id in a.best||{})if(better(a.best[id],best[id]))best[id]=a.best[id];
+    return {...b,...a,best,days:[...new Set([...(b.days||[]),...(a.days||[])])].sort().slice(-400)}}
+  if(/-exam(-|$)/.test(k)&&Array.isArray(a)&&Array.isArray(b))return mergeJ(a,b).sort((x,y)=>(y.at||0)-(x.at||0)).slice(0,20);
+  return mergeJ(a,b)}
 function merge(loc,net){const o={...net};
   for(const k in loc){const l=loc[k],n=net[k];
     if(n==null||n===l||l==="")o[k]=n==null||l!==""?l:n;
-    else{try{o[k]=JSON.stringify(mergeJ(JSON.parse(l),JSON.parse(n)))}catch(e){o[k]=l}}}
+    else{try{o[k]=JSON.stringify(special(k,JSON.parse(l),JSON.parse(n)))}catch(e){o[k]=l}}}
   return o}
 function same(a,b){const ka=Object.keys(a),kb=Object.keys(b);return ka.length===kb.length&&ka.every(k=>a[k]===b[k])}
 
@@ -49,7 +56,8 @@ function same(a,b){const ka=Object.keys(a),kb=Object.keys(b);return ka.length===
 function refreshApp(){const t=f=>{try{f()}catch(e){}};
   t(()=>{if(document.activeElement!==$("nick"))$("nick").value=get("socio-nick")||""});
   t(()=>{const a=get("tpk-avatar");if(a)avs[me]=a;else delete avs[me]});
-  t(renderMe);t(renderMissBtn);t(renderCardsPanel);t(renderMyQuizzes)}
+  t(renderMe);t(renderMissBtn);t(renderCardsPanel);t(renderMyQuizzes);
+  t(()=>renderProgressUI());t(()=>{if(!$("exam")||$("exam").hidden)renderExamPanel()})}   // best scores / streak and exam history, from other features
 
 async function rpc(fn,args){const {data,error}=await sb.rpc(fn,args);
   if(error)throw new Error(/^[a-z_]+$/.test(error.message||"")?error.message:"network");
