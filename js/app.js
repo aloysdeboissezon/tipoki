@@ -428,7 +428,7 @@ function startSolo(customDeck){
   if(!customDeck&&!settings.sess.size){showErr("createErr","Choose at least "+unit(2)+".");return}
   leaveGame(true);
   mode="solo";code=null;
-  G={host:me,status:"q",qi:0,deck:customDeck||buildDeck(),T:settings.T,created:Date.now(),seq:1,inf:!customDeck&&settings.len===LEN_INF,sess:[...settings.sess],fmt:settings.fmt};
+  G={host:me,status:"q",qi:0,deck:customDeck||buildDeck(),T:settings.T,created:Date.now(),seq:1,inf:!customDeck&&settings.len===LEN_INF,review:!!customDeck,sess:[...settings.sess],fmt:settings.fmt};
   P={[me]:{nick:myNick(),joined:Date.now(),ans:{}}};local={qi:-1,shownAt:0,revealing:false,lastStatus:null};
   onGame(G);
 }
@@ -463,7 +463,7 @@ function renderScreen(){
   else if(G.status==="reveal"){show("reveal");renderReveal()}
   else if(G.status==="end"){show("end");renderEnd()}
 }
-function show(id){["home","topic","make","lobby","question","reveal","end","cards"].forEach(s=>$(s).hidden=s!==id);
+function show(id){["home","topic","make","lobby","question","reveal","end","cards","stats"].forEach(s=>$(s).hidden=s!==id);
   // the name + photo panel follows the player between the two start screens
   const slot=id==="home"?$("meHome"):id==="topic"?$("meTopic"):null,me=document.querySelector(".me-panel");if(slot&&me.parentNode!==slot)slot.appendChild(me);
   $("status").textContent=code?("Game "+code):(mode==="solo"?"Solo":"");window.scrollTo(0,0)}
@@ -643,6 +643,7 @@ function renderEnd(){
   const pod=$("podium");pod.textContent="";pod.hidden=mode==="solo";
   [1,0,2].forEach(i=>{const r=t[i];const d=el("div","pod p"+(i+1));if(r){d.append(avatar(r.id,nameOf(r.id)),el("div","nm",nameOf(r.id)),el("div","pts",r.t+" pts"))}d.appendChild(el("div","blk",r?String(i+1):""));pod.appendChild(d)});
   renderBoard($("endBoard"),t,false);
+  if(typeof recordPlay==="function")recordPlay();
   if(local.confEnd!==G.created){local.confEnd=G.created;setTimeout(()=>confetti(220),300);sfx("win")}
   const miss=$("endMiss");miss.textContent="";
   G.deck.forEach((d,i)=>{const a=P[me]&&P[me].ans&&P[me].ans[i];if(isRight(a,i))return;const q=qOf(i);

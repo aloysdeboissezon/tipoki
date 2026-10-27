@@ -222,6 +222,28 @@
     </div>
     <div id="endMissWrap"><div class="label" style="margin-top:6px">Your mistakes to review</div><div class="miss" id="endMiss"></div></div>
   </section>
+
+  <!-- CLASS STATS (teachers, ?stats=<quiz>) -->
+  <section id="stats" class="panel" hidden>
+    <div class="label">Class stats</div>
+    <h1 id="stTitle" class="st-h1"></h1>
+    <p class="muted" id="stSub"></p>
+    <div id="stGate" class="st-gate" hidden>
+      <label class="label" for="stCode">Teacher code</label>
+      <div class="row"><input type="text" id="stCode" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Code for this quiz"><button class="btn" id="stGo">See stats</button></div>
+    </div>
+    <p class="err" id="stErr" hidden></p>
+    <div id="stBody" class="st-body" hidden>
+      <div class="st-tiles" id="stTiles"></div>
+      <p class="muted" id="stModes"></p>
+      <div id="stDaysWrap"><div class="label">Games, last 30 days</div><div class="st-days" id="stDays"></div></div>
+      <div id="stSessWrap"><div class="label">Right answers by chapter</div><div class="st-sess" id="stSess"></div></div>
+      <div id="stMissWrap"><div class="label">Most missed questions</div><div class="miss st-miss" id="stMiss"></div></div>
+      <p class="muted st-note">Anonymous: no names or photos are kept, only which questions were answered right.</p>
+    </div>
+    <div class="row"><button class="btn ghost" id="stRefresh">Refresh</button><button class="btn ghost" id="stHome">Home</button></div>
+  </section>
+
 </div>
 
 <!-- PROFILE PICTURE CROPPER -->
@@ -241,6 +263,7 @@
 <script src="js/banks/energie.js"></script>
 <script src="js/banks/populism.js"></script>
 <script src="js/app.js"></script>
+<script src="js/stats.js"></script>
 <script src="js/music.js"></script>
 
 </body>
