@@ -1,0 +1,75 @@
+/* exam mode: one clock for the whole exam, answers can be changed until you hand in, grade out of 20 at the end */
+.ex-ico{background:#FF7A5C;position:relative}
+.ex-ico::before{content:"";position:absolute;inset:6px;border-radius:50%;border:2.5px solid #fff}
+.ex-ico::after{content:"";position:absolute;left:14px;top:9px;width:2.5px;height:7px;background:#fff;border-radius:2px;box-shadow:2px 5px 0 -0.2px #fff;transform-origin:bottom}
+.ex-intro{font-size:15px}
+.ex-set>div:first-child{grid-column:auto}
+.ex-sum{display:flex;flex-wrap:wrap;gap:4px 14px;font-weight:800;font-size:15px}
+.ex-best{color:var(--hl)}
+#examPanel .actions .btn{flex:1 1 auto}
+#exam{gap:14px}
+.ex-play{display:flex;flex-direction:column;gap:14px}
+.ex-clock{flex:none;font-family:var(--f-display);font-weight:800;font-size:22px;font-variant-numeric:tabular-nums;background:var(--hl-soft);color:var(--hl);padding:6px 14px;border-radius:999px;min-width:5.2ch;text-align:center}
+.ex-clock.warn{background:var(--bad-bg);color:var(--bad);animation:tick 1s infinite}
+#exBar{transition:width .25s linear}
+#exam .hud{flex-wrap:wrap;row-gap:8px}
+#exam .hud>.row{flex:1 1 200px}
+#exNum{color:var(--muted)}
+.ex-q{font-size:clamp(22px,4.2vw,32px)}
+/* picked answer: stays in its color, the others fade a little (no right / wrong shown) */
+.ex-tiles .tile{min-height:104px}
+.ex-tiles .tile.dim{opacity:.45;filter:grayscale(.3)}
+.ex-tiles .tile.sel{outline:4px solid var(--ink);outline-offset:4px}
+.ex-tiles .tile.sel::after{content:"Your answer";position:absolute;right:10px;top:-12px;font-size:12px;font-weight:800;line-height:1.2;padding:3px 9px;border-radius:999px;background:#fff;color:var(--ink);box-shadow:0 0 0 2px var(--ink);white-space:nowrap}
+.ex-nav{display:flex;gap:10px}
+.ex-nav .btn{flex:1 1 0;min-width:0;white-space:nowrap}
+.ex-confirm{background:var(--sun);border-radius:18px;padding:14px 16px;display:flex;flex-direction:column;gap:12px;font-weight:800;animation:fadeUp .25s both}
+.ex-confirm .row .btn{flex:1 1 0;min-width:0}
+.ex-map{border-top:2px solid var(--line);padding-top:4px}
+.ex-map summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;font-weight:800;font-size:15px}
+.ex-map summary::-webkit-details-marker{display:none}
+.ex-map summary::after{content:"";flex:none;width:9px;height:9px;border-right:2.5px solid currentColor;border-bottom:2.5px solid currentColor;transform:rotate(45deg) translate(-2px,-2px);transition:transform .2s}
+.ex-map[open] summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
+.ex-map summary:focus-visible{outline:3px solid var(--hl);outline-offset:3px;border-radius:8px}
+.ex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:6px;max-height:228px;overflow:auto;padding:4px 2px 6px}
+.ex-cell{min-height:44px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--muted);font:800 15px var(--f-body);font-variant-numeric:tabular-nums;cursor:pointer}
+.ex-cell.done{background:var(--hl-soft);border-color:var(--hl-soft);color:var(--hl)}
+.ex-cell.cur{border-color:var(--ink);color:var(--ink)}
+.ex-foot{border-top:2px solid var(--line);padding-top:10px}
+.ex-foot .btn{min-height:44px;padding:8px 16px;font-size:16px}
+/* results */
+.ex-done{display:flex;flex-direction:column;gap:16px}
+.ex-timeup{align-self:flex-start;background:var(--bad-bg);color:var(--bad);font-weight:800;padding:6px 14px;border-radius:999px}
+.ex-grade{align-self:flex-start;display:flex;align-items:baseline;gap:4px;font-family:var(--f-display);font-weight:800;padding:10px 22px 12px;border-radius:24px;animation:zoomIn .6s cubic-bezier(.2,.8,.3,1.3) both}
+.ex-grade b{font-size:clamp(64px,18vw,104px);line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.ex-grade span{font-size:clamp(26px,6vw,36px);opacity:.8}
+.ex-grade.pass{background:var(--ok-bg);color:var(--ok)}
+.ex-grade.fail{background:var(--bad-bg);color:var(--bad)}
+.ex-done h2{text-wrap:balance}
+.ex-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.ex-stats .fc-stat{padding:12px 8px}
+.ex-stats .fc-stat b{font-size:36px}
+.fc-stat.blank{background:var(--soft);color:var(--muted)}
+.ex-done .actions .btn{flex:1 1 180px}
+.ex-rev{display:flex;flex-direction:column;gap:10px}
+.ex-ri{border:2px solid var(--line);border-left-width:6px;border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.ex-ri.bad{border-left-color:var(--bad)}
+.ex-ri.blank{border-left-color:var(--line2)}
+.ex-ri.ok{border-left-color:var(--ok)}
+.ex-rl{font-size:13px;font-weight:800;color:var(--muted)}
+.ex-rq{font-weight:700;overflow-wrap:anywhere}
+.ex-ra{font-weight:800;overflow-wrap:anywhere}
+.ex-ra.mine{color:var(--bad)}
+.ex-ri.blank .ex-ra.mine{color:var(--muted)}
+.ex-ra.good{color:var(--ok)}
+.ex-re{font-size:14px;color:var(--muted);background:var(--hl-soft);border-radius:12px;padding:8px 12px}
+@media (max-width:560px){
+  /* phones: Previous / Next stay at the bottom of the screen */
+  .ex-nav{position:sticky;bottom:0;z-index:5;background:var(--card);margin:0 -18px;padding:10px 18px calc(10px + env(safe-area-inset-bottom,0px));box-shadow:0 -8px 16px -12px rgba(40,30,120,.25)}
+  .ex-nav .btn{font-size:17px;padding:12px 10px}
+  .ex-tiles .tile{min-height:96px}
+  .ex-clock{font-size:20px;padding:5px 12px}
+  #examPanel .actions{flex-wrap:nowrap}
+}
+@media (max-width:360px){.ex-nav{margin:0 -16px;padding-left:16px;padding-right:16px}}
+@media (max-width:340px){#exam{padding:14px}.ex-nav{margin:0 -14px;padding-left:14px;padding-right:14px}}

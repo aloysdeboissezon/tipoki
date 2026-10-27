@@ -121,7 +121,7 @@ function renderSettings(){
   [["mix","Mix"],["mcq","Multiple choice"],["typed","Typed answer"]].forEach(([k,l])=>{const b=el("button","chip",l);b.setAttribute("aria-pressed",settings.fmt===k);b.onclick=()=>{settings.fmt=k;renderSettings()};fc.appendChild(b)});
   const tc=$("timeChips");tc.textContent="";
   [15,20,30].forEach(n=>{const b=el("button","chip",n+" s");b.setAttribute("aria-pressed",settings.T===n);b.onclick=()=>{settings.T=n;renderSettings()};tc.appendChild(b)});
-  renderCardsPanel();
+  renderCardsPanel();if(window.renderExamPanel)renderExamPanel();
 }
 
 const LENS=[5,10,15,20,30,50,LEN_INF];
@@ -250,7 +250,7 @@ function loadBank(raw){
   ALL_S=Object.keys(SESS).map(Number).sort((x,y)=>x-y);
   settings.sess=new Set(ALL_S);
   // questions are in the quiz's language (often English): lets the browser hyphenate long words in the right language
-  ["question","reveal","end","cards"].forEach(id=>$(id).lang=b.lang||"fr");
+  ["question","reveal","end","cards","exam"].forEach(id=>$(id).lang=b.lang||"fr");
   renderBankUI();
 }
 function renderBankUI(){
@@ -497,7 +497,7 @@ function renderScreen(){
   else if(G.status==="reveal"){show("reveal");renderReveal()}
   else if(G.status==="end"){show("end");renderEnd()}
 }
-function show(id){["home","topic","make","lobby","question","reveal","end","cards","stats"].forEach(s=>$(s).hidden=s!==id);
+function show(id){["home","topic","make","lobby","question","reveal","end","cards","stats","exam"].forEach(s=>$(s).hidden=s!==id);
   // the name + photo panel follows the player between the two start screens
   const slot=id==="home"?$("meHome"):id==="topic"?$("meTopic"):null,me=document.querySelector(".me-panel");if(slot&&me.parentNode!==slot)slot.appendChild(me);
   $("status").textContent=code?("Game "+code):(mode==="solo"?"Solo":"");window.scrollTo(0,0)}
@@ -872,7 +872,8 @@ $("topicBack").onclick=()=>{show("home");renderMyQuizzes()};
 $("brandHome").onclick=e=>{
   if(e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;   // let "open in a new tab" work
   e.preventDefault();
-  if(G&&(G.status==="q"||G.status==="reveal")&&!confirm(mode==="multi"?"Leave the current game? The other players will carry on without you.":"Leave the current game? Your progress will be lost."))return;
+  if(window.examBusy&&examBusy()){if(!confirm("Quit the exam? Your answers will be lost."))return;EX.on=false}
+  else if(G&&(G.status==="q"||G.status==="reveal")&&!confirm(mode==="multi"?"Leave the current game? The other players will carry on without you.":"Leave the current game? Your progress will be lost."))return;
   if(mode){leaveGame(true);mode=null;code=null;G=null;P={}}
   try{history.replaceState(null,"",location.pathname)}catch(e){}
   show("home");renderMyQuizzes();if(sb)refreshOpen()};
