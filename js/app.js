@@ -109,8 +109,14 @@ function renderSettings(){
   all.onclick=()=>{settings.sess=new Set(settings.sess.size===ALL_S.length?[]:ALL_S);renderSettings()};sc.appendChild(all);
   for(const s of ALL_S){const b=el("button","chip",sLabel(s));b.title=SESS[s];b.setAttribute("aria-pressed",settings.sess.has(s));
     b.onclick=()=>{settings.sess.has(s)?settings.sess.delete(s):settings.sess.add(s);renderSettings()};sc.appendChild(b)}
-  const lc=$("lenChips");lc.textContent="";
-  [10,20,30,50,LEN_INF].forEach(n=>{const b=el("button","chip",n===LEN_INF?"∞":String(n));if(n===LEN_INF)b.title="Endless questions, until the host ends the game";b.setAttribute("aria-pressed",settings.len===n);b.onclick=()=>{settings.len=n;renderSettings()};lc.appendChild(b)});
+  // question count: only offer lengths the chosen units + format can fill, plus "all" when that is fewer than 50
+  const lc=$("lenChips");lc.textContent="";const av=poolSize();
+  const want=settings.lenWant||settings.len;settings.len=want===LEN_INF||!av?want:Math.min(want,av);
+  const lens=LENS.filter(n=>n===LEN_INF||!av||n<av);
+  [av,settings.len].forEach(n=>{if(n&&n!==LEN_INF&&n<=Math.max(50,settings.len)&&!lens.includes(n)){lens.push(n);lens.sort((a,b)=>a===LEN_INF?1:b===LEN_INF?-1:a-b)}});
+  lens.forEach(n=>{const b=el("button","chip",n===LEN_INF?"∞":n===av&&!LENS.includes(n)?"All "+n:String(n));if(n===LEN_INF)b.title="Endless questions, until the host ends the game";else if(n===av)b.title="Every question in the "+unit(1)+" you picked";
+    b.setAttribute("aria-pressed",settings.len===n);b.onclick=()=>{settings.lenWant=n;renderSettings()};lc.appendChild(b)});
+  $("lenAvail").textContent=av?av.toLocaleString("en-US")+" available":"";
   const fc=$("fmtChips");fc.textContent="";
   [["mix","Mix"],["mcq","Multiple choice"],["typed","Typed answer"]].forEach(([k,l])=>{const b=el("button","chip",l);b.setAttribute("aria-pressed",settings.fmt===k);b.onclick=()=>{settings.fmt=k;renderSettings()};fc.appendChild(b)});
   const tc=$("timeChips");tc.textContent="";
@@ -118,6 +124,12 @@ function renderSettings(){
   renderCardsPanel();
 }
 
+const LENS=[5,10,15,20,30,50,LEN_INF];
+// how many distinct questions the current units + format can give (what buildDeck can fill at most)
+function poolSize(){const ss=settings.sess,u=new Set(),add=q=>u.add(q.q+(q.img||""));
+  if(settings.fmt!=="typed")Q.forEach(q=>{if(ss.has(q.s))add(q)});
+  if(settings.fmt!=="mcq")TQ.forEach(q=>{if(ss.has(q.s))add(q)});
+  return u.size}
 function seenGet(){try{const s=JSON.parse(lsGet(lsKey("seen"))||"{}");return{m:new Set(s.m||[]),t:new Set(s.t||[])}}catch(e){return{m:new Set(),t:new Set()}}}
 function seenSave(s){lsSet(lsKey("seen"),JSON.stringify({m:[...s.m],t:[...s.t]}))}
 // round-robin over shuffled groups, so big banks alternate between themes (and kinds of question within a theme)
@@ -282,7 +294,7 @@ async function refreshOpen(){
   list.forEach(r=>{const g=r.state;
     const row=el("div","gamerow");
     const left=el("div");left.appendChild(el("div","code",r.code));
-    left.appendChild(el("div","muted",(g.hostNick||"Someone")+" · "+(g.bankTitle||"Socio Trivia")+" · "+(g.status==="lobby"?"waiting":"in progress")+" · "+(g.inf?"∞":g.deck.length)+" questions"));
+    left.appendChild(el("div","muted",(g.hostNick||"Someone")+" · "+(g.bankTitle||"Socio Trivia")+" · "+(g.status==="lobby"?"waiting":"question "+(g.qi+1)+(g.inf?"":"/"+g.deck.length))+" · "+(g.inf?"∞":g.deck.length)+" questions"));
     const b=el("button","btn dark","Join");b.onclick=()=>joinGame(r.code);
     row.append(left,b);box.appendChild(row)});
 }
@@ -341,6 +353,7 @@ function countUp(elm,from,to){if(RM||from===to){elm.textContent=to+" pts";return
 function queue(fn){writeChain=writeChain.then(fn).catch(err=>{console.warn(err);toast("Connection problem, try again")});return writeChain}
 function writeGame(patch){
   const ng={...G,...patch,seq:(G.seq||0)+1};
+  if(patch.status==="q")ng.qAt=Date.now();   // lets someone who joins mid-question get the time that is really left
   onGame(ng);
   if(mode==="solo")return Promise.resolve();
   const c=code;
@@ -411,6 +424,9 @@ async function joinGame(c){
   leaveGame(true);
   mode="multi";code=c;G=data.state;P={};local={qi:-1,shownAt:0,revealing:false,lastStatus:null};
   const {data:mine}=await sb.from("players").select("pid").eq("code",c).eq("pid",me).maybeSingle();
+  if(G.status==="end"&&!mine){mode=null;code=null;G=null;show("home");showErr("joinErr","This game is already over. Ask the host for a rematch.");return}
+  // joining a game already under way: you play from the current question on (the next one if answers are being shown)
+  if(G.status!=="lobby"&&!mine)local.joinQi=G.status==="q"?G.qi:G.qi+1;
   avAsked=new Set();
   const save=row=>mine?sb.from("players").update(row).eq("code",c).eq("pid",me):sb.from("players").insert({code:c,pid:me,...row});
   let res=await save(avCol?{nick:myNick(),avatar:myAv()}:{nick:myNick()});
@@ -445,18 +461,26 @@ function onGame(g){
   const prevNext=G&&G.next;
   G=g;
   if(g.next&&g.next!==code&&mode==="multi"&&!isHost()&&g.next!==prevNext){setTimeout(()=>joinGame(g.next),600);return}
-  if(g.status==="q"&&g.qi!==local.qi){local.qi=g.qi;local.shownAt=performance.now()+1100;local.revealing=false;renderQuestion()}
+  if(g.status==="q"&&g.qi!==local.qi){local.qi=g.qi;local.revealing=false;
+    // arriving mid-question (late join or reload): the clock keeps running, so skip the intro and take off the time already gone (always leave 3 s)
+    const gone=local.lastStatus===null&&g.qAt?Math.min(Date.now()-g.qAt-1100,qT(g.qi)-3000):0;
+    local.shownAt=gone>0?performance.now()-gone:performance.now()+1100;renderQuestion()}
   else if(g.status!==local.lastStatus||g.status!=="q")renderScreen();
   local.lastStatus=g.status;
 }
 function onPlayers(){
   if(!G)return;
+  // someone joined a game already under way: let everyone know
+  const ids=Object.keys(P);if(local.known&&mode==="multi"&&G.status!=="lobby"){const nw=ids.filter(id=>!local.known.has(id)&&id!==me);if(nw.length){sfx("join");joinToast(nw.map(nameOf).join(", ")+" joined the game")}}
+  local.known=new Set(ids);
   if(G.status==="lobby")renderLobby();
   else if(G.status==="q")renderQState();
   else if(G.status==="reveal")renderReveal();
   else if(G.status==="end")renderEnd();
   
 }
+function joinToast(msg){let t=$("joinToast");if(!t){t=el("div","jointoast");t.id="joinToast";t.setAttribute("role","status");document.body.appendChild(t)}
+  t.textContent=msg;t.hidden=false;t.style.animation="none";void t.offsetWidth;t.style.animation="";clearTimeout(t._h);t._h=setTimeout(()=>t.hidden=true,2600)}
 function renderScreen(){
   if(G.status==="lobby"){show("lobby");renderLobby()}
   else if(G.status==="q"){renderQuestion()}
@@ -537,12 +561,25 @@ function renderQState(){
     b.classList.toggle("picked",!!a&&a.c===k);b.classList.toggle("dim",!!a&&a.c!==k)});
   const ids=Object.keys(P),done=ids.filter(id=>P[id].ans&&P[id].ans[G.qi]).length;
   const w=$("qWait");
-  if(a){w.hidden=false;w.textContent="Answer sent · "+done+" / "+ids.length+" answered"}
+  if(a){w.hidden=false;w.textContent=mode==="multi"&&done<ids.length?"Answer sent · waiting for "+(ids.length-done)+" more":"Answer sent"}
   else if(timeLeft()<=0){w.hidden=false;w.textContent="Time's up"}
   else w.hidden=true;
   $("qHostRow").hidden=!(isHost()&&mode==="multi");
-  const pr=$("qPlayers");pr.hidden=mode!=="multi";
-  if(mode==="multi"){pr.textContent="";ids.forEach(id=>{const av=avatar(id,nameOf(id));av.title=nameOf(id);if(P[id].ans&&P[id].ans[G.qi])av.classList.add("done");pr.appendChild(av)})}
+  $("qPlayers").hidden=mode!=="multi";$("qLate").hidden=!(mode==="multi"&&local.joinQi===G.qi&&G.qi>0);
+  if(mode==="multi")renderAnswered(ids,done);
+}
+// who has answered this question: answered players first (fastest first), then those still thinking; never shows what they picked
+function renderAnswered(ids,done){
+  const at=id=>{const x=P[id].ans&&P[id].ans[G.qi];return x?x.ms:null};
+  const order=ids.slice().sort((a,b)=>{const x=at(a),y=at(b);if((x==null)!==(y==null))return x==null?1:-1;return x!=null?x-y:(P[a].joined||0)-(P[b].joined||0)});
+  $("qAnsN").textContent=done+" / "+ids.length;
+  const box=$("qAnsList"),key=order.map(id=>id+(at(id)!=null?"+":"")+nameOf(id)).join(",");
+  if(box.dataset.k===key&&box.dataset.q===String(G.qi))return;   // no flicker on every poll
+  const was=new Set(box.dataset.q===String(G.qi)?(box.dataset.done||"").split(","):[]);
+  box.dataset.k=key;box.dataset.q=String(G.qi);box.dataset.done=order.filter(id=>at(id)!=null).join(",");box.textContent="";
+  order.forEach(id=>{const ok=at(id)!=null,c=el("div","ach"+(ok?" done":"")+(ok&&!was.has(id)?" pop":"")+(id===me?" me":""));
+    c.append(avatar(id,nameOf(id)),el("span","nm",id===me?"You":nameOf(id)));if(ok)c.appendChild(el("span","ck","✓"));
+    c.title=nameOf(id)+(ok?" has answered":" is thinking…");box.appendChild(c)});
 }
 function timeLeft(){return qT(G.qi)-(performance.now()-local.shownAt)}
 $("qSkip").onclick=()=>{if(isHost()&&G.status==="q"&&!local.revealing){local.revealing=true;writeGame({status:"reveal"})}};
@@ -589,12 +626,13 @@ function renderReveal(){
   const item=G.deck[G.qi],q=qOf(G.qi),cp=correctPos(G.qi),a=myAns(),typed=isT(G.qi);
   $("rSess").textContent=sLabel(q.s);$("rNum").textContent="Question "+(G.qi+1)+" / "+(G.inf?"∞":G.deck.length)+" · "+(typed?"Typed answer":q.t);
   const v=$("rVerdict");
-  if(!a){v.textContent="No answer";v.className="verdict bad"}
-  if(local.sfxQ!==G.qi){local.sfxQ=G.qi;if(a&&isRight(a,G.qi)){sfx("ok");buzz(40)}else{sfx("bad");buzz([60,40,60])}}
+  const late=mode==="multi"&&local.joinQi>G.qi;   // just joined: this question was before your time
+  if(local.sfxQ!==G.qi){local.sfxQ=G.qi;if(a&&isRight(a,G.qi)){sfx("ok");buzz(40)}else if(!late){sfx("bad");buzz([60,40,60])}}
   const winners=Object.keys(P).map(id=>({id,a:P[id].ans&&P[id].ans[G.qi]})).filter(x=>isRight(x.a,G.qi)).sort((x,y)=>x.a.ms-y.a.ms);
   $("rFast").hidden=mode!=="multi"||!winners.length;if(winners.length)$("rFast").textContent="Fastest: "+nameOf(winners[0].id)+" in "+(winners[0].a.ms/1000).toFixed(1)+" s";
-  if(false){}
+  if(late&&!a){v.textContent="You're in! You'll play from the next question";v.className="verdict late"}
   else if(isRight(a,G.qi)){const r=scoreRun(me,G.qi);v.textContent="Correct · +"+r.gain+(r.streak>=2?" · streak ×"+r.streak:"");if(local.confQ!==G.qi){local.confQ=G.qi;confetti(r.streak>=3?120:60)}v.className="verdict ok pop"}
+  else if(!a){v.textContent="No answer";v.className="verdict bad pop"}
   else {v.textContent="Wrong";v.className="verdict bad pop"}
   $("rText").textContent=q.q;
   showImg("rImgBox","rImg",q,null);
@@ -636,9 +674,10 @@ function renderEnd(){
   show("end");
   const t=totals(G.deck.length-1);
   const myRank=t.findIndex(r=>r.id===me)+1;
+  const from=mode==="multi"&&local.joinQi||0;   // joined mid-game: the questions before you arrived don't count as misses
   const correct=G.deck.filter((d,i)=>isRight(P[me]&&P[me].ans&&P[me].ans[i],i)).length;
   $("endTitle").textContent=mode==="solo"?(correct+" / "+G.deck.length+" correct answers"):myRank<1?"Game over":(myRank===1?"You win!":"You finished "+ordinal(myRank));
-  const bys={};G.deck.forEach((d,i)=>{const s=(d.t!=null?TQ[d.t]:Q[d.id]).s;bys[s]=bys[s]||[0,0];bys[s][1]++;if(isRight(P[me]&&P[me].ans&&P[me].ans[i],i))bys[s][0]++});
+  const bys={};G.deck.forEach((d,i)=>{if(i<from)return;const s=(d.t!=null?TQ[d.t]:Q[d.id]).s;bys[s]=bys[s]||[0,0];bys[s][1]++;if(isRight(P[me]&&P[me].ans&&P[me].ans[i],i))bys[s][0]++});
   $("endSess").textContent="Your score by "+unit(0)+": "+Object.keys(bys).sort((a,b)=>a-b).map(s=>sLabel(s)+" "+bys[s][0]+"/"+bys[s][1]).join(" · ");
   const pod=$("podium");pod.textContent="";pod.hidden=mode==="solo";
   [1,0,2].forEach(i=>{const r=t[i];const d=el("div","pod p"+(i+1));if(r){d.append(avatar(r.id,nameOf(r.id)),el("div","nm",nameOf(r.id)),el("div","pts",r.t+" pts"))}d.appendChild(el("div","blk",r?String(i+1):""));pod.appendChild(d)});
@@ -646,14 +685,14 @@ function renderEnd(){
   if(typeof recordPlay==="function")recordPlay();
   if(local.confEnd!==G.created){local.confEnd=G.created;setTimeout(()=>confetti(220),300);sfx("win")}
   const miss=$("endMiss");miss.textContent="";
-  G.deck.forEach((d,i)=>{const a=P[me]&&P[me].ans&&P[me].ans[i];if(isRight(a,i))return;const q=qOf(i);
+  G.deck.forEach((d,i)=>{const a=P[me]&&P[me].ans&&P[me].ans[i];if(i<from||isRight(a,i))return;const q=qOf(i);
     const x=el("div");x.append(el("div","label",sLabel(q.s)+" · "+(d.t!=null?"Typed answer":q.t)),el("div",null,q.q),el("div","a","→ "+(d.t!=null?q.a[0]:q.o[q.a])));miss.appendChild(x)});
   $("endMissWrap").hidden=!miss.children.length;
   $("endAgain").hidden=!isHost();$("endAgain").textContent=mode==="solo"?"Play again":"Rematch";$("endWait").hidden=isHost()||mode!=="multi";
   $("endMissBtn").hidden=!miss.children.length;
 }
 $("endHome").onclick=()=>leaveGame(false);
-$("endMissBtn").onclick=()=>{const deck=G.deck.filter((d,i)=>!isRight(P[me]&&P[me].ans&&P[me].ans[i],i)).map(d=>d.t!=null?{t:d.t}:{id:d.id,o:shuffle(d.o)});
+$("endMissBtn").onclick=()=>{const from=mode==="multi"&&local.joinQi||0;const deck=G.deck.filter((d,i)=>i>=from&&!isRight(P[me]&&P[me].ans&&P[me].ans[i],i)).map(d=>d.t!=null?{t:d.t}:{id:d.id,o:shuffle(d.o)});
   const fix=deck.map(d=>d.t==null&&Q[d.id].tf?{id:d.id,o:tfOrder(Q[d.id])}:d);if(fix.length)startSolo(shuffle(fix))};
 $("endAgain").onclick=async()=>{
   if(mode==="solo"){startSolo();return}
