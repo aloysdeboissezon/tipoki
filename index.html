@@ -33,6 +33,7 @@
 <link rel="stylesheet" href="css/exam.css">
 <link rel="stylesheet" href="css/weak.css">
 <link rel="stylesheet" href="css/sync.css">
+<link rel="stylesheet" href="css/search.css">
 <link rel="stylesheet" href="css/theme.css">
 <!-- Vercel Web Analytics (page views, visitors) -->
 <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};</script>
@@ -107,6 +108,13 @@
       <div class="wk-ico" aria-hidden="true"></div>
       <div class="wk-main"><h2 id="weakTitle">Your weak points</h2><div class="muted" id="weakSub"></div><div class="chips" id="weakChips"></div></div>
       <button class="btn dark" id="weakBtn">Train now</button>
+    </div>
+    <div class="panel srchpanel" id="srchPanel">
+      <div class="steph"><span class="stepn sr-ico" aria-hidden="true"></span><h2>Find a notion</h2></div>
+      <input type="text" id="srchIn" placeholder="Search a term, a definition, a question…" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" aria-label="Search this quiz">
+      <div class="chips" id="srchKind" role="group" aria-label="Search in" hidden></div>
+      <div class="sr-sum muted" id="srchSum" aria-live="polite"></div>
+      <div class="sr-list" id="srchList"></div>
     </div>
     <div class="ticker" aria-hidden="true"><div id="tickerTxt"></div></div>
     <div id="resumeTopic"></div>
@@ -345,6 +353,7 @@
 <script src="js/app.js"></script>
 <script src="js/stats.js"></script>
 <script src="js/exam.js"></script>
+<script src="js/search.js"></script>
 <script src="js/weak.js"></script>
 <script src="js/music.js"></script>
 <script src="js/theme.js"></script>
