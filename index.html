@@ -31,6 +31,7 @@
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/music.css">
 <link rel="stylesheet" href="css/exam.css">
+<link rel="stylesheet" href="css/weak.css">
 <link rel="stylesheet" href="css/sync.css">
 <link rel="stylesheet" href="css/theme.css">
 <!-- Vercel Web Analytics (page views, visitors) -->
@@ -101,6 +102,11 @@
       <div class="ms-n" id="missN" aria-hidden="true">0</div>
       <div class="ms-main"><h2 id="missTitle">Missed questions</h2><div class="muted">Get one right and it leaves the list.</div></div>
       <button class="btn dark" id="missBtn">Replay them</button>
+    </div>
+    <div class="panel weakpanel" id="weakPanel" hidden>
+      <div class="wk-ico" aria-hidden="true"></div>
+      <div class="wk-main"><h2 id="weakTitle">Your weak points</h2><div class="muted" id="weakSub"></div><div class="chips" id="weakChips"></div></div>
+      <button class="btn dark" id="weakBtn">Train now</button>
     </div>
     <div class="ticker" aria-hidden="true"><div id="tickerTxt"></div></div>
     <div id="resumeTopic"></div>
@@ -338,6 +344,7 @@
 <script src="js/app.js"></script>
 <script src="js/stats.js"></script>
 <script src="js/exam.js"></script>
+<script src="js/weak.js"></script>
 <script src="js/music.js"></script>
 <script src="js/theme.js"></script>
 <script src="js/sync.js"></script>
