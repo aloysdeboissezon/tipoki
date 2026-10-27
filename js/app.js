@@ -321,23 +321,33 @@ function showImg(boxId,imgId,q,hintId){
     else{img.hidden=true;if(hintId)$(hintId).textContent=q.hint||""}})}
 
 // ---------- sound ----------
-let soundOn=lsGet("socio-sound")!=="off",actx=null;
-function syncSoundBtn(){$("soundBtn").setAttribute("aria-pressed",soundOn);$("soundBtn").textContent=soundOn?"Sound":"Muted"}
+// off for new visitors (a quiz in the library shouldn't beep), visitors who already played keep sound unless they turned it off
+const soundPref=lsGet("socio-sound");
+let soundOn=soundPref?soundPref!=="off":!!lsGet("socio-nick"),actx=null;
+function syncSoundBtn(){const b=$("soundBtn");b.setAttribute("aria-pressed",soundOn);b.querySelector(".bt").textContent=soundOn?"Sound":"Muted";b.title=soundOn?"Turn sound effects off":"Turn sound effects on"}
 syncSoundBtn();
 $("soundBtn").onclick=()=>{soundOn=!soundOn;lsSet("socio-sound",soundOn?"on":"off");syncSoundBtn();if(soundOn)sfx("ok")};
+function audio(){
+  // iPhone: "ambient" mixes the effects with music already playing (Spotify app, the player) instead of pausing it
+  try{if(navigator.audioSession&&navigator.audioSession.type!=="ambient")navigator.audioSession.type="ambient"}catch(e){}
+  actx=actx||new (window.AudioContext||window.webkitAudioContext)();if(actx.state==="suspended")actx.resume();return actx}
+// quieter while a playlist is loaded in the music player, so the effects sit under the music
+function musicOn(){return !!document.querySelector("#muFrame iframe")}
 function tone(f,t0,d,type,vol){const o=actx.createOscillator(),g=actx.createGain();o.type=type||"sine";o.frequency.setValueAtTime(f,actx.currentTime+t0);
-  g.gain.setValueAtTime(0.0001,actx.currentTime+t0);g.gain.exponentialRampToValueAtTime(vol||.18,actx.currentTime+t0+.015);g.gain.exponentialRampToValueAtTime(0.0001,actx.currentTime+t0+d);
+  vol=(vol||.18)*(musicOn()?.45:1);
+  g.gain.setValueAtTime(0.0001,actx.currentTime+t0);g.gain.exponentialRampToValueAtTime(vol,actx.currentTime+t0+.015);g.gain.exponentialRampToValueAtTime(0.0001,actx.currentTime+t0+d);
   o.connect(g);g.connect(actx.destination);o.start(actx.currentTime+t0);o.stop(actx.currentTime+t0+d+.05)}
-function sfx(kind){if(!soundOn)return;try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();if(actx.state==="suspended")actx.resume();
+function sfx(kind){if(!soundOn)return;try{audio();
   if(kind==="tick")tone(880,0,.08,"square",.06);
   else if(kind==="go"){tone(523,0,.12,"triangle");tone(784,.12,.18,"triangle")}
   else if(kind==="ok"){tone(659,0,.12,"triangle");tone(880,.1,.12,"triangle");tone(1319,.2,.28,"triangle",.14)}
   else if(kind==="bad"){tone(196,0,.22,"sawtooth",.09);tone(147,.18,.3,"sawtooth",.08)}
   else if(kind==="join")tone(1047,0,.1,"sine",.1);
+  else if(kind==="streak"){[784,988,1175,1568].forEach((f,i)=>tone(f,i*.07,.14,"triangle",.12))}
   else if(kind==="win"){[523,659,784,1047,784,1047].forEach((f,i)=>tone(f,i*.13,.22,"triangle",.15))}
 }catch(e){}}
 function buzz(p){try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
-document.addEventListener("pointerdown",()=>{if(soundOn&&!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}},{once:true});
+document.addEventListener("pointerdown",()=>{if(soundOn&&!actx){try{audio()}catch(e){}}},{once:true});
 
 // ---------- confetti ----------
 const RM=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -374,7 +384,7 @@ function renderMissBtn(){const n=missLive().length;$("missPanel").hidden=!n;$("m
   $("missBtn").textContent=n>MISS_RUN?"Replay "+MISS_RUN:"Replay "+(n===1?"it":"them")}
 function writeAnswer(qi,entry){trackMiss(qi,isRight(entry,qi));
   P[me]={...(P[me]||{nick:myNick(),joined:Date.now()}),ans:{...((P[me]||{}).ans||{}),[qi]:entry}};onPlayers();
-  if(mode==="solo")return;
+  if(mode==="solo"){saveSolo();return}
   const ans=P[me].ans,c=code;
   queue(async()=>{const {error}=await sb.from("players").update({ans}).eq("code",c).eq("pid",me);if(error)throw error});
 }
@@ -465,6 +475,39 @@ function leaveGame(silent){
 }
 function isHost(){return G&&G.host===me}
 
+// ---------- resume an interrupted solo game ----------
+// one saved game per device: kept after each answer, dropped at the podium, by "Discard", or after a week
+const RESUME_KEY="tpk-resume",RESUME_MAX=7*864e5;
+function savedSolo(){try{const s=JSON.parse(lsGet(RESUME_KEY)||"null");if(s&&s.G&&s.G.deck&&s.ans&&Date.now()-s.at<RESUME_MAX)return s}catch(e){}return null}
+function clearSolo(){try{localStorage.removeItem(RESUME_KEY)}catch(e){}}
+function saveSolo(){
+  if(!G||!BANK)return;
+  if(G.status==="end"){clearSolo();return}
+  const ans=(P[me]&&P[me].ans)||{};if(!Object.keys(ans).length)return;   // nothing answered yet: keep any older save
+  lsSet(RESUME_KEY,JSON.stringify({bank:BANK.id,title:BANK.title,G,ans,at:Date.now()}));
+}
+function ago(t){const m=Math.round((Date.now()-t)/60000);return m<2?"just now":m<60?m+" min ago":m<1440?Math.round(m/60)+" h ago":Math.round(m/1440)+" d ago"}
+function renderResume(){
+  const s=mode?null:savedSolo(),c=$("resumeCard");c.hidden=!s;if(!s)return;
+  const g=s.G,n=Object.keys(s.ans).length,ok=Object.keys(s.ans).filter(i=>{const a=s.ans[i],d=g.deck[i];return d&&(d.t!=null?a.ok===true:d.o&&a.c===d.o.indexOf(0))}).length;
+  const at=Math.min(g.qi+(s.ans[g.qi]||g.status==="reveal"?2:1),g.inf?Infinity:g.deck.length);
+  $("resumeTitle").textContent=s.title||"Your quiz";
+  $("resumeSub").textContent="Question "+at+" / "+(g.inf?"∞":g.deck.length)+" · "+ok+" / "+n+" correct · "+ago(s.at);
+}
+async function resumeSolo(){
+  const s=savedSolo();if(!s){renderResume();return}
+  $("resumeGo").disabled=true;const ok=await useBank(s.bank);$("resumeGo").disabled=false;
+  if(!ok){toast("Couldn't load this quiz, check your connection");return}
+  setQuizParam();leaveGame(true);
+  mode="solo";code=null;
+  // a question that was already answered (or timed out) reopens on its answer; an unanswered one starts again
+  G={...s.G,host:me,status:s.ans[s.G.qi]||s.G.status==="reveal"?"reveal":"q",seq:(s.G.seq||0)+1};
+  P={[me]:{nick:myNick(),joined:Date.now(),ans:s.ans}};local={qi:-1,shownAt:0,revealing:false,lastStatus:null};
+  onGame(G);
+}
+$("resumeGo").onclick=resumeSolo;
+$("resumeDrop").onclick=()=>{clearSolo();renderResume()};
+
 // ---------- engine: reactions ----------
 function onGame(g){
   if(g&&g.deck&&(!G||G.deck!==g.deck))preloadImgs(g.deck);
@@ -477,6 +520,7 @@ function onGame(g){
     local.shownAt=gone>0?performance.now()-gone:performance.now()+1100;renderQuestion()}
   else if(g.status!==local.lastStatus||g.status!=="q")renderScreen();
   local.lastStatus=g.status;
+  if(mode==="solo")saveSolo();
 }
 function onPlayers(){
   if(!G)return;
@@ -501,6 +545,7 @@ function show(id){["home","topic","make","lobby","question","reveal","end","card
   // the name + photo panel follows the player between the two start screens
   const slot=id==="home"?$("meHome"):id==="topic"?$("meTopic"):null,me=document.querySelector(".me-panel");if(slot&&me.parentNode!==slot)slot.appendChild(me);
   if(id==="home"||id==="topic")renderProgressUI();
+  const rslot=id==="home"?$("resumeHome"):id==="topic"?$("resumeTopic"):null;if(rslot){if($("resumeCard").parentNode!==rslot)rslot.appendChild($("resumeCard"));renderResume()}
   $("status").textContent=code?("Game "+code):(mode==="solo"?"Solo":"");window.scrollTo(0,0)}
 function nameOf(id){const p=P[id];return (p&&p.nick)||(profiles[id]&&profiles[id].name)||"Player"}
 
@@ -606,7 +651,7 @@ setInterval(()=>{
   if(left<=0&&!myAns()&&$("qWait").hidden)renderQState();
   const ids=Object.keys(P);
   const all=ids.length>0&&ids.every(id=>P[id].ans&&P[id].ans[G.qi]);
-  if(isHost()&&!local.revealing&&(left<-800||all)){local.revealing=true;setTimeout(()=>writeGame({status:"reveal"}),all?600:0)}
+  if(isHost()&&!local.revealing&&(left<-800||all)){local.revealing=true;const qi=G.qi,c=G.created;setTimeout(()=>{if(G&&G.created===c&&G.qi===qi&&G.status==="q")writeGame({status:"reveal"})},all?600:0)}
   $("qTakeRow").hidden=!(mode==="multi"&&!isHost()&&left<-10000);
 },150);
 // after each answer reveal, the next question starts by itself after AUTO_MS (the host's clock drives everyone)
@@ -638,7 +683,7 @@ function renderReveal(){
   $("rSess").textContent=sLabel(q.s);$("rNum").textContent="Question "+(G.qi+1)+" / "+(G.inf?"∞":G.deck.length)+" · "+(typed?"Typed answer":q.t);
   const v=$("rVerdict");
   const late=mode==="multi"&&local.joinQi>G.qi;   // just joined: this question was before your time
-  if(local.sfxQ!==G.qi){local.sfxQ=G.qi;if(a&&isRight(a,G.qi)){sfx("ok");buzz(40)}else if(!late){sfx("bad");buzz([60,40,60])}}
+  if(local.sfxQ!==G.qi){local.sfxQ=G.qi;if(a&&isRight(a,G.qi)){sfx(scoreRun(me,G.qi).streak>=3?"streak":"ok");buzz(40)}else if(!late){sfx("bad");buzz([60,40,60])}}
   const winners=Object.keys(P).map(id=>({id,a:P[id].ans&&P[id].ans[G.qi]})).filter(x=>isRight(x.a,G.qi)).sort((x,y)=>x.a.ms-y.a.ms);
   $("rFast").hidden=mode!=="multi"||!winners.length;if(winners.length)$("rFast").textContent="Fastest: "+nameOf(winners[0].id)+" in "+(winners[0].a.ms/1000).toFixed(1)+" s";
   const ok=isRight(a,G.qi);$("rMiss").hidden=!G.miss||!a;$("rMiss").className="missnote "+(ok?"ok":"bad");
@@ -921,7 +966,7 @@ $("brandHome").onclick=e=>{
   if(e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;   // let "open in a new tab" work
   e.preventDefault();
   if(window.examBusy&&examBusy()){if(!confirm("Quit the exam? Your answers will be lost."))return;EX.on=false}
-  else if(G&&(G.status==="q"||G.status==="reveal")&&!confirm(mode==="multi"?"Leave the current game? The other players will carry on without you.":"Leave the current game? Your progress will be lost."))return;
+  else if(G&&mode==="multi"&&(G.status==="q"||G.status==="reveal")&&!confirm("Leave the current game? The other players will carry on without you."))return;   // a solo game is saved, it can be resumed
   if(mode){leaveGame(true);mode=null;code=null;G=null;P={}}
   try{history.replaceState(null,"",location.pathname)}catch(e){}
   show("home");renderMyQuizzes();if(sb)refreshOpen()};
@@ -964,7 +1009,7 @@ $("mkGo").onclick=async()=>{
   finally{clearInterval(tick);st.hidden=true;$("mkGo").disabled=false}
 };
 
-loadBank(window.BANK_SOCIO);renderMyQuizzes();
+loadBank(window.BANK_SOCIO);renderMyQuizzes();renderResume();
 if(sb){setMultiNote(true);watchOpenGames()}else setMultiNote(false);
 (async()=>{let id=null;try{id=new URLSearchParams(location.search).get("quiz")}catch(e){}
   if(!id||!(BUILTIN[id]||/^[0-9a-f-]{36}$/i.test(id)))return;
