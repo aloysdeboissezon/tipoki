@@ -500,6 +500,7 @@ function renderScreen(){
 function show(id){["home","topic","make","lobby","question","reveal","end","cards","stats","exam"].forEach(s=>$(s).hidden=s!==id);
   // the name + photo panel follows the player between the two start screens
   const slot=id==="home"?$("meHome"):id==="topic"?$("meTopic"):null,me=document.querySelector(".me-panel");if(slot&&me.parentNode!==slot)slot.appendChild(me);
+  if(id==="home"||id==="topic")renderProgressUI();
   $("status").textContent=code?("Game "+code):(mode==="solo"?"Solo":"");window.scrollTo(0,0)}
 function nameOf(id){const p=P[id];return (p&&p.nick)||(profiles[id]&&profiles[id].name)||"Player"}
 
@@ -681,6 +682,47 @@ function goNext(){
 }
 $("rEnd").onclick=()=>{if(isHost())writeGame({status:"end",deck:G.deck.slice(0,G.qi+1),inf:false})};
 
+// ---------- progress: best score per quiz + daily study streak ----------
+// kept in this browser for now: statsLoad / statsSave are the only functions touching storage, so an online save can plug in there
+const STATS_KEY="tpk-stats",BEST_MIN=5;   // a game needs 5+ questions to count as a record
+function statsLoad(){try{const s=JSON.parse(lsGet(STATS_KEY)||"{}");return {best:s.best||{},days:s.days||[]}}catch(e){return {best:{},days:[]}}}
+function statsSave(s){lsSet(STATS_KEY,JSON.stringify(s))}
+function dayKey(d){d=d||new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function accPct(r){return Math.round(100*r.c/r.n)}
+function bestOf(id){return statsLoad().best[id]||null}
+function beats(a,b){return !b||a.c*b.n>b.c*a.n||(a.c*b.n===b.c*a.n&&a.pts>b.pts)}   // accuracy first, then points
+// saves the game if it is a new record, returns the record held before it
+function recordGame(id,r){const s=statsLoad(),prev=s.best[id]||null;if(r.n>=BEST_MIN&&beats(r,prev)){s.best[id]={c:r.c,n:r.n,pts:r.pts,at:Date.now()};statsSave(s)}return prev}
+// true when today is a new study day
+function markStudyDay(){const s=statsLoad(),k=dayKey();if(s.days[s.days.length-1]===k)return false;s.days=s.days.filter(d=>d!==k).concat(k).slice(-400);statsSave(s);return true}
+// days in a row up to today (or up to yesterday while today is not done yet)
+function streakInfo(){const days=new Set(statsLoad().days),d=new Date(),today=days.has(dayKey(d));if(!today)d.setDate(d.getDate()-1);
+  let n=0;while(days.has(dayKey(d))){n++;d.setDate(d.getDate()-1)}return {n,today}}
+const FLAME='<svg class="flame" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 3.5 5.5 6 5.5 11.2A5.5 5.5 0 0 1 12 19a5.5 5.5 0 0 1-5.5-5.8c0-2.4 1.3-4 2.6-5.2.2 1.8 1 2.9 2.2 3.4C11 9 11.3 5.3 12 2z"/></svg>';
+function renderStreak(box,txt){const st=streakInfo();box.hidden=!st.n;if(!st.n)return st;
+  box.innerHTML=FLAME+"<b></b><span></span>";box.children[1].textContent=st.n+"-day streak";box.children[2].textContent=txt(st);return st}
+function renderProgressUI(){
+  renderStreak($("homeStreak"),st=>st.today?"Done for today":"Play today to keep it");
+  const best=statsLoad().best;
+  $("quizGrid").querySelectorAll(".qcard").forEach(c=>{const b=best[c.dataset.id],x=c.querySelector(".qbest");
+    if(x)x.hidden=!b;if(b&&x)x.textContent="Best "+accPct(b)+"%"});
+  const b=BANK&&best[BANK.id];$("bankBest").hidden=!b;if(b)$("bankBest").textContent="Your best: "+accPct(b)+"% ("+b.c+"/"+b.n+")";
+}
+function renderEndProgress(){
+  const R=local.endRes,box=$("endProg");$("endStreak").hidden=box.hidden=!R;if(!R)return;
+  const r=R.r,prev=R.prev,counts=r.n>=BEST_MIN&&!G.review;box.hidden=!counts;
+  if(counts){const nb=beats(r,prev);let badge,txt;
+    if(!prev){badge="First score";txt=accPct(r)+"% correct. Play again to beat it!"}
+    else if(nb){badge="New best!";txt=accPct(r)+"% correct, up from "+accPct(prev)+"%."}
+    else if(r.c*prev.n===prev.c*r.n){badge="Best: "+accPct(prev)+"%";txt="Same accuracy as your best. Answer faster to beat it."}
+    else{const k=Math.floor(prev.c*r.n/prev.n)-r.c+1;badge="Best: "+accPct(prev)+"%";
+      txt="You got "+accPct(r)+"%. "+(k<=r.n-r.c?k+" more correct answer"+(k>1?"s":"")+" would beat your best.":"Your best is perfect: get them all right, and faster, to beat it.")}
+    box.classList.toggle("rec",nb);$("endBadge").textContent=badge;$("endProgTxt").textContent=txt;
+    $("endMark").hidden=!prev||nb;if(prev)$("endMark").style.left=accPct(prev)+"%";
+    const f=$("endFill");f.style.width="0%";requestAnimationFrame(()=>requestAnimationFrame(()=>f.style.width=accPct(r)+"%"))}
+  renderStreak($("endStreak"),st=>R.newDay?(st.n>1?"Day "+st.n+" in a row. See you tomorrow!":"Day 1. Come back tomorrow to keep it going."):"You already studied today. Come back tomorrow for day "+(st.n+1)+".");
+}
+
 // ---------- end ----------
 function renderEnd(){
   show("end");
@@ -695,7 +737,13 @@ function renderEnd(){
   [1,0,2].forEach(i=>{const r=t[i];const d=el("div","pod p"+(i+1));if(r){d.append(avatar(r.id,nameOf(r.id)),el("div","nm",nameOf(r.id)),el("div","pts",r.t+" pts"))}d.appendChild(el("div","blk",r?String(i+1):""));pod.appendChild(d)});
   renderBoard($("endBoard"),t,false);
   if(typeof recordPlay==="function")recordPlay();
-  if(local.confEnd!==G.created){local.confEnd=G.created;setTimeout(()=>confetti(220),300);sfx("win")}
+  if(local.confEnd!==G.created){local.confEnd=G.created;
+    const r={c:correct,n:G.deck.length-from,pts:(t.find(x=>x.id===me)||{t:0}).t},played=!!P[me],prev=!played||G.review?bestOf(BANK.id):recordGame(BANK.id,r);
+    local.endRes=played?{r,prev,newDay:markStudyDay()}:null;
+    // light confetti, a bigger burst for a new record or a win
+    const big=(!G.review&&r.n>=BEST_MIN&&prev&&beats(r,prev))||(mode==="multi"&&myRank===1);
+    if(big||(played&&r.c*2>=r.n))setTimeout(()=>confetti(big?160:60),300);sfx("win")}
+  renderEndProgress();
   const miss=$("endMiss");miss.textContent="";
   G.deck.forEach((d,i)=>{const a=P[me]&&P[me].ans&&P[me].ans[i];if(i<from||isRight(a,i))return;const q=qOf(i);
     const x=el("div");x.append(el("div","label",sLabel(q.s)+" · "+(d.t!=null?"Typed answer":q.t)),el("div",null,q.q),el("div","a","→ "+(d.t!=null?q.a[0]:q.o[q.a])));miss.appendChild(x)});
@@ -732,7 +780,7 @@ document.addEventListener("keydown",e=>{
 // ---------- flashcards (built from the quiz's facts: term on one side, definition on the other) ----------
 let FC={deck:[],i:0,flip:false,res:{}};
 function fcStore(){try{return JSON.parse(lsGet(lsKey("cards"))||"{}")}catch(e){return {}}}   // term -> 1 got it, 0 not yet
-function fcMark(f,ok){const st=fcStore();st[f[3]]=ok?1:0;lsSet(lsKey("cards"),JSON.stringify(st))}
+function fcMark(f,ok){const st=fcStore();st[f[3]]=ok?1:0;lsSet(lsKey("cards"),JSON.stringify(st));markStudyDay()}
 function fcPool(){return (BANK.facts||[]).filter(f=>settings.sess.has(Number(f[0])))}
 function fcPick(){const st=fcStore(),pool=fcPool();
   return settings.fcSet==="todo"?pool.filter(f=>st[f[3]]!==1):settings.fcSet==="bad"?pool.filter(f=>st[f[3]]===0):pool}
@@ -839,11 +887,11 @@ function fold(s){return String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/
 function quizHay(q){return fold([q.title,q.subject,q.kw].concat(Object.values(q.sess||(q.data&&q.data.sess)||{}),Object.values(q.tags||{})).join(" "))}
 function renderQuizGrid(list){
   const box=$("quizGrid");box.textContent="";
-  list.forEach(q=>{const c=el("button","qcard");c.type="button";c.dataset.hay=quizHay(q);
+  list.forEach(q=>{const c=el("button","qcard");c.type="button";c.dataset.hay=quizHay(q);c.dataset.id=q.id;
     const ico=el("span","qico",(q.title||"?").trim().charAt(0).toUpperCase());ico.style.background="hsl("+hue(q.id||q.title||"")+" 90% 80%)";
-    const t=el("span","qtxt");t.append(el("b",null,q.title));if(q.subject)t.append(el("small",null,q.subject));
+    const t=el("span","qtxt");t.append(el("b",null,q.title));if(q.subject)t.append(el("small",null,q.subject));const qb=el("span","qbest");qb.hidden=true;t.append(qb);
     c.append(ico,t,el("span","qgo","›"));c.onclick=()=>openQuiz(q.id,c);box.appendChild(c)});
-  filterQuizzes();
+  filterQuizzes();renderProgressUI();
 }
 // every typed word must appear somewhere in the quiz's title, subject, keywords or chapter names
 function filterQuizzes(){
