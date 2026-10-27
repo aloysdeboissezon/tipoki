@@ -11,7 +11,7 @@ function exAvail(){   // questions the deck builder can draw from (same text cou
   return seen.size}
 function exCount(){const n=exAvail();return exOpt.len==="all"?n:Math.min(exOpt.len,n)}
 function exHist(){try{return JSON.parse(lsGet(lsKey("exam"))||"[]")}catch(e){return []}}
-function exFmtG(g){return (Math.round(g*10)/10).toString()}
+function exFmtG(g){return fmtDec(g)}
 function exClock(ms){const s=Math.max(0,Math.ceil(ms/1000)),h=Math.floor(s/3600),m=Math.floor(s%3600/60),r=s%60;
   return (h?h+":"+String(m).padStart(2,"0"):String(m))+":"+String(r).padStart(2,"0")}
 function exDur(ms){const m=Math.round(ms/60000);return m<60?m+" min":Math.floor(m/60)+" h"+(m%60?" "+String(m%60).padStart(2,"0"):"")}
@@ -20,21 +20,21 @@ function renderExamPanel(){
   const n=exAvail();$("examPanel").hidden=$("examJump").hidden=!n;if(!n)return;
   $("exUnits").textContent=unit(1);
   const lc=$("exLenChips");lc.textContent="";
-  EX_LENS.filter(k=>k==="all"||k<n).forEach(k=>{const b=el("button","chip",k==="all"?"All ("+n+")":String(k));
+  EX_LENS.filter(k=>k==="all"||k<n).forEach(k=>{const b=el("button","chip",k==="all"?tl("All ({n})",{n}):String(k));
     b.setAttribute("aria-pressed",exOpt.len===k||(k==="all"&&exOpt.len!=="all"&&exOpt.len>=n));b.onclick=()=>{exOpt.len=k;renderExamPanel()};lc.appendChild(b)});
   const pc=$("exPaceChips");pc.textContent="";
   EX_PACES.forEach(([s,l])=>{const b=el("button","chip",l);b.setAttribute("aria-pressed",exOpt.pace===s);b.onclick=()=>{exOpt.pace=s;renderExamPanel()};pc.appendChild(b)});
   const c=exCount();
-  $("exSum").textContent=c+" question"+(c>1?"s":"")+" · "+exDur(c*exOpt.pace*1000)+" on the clock";
+  $("exSum").textContent=tl(c>1?"{n} questions · {d} on the clock":"1 question · {d} on the clock",{n:c,d:exDur(c*exOpt.pace*1000)});
   const h=exHist();$("exBest").hidden=!h.length;
-  if(h.length)$("exBest").textContent="Last exam: "+exFmtG(h[0].g)+"/20 · Best: "+exFmtG(Math.max(...h.map(x=>x.g)))+"/20";
+  if(h.length)$("exBest").textContent=tl("Last exam: {g}/20 · Best: {b}/20",{g:exFmtG(h[0].g),b:exFmtG(Math.max(...h.map(x=>x.g)))});
   showErr("exErr","");
 }
 function startExam(){
-  if(!settings.sess.size){showErr("exErr","Choose at least "+unit(2)+".");return}
-  const n=exCount();if(!n){showErr("exErr","No questions in these "+unit(1)+".");return}
+  if(!settings.sess.size){showErr("exErr",tl("Choose at least {unit}.",{unit:unit(2)}));return}
+  const n=exCount();if(!n){showErr("exErr",tl("No questions in these {units}.",{units:unit(1)}));return}
   const deck=buildDeck([...settings.sess],exOpt.len==="all"?1e6:n,settings.fmt);
-  if(!deck.length){showErr("exErr","No questions in these "+unit(1)+".");return}
+  if(!deck.length){showErr("exErr",tl("No questions in these {units}.",{units:unit(1)}));return}
   EX={deck,ans:deck.map(()=>null),i:0,startAt:Date.now(),total:deck.length*exOpt.pace*1000,on:true,timeUp:false,rev:"bad"};
   EX.endAt=EX.startAt+EX.total;
   show("exam");$("exPlay").hidden=false;$("exDone").hidden=true;$("exConfirm").hidden=true;
@@ -44,7 +44,7 @@ function exAnswered(a){return !!a&&(a.c!=null||!!(a.txt&&a.txt.trim()))}
 function renderExQ(){
   const d=EX.deck[EX.i],q=exQ(d),typed=d.t!=null,n=EX.deck.length,a=EX.ans[EX.i];
   $("exSess").textContent=sLabel(q.s);$("exSess").title=SESS[q.s]||"";
-  $("exNum").textContent="Question "+(EX.i+1)+" / "+n+" · "+(typed?"Typed answer":q.t||"Multiple choice");
+  $("exNum").textContent=tl("Question {i} / {n}",{i:EX.i+1,n})+" · "+(typed?tl("Typed answer"):q.t||tl("Multiple choice"));
   $("exText").textContent=q.q;
   const box=$("exImgBox"),img=$("exImg");box.hidden=!q.img;$("exHint").textContent="";
   if(q.img){img.removeAttribute("src");img.hidden=true;const want=EX.i;
@@ -56,7 +56,7 @@ function renderExQ(){
     b.append(el("span","k",LETTERS[k]),el("span",null,q.o[oi]));b.onclick=()=>exPick(k);tiles.appendChild(b)});
   exMarkTiles();
   $("exPrev").disabled=EX.i===0;
-  const last=EX.i>=n-1;$("exNext").textContent=last?"Hand in":"Next →";$("exNext").classList.toggle("dark",last);
+  const last=EX.i>=n-1;$("exNext").textContent=last?tl("Hand in"):tl("Next →");$("exNext").classList.toggle("dark",last);
   renderExGrid();
 }
 function exMarkTiles(){const a=EX.ans[EX.i];
@@ -68,9 +68,9 @@ function renderExGrid(){
   const g=$("exGrid"),n=EX.deck.length;
   if(g.children.length!==n){g.textContent="";for(let i=0;i<n;i++){const b=el("button","ex-cell",String(i+1));b.type="button";b.onclick=()=>exGo(i);g.appendChild(b)}}
   [...g.children].forEach((b,i)=>{b.classList.toggle("done",exAnswered(EX.ans[i]));b.classList.toggle("cur",i===EX.i);
-    b.setAttribute("aria-label","Question "+(i+1)+(exAnswered(EX.ans[i])?", answered":", not answered"))});
+    b.setAttribute("aria-label",tl(exAnswered(EX.ans[i])?"Question {n}, answered":"Question {n}, not answered",{n:i+1}))});
   const left=EX.ans.filter(a=>!exAnswered(a)).length;
-  $("exLeft").textContent=left?left+" left to answer":"all answered";
+  $("exLeft").textContent=left?tl("{n} left to answer",{n:left}):tl("all answered");
 }
 function exGo(i){if(i<0||i>=EX.deck.length)return;EX.i=i;$("exConfirm").hidden=true;renderExQ();
   const t=$("exam").getBoundingClientRect().top;if(t<0)window.scrollTo(0,scrollY+t-8)}
@@ -78,8 +78,8 @@ function exAsk(kind){
   const left=EX.ans.filter(a=>!exAnswered(a)).length,c=$("exConfirm");
   if(kind==="hand"&&!left){handInExam(false);return}
   c.dataset.kind=kind;c.hidden=false;
-  $("exConfirmTxt").textContent=kind==="quit"?"Quit the exam? Your answers will be lost.":left+" question"+(left>1?"s":"")+" not answered yet. Hand in anyway?";
-  $("exConfirmOk").textContent=kind==="quit"?"Quit":"Hand in";
+  $("exConfirmTxt").textContent=kind==="quit"?tl("Quit the exam? Your answers will be lost."):tl(left>1?"{n} questions not answered yet. Hand in anyway?":"1 question not answered yet. Hand in anyway?",{n:left});
+  $("exConfirmOk").textContent=kind==="quit"?tl("Quit"):tl("Hand in");
   c.scrollIntoView({block:"nearest",behavior:RM?"auto":"smooth"});$("exConfirmNo").focus()}
 function exTick(){
   if(!EX.on)return;
@@ -100,7 +100,7 @@ function handInExam(timeUp){
   const h=exHist();h.unshift({g:EX.grade,n,ok,at:Date.now()});lsSet(lsKey("exam"),JSON.stringify(h.slice(0,20)));markStudyDay();
   renderExDone();
 }
-function exVerdict(g){return g>=16?"Outstanding, top marks.":g>=14?"Very good, well done.":g>=12?"Good, a solid pass.":g>=10?"Passed. A few gaps to fill.":"Not passed yet. Go over your mistakes and try again."}
+function exVerdict(g){return g>=16?tl("Outstanding, top marks."):g>=14?tl("Very good, well done."):g>=12?tl("Good, a solid pass."):g>=10?tl("Passed. A few gaps to fill."):tl("Not passed yet. Go over your mistakes and try again.")}
 function renderExDone(){
   $("exPlay").hidden=true;$("exDone").hidden=false;window.scrollTo(0,0);
   const n=EX.deck.length,r=EX.res,ok=r.filter(x=>x===1).length,bad=r.filter(x=>x===0).length,blank=r.filter(x=>x===-1).length;
@@ -109,8 +109,8 @@ function renderExDone(){
   $("exVerdict").textContent=exVerdict(EX.grade);
   $("exOk").textContent=ok;$("exBad").textContent=bad;$("exBlank").textContent=blank;
   const bys={};EX.deck.forEach((d,i)=>{const s=exQ(d).s;bys[s]=bys[s]||[0,0];bys[s][1]++;if(r[i]===1)bys[s][0]++});
-  $("exMeta").textContent=ok+" / "+n+" correct · time used "+exClock(EX.usedMs)+" of "+exClock(EX.total)+
-    (Object.keys(bys).length>1?" · by "+unit(0)+": "+Object.keys(bys).sort((a,b)=>a-b).map(s=>sLabel(s)+" "+bys[s][0]+"/"+bys[s][1]).join(", "):"");
+  $("exMeta").textContent=tl("{ok} / {n} correct · time used {a} of {b}",{ok,n,a:exClock(EX.usedMs),b:exClock(EX.total)})+
+    (Object.keys(bys).length>1?" · "+tl("by {unit}: {list}",{unit:unit(0),list:Object.keys(bys).sort((a,b)=>a-b).map(s=>sLabel(s)+" "+bys[s][0]+"/"+bys[s][1]).join(", ")}):"");
   $("exMissBtn").hidden=ok===n;
   if(EX.grade>=10){sfx("win");confetti(EX.grade>=16?200:90)}else sfx("bad");
   renderExRev();
@@ -118,16 +118,16 @@ function renderExDone(){
 function renderExRev(){
   const r=EX.res,nBad=r.filter(x=>x!==1).length;if(!nBad)EX.rev="all";
   const rc=$("exRevChips");rc.textContent="";
-  [["bad","Mistakes ("+nBad+")"],["all","All questions ("+r.length+")"]].forEach(([k,l])=>{if(k==="bad"&&!nBad)return;
+  [["bad",tl("Mistakes ({n})",{n:nBad})],["all",tl("All questions ({n})",{n:r.length})]].forEach(([k,l])=>{if(k==="bad"&&!nBad)return;
     const b=el("button","chip",l);b.setAttribute("aria-pressed",EX.rev===k);b.onclick=()=>{EX.rev=k;renderExRev()};rc.appendChild(b)});
   const box=$("exRev");box.textContent="";
   EX.deck.forEach((d,i)=>{if(EX.rev==="bad"&&r[i]===1)return;
     const q=exQ(d),a=EX.ans[i],typed=d.t!=null,good=typed?q.a[0]:q.o[0];
     const it=el("div","ex-ri "+(r[i]===1?"ok":r[i]===0?"bad":"blank"));
-    it.append(el("div","ex-rl",(i+1)+". "+sLabel(q.s)+" · "+(typed?"Typed answer":q.t||"Multiple choice")),el("div","ex-rq",q.q));
-    const mine=r[i]===-1?"No answer":typed?a.txt:q.o[d.o[a.c]];
-    if(r[i]!==1)it.append(el("div","ex-ra mine","Your answer: "+mine));
-    it.append(el("div","ex-ra good",(r[i]===1?"Your answer: ":"Correct answer: ")+(r[i]===1&&typed?a.txt:good)+(r[i]===1?" ✓":"")));
+    it.append(el("div","ex-rl",(i+1)+". "+sLabel(q.s)+" · "+(typed?tl("Typed answer"):q.t||tl("Multiple choice"))),el("div","ex-rq",q.q));
+    const mine=r[i]===-1?tl("No answer"):typed?a.txt:q.o[d.o[a.c]];
+    if(r[i]!==1)it.append(el("div","ex-ra mine",tl("Your answer: {a}",{a:mine})));
+    it.append(el("div","ex-ra good",tl(r[i]===1?"Your answer: {a}":"Correct answer: {a}",{a:(r[i]===1&&typed?a.txt:good)})+(r[i]===1?" ✓":"")));
     if(q.e)it.append(el("p","ex-re",q.e));
     box.appendChild(it)});
 }

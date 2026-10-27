@@ -5,7 +5,7 @@
 (()=>{
 if(typeof sb==="undefined"||!sb)return;   // no backend: the app stays local-only
 const ACCT="tpk-sync",DIRTY="tpk-sync-dirty";
-const NOSYNC=new Set(["socio-pid","socio-sound","tpk-theme","tpk-resume","tpk-sid"]);   // per device (a paused solo game stays on its device)
+const NOSYNC=new Set(["socio-pid","socio-sound","tpk-theme","tpk-lang","tpk-resume","tpk-sid"]);   // per device (a paused solo game stays on its device)
 function synced(k){return /^(socio-|tpk-)/.test(k)&&!NOSYNC.has(k)&&!k.startsWith(ACCT)}
 const S=Storage.prototype,oGet=S.getItem,oSet=S.setItem,oDel=S.removeItem;
 function ls(){try{return window.localStorage}catch(e){return null}}
@@ -103,11 +103,11 @@ const main=document.querySelector(".me-panel .me-main");if(!main)return;main.app
 function setState(s){state=s;renderLine()}
 function renderLine(){
   if(acct){
-    const st={saving:"Saving…",offline:"Offline, will retry"}[state]||"";
-    line.innerHTML='<span class="sync-txt"><span class="sync-ico" aria-hidden="true"></span>Saved online as <b>'+esc2(acct.u)+'</b>'+(st?'<span class="sync-st'+(state==="offline"?" off":"")+'"> · '+st+'</span>':'')+'</span><button type="button" class="linkbtn" id="syncOut">Sign out</button>';
+    const st={saving:tl("Saving…"),offline:tl("Offline, will retry")}[state]||"";
+    line.innerHTML='<span class="sync-txt"><span class="sync-ico" aria-hidden="true"></span>'+tl("Saved online as {u}",{u:"<b>"+esc2(acct.u)+"</b>"})+(st?'<span class="sync-st'+(state==="offline"?" off":"")+'"> · '+st+'</span>':'')+'</span><button type="button" class="linkbtn" id="syncOut">'+tl("Sign out")+'</button>';
     line.querySelector("#syncOut").onclick=signOut}
   else{
-    line.innerHTML='<span class="sync-txt"><span class="sync-ico off" aria-hidden="true"></span>'+(state==="expired"?"Signed out. Sign in again to keep saving.":"Your progress is only on this device.")+'</span><button type="button" class="linkbtn" id="syncIn">Save it online</button>';
+    line.innerHTML='<span class="sync-txt"><span class="sync-ico off" aria-hidden="true"></span>'+(state==="expired"?tl("Signed out. Sign in again to keep saving."):tl("Your progress is only on this device."))+'</span><button type="button" class="linkbtn" id="syncIn">'+tl("Save it online")+'</button>';
     line.querySelector("#syncIn").onclick=()=>openDlg(state==="expired"?"in":"new")}
 }
 
@@ -123,13 +123,13 @@ dlg.innerHTML=`<form class="sync-card" id="syncForm" novalidate>
   <p class="err" id="syncErr" hidden></p>
   <div class="row sync-actions"><button type="button" class="btn ghost" id="syncCancel">Cancel</button><button type="submit" class="btn" id="syncGo">Create account</button></div>
 </form>`;
-document.body.appendChild(dlg);
+tpkTranslate(dlg);document.body.appendChild(dlg);
 const q=id=>dlg.querySelector("#"+id);
 let dmode="new";
 function setMode(m){dmode=m;dlg.querySelectorAll(".sync-tabs .chip").forEach(b=>b.setAttribute("aria-pressed",b.dataset.m===m));
-  q("syncGo").textContent=m==="new"?"Create account":"Sign in";
+  q("syncGo").textContent=m==="new"?tl("Create account"):tl("Sign in");
   q("syncPass").autocomplete=m==="new"?"new-password":"current-password";
-  q("syncPass").placeholder=m==="new"?"At least 6 characters":"Your password";
+  q("syncPass").placeholder=m==="new"?tl("At least 6 characters"):tl("Your password");
   q("syncFoot").hidden=m!=="new";err("")}
 dlg.querySelectorAll(".sync-tabs .chip").forEach(b=>b.onclick=()=>setMode(b.dataset.m));
 function err(m){q("syncErr").textContent=m;q("syncErr").hidden=!m}
@@ -141,15 +141,15 @@ function closeDlg(){dlg.hidden=true;document.body.classList.remove("noscroll");q
 q("syncCancel").onclick=closeDlg;
 dlg.addEventListener("keydown",e=>{if(e.key==="Escape")closeDlg()});
 dlg.addEventListener("click",e=>{if(e.target===dlg)closeDlg()});
-const MSG={bad_username:"Username: 3 to 20 letters, numbers, dots, dashes or underscores (no spaces).",
-  bad_password:"Password: at least 6 characters.",name_taken:"This username is taken. Pick another one, or tap “I have one” if it's yours.",
-  bad_login:"Wrong username or password.",locked:"Too many wrong passwords. Wait 15 minutes, then try again.",
-  slow_down:"Too many new accounts from this network. Try again in an hour.",too_big:"Your progress is too big to save online."};
+const MSG={bad_username:tl("Username: 3 to 20 letters, numbers, dots, dashes or underscores (no spaces)."),
+  bad_password:tl("Password: at least 6 characters."),name_taken:tl("This username is taken. Pick another one, or tap “I have one” if it's yours."),
+  bad_login:tl("Wrong username or password."),locked:tl("Too many wrong passwords. Wait 15 minutes, then try again."),
+  slow_down:tl("Too many new accounts from this network. Try again in an hour."),too_big:tl("Your progress is too big to save online.")};
 q("syncForm").onsubmit=async e=>{e.preventDefault();err("");
   const u=q("syncUser").value.trim(),p=q("syncPass").value;
   if(!/^[A-Za-z0-9_.-]{3,20}$/.test(u)){err(MSG.bad_username);q("syncUser").focus();return}
   if(p.length<6&&dmode==="new"){err(MSG.bad_password);q("syncPass").focus();return}
-  q("syncGo").disabled=true;q("syncGo").textContent=dmode==="new"?"Creating…":"Signing in…";
+  q("syncGo").disabled=true;q("syncGo").textContent=dmode==="new"?tl("Creating…"):tl("Signing in…");
   try{
     if(dmode==="new"){const e0=edits,r=await rpc("tpk_signup",{p_username:u,p_password:p,p_data:snap()});
       acct={u:r.username,tok:r.token,rev:r.rev};saveAcct();if(edits===e0)put(DIRTY,null);else later(500)}
@@ -157,13 +157,13 @@ q("syncForm").onsubmit=async e=>{e.preventDefault();err("");
       acct={u:r.username,tok:r.token,rev:r.rev};saveAcct();
       const loc=snap(),m=merge(loc,r.data||{});apply(m);   // keep what was done on this device before signing in
       if(same(m,r.data||{}))put(DIRTY,null);else{put(DIRTY,"1");push()}}
-    setState("ok");closeDlg();if(typeof toast==="function")toast(dmode==="new"?"Progress saved online":"Progress restored")
-  }catch(x){err(MSG[x.message]||"Can't reach the server. Check your connection and try again.")}
-  finally{q("syncGo").disabled=false;q("syncGo").textContent=dmode==="new"?"Create account":"Sign in"}};
+    setState("ok");closeDlg();if(typeof toast==="function")toast(dmode==="new"?tl("Progress saved online"):tl("Progress restored"))
+  }catch(x){err(MSG[x.message]||tl("Can't reach the server. Check your connection and try again."))}
+  finally{q("syncGo").disabled=false;q("syncGo").textContent=dmode==="new"?tl("Create account"):tl("Sign in")}};
 async function signOut(){const t=acct&&acct.tok;
   if(get(DIRTY))await push();
   dropAcct();setState("ok");if(t)rpc("tpk_logout",{p_token:t}).catch(()=>{});
-  if(typeof toast==="function")toast("Signed out. Your progress stays on this device.")}
+  if(typeof toast==="function")toast(tl("Signed out. Your progress stays on this device."))}
 
 renderLine();
 if(acct){setState("saving");pull()}

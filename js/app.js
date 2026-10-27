@@ -31,16 +31,16 @@ try{sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:false,au
 function setMultiNote(ok){
   const n=$("multiNote");n.hidden=ok;
   $("createBtn").disabled=!ok;$("joinBtn").disabled=!ok;$("codeIn").disabled=!ok;
-  if(!ok)n.textContent="Can't reach the server. Check your internet connection, then reload the page. Solo mode still works.";
+  if(!ok)n.textContent=tl("Can't reach the server. Check your internet connection, then reload the page. Solo mode still works.");
 }
 
 // ---------- home ----------
 
 $("nick").value=lsGet("socio-nick")||"";
 $("nick").addEventListener("input",()=>{lsSet("socio-nick",$("nick").value.trim());showErr("nickErr","");renderMe()});
-function myNick(){return ($("nick").value.trim()||"Player").slice(0,18)}
+function myNick(){return ($("nick").value.trim()||tl("Player")).slice(0,18)}
 // multiplayer needs a real name, so friends know who is who
-function needNick(){if($("nick").value.trim())return false;showErr("nickErr","Enter your first name so your friends know who you are.");$("nick").focus();$("nick").scrollIntoView({block:"center"});return true}
+function needNick(){if($("nick").value.trim())return false;showErr("nickErr",tl("Enter your first name so your friends know who you are."));$("nick").focus();$("nick").scrollIntoView({block:"center"});return true}
 
 // ---------- profile picture ----------
 function myAv(){return lsGet("tpk-avatar")||null}
@@ -48,7 +48,7 @@ if(myAv())avs[me]=myAv();
 function renderMe(){
   const a=$("pfpAv");a.className="av big";a.removeAttribute("style");a.style.backgroundColor="hsl("+hue(me)+" 55% 42%)";
   a.textContent=($("nick").value.trim()||"?").charAt(0).toUpperCase();paintAv(a,myAv());
-  $("pfpPick").textContent=myAv()?"Change photo":"Add a photo";$("pfpDel").hidden=!myAv();
+  $("pfpPick").textContent=myAv()?tl("Change photo"):tl("Add a photo");$("pfpDel").hidden=!myAv();
 }
 // ---- cropper: drag + zoom (slider, wheel, pinch) in a square view shown through a circular mask ----
 const AV_OUT=256,AV_MAX=90000;   // saved size: 4x the biggest place it is shown (64 px) so it stays sharp on retina phones
@@ -95,17 +95,17 @@ $("cropOk").onclick=()=>{if(!crop.img)return;
   const f=AV_OUT/crop.V,k=cropBase()*crop.z*f;x.drawImage(crop.img,crop.ox*f,crop.oy*f,crop.img.width*k,crop.img.height*k);
   let d=c.toDataURL("image/jpeg",.9);for(let q=.8;d.length>AV_MAX&&q>.4;q-=.1)d=c.toDataURL("image/jpeg",q);   // keep it under the database limit
   lsSet("tpk-avatar",d);
-  if(lsGet("tpk-avatar")!==d){closeCrop();showErr("nickErr","Couldn't save the photo on this device.");return}
+  if(lsGet("tpk-avatar")!==d){closeCrop();showErr("nickErr",tl("Couldn't save the photo on this device."));return}
   avs[me]=d;closeCrop();renderMe()};
 $("pfpPick").onclick=()=>$("pfpIn").click();
 $("pfpIn").onchange=async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;showErr("nickErr","");
   try{openCrop(await loadForCrop(f))}
-  catch(err){showErr("nickErr","Can't use this image, try another photo (JPG or PNG).")}};
+  catch(err){showErr("nickErr",tl("Can't use this image, try another photo (JPG or PNG)."))}};
 $("pfpDel").onclick=()=>{try{localStorage.removeItem("tpk-avatar")}catch(e){}delete avs[me];renderMe()};
 renderMe();
 function renderSettings(){
   const sc=$("sessChips");sc.textContent="";
-  const all=el("button","chip","All");all.setAttribute("aria-pressed",settings.sess.size===ALL_S.length);
+  const all=el("button","chip",tl("All"));all.setAttribute("aria-pressed",settings.sess.size===ALL_S.length);
   all.onclick=()=>{settings.sess=new Set(settings.sess.size===ALL_S.length?[]:ALL_S);renderSettings()};sc.appendChild(all);
   for(const s of ALL_S){const b=el("button","chip",sLabel(s));b.title=SESS[s];b.setAttribute("aria-pressed",settings.sess.has(s));
     b.onclick=()=>{settings.sess.has(s)?settings.sess.delete(s):settings.sess.add(s);renderSettings()};sc.appendChild(b)}
@@ -114,11 +114,11 @@ function renderSettings(){
   const want=settings.lenWant||settings.len;settings.len=want===LEN_INF||!av?want:Math.min(want,av);
   const lens=LENS.filter(n=>n===LEN_INF||!av||n<av);
   [av,settings.len].forEach(n=>{if(n&&n!==LEN_INF&&n<=Math.max(50,settings.len)&&!lens.includes(n)){lens.push(n);lens.sort((a,b)=>a===LEN_INF?1:b===LEN_INF?-1:a-b)}});
-  lens.forEach(n=>{const b=el("button","chip",n===LEN_INF?"∞":n===av&&!LENS.includes(n)?"All "+n:String(n));if(n===LEN_INF)b.title="Endless questions, until the host ends the game";else if(n===av)b.title="Every question in the "+unit(1)+" you picked";
+  lens.forEach(n=>{const b=el("button","chip",n===LEN_INF?"∞":n===av&&!LENS.includes(n)?tl("All {n}",{n}):String(n));if(n===LEN_INF)b.title=tl("Endless questions, until the host ends the game");else if(n===av)b.title=tl("Every question in the {units} you picked",{units:unit(1)});
     b.setAttribute("aria-pressed",settings.len===n);b.onclick=()=>{settings.lenWant=n;renderSettings()};lc.appendChild(b)});
-  $("lenAvail").textContent=av?av.toLocaleString("en-US")+" available":"";
+  $("lenAvail").textContent=av?tl("{n} available",{n:av.toLocaleString(LOCALE)}):"";
   const fc=$("fmtChips");fc.textContent="";
-  [["mix","Mix"],["mcq","Multiple choice"],["typed","Typed answer"]].forEach(([k,l])=>{const b=el("button","chip",l);b.setAttribute("aria-pressed",settings.fmt===k);b.onclick=()=>{settings.fmt=k;renderSettings()};fc.appendChild(b)});
+  [["mix",tl("Mix")],["mcq",tl("Multiple choice")],["typed",tl("Typed answer")]].forEach(([k,l])=>{const b=el("button","chip",l);b.setAttribute("aria-pressed",settings.fmt===k);b.onclick=()=>{settings.fmt=k;renderSettings()};fc.appendChild(b)});
   const tc=$("timeChips");tc.textContent="";
   [15,20,30].forEach(n=>{const b=el("button","chip",n+" s");b.setAttribute("aria-pressed",settings.T===n);b.onclick=()=>{settings.T=n;renderSettings()};tc.appendChild(b)});
   renderCardsPanel();if(window.renderExamPanel)renderExamPanel();
@@ -191,7 +191,7 @@ function qOf(qi){const d=G.deck[qi];return d.t!=null?TQ[d.t]:Q[d.id]}
 // ---------- generated questions (deterministic: same on every device) ----------
 function expandFacts(FACTS,lang){
   const fr=lang==="fr",L=fr?{who:"Qui est-ce ? “",which:"Quel concept ? “",known:t=>"Pour quoi "+t+" est connu·e ?",what:t=>"Que désigne « "+t+" » ?",tWho:"Qui ? “",tName:"Donne le concept : “",lWho:"Qui ?",lDef:"Définition",tf:"Vrai ou faux",T:"Vrai",F:"Faux",sep:" : "}
-    :{who:"Who is this? “",which:"Which concept is this? “",known:t=>"What is "+t+" known for?",what:t=>"What is “"+t+"”?",tWho:"Who? “",tName:"Name the concept: “",lWho:"Who?",lDef:"Definition",tf:"True or false",T:"True",F:"False",sep:": "};
+    :{who:"Who is this? “",which:"Which concept is this? “",known:t=>"What is "+t+" known for?",what:t=>"What is “"+t+"”?",tWho:"Who? “",tName:"Name the concept: “",lWho:"Who?",lDef:tl("Definition"),tf:"True or false",T:"True",F:"False",sep:": "};
   function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
   const R=rng(20261022);
   const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=(R()*(i+1))|0;[a[i],a[j]]=[a[j],a[i]]}return a};
@@ -216,7 +216,7 @@ function expandFacts(FACTS,lang){
       const o=others(f,3,"t",true);if(o.length===3)gq.push({s:f.s,t:P?L.lWho:L.lDef,q:(P?L.who:L.which)+f.d+"”",o:[f.t,...o.map(g=>g.t)],a:0,e:f.t+" — "+f.d+"."});
     }
     for(let v=0;v<2;v++){   // term -> definition
-      const o=others(f,3,"d",true);if(o.length===3)gq.push({s:f.s,t:P?L.lWho:"Concept",q:P?L.known(f.t):L.what(f.t),o:[f.d,...o.map(g=>g.d)],a:0,e:f.t+" — "+f.d+"."});
+      const o=others(f,3,"d",true);if(o.length===3)gq.push({s:f.s,t:P?L.lWho:tl("Concept"),q:P?L.known(f.t):L.what(f.t),o:[f.d,...o.map(g=>g.d)],a:0,e:f.t+" — "+f.d+"."});
     }
     // true / false (true version and false version with a definition from another concept)
     gq.push({s:f.s,t:L.tf,q:"“"+f.t+"” — "+f.d+".",o:[L.T,L.F],a:0,e:L.T+L.sep+f.t+" — "+f.d+".",tf:true});
@@ -257,7 +257,7 @@ function renderBankUI(){
   $("bankTitle").textContent=BANK.title;
   $("bankIco").textContent=(BANK.title||"?").trim().charAt(0).toUpperCase();$("bankIco").style.background="hsl("+hue(BANK.id||BANK.title||"")+" 90% 80%)";
   $("bankSub").textContent=BANK.subject||"";
-  try{$("qCount").textContent=(Q.length+TQ.length).toLocaleString("en-US")}catch(e){}
+  try{$("qCount").textContent=(Q.length+TQ.length).toLocaleString(LOCALE)}catch(e){}
   const w=BANK.ticker||(BANK.facts||[]).map(f=>f[3]).filter(t=>t&&t.length<=28);
   $("sessLbl").textContent=unit(1).charAt(0).toUpperCase()+unit(1).slice(1);
   const words=shuffle(w).slice(0,28).map((t,i)=>i%2?esc(t):"<b>"+esc(t)+"</b>");
@@ -266,7 +266,7 @@ function renderBankUI(){
   renderSettings();renderMissBtn();
 }
 function sLabel(s){return BANK.tags?BANK.tags[s]:(BANK.id==="socio"?"S":"Ch.")+s}
-function unit(k){return (BANK.unit||(BANK.id==="socio"?["session","sessions","a session"]:["chapter","chapters","a chapter"]))[k]}
+function unit(k){return tl((BANK.unit||(BANK.id==="socio"?["session","sessions","a session"]:["chapter","chapters","a chapter"]))[k])}
 const BUILTIN={socio:()=>window.BANK_SOCIO,culture:()=>window.BANK_CULTURE,energie:()=>window.BANK_ENERGIE,populism:()=>window.BANK_POPULISM};
 const bankCache={};
 async function useBank(id){
@@ -290,18 +290,18 @@ async function refreshOpen(){
   if(error||!data)return;
   const list=data.filter(r=>r.state&&r.state.status!=="end");
   const box=$("openGames");box.textContent="";
-  if(!list.length){box.appendChild(el("p","muted","No open games right now. Create one or enter a code."));return}
+  if(!list.length){box.appendChild(el("p","muted",tl("No open games right now. Create one or enter a code.")));return}
   list.forEach(r=>{const g=r.state;
     const row=el("div","gamerow");
     const left=el("div");left.appendChild(el("div","code",r.code));
-    left.appendChild(el("div","muted",(g.hostNick||"Someone")+" · "+(g.bankTitle||"Socio Trivia")+" · "+(g.status==="lobby"?"waiting":"question "+(g.qi+1)+(g.inf?"":"/"+g.deck.length))+" · "+(g.inf?"∞":g.deck.length)+" questions"));
-    const b=el("button","btn dark","Join");b.onclick=()=>joinGame(r.code);
+    left.appendChild(el("div","muted",(g.hostNick||tl("Someone"))+" · "+(g.bankTitle||"Tipoki")+" · "+(g.status==="lobby"?tl("waiting"):tl("question {n}",{n:(g.qi+1)+(g.inf?"":"/"+g.deck.length)}))+" · "+(g.inf?"∞":g.deck.length)+" "+tl("questions")));
+    const b=el("button","btn dark",tl("Join"));b.onclick=()=>joinGame(r.code);
     row.append(left,b);box.appendChild(row)});
 }
 function watchOpenGames(){refreshOpen();setInterval(()=>{if(!$("home").hidden)refreshOpen()},4000)}
 $("codeIn").addEventListener("input",e=>{e.target.value=e.target.value.toUpperCase().replace(/[^A-Z]/g,"")});
 $("codeIn").addEventListener("keydown",e=>{if(e.key==="Enter")$("joinBtn").click()});
-$("joinBtn").onclick=()=>{const c=$("codeIn").value.trim();if(c.length!==4){showErr("joinErr","The code is 4 letters.");return}joinGame(c)};
+$("joinBtn").onclick=()=>{const c=$("codeIn").value.trim();if(c.length!==4){showErr("joinErr",tl("The code is 4 letters."));return}joinGame(c)};
 $("createBtn").onclick=createGame;
 $("soloBtn").onclick=()=>startSolo();
 $("missBtn").onclick=()=>playMissed();
@@ -324,7 +324,7 @@ function showImg(boxId,imgId,q,hintId){
 // off for new visitors (a quiz in the library shouldn't beep), visitors who already played keep sound unless they turned it off
 const soundPref=lsGet("socio-sound");
 let soundOn=soundPref?soundPref!=="off":!!lsGet("socio-nick"),actx=null;
-function syncSoundBtn(){const b=$("soundBtn");b.setAttribute("aria-pressed",soundOn);b.querySelector(".bt").textContent=soundOn?"Sound":"Muted";b.title=soundOn?"Turn sound effects off":"Turn sound effects on"}
+function syncSoundBtn(){const b=$("soundBtn");b.setAttribute("aria-pressed",soundOn);b.querySelector(".bt").textContent=soundOn?tl("Sound"):tl("Muted");b.title=soundOn?tl("Turn sound effects off"):tl("Turn sound effects on")}
 syncSoundBtn();
 $("soundBtn").onclick=()=>{soundOn=!soundOn;lsSet("socio-sound",soundOn?"on":"off");syncSoundBtn();if(soundOn)sfx("ok")};
 function audio(){
@@ -360,7 +360,7 @@ function countUp(elm,from,to){if(RM||from===to){elm.textContent=to+" pts";return
   (function f(t){const k=Math.min(1,(t-t0)/700),v=Math.round(from+(to-from)*(1-Math.pow(1-k,3)));elm.textContent=v+" pts";if(k<1)requestAnimationFrame(f)})(t0)}
 
 // ---------- engine: writes ----------
-function queue(fn){writeChain=writeChain.then(fn).catch(err=>{console.warn(err);toast("Connection problem, try again")});return writeChain}
+function queue(fn){writeChain=writeChain.then(fn).catch(err=>{console.warn(err);toast(tl("Connection problem, try again"))});return writeChain}
 function writeGame(patch){
   const ng={...G,...patch,seq:(G.seq||0)+1};
   if(patch.status==="q")ng.qAt=Date.now();   // lets someone who joins mid-question get the time that is really left
@@ -380,8 +380,8 @@ function playMissed(first){const all=missLive(),f=(first||[]).filter(k=>all.incl
   if(keys.length)startSolo(keys.map(missItem),{miss:all.length})}
 const MISS_RUN=30;
 function renderMissBtn(){const n=missLive().length;$("missPanel").hidden=!n;$("missN").textContent=n;
-  $("missTitle").textContent=n===1?"1 missed question":n+" missed questions";
-  $("missBtn").textContent=n>MISS_RUN?"Replay "+MISS_RUN:"Replay "+(n===1?"it":"them")}
+  $("missTitle").textContent=n===1?tl("1 missed question"):tl("{n} missed questions",{n});
+  $("missBtn").textContent=n>MISS_RUN?tl("Replay {n}",{n:MISS_RUN}):tl(n===1?"Replay it":"Replay them")}
 function writeAnswer(qi,entry){trackMiss(qi,isRight(entry,qi));
   P[me]={...(P[me]||{nick:myNick(),joined:Date.now()}),ans:{...((P[me]||{}).ans||{}),[qi]:entry}};onPlayers();
   if(mode==="solo"){saveSolo();return}
@@ -398,14 +398,14 @@ async function insertGame(g){
 }
 async function createGame(){
   showErr("createErr","");if(needNick())return;
-  if(!settings.sess.size){showErr("createErr","Choose at least "+unit(2)+".");return}
+  if(!settings.sess.size){showErr("createErr",tl("Choose at least {unit}.",{unit:unit(2)}));return}
   lsSet("socio-nick",myNick());
   $("createBtn").disabled=true;
   try{
     const g={host:me,hostNick:myNick(),bank:BANK.id,bankTitle:BANK.title,status:"lobby",qi:0,deck:buildDeck(),T:settings.T,created:Date.now(),seq:1,sess:[...settings.sess],fmt:settings.fmt,inf:settings.len===LEN_INF};
     const c=await insertGame(g);
     await joinGame(c);
-  }catch(e){showErr("createErr","Couldn't create the game. Check your connection.")}
+  }catch(e){showErr("createErr",tl("Couldn't create the game. Check your connection."))}
   finally{$("createBtn").disabled=false}
 }
 function applyGame(s){if(!s)return;if(G&&local.lastStatus!==null&&(s.seq||0)<=(G.seq||0))return;onGame(s)}
@@ -437,20 +437,20 @@ async function joinGame(c){
   showErr("joinErr","");if(needNick())return;
   lsSet("socio-nick",myNick());
   const {data,error}=await sb.from("games").select("state").eq("code",c).maybeSingle();
-  if(error){showErr("joinErr","Can't connect, try again.");return}
-  if(!data){showErr("joinErr","No game with this code.");return}
-  if(!await useBank(data.state.bank)){showErr("joinErr","Couldn't load this game's quiz.");return}
+  if(error){showErr("joinErr",tl("Can't connect, try again."));return}
+  if(!data){showErr("joinErr",tl("No game with this code."));return}
+  if(!await useBank(data.state.bank)){showErr("joinErr",tl("Couldn't load this game's quiz."));return}
   leaveGame(true);
   mode="multi";code=c;G=data.state;P={};local={qi:-1,shownAt:0,revealing:false,lastStatus:null};
   const {data:mine}=await sb.from("players").select("pid").eq("code",c).eq("pid",me).maybeSingle();
-  if(G.status==="end"&&!mine){mode=null;code=null;G=null;show("home");showErr("joinErr","This game is already over. Ask the host for a rematch.");return}
+  if(G.status==="end"&&!mine){mode=null;code=null;G=null;show("home");showErr("joinErr",tl("This game is already over. Ask the host for a rematch."));return}
   // joining a game already under way: you play from the current question on (the next one if answers are being shown)
   if(G.status!=="lobby"&&!mine)local.joinQi=G.status==="q"?G.qi:G.qi+1;
   avAsked=new Set();
   const save=row=>mine?sb.from("players").update(row).eq("code",c).eq("pid",me):sb.from("players").insert({code:c,pid:me,...row});
   let res=await save(avCol?{nick:myNick(),avatar:myAv()}:{nick:myNick()});
   if(res.error&&avCol){avCol=false;res=await save({nick:myNick()})}   // no avatar column yet: play without photos
-  if(res.error){mode=null;code=null;show("home");showErr("joinErr","Couldn't join, try again.");return}
+  if(res.error){mode=null;code=null;show("home");showErr("joinErr",tl("Couldn't join, try again."));return}
   chan=sb.channel("g-"+c)
     .on("postgres_changes",{event:"*",schema:"public",table:"games",filter:"code=eq."+c},p=>{if(code===c&&p.new&&p.new.state)applyGame(p.new.state)})
     .on("postgres_changes",{event:"*",schema:"public",table:"players",filter:"code=eq."+c},p=>{if(code===c&&p.new&&p.new.pid){if(p.new.avatar&&p.new.pid!==me)avs[p.new.pid]=p.new.avatar;P={...P,[p.new.pid]:rowToPlayer(p.new)};onPlayers()}})
@@ -460,7 +460,7 @@ async function joinGame(c){
   onGame(G);
 }
 function startSolo(customDeck,opt){
-  if(!customDeck&&!settings.sess.size){showErr("createErr","Choose at least "+unit(2)+".");return}
+  if(!customDeck&&!settings.sess.size){showErr("createErr",tl("Choose at least {unit}.",{unit:unit(2)}));return}
   leaveGame(true);
   mode="solo";code=null;
   G={host:me,status:"q",qi:0,deck:customDeck||buildDeck(),T:settings.T,created:Date.now(),seq:1,inf:!customDeck&&settings.len===LEN_INF,review:!!customDeck,sess:[...settings.sess],fmt:settings.fmt};
@@ -476,7 +476,7 @@ function leaveGame(silent){
 function isHost(){return G&&G.host===me}
 
 // ---------- resume an interrupted solo game ----------
-// one saved game per device: kept after each answer, dropped at the podium, by "Discard", or after a week
+// one saved game per device: kept after each answer, dropped at the podium, by tl("Discard"), or after a week
 const RESUME_KEY="tpk-resume",RESUME_MAX=7*864e5;
 function savedSolo(){try{const s=JSON.parse(lsGet(RESUME_KEY)||"null");if(s&&s.G&&s.G.deck&&s.ans&&Date.now()-s.at<RESUME_MAX)return s}catch(e){}return null}
 function clearSolo(){try{localStorage.removeItem(RESUME_KEY)}catch(e){}}
@@ -486,18 +486,18 @@ function saveSolo(){
   const ans=(P[me]&&P[me].ans)||{};if(!Object.keys(ans).length)return;   // nothing answered yet: keep any older save
   lsSet(RESUME_KEY,JSON.stringify({bank:BANK.id,title:BANK.title,G,ans,at:Date.now()}));
 }
-function ago(t){const m=Math.round((Date.now()-t)/60000);return m<2?"just now":m<60?m+" min ago":m<1440?Math.round(m/60)+" h ago":Math.round(m/1440)+" d ago"}
+function ago(t){const m=Math.round((Date.now()-t)/60000);return m<2?tl("just now"):m<60?tl("{n} min ago",{n:m}):m<1440?tl("{n} h ago",{n:Math.round(m/60)}):tl("{n} d ago",{n:Math.round(m/1440)})}
 function renderResume(){
   const s=mode?null:savedSolo(),c=$("resumeCard");c.hidden=!s;if(!s)return;
   const g=s.G,n=Object.keys(s.ans).length,ok=Object.keys(s.ans).filter(i=>{const a=s.ans[i],d=g.deck[i];return d&&(d.t!=null?a.ok===true:d.o&&a.c===d.o.indexOf(0))}).length;
   const at=Math.min(g.qi+(s.ans[g.qi]||g.status==="reveal"?2:1),g.inf?Infinity:g.deck.length);
-  $("resumeTitle").textContent=s.title||"Your quiz";
-  $("resumeSub").textContent="Question "+at+" / "+(g.inf?"∞":g.deck.length)+" · "+ok+" / "+n+" correct · "+ago(s.at);
+  $("resumeTitle").textContent=s.title||tl("Your quiz");
+  $("resumeSub").textContent=tl("Question {at} / {total} · {ok} / {n} correct · {ago}",{at,total:g.inf?"∞":g.deck.length,ok,n,ago:ago(s.at)});
 }
 async function resumeSolo(){
   const s=savedSolo();if(!s){renderResume();return}
   $("resumeGo").disabled=true;const ok=await useBank(s.bank);$("resumeGo").disabled=false;
-  if(!ok){toast("Couldn't load this quiz, check your connection");return}
+  if(!ok){toast(tl("Couldn't load this quiz, check your connection"));return}
   setQuizParam();leaveGame(true);
   mode="solo";code=null;
   // a question that was already answered (or timed out) reopens on its answer; an unanswered one starts again
@@ -525,7 +525,7 @@ function onGame(g){
 function onPlayers(){
   if(!G)return;
   // someone joined a game already under way: let everyone know
-  const ids=Object.keys(P);if(local.known&&mode==="multi"&&G.status!=="lobby"){const nw=ids.filter(id=>!local.known.has(id)&&id!==me);if(nw.length){sfx("join");joinToast(nw.map(nameOf).join(", ")+" joined the game")}}
+  const ids=Object.keys(P);if(local.known&&mode==="multi"&&G.status!=="lobby"){const nw=ids.filter(id=>!local.known.has(id)&&id!==me);if(nw.length){sfx("join");joinToast(tl("{names} joined the game",{names:nw.map(nameOf).join(", ")}))}}
   local.known=new Set(ids);
   if(G.status==="lobby")renderLobby();
   else if(G.status==="q")renderQState();
@@ -544,10 +544,11 @@ function renderScreen(){
 function show(id){["home","topic","make","lobby","question","reveal","end","cards","stats","exam"].forEach(s=>$(s).hidden=s!==id);
   // the name + photo panel follows the player between the two start screens
   const slot=id==="home"?$("meHome"):id==="topic"?$("meTopic"):null,me=document.querySelector(".me-panel");if(slot&&me.parentNode!==slot)slot.appendChild(me);
+  $("langBtn").hidden=!(id==="home"||id==="topic");   // switching reloads the page, so only offer it between games
   if(id==="home"||id==="topic")renderProgressUI();
   const rslot=id==="home"?$("resumeHome"):id==="topic"?$("resumeTopic"):null;if(rslot){if($("resumeCard").parentNode!==rslot)rslot.appendChild($("resumeCard"));renderResume()}
-  $("status").textContent=code?("Game "+code):(mode==="solo"?"Solo":"");window.scrollTo(0,0)}
-function nameOf(id){const p=P[id];return (p&&p.nick)||(profiles[id]&&profiles[id].name)||"Player"}
+  $("status").textContent=code?(tl("Game {code}",{code})):(mode==="solo"?"Solo":"");window.scrollTo(0,0)}
+function nameOf(id){const p=P[id];return (p&&p.nick)||(profiles[id]&&profiles[id].name)||tl("Player")}
 
 // ---------- scoring ----------
 function correctPos(qi){return isT(qi)?-1:G.deck[qi].o.indexOf(0)}
@@ -561,18 +562,18 @@ function totals(upto){return Object.keys(P).map(id=>({id,...scoreRun(id,upto)}))
 function renderLobby(){
   show("lobby");
   $("lobbyCode").textContent=code;
-  $("lobbyInfo").textContent=({mix:"Multiple choice + typed answers",mcq:"Multiple choice",typed:"Typed answers"}[G.fmt||"mcq"])+" · "+(G.inf?"∞":G.deck.length)+" questions · "+G.T+" s per question · "+unit(1)+": "+(G.sess||[]).map(sLabel).join(", ");
+  $("lobbyInfo").textContent=tl("{fmt} · {n} questions · {s} s per question · {units}: {list}",{fmt:{mix:tl("Multiple choice + typed answers"),mcq:tl("Multiple choice"),typed:tl("Typed answers")}[G.fmt||"mcq"],n:G.inf?"∞":G.deck.length,s:G.T,units:unit(1),list:(G.sess||[]).map(sLabel).join(", ")});
   const ids=Object.keys(P).sort((a,b)=>(P[a].joined||0)-(P[b].joined||0));
-  $("lobbyCount").textContent=ids.length+(ids.length>1?" players":" player");
+  $("lobbyCount").textContent=tl(ids.length>1?"{n} players":"{n} player",{n:ids.length});
   const box=$("lobbyPlayers");box.textContent="";
-  ids.forEach(id=>{const d=el("div","pl pop");d.append(avatar(id,nameOf(id)),el("span",null,nameOf(id)));if(id===me)d.appendChild(el("span","you","you"));if(id===G.host)d.appendChild(el("span","you","host"));box.appendChild(d)});
+  ids.forEach(id=>{const d=el("div","pl pop");d.append(avatar(id,nameOf(id)),el("span",null,nameOf(id)));if(id===me)d.appendChild(el("span","you",tl("you")));if(id===G.host)d.appendChild(el("span","you",tl("host")));box.appendChild(d)});
   $("lobbyStart").hidden=!isHost();$("lobbyWait").hidden=isHost();
   $("inviteUrl").textContent=inviteUrl();
   if(local.lobbyN!=null&&ids.length>local.lobbyN)sfx("join");local.lobbyN=ids.length;
 }
 function inviteUrl(){return location.origin+location.pathname+"?code="+code}
 $("inviteBtn").onclick=()=>{const u=inviteUrl();
-  const done=()=>{$("inviteBtn").textContent="Link copied!";setTimeout(()=>$("inviteBtn").textContent="Copy invite link",1800)};
+  const done=()=>{$("inviteBtn").textContent=tl("Link copied!");setTimeout(()=>$("inviteBtn").textContent=tl("Copy invite link"),1800)};
   if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(u).then(done,()=>selectInvite());else selectInvite();
   function selectInvite(){const r=document.createRange();r.selectNodeContents($("inviteUrl"));const sel=getSelection();sel.removeAllRanges();sel.addRange(r)}};
 $("lobbyStart").onclick=()=>writeGame({status:"q",qi:0});
@@ -582,12 +583,12 @@ $("lobbyLeave").onclick=()=>leaveGame(false);
 function renderQuestion(){
   show("question");
   const item=G.deck[G.qi],q=qOf(G.qi),typed=isT(G.qi);
-  $("qSess").textContent=sLabel(q.s);$("qNum").textContent="Question "+(G.qi+1)+" / "+(G.inf?"∞":G.deck.length)+" · "+(typed?"Typed answer":q.t);
+  $("qSess").textContent=sLabel(q.s);$("qNum").textContent=tl("Question {i} / {n}",{i:G.qi+1,n:G.inf?"∞":G.deck.length})+" · "+(typed?tl("Typed answer"):q.t);
   $("qText").textContent=q.q;
   showImg("qImgBox","qImg",q,"qHint");
-  const st=G.qi>0?scoreRun(me,G.qi-1).streak:0;$("qStreak").hidden=st<2;$("qStreak").textContent="STREAK ×"+st;
+  const st=G.qi>0?scoreRun(me,G.qi-1).streak:0;$("qStreak").hidden=st<2;$("qStreak").textContent=tl("STREAK ×{n}",{n:st});
   if(local.goQ!==G.qi){local.goQ=G.qi;sfx("go");local.lastTick=null}
-  const intro=$("qIntro");$("qIntroN").textContent=(G.qi+1)+"/"+(G.inf?"∞":G.deck.length);$("qIntroType").textContent=typed?"Typed answer":(q.t||"Multiple choice");
+  const intro=$("qIntro");$("qIntroN").textContent=(G.qi+1)+"/"+(G.inf?"∞":G.deck.length);$("qIntroType").textContent=typed?tl("Typed answer"):(q.t||tl("Multiple choice"));
   if(performance.now()<local.shownAt){intro.hidden=false;clearTimeout(local.introT);local.introT=setTimeout(()=>{intro.hidden=true;if(isT(G.qi))$("qInput").focus()},Math.max(0,local.shownAt-performance.now()))}else intro.hidden=true;
   const box=$("qTiles");box.textContent="";box.hidden=typed;$("qType").hidden=!typed;
   if(typed){$("qInput").value="";$("qInput").disabled=false;$("qSend").disabled=false;setTimeout(()=>$("qInput").focus(),50)}
@@ -617,8 +618,8 @@ function renderQState(){
     b.classList.toggle("picked",!!a&&a.c===k);b.classList.toggle("dim",!!a&&a.c!==k)});
   const ids=Object.keys(P),done=ids.filter(id=>P[id].ans&&P[id].ans[G.qi]).length;
   const w=$("qWait");
-  if(a){w.hidden=false;w.textContent=mode==="multi"&&done<ids.length?"Answer sent · waiting for "+(ids.length-done)+" more":"Answer sent"}
-  else if(timeLeft()<=0){w.hidden=false;w.textContent="Time's up"}
+  if(a){w.hidden=false;w.textContent=mode==="multi"&&done<ids.length?tl("Answer sent · waiting for {n} more",{n:ids.length-done}):tl("Answer sent")}
+  else if(timeLeft()<=0){w.hidden=false;w.textContent=tl("Time's up")}
   else w.hidden=true;
   $("qHostRow").hidden=!(isHost()&&mode==="multi");
   $("qPlayers").hidden=mode!=="multi";$("qLate").hidden=!(mode==="multi"&&local.joinQi===G.qi&&G.qi>0);
@@ -634,8 +635,8 @@ function renderAnswered(ids,done){
   const was=new Set(box.dataset.q===String(G.qi)?(box.dataset.done||"").split(","):[]);
   box.dataset.k=key;box.dataset.q=String(G.qi);box.dataset.done=order.filter(id=>at(id)!=null).join(",");box.textContent="";
   order.forEach(id=>{const ok=at(id)!=null,c=el("div","ach"+(ok?" done":"")+(ok&&!was.has(id)?" pop":"")+(id===me?" me":""));
-    c.append(avatar(id,nameOf(id)),el("span","nm",id===me?"You":nameOf(id)));if(ok)c.appendChild(el("span","ck","✓"));
-    c.title=nameOf(id)+(ok?" has answered":" is thinking…");box.appendChild(c)});
+    c.append(avatar(id,nameOf(id)),el("span","nm",id===me?tl("You"):nameOf(id)));if(ok)c.appendChild(el("span","ck","✓"));
+    c.title=tl(ok?"{name} has answered":"{name} is thinking…",{name:nameOf(id)});box.appendChild(c)});
 }
 function timeLeft(){return qT(G.qi)-(performance.now()-local.shownAt)}
 $("qSkip").onclick=()=>{if(isHost()&&G.status==="q"&&!local.revealing){local.revealing=true;writeGame({status:"reveal"})}};
@@ -665,10 +666,10 @@ setInterval(()=>{
 function renderAuto(left){
   const sec=Math.max(0,Math.ceil(left/1000)),host=isHost(),b=$("rAuto");
   $("rBar").style.width=Math.max(0,Math.min(1,left/AUTO_MS))*100+"%";
-  const last=!G.inf&&G.qi>=G.deck.length-1,what=last?"Podium":"Next";
+  const last=!G.inf&&G.qi>=G.deck.length-1,what=last?tl("Podium"):tl("auto|Next");
   b.disabled=!host;b.classList.toggle("paused",!!local.paused);
-  b.textContent=local.paused?"Paused · Resume":(sec>0?what+" in "+sec+" s":what+"…")+(host&&sec>0?" · Pause":"");
-  if(!host)$("rWait").textContent=sec>0?(last?"Podium":"Next question")+" in "+sec+" s…":"The host is starting the next one…";
+  b.textContent=local.paused?tl("Paused · Resume"):(sec>0?tl("{what} in {n} s",{what,n:sec}):what+"…")+(host&&sec>0?" · "+tl("Pause"):"");
+  if(!host)$("rWait").textContent=sec>0?tl("{what} in {n} s",{what:last?tl("Podium"):tl("Next question"),n:sec})+"…":tl("The host is starting the next one…");
 }
 $("rAuto").onclick=()=>{if(!isHost()||!local.autoAt||local.autoFired)return;
   if(local.paused){local.paused=false;local.autoAt=performance.now()+Math.max(1500,local.autoLeft)}
@@ -680,43 +681,42 @@ function renderReveal(){
   show("reveal");
   if(local.autoQ!==G.qi){local.autoQ=G.qi;local.autoAt=performance.now()+AUTO_MS;local.paused=false;local.autoFired=false}
   const item=G.deck[G.qi],q=qOf(G.qi),cp=correctPos(G.qi),a=myAns(),typed=isT(G.qi);
-  $("rSess").textContent=sLabel(q.s);$("rNum").textContent="Question "+(G.qi+1)+" / "+(G.inf?"∞":G.deck.length)+" · "+(typed?"Typed answer":q.t);
+  $("rSess").textContent=sLabel(q.s);$("rNum").textContent=tl("Question {i} / {n}",{i:G.qi+1,n:G.inf?"∞":G.deck.length})+" · "+(typed?tl("Typed answer"):q.t);
   const v=$("rVerdict");
   const late=mode==="multi"&&local.joinQi>G.qi;   // just joined: this question was before your time
   if(local.sfxQ!==G.qi){local.sfxQ=G.qi;if(a&&isRight(a,G.qi)){sfx(scoreRun(me,G.qi).streak>=3?"streak":"ok");buzz(40)}else if(!late){sfx("bad");buzz([60,40,60])}}
   const winners=Object.keys(P).map(id=>({id,a:P[id].ans&&P[id].ans[G.qi]})).filter(x=>isRight(x.a,G.qi)).sort((x,y)=>x.a.ms-y.a.ms);
-  $("rFast").hidden=mode!=="multi"||!winners.length;if(winners.length)$("rFast").textContent="Fastest: "+nameOf(winners[0].id)+" in "+(winners[0].a.ms/1000).toFixed(1)+" s";
+  $("rFast").hidden=mode!=="multi"||!winners.length;if(winners.length)$("rFast").textContent=tl("Fastest: {name} in {s} s",{name:nameOf(winners[0].id),s:fmtDec(winners[0].a.ms/1000)});
   const ok=isRight(a,G.qi);$("rMiss").hidden=!G.miss||!a;$("rMiss").className="missnote "+(ok?"ok":"bad");
-  $("rMiss").textContent=ok?"✓ Off your missed questions list":"Still on your missed questions list";
-  if(late&&!a){v.textContent="You're in! You'll play from the next question";v.className="verdict late"}
-  else if(isRight(a,G.qi)){const r=scoreRun(me,G.qi);v.textContent="Correct · +"+r.gain+(r.streak>=2?" · streak ×"+r.streak:"");if(local.confQ!==G.qi){local.confQ=G.qi;confetti(r.streak>=3?120:60)}v.className="verdict ok pop"}
-  else if(!a){v.textContent="No answer";v.className="verdict bad pop"}
-  else {v.textContent="Wrong";v.className="verdict bad pop"}
+  $("rMiss").textContent=ok?tl("✓ Off your missed questions list"):tl("Still on your missed questions list");
+  if(late&&!a){v.textContent=tl("You're in! You'll play from the next question");v.className="verdict late"}
+  else if(isRight(a,G.qi)){const r=scoreRun(me,G.qi);v.textContent=tl("verdict|Correct")+" · +"+r.gain+(r.streak>=2?" · "+tl("streak ×{n}",{n:r.streak}):"");if(local.confQ!==G.qi){local.confQ=G.qi;confetti(r.streak>=3?120:60)}v.className="verdict ok pop"}
+  else if(!a){v.textContent=tl("No answer");v.className="verdict bad pop"}
+  else {v.textContent=tl("verdict|Wrong");v.className="verdict bad pop"}
   $("rText").textContent=q.q;
   showImg("rImgBox","rImg",q,null);
   const box=$("rTiles");box.textContent="";box.hidden=typed;$("rTyped").hidden=!typed;
   if(typed){$("rGood").textContent=q.a[0];const al=$("rAns");al.textContent="";
     Object.keys(P).forEach(id=>{const x=P[id].ans&&P[id].ans[G.qi];const r=el("div");
-      r.append(avatar(id,nameOf(id)),el("span","nm",nameOf(id)+" :"),el("span","txt",x?x.txt:"—"),el("span",x&&x.ok?"okm":"bdm",x&&x.ok?"✓":"✗"));al.appendChild(r)})}
+      r.append(avatar(id,nameOf(id)),el("span","nm",nameOf(id)+(LANG==="fr"?"\u00a0:":":")),el("span","txt",x?x.txt:"—"),el("span",x&&x.ok?"okm":"bdm",x&&x.ok?"✓":"✗"));al.appendChild(r)})}
   const counts=[0,0,0,0];if(!typed)Object.values(P).forEach(p=>{const x=p.ans&&p.ans[G.qi];if(x&&x.c!=null)counts[x.c]++});
   if(!typed)item.o.forEach((oi,k)=>{const b=el("button","tile t"+k);b.disabled=true;
     b.append(el("span","k",LETTERS[k]),el("span",null,q.o[oi]));
     if(k===cp)b.classList.add("right");else b.classList.add("dim");if(a&&a.c===k&&k!==cp)b.classList.add("mine");
-    if(mode==="multi")b.appendChild(el("span","cnt",counts[k]+" ✓".replace(" ✓","")+(counts[k]===1?" player":" players")));
+    if(mode==="multi")b.appendChild(el("span","cnt",tl(counts[k]===1?"{n} player":"{n} players",{n:counts[k]})));
     box.appendChild(b)});
   $("rExpl").textContent=q.e;
   renderBoard($("rBoard"),totals(G.qi).slice(0,mode==="solo"?1:6),true);
   const last=!G.inf&&G.qi>=G.deck.length-1;
   $("rEnd").hidden=!(G.inf&&isHost());
-  $("rNext").hidden=!isHost();$("rNext").textContent=last?"See the podium":"Next question";
+  $("rNext").hidden=!isHost();$("rNext").textContent=last?tl("See the podium"):tl("Next question");
   $("rWait").hidden=isHost();
   renderAuto(local.paused?local.autoLeft:local.autoAt-performance.now());
 }
-function ordinal(n){const v=n%100;return n+(v>=11&&v<=13?"th":["th","st","nd","rd"][n%10]||"th")}
 function renderBoard(box,rows,gains){
   box.textContent="";
   rows.forEach((r,i)=>{const d=el("div","brow"+(r.id===me?" me":""));
-    d.append(el("span","rk",(i+1)+"."),avatar(r.id,nameOf(r.id)),el("span","nm",nameOf(r.id)+(r.id===me?" (you)":"")),
+    d.append(el("span","rk",(i+1)+"."),avatar(r.id,nameOf(r.id)),el("span","nm",nameOf(r.id)+(r.id===me?" ("+tl("you")+")":"")),
       el("span","gain",gains&&r.gain?"+"+r.gain:""),el("span","pts",r.t+" pts"));box.appendChild(d);if(gains&&r.gain)countUp(d.lastChild,r.t-r.gain,r.t)});
 }
 $("rNext").onclick=()=>{if(!isHost()||local.autoFired)return;local.autoFired=true;goNext()};
@@ -745,27 +745,27 @@ function streakInfo(){const days=new Set(statsLoad().days),d=new Date(),today=da
   let n=0;while(days.has(dayKey(d))){n++;d.setDate(d.getDate()-1)}return {n,today}}
 const FLAME='<svg class="flame" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 3.5 5.5 6 5.5 11.2A5.5 5.5 0 0 1 12 19a5.5 5.5 0 0 1-5.5-5.8c0-2.4 1.3-4 2.6-5.2.2 1.8 1 2.9 2.2 3.4C11 9 11.3 5.3 12 2z"/></svg>';
 function renderStreak(box,txt){const st=streakInfo();box.hidden=!st.n;if(!st.n)return st;
-  box.innerHTML=FLAME+"<b></b><span></span>";box.children[1].textContent=st.n+"-day streak";box.children[2].textContent=txt(st);return st}
+  box.innerHTML=FLAME+"<b></b><span></span>";box.children[1].textContent=tl(st.n===1?"1-day streak":"{n}-day streak",{n:st.n});box.children[2].textContent=txt(st);return st}
 function renderProgressUI(){
-  renderStreak($("homeStreak"),st=>st.today?"Done for today":"Play today to keep it");
+  renderStreak($("homeStreak"),st=>st.today?tl("Done for today"):tl("Play today to keep it"));
   const best=statsLoad().best;
   $("quizGrid").querySelectorAll(".qcard").forEach(c=>{const b=best[c.dataset.id],x=c.querySelector(".qbest");
-    if(x)x.hidden=!b;if(b&&x)x.textContent="Best "+accPct(b)+"%"});
-  const b=BANK&&best[BANK.id];$("bankBest").hidden=!b;if(b)$("bankBest").textContent="Your best: "+accPct(b)+"% ("+b.c+"/"+b.n+")";
+    if(x)x.hidden=!b;if(b&&x)x.textContent=tl("Best {p}%",{p:accPct(b)})});
+  const b=BANK&&best[BANK.id];$("bankBest").hidden=!b;if(b)$("bankBest").textContent=tl("Your best: {p}% ({c}/{n})",{p:accPct(b),c:b.c,n:b.n});
 }
 function renderEndProgress(){
   const R=local.endRes,box=$("endProg");$("endStreak").hidden=box.hidden=!R;if(!R)return;
   const r=R.r,prev=R.prev,counts=r.n>=BEST_MIN&&!G.review;box.hidden=!counts;
   if(counts){const nb=beats(r,prev);let badge,txt;
-    if(!prev){badge="First score";txt=accPct(r)+"% correct. Play again to beat it!"}
-    else if(nb){badge="New best!";txt=accPct(r)+"% correct, up from "+accPct(prev)+"%."}
-    else if(r.c*prev.n===prev.c*r.n){badge="Best: "+accPct(prev)+"%";txt="Same accuracy as your best. Answer faster to beat it."}
-    else{const k=Math.floor(prev.c*r.n/prev.n)-r.c+1;badge="Best: "+accPct(prev)+"%";
-      txt="You got "+accPct(r)+"%. "+(k<=r.n-r.c?k+" more correct answer"+(k>1?"s":"")+" would beat your best.":"Your best is perfect: get them all right, and faster, to beat it.")}
+    if(!prev){badge=tl("First score");txt=tl("{p}% correct. Play again to beat it!",{p:accPct(r)})}
+    else if(nb){badge=tl("New best!");txt=tl("{p}% correct, up from {q}%.",{p:accPct(r),q:accPct(prev)})}
+    else if(r.c*prev.n===prev.c*r.n){badge=tl("Best: {p}%",{p:accPct(prev)});txt=tl("Same accuracy as your best. Answer faster to beat it.")}
+    else{const k=Math.floor(prev.c*r.n/prev.n)-r.c+1;badge=tl("Best: {p}%",{p:accPct(prev)});
+      txt=tl("You got {p}%.",{p:accPct(r)})+" "+(k<=r.n-r.c?tl(k>1?"{k} more correct answers would beat your best.":"1 more correct answer would beat your best.",{k}):tl("Your best is perfect: get them all right, and faster, to beat it."))}
     box.classList.toggle("rec",nb);$("endBadge").textContent=badge;$("endProgTxt").textContent=txt;
     $("endMark").hidden=!prev||nb;if(prev)$("endMark").style.left=accPct(prev)+"%";
     const f=$("endFill");f.style.width="0%";requestAnimationFrame(()=>requestAnimationFrame(()=>f.style.width=accPct(r)+"%"))}
-  renderStreak($("endStreak"),st=>R.newDay?(st.n>1?"Day "+st.n+" in a row. See you tomorrow!":"Day 1. Come back tomorrow to keep it going."):"You already studied today. Come back tomorrow for day "+(st.n+1)+".");
+  renderStreak($("endStreak"),st=>R.newDay?(st.n>1?tl("Day {n} in a row. See you tomorrow!",{n:st.n}):tl("Day 1. Come back tomorrow to keep it going.")):tl("You already studied today. Come back tomorrow for day {n}.",{n:st.n+1}));
 }
 
 // ---------- end ----------
@@ -775,9 +775,9 @@ function renderEnd(){
   const myRank=t.findIndex(r=>r.id===me)+1;
   const from=mode==="multi"&&local.joinQi||0;   // joined mid-game: the questions before you arrived don't count as misses
   const correct=G.deck.filter((d,i)=>isRight(P[me]&&P[me].ans&&P[me].ans[i],i)).length;
-  $("endTitle").textContent=mode==="solo"?(correct+" / "+G.deck.length+" correct answers"):myRank<1?"Game over":(myRank===1?"You win!":"You finished "+ordinal(myRank));
+  $("endTitle").textContent=mode==="solo"?tl("{c} / {n} correct answers",{c:correct,n:G.deck.length}):myRank<1?tl("Game over"):(myRank===1?tl("You win!"):tl("You finished {rank}",{rank:ordinal(myRank)}));
   const bys={};G.deck.forEach((d,i)=>{if(i<from)return;const s=(d.t!=null?TQ[d.t]:Q[d.id]).s;bys[s]=bys[s]||[0,0];bys[s][1]++;if(isRight(P[me]&&P[me].ans&&P[me].ans[i],i))bys[s][0]++});
-  $("endSess").textContent="Your score by "+unit(0)+": "+Object.keys(bys).sort((a,b)=>a-b).map(s=>sLabel(s)+" "+bys[s][0]+"/"+bys[s][1]).join(" · ");
+  $("endSess").textContent=tl("Your score by {unit}: {list}",{unit:unit(0),list:Object.keys(bys).sort((a,b)=>a-b).map(s=>sLabel(s)+" "+bys[s][0]+"/"+bys[s][1]).join(" · ")});
   const pod=$("podium");pod.textContent="";pod.hidden=mode==="solo";
   [1,0,2].forEach(i=>{const r=t[i];const d=el("div","pod p"+(i+1));if(r){d.append(avatar(r.id,nameOf(r.id)),el("div","nm",nameOf(r.id)),el("div","pts",r.t+" pts"))}d.appendChild(el("div","blk",r?String(i+1):""));pod.appendChild(d)});
   renderBoard($("endBoard"),t,false);
@@ -791,16 +791,16 @@ function renderEnd(){
   renderEndProgress();
   const miss=$("endMiss");miss.textContent="";
   G.deck.forEach((d,i)=>{const a=P[me]&&P[me].ans&&P[me].ans[i];if(i<from||isRight(a,i))return;const q=qOf(i);
-    const x=el("div");x.append(el("div","label",sLabel(q.s)+" · "+(d.t!=null?"Typed answer":q.t)),el("div",null,q.q),el("div","a","→ "+(d.t!=null?q.a[0]:q.o[q.a])));miss.appendChild(x)});
+    const x=el("div");x.append(el("div","label",sLabel(q.s)+" · "+(d.t!=null?tl("Typed answer"):q.t)),el("div",null,q.q),el("div","a","→ "+(d.t!=null?q.a[0]:q.o[q.a])));miss.appendChild(x)});
   $("endMissWrap").hidden=!miss.children.length;
-  $("endAgain").hidden=!isHost();$("endAgain").textContent=mode==="solo"?"Play again":"Rematch";$("endWait").hidden=isHost()||mode!=="multi";
+  $("endAgain").hidden=!isHost();$("endAgain").textContent=mode==="solo"?tl("Play again"):tl("Rematch");$("endWait").hidden=isHost()||mode!=="multi";
   const k=miss.children.length,n=missLive().length;
-  $("endBankBtn").hidden=!n;$("endBankBtn").textContent="Replay my missed questions ("+n+")";
-  $("endMissBtn").hidden=!k||k>=n||G.miss;$("endMissBtn").textContent="Replay this game's "+(k===1?"mistake":k+" mistakes");
+  $("endBankBtn").hidden=!n;$("endBankBtn").textContent=tl("Replay my missed questions ({n})",{n});
+  $("endMissBtn").hidden=!k||k>=n||G.miss;$("endMissBtn").textContent=k===1?tl("Replay this game's mistake"):tl("Replay this game's {n} mistakes",{n:k});
   if(G.miss){const fixed=G.deck.length-k;   // a missed-questions replay: say how much of the list got cleared
     $("endAgain").hidden=!!n;   // replaying what is left comes first
-    $("endTitle").textContent=n?fixed+" / "+G.deck.length+" cleared":"All cleared!";
-    $("endSess").textContent=n?(n===1?"1 missed question left":n+" missed questions left")+". Answer one right and it leaves the list.":"No missed questions left on this quiz. Nice work."}
+    $("endTitle").textContent=n?tl("{c} / {n} cleared",{c:fixed,n:G.deck.length}):tl("All cleared!");
+    $("endSess").textContent=n?(n===1?tl("1 missed question left"):tl("{n} missed questions left",{n}))+". "+tl("Answer one right and it leaves the list."):tl("No missed questions left on this quiz. Nice work.")}
 }
 $("endHome").onclick=()=>leaveGame(false);
 $("endBankBtn").onclick=()=>playMissed(G.deck.map((d,i)=>i<(mode==="multi"&&local.joinQi||0)||isRight(P[me]&&P[me].ans&&P[me].ans[i],i)?null:d.t!=null?"t"+d.t:"m"+d.id).filter(Boolean));
@@ -815,7 +815,7 @@ $("endAgain").onclick=async()=>{
     await writeGame({next:c});
     await writeChain;
     await joinGame(c);
-  }catch(e){toast("Couldn't start a rematch, try again.")}
+  }catch(e){toast(tl("Couldn't start a rematch, try again."))}
   finally{$("endAgain").disabled=false}
 };
 document.addEventListener("keydown",e=>{
@@ -835,17 +835,17 @@ function renderCardsPanel(){
   if(settings.fcSet==="bad"&&!nBad)settings.fcSet="all";
   $("fcUnits").textContent=unit(1);
   const chips=(box,key,opts)=>{const c=$(box);c.textContent="";opts.forEach(([k,l,t])=>{const b=el("button","chip",l);if(t)b.title=t;b.setAttribute("aria-pressed",settings[key]===k);b.onclick=()=>{settings[key]=k;renderCardsPanel()};c.appendChild(b)})};
-  chips("fcSideChips","fcSide",[["term","Term"],["def","Definition"]]);
-  const sets=[["all","All ("+pool.length+")"],["todo","Not known yet ("+nTodo+")","Skips the cards you marked “Got it”"]];
-  if(nBad)sets.push(["bad","To review ("+nBad+")","Only the cards you marked “Not yet”"]);
+  chips("fcSideChips","fcSide",[["term",tl("Term")],["def",tl("Definition")]]);
+  const sets=[["all",tl("All ({n})",{n:pool.length})],["todo",tl("Not known yet ({n})",{n:nTodo}),tl("Skips the cards you marked “Got it”")]];
+  if(nBad)sets.push(["bad",tl("To review ({n})",{n:nBad}),tl("Only the cards you marked “Not yet”")]);
   chips("fcSetChips","fcSet",sets);
-  chips("fcOrdChips","fcOrd",[["shuffle","Shuffled"],["course","Course order"]]);
-  const n=fcPick().length;$("fcGo").textContent=n?"Study "+n+" card"+(n>1?"s":""):"Study flashcards";
+  chips("fcOrdChips","fcOrd",[["shuffle",tl("Shuffled")],["course",tl("Course order")]]);
+  const n=fcPick().length;$("fcGo").textContent=n?tl(n>1?"Study {n} cards":"Study 1 card",{n}):tl("Study flashcards");
   showErr("fcErr","");
 }
 function startCards(list){
-  if(!list){if(!settings.sess.size){showErr("fcErr","Choose at least "+unit(2)+".");return}
-    list=fcPick();if(!list.length){showErr("fcErr",settings.fcSet==="all"?"No cards in these "+unit(1)+".":"You know all these cards. Pick “All” to go through them again.");return}}
+  if(!list){if(!settings.sess.size){showErr("fcErr",tl("Choose at least {unit}.",{unit:unit(2)}));return}
+    list=fcPick();if(!list.length){showErr("fcErr",settings.fcSet==="all"?tl("No cards in these {units}.",{units:unit(1)}):tl("You know all these cards. Pick “All” to go through them again."));return}}
   list=settings.fcOrd==="course"?list.slice().sort((a,b)=>a[0]-b[0]):shuffle(list);
   FC={deck:list,i:0,flip:false,res:{}};
   show("cards");renderCard();
@@ -856,18 +856,18 @@ function renderCard(){
   $("fcBar").style.width=(100*Math.min(FC.i,n)/n)+"%";
   if(done){
     const bad=FC.deck.filter((f,i)=>FC.res[i]===0).length,ok=n-bad;
-    $("fcSess").hidden=true;$("fcNum").textContent=n+" card"+(n>1?"s":"")+" studied";
-    $("fcDoneTitle").textContent=bad?"Round done! "+bad+" card"+(bad>1?"s":"")+" to go over again.":"Round done! You know them all.";
+    $("fcSess").hidden=true;$("fcNum").textContent=tl(n>1?"{n} cards studied":"1 card studied",{n});
+    $("fcDoneTitle").textContent=bad?tl(bad>1?"Round done! {n} cards to go over again.":"Round done! 1 card to go over again.",{n:bad}):tl("Round done! You know them all.");
     $("fcDoneOk").textContent=ok;$("fcDoneBad").textContent=bad;
-    $("fcRedo").hidden=!bad;$("fcRedo").textContent="Review the "+bad+" again";
+    $("fcRedo").hidden=!bad;$("fcRedo").textContent=tl("Review the {n} again",{n:bad});
     if(!bad){sfx("win");confetti(80)}
     return;
   }
   const f=FC.deck[FC.i],P=f[2]==="p",term=f[3],def=f[4],byDef=settings.fcSide==="def";
   $("fcSess").hidden=false;$("fcSess").textContent=sLabel(f[0]);$("fcSess").title=SESS[f[0]]||"";
-  $("fcNum").textContent="Card "+(FC.i+1)+" / "+n;
-  $("fcKindF").textContent=byDef?(P?"Who is it?":"Which concept?"):(P?"Person":"Concept");
-  $("fcKindB").textContent=byDef?(P?"Person":"Concept"):"Definition";
+  $("fcNum").textContent=tl("Card {i} / {n}",{i:FC.i+1,n});
+  $("fcKindF").textContent=byDef?(P?tl("Who is it?"):tl("Which concept?")):(P?tl("Person"):tl("Concept"));
+  $("fcKindB").textContent=byDef?(P?tl("Person"):tl("Concept")):tl("Definition");
   $("fcFront").textContent=byDef?def:term;$("fcBack").textContent=byDef?term:def;$("fcBackSub").textContent=byDef?def:term;
   $("fcCard").classList.toggle("def",byDef);
   fcSetFlip(false,true);
@@ -876,7 +876,7 @@ function renderCard(){
 function fcSetFlip(v,instant){
   FC.flip=v;const c=$("fcCard");
   if(instant){c.classList.add("noanim");c.style.transform="";void c.offsetWidth}
-  c.classList.toggle("flipped",v);c.setAttribute("aria-label",v?"Answer shown":"Flip the card");
+  c.classList.toggle("flipped",v);c.setAttribute("aria-label",v?tl("Answer shown"):tl("Flip the card"));
   if(instant)requestAnimationFrame(()=>c.classList.remove("noanim"));
   $("fcFlip").hidden=v;$("fcAgain").hidden=!v;$("fcGot").hidden=!v;
 }
@@ -923,7 +923,7 @@ function setQuizParam(){try{history.replaceState(null,"",BANK.id==="socio"?locat
 // step 1 of the start flow: one card per quiz, tapping it opens the settings / create screen
 async function openQuiz(id,btn){
   if(btn)btn.disabled=true;const ok=await useBank(id);if(btn)btn.disabled=false;
-  if(!ok){toast("Quiz not found");return}
+  if(!ok){toast(tl("Quiz not found"));return}
   setQuizParam();show("topic");
 }
 function quizList(extra){const seen=new Set();return Object.keys(BUILTIN).map(id=>{const b=BUILTIN[id]();return {id,title:b.title,subject:b.subject,kw:b.kw,sess:b.sess,tags:b.tags}}).concat(myQuizzes(),extra||[]).filter(q=>!seen.has(q.id)&&seen.add(q.id))}
@@ -965,19 +965,19 @@ $("topicBack").onclick=()=>{show("home");renderMyQuizzes()};
 $("brandHome").onclick=e=>{
   if(e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;   // let "open in a new tab" work
   e.preventDefault();
-  if(window.examBusy&&examBusy()){if(!confirm("Quit the exam? Your answers will be lost."))return;EX.on=false}
-  else if(G&&mode==="multi"&&(G.status==="q"||G.status==="reveal")&&!confirm("Leave the current game? The other players will carry on without you."))return;   // a solo game is saved, it can be resumed
+  if(window.examBusy&&examBusy()){if(!confirm(tl("Quit the exam? Your answers will be lost.")))return;EX.on=false}
+  else if(G&&mode==="multi"&&(G.status==="q"||G.status==="reveal")&&!confirm(tl("Leave the current game? The other players will carry on without you.")))return;   // a solo game is saved, it can be resumed
   if(mode){leaveGame(true);mode=null;code=null;G=null;P={}}
   try{history.replaceState(null,"",location.pathname)}catch(e){}
   show("home");renderMyQuizzes();if(sb)refreshOpen()};
-$("shareQuizBtn").onclick=async()=>{const u=quizUrl(BANK.id);try{await navigator.clipboard.writeText(u);toast("Quiz link copied")}catch(e){prompt("Quiz link",u)}};
+$("shareQuizBtn").onclick=async()=>{const u=quizUrl(BANK.id);try{await navigator.clipboard.writeText(u);toast(tl("Quiz link copied"))}catch(e){prompt(tl("Quiz link"),u)}};
 let mkFile=null;
 function setMkFile(f){
   showErr("mkErr","");
-  if(f&&f.size>20*1024*1024){showErr("mkErr","File too large (20 MB max).");f=null}
-  if(f&&!/\.(pdf|txt|md)$/i.test(f.name)){showErr("mkErr","Accepted formats: PDF, TXT, MD.");f=null}
+  if(f&&f.size>20*1024*1024){showErr("mkErr",tl("File too large (20 MB max)."));f=null}
+  if(f&&!/\.(pdf|txt|md)$/i.test(f.name)){showErr("mkErr",tl("Accepted formats: PDF, TXT, MD."));f=null}
   mkFile=f||null;$("mkDrop").classList.toggle("has",!!mkFile);
-  $("mkFileTxt").textContent=mkFile?mkFile.name+" ("+Math.ceil(mkFile.size/1024)+" KB) · click to change":"Click or drop a PDF here (20 MB max)";
+  $("mkFileTxt").textContent=mkFile?tl("{name} ({kb} KB) · click to change",{name:mkFile.name,kb:Math.ceil(mkFile.size/1024)}):tl("Click or drop a PDF here (20 MB max)");
   if(mkFile&&!$("mkTitle").value.trim())$("mkTitle").value=mkFile.name.replace(/\.[^.]+$/,"").replace(/[_-]+/g," ").slice(0,60);
 }
 $("mkFile").onchange=e=>setMkFile(e.target.files[0]);
@@ -988,24 +988,24 @@ function readFile(f,asText){return new Promise((ok,ko)=>{const r=new FileReader(
 $("mkGo").onclick=async()=>{
   showErr("mkErr","");
   const title=$("mkTitle").value.trim();let text=$("mkText").value.trim();
-  if(!mkFile&&text.length<200){showErr("mkErr","Add a PDF or paste at least a few paragraphs of notes.");return}
+  if(!mkFile&&text.length<200){showErr("mkErr",tl("Add a PDF or paste at least a few paragraphs of notes."));return}
   const body={title};
   try{
     if(mkFile&&/\.pdf$/i.test(mkFile.name))body.pdf=(await readFile(mkFile)).split(",")[1];
     else if(mkFile)text=(await readFile(mkFile,true))+"\n\n"+text;
-  }catch(e){showErr("mkErr","Couldn't read the file.");return}
+  }catch(e){showErr("mkErr",tl("Couldn't read the file."));return}
   if(text)body.text=text.slice(0,200000);
-  const st=$("mkStatus"),steps=["Reading your notes…","Finding the key ideas…","Writing the questions…","Checking the answers…","Almost done…"];
+  const st=$("mkStatus"),steps=[tl("Reading your notes…"),tl("Finding the key ideas…"),tl("Writing the questions…"),tl("Checking the answers…"),tl("Almost done…")];
   let k=0;st.hidden=false;st.textContent=steps[0];const tick=setInterval(()=>{k=Math.min(k+1,steps.length-1);st.textContent=steps[k]},12000);
   $("mkGo").disabled=true;
   try{
     const res=await fetch(SB_URL+"/functions/v1/generate-quiz",{method:"POST",headers:{"Content-Type":"application/json",apikey:SB_KEY},body:JSON.stringify(body)});
     const raw=(await res.text()).trim();let out=null;try{out=JSON.parse(raw)}catch(e){}
-    if(!out||!out.id)throw new Error((out&&out.error)||"Generation failed, try again.");
-    if(!await useBank(out.id))throw new Error("Quiz created but couldn't be loaded.");
+    if(!out||!out.id)throw new Error((out&&out.error)||tl("Generation failed, try again."));
+    if(!await useBank(out.id))throw new Error(tl("Quiz created but couldn't be loaded."));
     setQuizParam();mkFile=null;setMkFile(null);$("mkText").value="";$("mkTitle").value="";
-    show("topic");toast("Quiz ready: "+(Q.length+TQ.length)+" questions");
-  }catch(e){showErr("mkErr",e.message||"Generation failed, try again.")}
+    show("topic");toast(tl("Quiz ready: {n} questions",{n:Q.length+TQ.length}));
+  }catch(e){showErr("mkErr",e.message||tl("Generation failed, try again."))}
   finally{clearInterval(tick);st.hidden=true;$("mkGo").disabled=false}
 };
 
@@ -1013,10 +1013,10 @@ loadBank(window.BANK_SOCIO);renderMyQuizzes();renderResume();
 if(sb){setMultiNote(true);watchOpenGames()}else setMultiNote(false);
 (async()=>{let id=null;try{id=new URLSearchParams(location.search).get("quiz")}catch(e){}
   if(!id||!(BUILTIN[id]||/^[0-9a-f-]{36}$/i.test(id)))return;
-  if(!await useBank(id)){toast("Quiz not found");return}
+  if(!await useBank(id)){toast(tl("Quiz not found"));return}
   show("topic")})();
 (()=>{let c=null;try{c=(new URLSearchParams(location.search).get("code")||"").toUpperCase().replace(/[^A-Z]/g,"").slice(0,4)}catch(e){}
   if(!c||c.length!==4)return;$("codeIn").value=c;
   try{history.replaceState(null,"",location.pathname)}catch(e){}
   if(sb&&lsGet("socio-nick"))joinGame(c);
-  else{$("nick").focus();showErr("joinErr","Enter your first name, then tap Join.");$("joinErr").style.color="var(--hl)"}})();
+  else{$("nick").focus();showErr("joinErr",tl("Enter your first name, then tap Join."));$("joinErr").style.color="var(--hl)"}})();

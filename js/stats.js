@@ -22,8 +22,8 @@ async function recordPlay(){
 function statsKeyLs(id){return "tpk-statskey-"+id}
 async function openStats(id,key){
   show("stats");
-  $("stTitle").textContent="Loading…";$("stBody").hidden=true;$("stRefresh").hidden=true;$("stGate").hidden=true;$("stErr").hidden=true;
-  if(!await useBank(id)){$("stTitle").textContent="Quiz not found";return}
+  $("stTitle").textContent=tl("Loading…");$("stBody").hidden=true;$("stRefresh").hidden=true;$("stGate").hidden=true;$("stErr").hidden=true;
+  if(!await useBank(id)){$("stTitle").textContent=tl("Quiz not found");return}
   $("stTitle").textContent=BANK.title;$("stSub").textContent=BANK.subject||"";
   key=key||lsGet(statsKeyLs(id));
   if(!key){$("stGate").hidden=false;$("stCode").focus();return}
@@ -32,24 +32,24 @@ async function openStats(id,key){
 async function loadStats(id,key){
   showErr("stErr","");
   const {data,error}=sb?await sb.rpc("quiz_stats",{p_quiz:id,p_code:key}):{error:true};
-  if(error){$("stGate").hidden=false;showErr("stErr","Can't reach the server, try again.");return}
-  if(!data){$("stGate").hidden=false;try{localStorage.removeItem(statsKeyLs(id))}catch(e){}showErr("stErr","Wrong code for this quiz.");return}
+  if(error){$("stGate").hidden=false;showErr("stErr",tl("Can't reach the server, try again."));return}
+  if(!data){$("stGate").hidden=false;try{localStorage.removeItem(statsKeyLs(id))}catch(e){}showErr("stErr",tl("Wrong code for this quiz."));return}
   lsSet(statsKeyLs(id),key);$("stGate").hidden=true;renderStats(data);
 }
 function pct(a,b){return b?Math.round(100*a/b):0}
 function renderStats(s){
   $("stBody").hidden=false;$("stRefresh").hidden=false;
-  const tiles=[["Games played",s.games],["Players",s.players],["Answers",s.answers],["Average score",s.answers?pct(s.correct,s.answers)+" %":"–"]];
+  const tiles=[[tl("Games played"),s.games],["Players",s.players],["Answers",s.answers],[tl("Average score"),s.answers?pct(s.correct,s.answers)+" %":"–"]];
   const tb=$("stTiles");tb.textContent="";
-  tiles.forEach(([l,v])=>{const d=el("div","st-tile");d.append(el("b",null,typeof v==="number"?v.toLocaleString("en-US"):v),el("span",null,l));tb.appendChild(d)});
-  const m=s.modes||{},parts=[["multi","multiplayer"],["solo","solo"],["review","mistake reviews"]].filter(([k])=>m[k]).map(([k,l])=>m[k]+" "+l);
-  $("stModes").textContent=s.games?"Games: "+parts.join(" · ")+".":"No games yet. Stats appear here after the first finished game.";
+  tiles.forEach(([l,v])=>{const d=el("div","st-tile");d.append(el("b",null,typeof v==="number"?v.toLocaleString(LOCALE):v),el("span",null,l));tb.appendChild(d)});
+  const m=s.modes||{},parts=[["multi",tl("multiplayer")],["solo",tl("solo")],["review",tl("mistake reviews")]].filter(([k])=>m[k]).map(([k,l])=>m[k]+" "+l);
+  $("stModes").textContent=s.games?tl("Games: {list}.",{list:parts.join(" · ")}):tl("No games yet. Stats appear here after the first finished game.");
   // last 30 days, one bar per day
   const days=new Map((s.days||[]).map(x=>[x[0],x])),bars=$("stDays");bars.textContent="";
   const list=[];for(let i=29;i>=0;i--){const d=new Date(Date.now()-i*864e5);list.push(d.toLocaleDateString("en-CA",{timeZone:"Europe/Paris"}))}
   const max=Math.max(1,...list.map(d=>(days.get(d)||[0,0])[1]));
   list.forEach(d=>{const x=days.get(d),g=x?x[1]:0,b=el("div","st-bar"+(g?"":" zero"));b.style.setProperty("--h",(g/max).toFixed(3));
-    b.title=new Date(d+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short"})+": "+g+" game"+(g===1?"":"s")+(x?", "+x[2]+" player"+(x[2]===1?"":"s"):"");bars.appendChild(b)});
+    b.title=new Date(d+"T12:00:00").toLocaleDateString(LANG==="fr"?"fr-FR":"en-GB",{day:"numeric",month:"short"})+": "+tl(g===1?"{n} game":"{n} games",{n:g})+(x?", "+tl(x[2]===1?"{n} player":"{n} players",{n:x[2]}):"");bars.appendChild(b)});
   $("stDaysWrap").hidden=!s.games;
   // questions: resolve keys with the quiz loaded on this page
   const qs=(s.qs||[]).map(([k,t,w])=>({q:k[0]==="t"?TQ[+k.slice(1)]:Q[+k.slice(1)],typed:k[0]==="t",t,w})).filter(x=>x.q);
@@ -65,12 +65,12 @@ function renderStats(s){
   const worst=qs.filter(x=>x.t>=minT&&x.w>0).sort((a,b)=>b.w/b.t-a.w/a.t||b.t-a.t).slice(0,10);
   const mb=$("stMiss");mb.textContent="";
   worst.forEach(x=>{const r=el("div","st-q"),p=pct(x.w,x.t);
-    const head=el("div","label",sLabel(x.q.s)+" · "+(x.typed?"Typed answer":x.q.t||"Question"));
-    const rate=el("span","st-rate",p+" % wrong");rate.title=x.w+" wrong out of "+x.t;head.appendChild(rate);
-    r.append(head,el("div",null,x.q.q),el("div","a","→ "+(x.typed?x.q.a[0]:x.q.o[x.q.a])),el("div","muted st-n",x.w+" / "+x.t+" answers wrong"));mb.appendChild(r)});
+    const head=el("div","label",sLabel(x.q.s)+" · "+(x.typed?tl("Typed answer"):x.q.t||"Question"));
+    const rate=el("span","st-rate",tl("{p} % wrong",{p}));rate.title=tl("{w} wrong out of {t}",{w:x.w,t:x.t});head.appendChild(rate);
+    r.append(head,el("div",null,x.q.q),el("div","a","→ "+(x.typed?x.q.a[0]:x.q.o[x.q.a])),el("div","muted st-n",tl("{w} / {t} answers wrong",{w:x.w,t:x.t})));mb.appendChild(r)});
   $("stMissWrap").hidden=!worst.length;
 }
-$("stGo").onclick=()=>{const k=$("stCode").value.trim();if(!k){showErr("stErr","Enter the code.");return}loadStats(BANK.id,k)};
+$("stGo").onclick=()=>{const k=$("stCode").value.trim();if(!k){showErr("stErr",tl("Enter the code."));return}loadStats(BANK.id,k)};
 $("stCode").addEventListener("keydown",e=>{if(e.key==="Enter")$("stGo").click()});
 $("stRefresh").onclick=()=>{const k=lsGet(statsKeyLs(BANK.id));if(k)loadStats(BANK.id,k)};
 $("stHome").onclick=()=>{try{history.replaceState(null,"",location.pathname)}catch(e){}show("home");renderMyQuizzes()};
