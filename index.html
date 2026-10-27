@@ -80,6 +80,11 @@
       <div class="row"><button class="btn ghost" id="cardsJump" hidden>Flashcards</button><button class="btn ghost" id="shareQuizBtn" hidden>Share</button></div>
       <p class="muted bk-foot"><span id="qCount"></span> questions: multiple choice, true/false and typed answers (typos forgiven). The faster and more accurately you answer, the more you score.</p>
     </div>
+    <div class="panel misspanel" id="missPanel" hidden>
+      <div class="ms-n" id="missN" aria-hidden="true">0</div>
+      <div class="ms-main"><h2 id="missTitle">Missed questions</h2><div class="muted">Get one right and it leaves the list.</div></div>
+      <button class="btn dark" id="missBtn">Replay them</button>
+    </div>
     <div class="ticker" aria-hidden="true"><div id="tickerTxt"></div></div>
     <div id="meTopic"></div>
       <div class="panel" id="createPanel">
@@ -90,7 +95,6 @@
           <div><div class="label">Questions <span class="muted lbl-sub" id="lenAvail"></span></div><div class="chips" id="lenChips"></div></div>
           <div><div class="label">Time per question</div><div class="chips" id="timeChips"></div></div>
         </div>
-        <div class="row"><button class="btn ghost" id="missBtn" hidden></button></div>
         <div class="row actions">
           <button class="btn big" id="createBtn">Create game</button>
           <button class="btn ghost" id="soloBtn">Play solo</button>
@@ -198,6 +202,7 @@
     <div class="tiles" id="rTiles"></div>
     <div id="rTyped" hidden style="display:flex;flex-direction:column;gap:10px"><div class="label">Expected answer</div><div class="goodans" id="rGood"></div><div class="ansl" id="rAns"></div></div>
     <p class="fast" id="rFast" hidden></p>
+    <p class="missnote" id="rMiss" hidden></p>
     <div class="expl"><p id="rExpl"></p></div>
     <div class="label">Leaderboard</div>
     <div class="board" id="rBoard"></div>
@@ -217,7 +222,8 @@
     <div class="board" id="endBoard"></div>
     <div class="row">
       <button class="btn big" id="endAgain" hidden>Rematch</button>
-      <button class="btn ghost" id="endMissBtn" hidden>Replay my mistakes</button>
+      <button class="btn dark" id="endBankBtn" hidden>Replay my missed questions</button>
+      <button class="btn ghost" id="endMissBtn" hidden>Replay this game's mistakes</button>
       <button class="btn ghost" id="endHome">Home</button>
       <span class="waiting" id="endWait" hidden>The host can start a rematch…</span>
     </div>
