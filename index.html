@@ -6,6 +6,15 @@
 <title>Tipoki · Study by challenging your friends</title>
 <meta name="description" content="Send in your notes and Tipoki turns them into a quiz. Play solo or with your friends.">
 <meta name="theme-color" content="#4B2FE0">
+<meta name="color-scheme" content="light dark">
+<script>
+// theme before first paint: the visitor's saved choice, otherwise the system setting (followed live until they pick one)
+(function(){var d=document.documentElement,m=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)"),s=null;try{s=localStorage.getItem("tpk-theme")}catch(e){}
+  function set(t){d.setAttribute("data-theme",t);var c=document.querySelector('meta[name="theme-color"]');if(c)c.content=t==="dark"?"#100F1F":"#4B2FE0"}
+  set(s==="dark"||s==="light"?s:(m&&m.matches?"dark":"light"));
+  if(m&&m.addEventListener)m.addEventListener("change",function(e){var k=null;try{k=localStorage.getItem("tpk-theme")}catch(x){}if(!k)set(e.matches?"dark":"light")});
+  window.tpkSetTheme=set})();
+</script>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta property="og:type" content="website">
@@ -22,6 +31,7 @@
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/music.css">
 <link rel="stylesheet" href="css/exam.css">
+<link rel="stylesheet" href="css/theme.css">
 <!-- Vercel Web Analytics (page views, visitors) -->
 <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};</script>
 <script defer src="/_vercel/insights/script.js"></script>
@@ -30,8 +40,8 @@
 <body>
 <div class="wrap">
   <div class="top">
-    <a class="brand" id="brandHome" href="./" title="Back to home"><img src="img/logo.svg" alt="Tipoki, back to home" width="432" height="118"></a>
-    <div class="topr"><button id="soundBtn" aria-pressed="true" title="Turn sound on / off">Sound</button><span class="label" id="status"></span></div>
+    <a class="brand" id="brandHome" href="./" title="Back to home"><img class="logo-l" src="img/logo.svg" alt="Tipoki, back to home" width="432" height="118"><img class="logo-d" src="img/logo-dark.svg" alt="Tipoki, back to home" width="432" height="118"></a>
+    <div class="topr"><button type="button" class="iconbtn" id="themeBtn" aria-label="Switch to dark mode" title="Switch to dark mode"><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg></button><button type="button" class="iconbtn" id="soundBtn" aria-pressed="false" title="Turn sound effects on"><svg class="i-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg><svg class="i-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></svg><span class="bt">Sound</span></button><span class="label" id="status"></span></div>
   </div>
 
   <!-- HOME: 1) pick what to revise -->
@@ -41,6 +51,10 @@
       <p>Pick what you want to study, then play solo or with friends.</p>
       <p class="streak" id="homeStreak" hidden></p>
     </div>
+    <div id="resumeHome"><div class="panel resume" id="resumeCard" hidden>
+      <div class="rs-main"><h2>Pick up where you left off</h2><div class="rs-title" id="resumeTitle"></div><div class="rs-sub" id="resumeSub"></div></div>
+      <div class="row"><button type="button" class="btn ghost" id="resumeDrop">Discard</button><button type="button" class="btn" id="resumeGo">Resume</button></div>
+    </div></div>
     <div class="panel" id="pickPanel">
       <div class="steph"><span class="stepn">1</span><h2>What do you want to study?</h2></div>
       <div class="qsearch" role="search">
@@ -88,6 +102,7 @@
       <button class="btn dark" id="missBtn">Replay them</button>
     </div>
     <div class="ticker" aria-hidden="true"><div id="tickerTxt"></div></div>
+    <div id="resumeTopic"></div>
     <div id="meTopic"></div>
       <div class="panel" id="createPanel">
         <div class="steph"><span class="stepn">2</span><h2>Set up your game</h2></div>
@@ -323,6 +338,7 @@
 <script src="js/stats.js"></script>
 <script src="js/exam.js"></script>
 <script src="js/music.js"></script>
+<script src="js/theme.js"></script>
 
 </body>
 </html>
