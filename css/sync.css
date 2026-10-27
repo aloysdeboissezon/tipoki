@@ -1,0 +1,24 @@
+/* online save of the progress: line under the nickname + sign-in dialog */
+.sync-line{display:flex;align-items:center;flex-wrap:wrap;column-gap:10px;row-gap:0;font-size:14px;color:var(--muted);border-top:1px solid var(--line2);padding-top:8px}
+.sync-ico{display:inline-block;vertical-align:-3px;margin-right:7px;width:18px;height:18px;border-radius:50%;background:var(--hl-soft);position:relative}
+.sync-ico::after{content:"";position:absolute;left:6px;top:3px;width:4px;height:8px;border:solid var(--hl);border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+.sync-ico.off{background:var(--soft)}
+.sync-ico.off::after{left:4px;top:8px;width:10px;height:0;border-width:2.5px 0 0;border-color:var(--muted);transform:none}
+.sync-txt{flex:1 1 150px;min-width:0;overflow-wrap:anywhere;line-height:1.35}
+.sync-txt b{color:var(--ink)}
+.sync-st.off{color:#B4410C}
+.sync-line .linkbtn{flex:none}
+.sync-dlg{position:fixed;inset:0;z-index:100;background:rgba(23,22,43,.62);display:grid;place-items:center;padding:16px;overflow:auto}
+.sync-dlg[hidden]{display:none}
+.sync-card{background:var(--card);border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:12px;width:min(100%,400px);margin:0}
+.sync-card h2{margin:0}
+.sync-help,.sync-foot{margin:0;font-size:14px}
+.sync-tabs{flex-wrap:nowrap}
+.sync-tabs .chip{flex:1;justify-content:center;text-align:center}
+.sync-field{display:flex;flex-direction:column;gap:6px}
+.sync-field input{width:100%}
+.sync-card input[type=password]{font:inherit;font-size:18px;font-weight:600;padding:13px 16px;border-radius:16px;border:2px solid var(--line);background:#FAFAFD;color:var(--ink);width:100%;min-width:0}
+.sync-card input[type=password]:focus{border-color:var(--hl);box-shadow:0 0 0 4px var(--hl-soft);outline:none}
+.sync-card .err{margin:0}
+.sync-actions{flex-wrap:nowrap;margin-top:4px}
+.sync-actions .btn{flex:1;padding-left:12px;padding-right:12px}
