@@ -129,6 +129,7 @@ function renderExRev(){
     if(r[i]!==1)it.append(el("div","ex-ra mine","Your answer: "+mine));
     it.append(el("div","ex-ra good",(r[i]===1?"Your answer: ":"Correct answer: ")+(r[i]===1&&typed?a.txt:good)+(r[i]===1?" ✓":"")));
     if(q.e)it.append(el("p","ex-re",q.e));
+    const why=r[i]===0?TipokiWhy.whyNot(BANK&&BANK.facts,mine):"";if(why)it.append(el("p","ex-re",why));
     box.appendChild(it)});
 }
 function exMissDeck(){return EX.deck.filter((d,i)=>EX.res[i]!==1).map(d=>d.t!=null?{t:d.t}:{id:d.id,o:Q[d.id].tf?tfOrder(Q[d.id]):shuffle([0,1,2,3])})}

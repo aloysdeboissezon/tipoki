@@ -704,7 +704,9 @@ function renderReveal(){
     if(k===cp)b.classList.add("right");else b.classList.add("dim");if(a&&a.c===k&&k!==cp)b.classList.add("mine");
     if(mode==="multi")b.appendChild(el("span","cnt",counts[k]+" ✓".replace(" ✓","")+(counts[k]===1?" player":" players")));
     box.appendChild(b)});
-  $("rExpl").textContent=q.e;
+  $("rExplBox").hidden=!q.e;$("rExpl").textContent=q.e;
+  const wn=$("rWhyNot"),mine=a&&!ok?(typed?a.txt:a.c!=null?q.o[item.o[a.c]]:""):"",why=mine?TipokiWhy.whyNot(BANK&&BANK.facts,mine):"";
+  wn.hidden=!why;wn.textContent=why?"Your answer: "+why:"";
   renderBoard($("rBoard"),totals(G.qi).slice(0,mode==="solo"?1:6),true);
   const last=!G.inf&&G.qi>=G.deck.length-1;
   $("rEnd").hidden=!(G.inf&&isHost());
