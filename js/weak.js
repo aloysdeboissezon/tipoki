@@ -26,17 +26,17 @@ function renderWeak(){
   const all=wkList(),on=all.length>=WK_MIN;$("weakPanel").hidden=!on;if(!on)return;
   if(wkSess!=null&&!all.some(x=>x.q.s===wkSess))wkSess=null;
   const list=wkSess==null?all:all.filter(x=>x.q.s===wkSess);
-  $("weakTitle").textContent="Your weak points";
+  $("weakTitle").textContent=tl("Your weak points");
   const top=list.slice().sort((a,b)=>b.score-a.score),names=[...new Set(top.map(x=>wkNotion(x.q)).filter(Boolean))].slice(0,3);
-  $("weakSub").textContent=all.length+" questions you keep missing"+(names.length?", like "+names.join(", "):"")+". Answer one right 3 times in a row and it's off the list.";
+  $("weakSub").textContent=tl("{n} questions you keep missing",{n:all.length})+(names.length?tl(", like ")+names.join(", "):"")+tl(". Answer one right 3 times in a row and it's off the list.");
   const ch=$("weakChips");ch.textContent="";
   const ss=wkSessions(all);
   if(ss.length>1){
-    const a=el("button","chip","All");a.type="button";a.setAttribute("aria-pressed",wkSess==null);a.onclick=()=>{wkSess=null;renderWeak()};ch.appendChild(a);
-    ss.slice(0,6).forEach(x=>{const b=el("button","chip",sLabel(x.s)+" · "+Math.round(x.w/x.n*100)+"% missed");b.type="button";b.title=SESS[x.s]||"";
+    const a=el("button","chip",tl("All"));a.type="button";a.setAttribute("aria-pressed",wkSess==null);a.onclick=()=>{wkSess=null;renderWeak()};ch.appendChild(a);
+    ss.slice(0,6).forEach(x=>{const b=el("button","chip",sLabel(x.s)+" · "+Math.round(x.w/x.n*100)+tl("% missed"));b.type="button";b.title=SESS[x.s]||"";
       b.setAttribute("aria-pressed",wkSess===x.s);b.onclick=()=>{wkSess=wkSess===x.s?null:x.s;renderWeak()};ch.appendChild(b)})}
   const n=Math.min(WK_RUN,list.length);
-  $("weakBtn").textContent="Train "+n+" now";$("weakBtn").disabled=!n;
+  $("weakBtn").textContent=tl("Train {n} now",{n:n});$("weakBtn").disabled=!n;
 }
 function playWeak(){
   const all=wkList(),list=wkSess==null?all:all.filter(x=>x.q.s===wkSess);

@@ -14,9 +14,9 @@ window.TipokiWhy=(function(){
     if(!txt||!facts||!facts.length)return "";
     const k=key(txt);if(!k)return "";
     const ix=index(facts),t=ix.byT.get(k);
-    if(t)return "“"+trim(t[3])+"” actually means: "+trim(t[4])+".";
+    if(t)return tl("“{t}” actually means: {d}.",{t:trim(t[3]),d:trim(t[4])});
     const d=ix.byD.get(k);
-    if(d)return "That describes “"+trim(d[3])+"”.";
+    if(d)return tl("That describes “{t}”.",{t:trim(d[3])});
     return "";
   }
   return {whyNot};

@@ -22,12 +22,12 @@
   }
   function row(i,words){
     const r=el("div","sr-item"),top=el("div","sr-top");
-    top.append(el("span","sr-tag",i.k==="card"?"Flashcard":i.tf?"True / false":"Question"));
+    top.append(el("span","sr-tag",i.k==="card"?tl("Flashcard"):i.tf?tl("True / false"):tl("Question")));
     if(i.s!=null&&SESS[i.s])top.append(el("span","",sLabel(i.s)));
     r.append(top);
     const t=el("div","sr-t");hl(t,i.t,words);r.append(t);
     if(i.k==="card"){const d=el("div","sr-d");hl(d,i.x,words);r.append(d)}
-    else if(i.x){const a=el("div","sr-a");a.append(el("b","","Answer: "));hl(a,i.x,words);r.append(a)}
+    else if(i.x){const a=el("div","sr-a");a.append(el("b","",tl("Answer: ")));hl(a,i.x,words);r.append(a)}
     return r;
   }
   function render(){
@@ -36,16 +36,16 @@
     const hasCards=items.some(i=>i.k==="card"),hasQ=items.some(i=>i.k==="q");
     kinds.hidden=!(hasCards&&hasQ);
     kinds.textContent="";
-    [["all","All"],["card","Flashcards"],["q","Questions"]].forEach(([v,l])=>{const c=el("button","chip",l);c.type="button";c.setAttribute("aria-pressed",kind===v);c.onclick=()=>{kind=v;shown=PAGE;render()};kinds.append(c)});
+    [["all",tl("All")],["card",tl("Flashcards")],["q",tl("Questions")]].forEach(([v,l])=>{const c=el("button","chip",l);c.type="button";c.setAttribute("aria-pressed",kind===v);c.onclick=()=>{kind=v;shown=PAGE;render()};kinds.append(c)});
     list.textContent="";
     const words=fold(input.value).split(/\s+/).filter(Boolean);
-    if(!words.length){sum.textContent=(hasCards?items.filter(i=>i.k==="card").length+" flashcards":"")+(hasCards&&hasQ?" and ":"")+(hasQ?items.filter(i=>i.k==="q").length+" questions":"")+" to search.";return}
+    if(!words.length){sum.textContent=tl("{what} to search.",{what:(hasCards?tl("{n} flashcards",{n:items.filter(i=>i.k==="card").length}):"")+(hasCards&&hasQ?tl(" and "):"")+(hasQ?tl("{n} questions",{n:items.filter(i=>i.k==="q").length}):"")});return}
     const res=items.filter(i=>(kind==="all"||i.k===kind)&&words.every(w=>i.h.includes(w)));
     // term matches first, then the rest
     res.sort((a,b)=>(fold(b.t).includes(fold(input.value.trim()))?1:0)-(fold(a.t).includes(fold(input.value.trim()))?1:0));
-    sum.textContent=res.length?res.length+" result"+(res.length>1?"s":""):"Nothing found. Try a shorter word.";
+    sum.textContent=res.length?tl(res.length>1?"{n} results":"1 result",{n:res.length}):tl("Nothing found. Try a shorter word.");
     res.slice(0,shown).forEach(i=>list.append(row(i,words)));
-    if(res.length>shown){const m=el("button","btn ghost sr-more","Show more");m.type="button";m.onclick=()=>{shown+=PAGE;render()};list.append(m)}
+    if(res.length>shown){const m=el("button","btn ghost sr-more",tl("Show more"));m.type="button";m.onclick=()=>{shown+=PAGE;render()};list.append(m)}
   }
   input.addEventListener("input",()=>{shown=PAGE;render()});
   // refresh whenever a quiz is (re)loaded

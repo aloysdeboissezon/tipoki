@@ -36,6 +36,7 @@ input[type=text],textarea,.qsearch input{background:var(--field,#FAFAFD)}
 .iconbtn svg{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .iconbtn:hover{border-color:var(--line2)}
 #themeBtn{padding:0;width:40px}
+#langBtn{padding:0 10px;font-size:13px;letter-spacing:.03em}
 #themeBtn .i-sun{display:none}
 [data-theme="dark"] #themeBtn .i-sun{display:block}
 [data-theme="dark"] #themeBtn .i-moon{display:none}
@@ -62,3 +63,7 @@ input[type=text],textarea,.qsearch input{background:var(--field,#FAFAFD)}
 .resume .btn{min-height:46px;padding:10px 18px;font-size:17px}
 @media (max-width:560px){.resume .row .btn{flex:1 1 0}}
 [data-theme="dark"] .ex-tiles .tile.sel::after{background:var(--card)}
+
+/* French interface: the tags drawn in CSS (the English ones are in style.css / exam.css) */
+html[lang="fr"] .tile.right::after{content:"Bonne réponse"}
+html[lang="fr"] .tile.mine::after,html[lang="fr"] .ex-tiles .tile.sel::after{content:"Ta réponse"}

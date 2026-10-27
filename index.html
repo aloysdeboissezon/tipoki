@@ -44,7 +44,7 @@
 <div class="wrap">
   <div class="top">
     <a class="brand" id="brandHome" href="./" title="Back to home"><img class="logo-l" src="img/logo.svg" alt="Tipoki, back to home" width="432" height="118"><img class="logo-d" src="img/logo-dark.svg" alt="Tipoki, back to home" width="432" height="118"></a>
-    <div class="topr"><button type="button" class="iconbtn" id="themeBtn" aria-label="Switch to dark mode" title="Switch to dark mode"><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg></button><button type="button" class="iconbtn" id="soundBtn" aria-pressed="false" title="Turn sound effects on"><svg class="i-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg><svg class="i-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></svg><span class="bt">Sound</span></button><span class="label" id="status"></span></div>
+    <div class="topr"><button type="button" class="iconbtn" id="langBtn"><span class="bt">FR</span></button><button type="button" class="iconbtn" id="themeBtn" aria-label="Switch to dark mode" title="Switch to dark mode"><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg></button><button type="button" class="iconbtn" id="soundBtn" aria-pressed="false" title="Turn sound effects on"><svg class="i-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg><svg class="i-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></svg><span class="bt">Sound</span></button><span class="label" id="status"></span></div>
   </div>
 
   <!-- HOME: 1) pick what to revise -->
@@ -346,6 +346,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="js/i18n.js"></script>
 <script src="js/banks/socio.js"></script>
 <script src="js/banks/culture.js"></script>
 <script src="js/banks/energie.js"></script>
