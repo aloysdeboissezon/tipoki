@@ -688,7 +688,7 @@ const STATS_KEY="tpk-stats",BEST_MIN=5;   // a game needs 5+ questions to count 
 function statsLoad(){try{const s=JSON.parse(lsGet(STATS_KEY)||"{}");return {best:s.best||{},days:s.days||[]}}catch(e){return {best:{},days:[]}}}
 function statsSave(s){lsSet(STATS_KEY,JSON.stringify(s))}
 function dayKey(d){d=d||new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
-function pct(r){return Math.round(100*r.c/r.n)}
+function accPct(r){return Math.round(100*r.c/r.n)}
 function bestOf(id){return statsLoad().best[id]||null}
 function beats(a,b){return !b||a.c*b.n>b.c*a.n||(a.c*b.n===b.c*a.n&&a.pts>b.pts)}   // accuracy first, then points
 // saves the game if it is a new record, returns the record held before it
@@ -705,21 +705,21 @@ function renderProgressUI(){
   renderStreak($("homeStreak"),st=>st.today?"Done for today":"Play today to keep it");
   const best=statsLoad().best;
   $("quizGrid").querySelectorAll(".qcard").forEach(c=>{const b=best[c.dataset.id],x=c.querySelector(".qbest");
-    if(x)x.hidden=!b;if(b&&x)x.textContent="Best "+pct(b)+"%"});
-  const b=BANK&&best[BANK.id];$("bankBest").hidden=!b;if(b)$("bankBest").textContent="Your best: "+pct(b)+"% ("+b.c+"/"+b.n+")";
+    if(x)x.hidden=!b;if(b&&x)x.textContent="Best "+accPct(b)+"%"});
+  const b=BANK&&best[BANK.id];$("bankBest").hidden=!b;if(b)$("bankBest").textContent="Your best: "+accPct(b)+"% ("+b.c+"/"+b.n+")";
 }
 function renderEndProgress(){
   const R=local.endRes,box=$("endProg");$("endStreak").hidden=box.hidden=!R;if(!R)return;
   const r=R.r,prev=R.prev,counts=r.n>=BEST_MIN&&!G.review;box.hidden=!counts;
   if(counts){const nb=beats(r,prev);let badge,txt;
-    if(!prev){badge="First score";txt=pct(r)+"% correct. Play again to beat it!"}
-    else if(nb){badge="New best!";txt=pct(r)+"% correct, up from "+pct(prev)+"%."}
-    else if(r.c*prev.n===prev.c*r.n){badge="Best: "+pct(prev)+"%";txt="Same accuracy as your best. Answer faster to beat it."}
-    else{const k=Math.floor(prev.c*r.n/prev.n)-r.c+1;badge="Best: "+pct(prev)+"%";
-      txt="You got "+pct(r)+"%. "+(k<=r.n-r.c?k+" more correct answer"+(k>1?"s":"")+" would beat your best.":"Your best is perfect: get them all right, and faster, to beat it.")}
+    if(!prev){badge="First score";txt=accPct(r)+"% correct. Play again to beat it!"}
+    else if(nb){badge="New best!";txt=accPct(r)+"% correct, up from "+accPct(prev)+"%."}
+    else if(r.c*prev.n===prev.c*r.n){badge="Best: "+accPct(prev)+"%";txt="Same accuracy as your best. Answer faster to beat it."}
+    else{const k=Math.floor(prev.c*r.n/prev.n)-r.c+1;badge="Best: "+accPct(prev)+"%";
+      txt="You got "+accPct(r)+"%. "+(k<=r.n-r.c?k+" more correct answer"+(k>1?"s":"")+" would beat your best.":"Your best is perfect: get them all right, and faster, to beat it.")}
     box.classList.toggle("rec",nb);$("endBadge").textContent=badge;$("endProgTxt").textContent=txt;
-    $("endMark").hidden=!prev||nb;if(prev)$("endMark").style.left=pct(prev)+"%";
-    const f=$("endFill");f.style.width="0%";requestAnimationFrame(()=>requestAnimationFrame(()=>f.style.width=pct(r)+"%"))}
+    $("endMark").hidden=!prev||nb;if(prev)$("endMark").style.left=accPct(prev)+"%";
+    const f=$("endFill");f.style.width="0%";requestAnimationFrame(()=>requestAnimationFrame(()=>f.style.width=accPct(r)+"%"))}
   renderStreak($("endStreak"),st=>R.newDay?(st.n>1?"Day "+st.n+" in a row. See you tomorrow!":"Day 1. Come back tomorrow to keep it going."):"You already studied today. Come back tomorrow for day "+(st.n+1)+".");
 }
 
