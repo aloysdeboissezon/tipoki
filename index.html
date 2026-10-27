@@ -39,6 +39,7 @@
     <div class="hero">
       <h1>Study by beating your friends.</h1>
       <p>Pick what you want to study, then play solo or with friends.</p>
+      <p class="streak" id="homeStreak" hidden></p>
     </div>
     <div class="panel" id="pickPanel">
       <div class="steph"><span class="stepn">1</span><h2>What do you want to study?</h2></div>
@@ -77,7 +78,7 @@
     <div><button class="btn ghost back" id="topicBack">← Other quizzes</button></div>
     <div class="panel bankpanel">
       <div class="bk-ico" id="bankIco" aria-hidden="true">?</div>
-      <div class="bk-main"><div class="muted" style="font-size:14px;font-weight:700">You're studying</div><h2 id="bankTitle"></h2><div class="muted" id="bankSub"></div></div>
+      <div class="bk-main"><div class="muted" style="font-size:14px;font-weight:700">You're studying</div><h2 id="bankTitle"></h2><div class="muted" id="bankSub"></div><div class="bk-best" id="bankBest" hidden></div></div>
       <div class="row"><button class="btn ghost" id="examJump">Exam</button><button class="btn ghost" id="cardsJump" hidden>Flashcards</button><button class="btn ghost" id="shareQuizBtn" hidden>Share</button></div>
       <p class="muted bk-foot"><span id="qCount"></span> questions: multiple choice, true/false and typed answers (typos forgiven). The faster and more accurately you answer, the more you score.</p>
     </div>
@@ -261,6 +262,11 @@
   <section id="end" class="panel" hidden>
     <div class="label">Final results</div>
     <h1 id="endTitle"></h1>
+    <div class="prog" id="endProg" hidden>
+      <div class="prog-top"><span class="prog-badge" id="endBadge"></span><span id="endProgTxt"></span></div>
+      <div class="prog-bar" aria-hidden="true"><div class="prog-fill" id="endFill"></div><div class="prog-mark" id="endMark"><span>Best</span></div></div>
+    </div>
+    <p class="streak" id="endStreak" hidden></p>
     <p class="muted" id="endSess"></p>
     <div class="podium" id="podium"></div>
     <div class="board" id="endBoard"></div>
