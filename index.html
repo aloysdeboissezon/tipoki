@@ -138,12 +138,13 @@
       </div>
       <div class="panel" id="cardsPanel" hidden>
         <div class="steph"><span class="stepn fc-ico" aria-hidden="true"></span><h2>Study with flashcards</h2></div>
-        <p class="muted fc-intro">Flip each card, then be honest: got it, or not yet. Uses the <span id="fcUnits">sessions</span> picked above.</p>
+        <p class="muted fc-intro">Flip each card, then be honest: got it, or not yet. Cards you know come back later, the ones you miss come back soon. Uses the <span id="fcUnits">sessions</span> picked above.</p>
         <div class="optsbody setgrid fc-set">
           <div><div class="label">Front of the card</div><div class="chips" id="fcSideChips"></div></div>
           <div><div class="label">Cards</div><div class="chips" id="fcSetChips"></div></div>
           <div><div class="label">Order</div><div class="chips" id="fcOrdChips"></div></div>
         </div>
+        <p class="muted fc-intro" id="fcNext"></p>
         <div class="row actions"><button class="btn dark big" id="fcGo">Study flashcards</button></div>
         <p class="err" id="fcErr" hidden></p>
       </div>
