@@ -87,7 +87,7 @@
         <div class="optsbody setgrid">
           <div><div class="label" id="sessLbl">Sessions</div><div class="chips multi" id="sessChips"></div></div>
           <div><div class="label">Format</div><div class="chips" id="fmtChips"></div></div>
-          <div><div class="label">Questions</div><div class="chips" id="lenChips"></div></div>
+          <div><div class="label">Questions <span class="muted lbl-sub" id="lenAvail"></span></div><div class="chips" id="lenChips"></div></div>
           <div><div class="label">Time per question</div><div class="chips" id="timeChips"></div></div>
         </div>
         <div class="row"><button class="btn ghost" id="missBtn" hidden></button></div>
@@ -182,7 +182,8 @@
     <div class="tiles" id="qTiles"></div>
     <div class="typed" id="qType" hidden><input type="text" id="qInput" placeholder="Type your answer…" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="btn big" id="qSend">Submit</button></div>
     <p class="waiting" id="qWait" hidden></p>
-    <div class="players mini" id="qPlayers" aria-label="Players who have answered"></div>
+    <div class="answered" id="qPlayers" hidden><div class="ans-head"><span class="label">Answered</span><b id="qAnsN" aria-live="polite"></b></div><div class="ans-list" id="qAnsList"></div></div>
+    <p class="latenote" id="qLate" hidden>You joined mid-game. Your score starts with this question, good luck!</p>
     <div class="row end" id="qHostRow" hidden><button class="btn ghost" id="qSkip">Reveal now</button></div>
     <div class="row end" id="qTakeRow" hidden><span class="muted">Host not responding?</span><button class="btn ghost" id="qTake">Take over</button></div>
   </section>
