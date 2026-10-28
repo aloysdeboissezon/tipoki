@@ -253,6 +253,11 @@ var FR={
 "Review the {n} again":"Revoir les {n}",
 // exam
 "Time left":"Temps restant",
+"Time elapsed":"Temps écoulé",
+"No time limit":"Sans limite de temps",
+"1 question · no time limit":"1 question · sans limite de temps",
+"{n} questions · no time limit":"{n} questions · sans limite de temps",
+"{ok} / {n} correct · time used {a}":"{ok} / {n} justes · temps utilisé : {a}",
 "Type your answer…":"Tape ta réponse…",
 "Your answer":"Ta réponse",
 "← Previous":"← Précédente",

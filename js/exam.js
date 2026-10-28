@@ -2,7 +2,7 @@
 // uses the sessions and format picked in the game settings; answers can be changed until the end
 let EX={deck:[],ans:[],i:0,endAt:0,startAt:0,on:false,total:0,timeUp:false,rev:"bad"};
 let exOpt={len:20,pace:45};
-const EX_LENS=[20,40,"all"],EX_PACES=[[30,"30 s"],[45,"45 s"],[60,"1 min"],[90,"1 min 30"]];
+const EX_LENS=[20,40,"all"],EX_PACES=[[0,"No time limit"],[30,"30 s"],[45,"45 s"],[60,"1 min"],[90,"1 min 30"]];
 function exQ(d){return d.t!=null?TQ[d.t]:Q[d.id]}
 function exAvail(){   // questions the deck builder can draw from (same text counted once)
   const ss=settings.sess,fmt=settings.fmt,seen=new Set();
@@ -25,7 +25,7 @@ function renderExamPanel(){
   const pc=$("exPaceChips");pc.textContent="";
   EX_PACES.forEach(([s,l])=>{const b=el("button","chip",l);b.setAttribute("aria-pressed",exOpt.pace===s);b.onclick=()=>{exOpt.pace=s;renderExamPanel()};pc.appendChild(b)});
   const c=exCount();
-  $("exSum").textContent=tl(c>1?"{n} questions · {d} on the clock":"1 question · {d} on the clock",{n:c,d:exDur(c*exOpt.pace*1000)});
+  $("exSum").textContent=!exOpt.pace?tl(c>1?"{n} questions · no time limit":"1 question · no time limit",{n:c}):tl(c>1?"{n} questions · {d} on the clock":"1 question · {d} on the clock",{n:c,d:exDur(c*exOpt.pace*1000)});
   const h=exHist();$("exBest").hidden=!h.length;
   if(h.length)$("exBest").textContent=tl("Last exam: {g}/20 · Best: {b}/20",{g:exFmtG(h[0].g),b:exFmtG(Math.max(...h.map(x=>x.g)))});
   showErr("exErr","");
@@ -37,6 +37,7 @@ function startExam(){
   if(!deck.length){showErr("exErr",tl("No questions in these {units}.",{units:unit(1)}));return}
   EX={deck,ans:deck.map(()=>null),i:0,startAt:Date.now(),total:deck.length*exOpt.pace*1000,on:true,timeUp:false,rev:"bad"};
   EX.endAt=EX.startAt+EX.total;
+  $("exBar").parentNode.hidden=!exOpt.pace;$("exClock").setAttribute("aria-label",exOpt.pace?tl("Time left"):tl("Time elapsed"));
   show("exam");$("exPlay").hidden=false;$("exDone").hidden=true;$("exConfirm").hidden=true;
   sfx("go");renderExQ();exTick();
 }
@@ -83,6 +84,7 @@ function exAsk(kind){
   c.scrollIntoView({block:"nearest",behavior:RM?"auto":"smooth"});$("exConfirmNo").focus()}
 function exTick(){
   if(!EX.on)return;
+  if(!EX.total){$("exClock").textContent=exClock(Date.now()-EX.startAt);return}   // no time limit: the clock counts up
   const left=EX.endAt-Date.now(),k=Math.max(0,Math.min(1,left/EX.total));
   $("exClock").textContent=exClock(left);$("exBar").style.width=k*100+"%";
   const warn=left<60000;$("exClock").classList.toggle("warn",warn);$("exBar").classList.toggle("warn",warn);
@@ -91,7 +93,7 @@ function exTick(){
 setInterval(exTick,250);
 function exRight(d,a){if(!exAnswered(a))return false;if(d.t!=null)return checkTyped(a.txt,TQ[d.t].a,TQ[d.t].n);return d.o[a.c]===0}
 function handInExam(timeUp){
-  if(!EX.on)return;EX.on=false;EX.timeUp=timeUp;EX.usedMs=Math.min(EX.total,Date.now()-EX.startAt);
+  if(!EX.on)return;EX.on=false;EX.timeUp=timeUp;EX.usedMs=EX.total?Math.min(EX.total,Date.now()-EX.startAt):Date.now()-EX.startAt;
   EX.res=EX.deck.map((d,i)=>exAnswered(EX.ans[i])?(exRight(d,EX.ans[i])?1:0):-1);   // 1 right, 0 wrong, -1 blank
   const n=EX.deck.length,ok=EX.res.filter(r=>r===1).length;EX.grade=Math.round(ok/n*200)/10;
   // mistakes go to the "Review my mistakes" bank of the quiz, right answers leave it
@@ -109,7 +111,7 @@ function renderExDone(){
   $("exVerdict").textContent=exVerdict(EX.grade);
   $("exOk").textContent=ok;$("exBad").textContent=bad;$("exBlank").textContent=blank;
   const bys={};EX.deck.forEach((d,i)=>{const s=exQ(d).s;bys[s]=bys[s]||[0,0];bys[s][1]++;if(r[i]===1)bys[s][0]++});
-  $("exMeta").textContent=tl("{ok} / {n} correct · time used {a} of {b}",{ok,n,a:exClock(EX.usedMs),b:exClock(EX.total)})+
+  $("exMeta").textContent=(EX.total?tl("{ok} / {n} correct · time used {a} of {b}",{ok,n,a:exClock(EX.usedMs),b:exClock(EX.total)}):tl("{ok} / {n} correct · time used {a}",{ok,n,a:exClock(EX.usedMs)}))+
     (Object.keys(bys).length>1?" · "+tl("by {unit}: {list}",{unit:unit(0),list:Object.keys(bys).sort((a,b)=>a-b).map(s=>sLabel(s)+" "+bys[s][0]+"/"+bys[s][1]).join(", ")}):"");
   $("exMissBtn").hidden=ok===n;
   if(EX.grade>=10){sfx("win");confetti(EX.grade>=16?200:90)}else sfx("bad");
