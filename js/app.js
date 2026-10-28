@@ -213,7 +213,8 @@ function checkTyped(input,variants,wrong){
 // true/false questions always show "true" first, whatever the quiz's language
 function tfOrder(q){return /^(Vrai|True)$/.test(q.o[0])?[0,1]:[1,0]}
 function isT(qi){return G.deck[qi].t!=null}
-function qT(qi){return (G.T+(isT(qi)?10:0))*1000}
+// typed answers get 10 s more; exercises with a long statement get up to 30 s more to read it
+function qT(qi){const n=qOf(qi).q.length;return (G.T+(isT(qi)?10:0)+(n>170?Math.min(30,Math.ceil((n-170)/25)):0))*1000}
 function qOf(qi){const d=G.deck[qi];return d.t!=null?TQ[d.t]:Q[d.id]}
 
 // ---------- generated questions (deterministic: same on every device) ----------
@@ -609,11 +610,13 @@ $("lobbyStart").onclick=()=>writeGame({status:"q",qi:0});
 $("lobbyLeave").onclick=()=>leaveGame(false);
 
 // ---------- question ----------
+// exercises state all their figures, so their text is long: smaller type, left-aligned, line breaks kept
+function setQText(id,t){const e=$(id);e.textContent=t;e.classList.toggle("long",t.length>170)}
 function renderQuestion(){
   show("question");
   const item=G.deck[G.qi],q=qOf(G.qi),typed=isT(G.qi);
   $("qSess").textContent=sLabel(q.s);$("qNum").textContent=tl("Question {i} / {n}",{i:G.qi+1,n:G.inf?"∞":G.deck.length})+" · "+(typed?tl("Typed answer"):q.t)+" · "+diffName(diffOf(q));
-  $("qText").textContent=q.q;
+  setQText("qText",q.q);
   showImg("qImgBox","qImg",q,"qHint");
   const st=G.qi>0?scoreRun(me,G.qi-1).streak:0;$("qStreak").hidden=st<2;$("qStreak").textContent=tl("STREAK ×{n}",{n:st});
   if(local.goQ!==G.qi){local.goQ=G.qi;sfx("go");local.lastTick=null}
@@ -722,7 +725,7 @@ function renderReveal(){
   else if(isRight(a,G.qi)){const r=scoreRun(me,G.qi);v.textContent=tl("verdict|Correct")+" · +"+r.gain+(r.streak>=2?" · "+tl("streak ×{n}",{n:r.streak}):"");if(local.confQ!==G.qi){local.confQ=G.qi;confetti(r.streak>=3?120:60)}v.className="verdict ok pop"}
   else if(!a){v.textContent=tl("No answer");v.className="verdict bad pop"}
   else {v.textContent=tl("verdict|Wrong");v.className="verdict bad pop"}
-  $("rText").textContent=q.q;
+  setQText("rText",q.q);
   showImg("rImgBox","rImg",q,null);
   const box=$("rTiles");box.textContent="";box.hidden=typed;$("rTyped").hidden=!typed;
   if(typed){$("rGood").textContent=q.a[0];const al=$("rAns");al.textContent="";
