@@ -45,7 +45,7 @@ function renderExQ(){
   const d=EX.deck[EX.i],q=exQ(d),typed=d.t!=null,n=EX.deck.length,a=EX.ans[EX.i];
   $("exSess").textContent=sLabel(q.s);$("exSess").title=SESS[q.s]||"";
   $("exNum").textContent=tl("Question {i} / {n}",{i:EX.i+1,n})+" · "+(typed?tl("Typed answer"):q.t||tl("Multiple choice"));
-  $("exText").textContent=q.q;
+  qRich($("exText"),q.q);$("exText").classList.toggle("long",q.q.length>170||$("exText").classList.contains("rich"));
   const box=$("exImgBox"),img=$("exImg");box.hidden=!q.img;$("exHint").textContent="";
   if(q.img){img.removeAttribute("src");img.hidden=true;const want=EX.i;
     wikiImg(q.img).then(u=>{if(EX.i!==want||!EX.on)return;if(u){img.src=u;img.hidden=false}else $("exHint").textContent=q.hint||""})}
@@ -124,7 +124,7 @@ function renderExRev(){
   EX.deck.forEach((d,i)=>{if(EX.rev==="bad"&&r[i]===1)return;
     const q=exQ(d),a=EX.ans[i],typed=d.t!=null,good=typed?q.a[0]:q.o[0];
     const it=el("div","ex-ri "+(r[i]===1?"ok":r[i]===0?"bad":"blank"));
-    it.append(el("div","ex-rl",(i+1)+". "+sLabel(q.s)+" · "+(typed?tl("Typed answer"):q.t||tl("Multiple choice"))),el("div","ex-rq",q.q));
+    it.append(el("div","ex-rl",(i+1)+". "+sLabel(q.s)+" · "+(typed?tl("Typed answer"):q.t||tl("Multiple choice"))),(()=>{const d=el("div","ex-rq");qRich(d,q.q);return d})());
     const mine=r[i]===-1?tl("No answer"):typed?a.txt:q.o[d.o[a.c]];
     if(r[i]!==1)it.append(el("div","ex-ra mine",tl("Your answer: {a}",{a:mine})));
     it.append(el("div","ex-ra good",tl(r[i]===1?"Your answer: {a}":"Correct answer: {a}",{a:(r[i]===1&&typed?a.txt:good)})+(r[i]===1?" ✓":"")));

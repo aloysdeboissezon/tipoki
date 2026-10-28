@@ -517,3 +517,20 @@ body.noscroll{overflow:hidden}
 .prog-mark{position:absolute;top:-4px;bottom:-4px;width:3px;margin-left:-1.5px;background:var(--ink);border-radius:2px}
 .prog-mark span{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:3px;font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
 @media (prefers-reduced-motion:reduce){.prog-fill{transition:none}}
+
+/* readable exercise statements: paragraphs, bullets, real tables */
+.qtext.rich{display:flex;flex-direction:column;gap:12px;white-space:normal}
+.qtext.rich .qp{margin:0;white-space:pre-line}
+.qtext .qp:last-child:not(:first-child){font-weight:800;color:var(--hl)}
+.qtext .qul{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:5px}
+.qtext .qul li::marker{color:var(--hl)}
+.qtg{display:flex;flex-wrap:wrap;gap:12px}
+.qtw{flex:1 1 230px;min-width:0;max-width:100%;overflow-x:auto;border:2px solid var(--line);border-radius:12px;background:var(--card)}
+.qtbl{width:100%;border-collapse:collapse;font-family:var(--f-body);font-weight:600;font-size:14.5px;line-height:1.3;letter-spacing:0}
+.qtbl th{background:var(--hl-soft);color:var(--hl);text-align:left;font-family:var(--f-display);font-weight:800;font-size:13.5px;padding:7px 10px}
+.qtbl th.n,.qtbl td.n{text-align:right}
+.qtbl td{padding:6px 10px;border-top:1px solid var(--line)}
+.qtbl td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.qtbl tr.sec td{background:var(--soft);color:var(--muted);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px}
+.qtbl tr.tot td{font-weight:800;border-top:2px solid var(--line2)}
+.ex-rq .qp{margin:0 0 6px}.ex-rq .qtw{margin-bottom:6px}

@@ -611,7 +611,34 @@ $("lobbyLeave").onclick=()=>leaveGame(false);
 
 // ---------- question ----------
 // exercises state all their figures, so their text is long: smaller type, left-aligned, line breaks kept
-function setQText(id,t){const e=$(id);e.textContent=t;e.classList.toggle("long",t.length>170)}
+// Question text → readable blocks. Syntax in the banks: blank line = new paragraph, "• " = bullet list, lines starting with "|" = table
+// ("|# x" = section row, "|^ a | b" = total row; the first "|" row is the header). Plain long questions get their last sentence (the actual question) on its own line.
+function qBlocks(t){
+  if(!/\n/.test(t)&&t.length>=80&&/\?$/.test(t)){const m=t.match(/^([\s\S]*[.!:”»)"]) +([A-ZÀ-ÝÉ“«][^.!:]*\?)$/);if(m&&m[1].length>=40)t=m[1]+"\n\n"+m[2]}
+  const out=[];let cur=null;
+  const push=(k,line)=>{if(!cur||cur.k!==k){cur={k,l:[]};out.push(cur)}cur.l.push(line)};
+  t.split("\n").forEach(line=>{
+    if(!line.trim()){cur=null;return}
+    if(line[0]==="|")push("t",line);else if(line.startsWith("• "))push("u",line.slice(2));else push("p",line)});
+  return out}
+function qPlain(t){return t.replace(/^\|[#^]?\s*(.*)$/gm,(_,r)=>r.split("|").map(c=>c.trim()).join(" ")).replace(/\s*\n+\s*/g," ")}
+function qRich(e,t){
+  e.textContent="";const bl=qBlocks(t);let rich=bl.length>1,row=null;
+  bl.forEach(b=>{
+    if(b.k==="p"){if(!row||row.k!=="t")row=null;e.append(el("p","qp",b.l.join("\n")));return}
+    if(b.k==="u"){row=null;const u=el("ul","qul");b.l.forEach(x=>u.append(el("li",null,x)));e.append(u);return}
+    rich=true;
+    const tb=el("table","qtbl"),cells=l=>l.slice(1).split("|").map(c=>c.trim());let head=true,tbody=null;
+    b.l.forEach(l=>{
+      if(head){head=false;const th=el("thead"),tr=el("tr");cells(l).forEach((c,i)=>tr.append(el("th",i?"n":null,c)));th.append(tr);tb.append(th);tbody=el("tbody");tb.append(tbody);return}
+      const sec=l[1]==="#",tot=l[1]==="^",c=cells(sec||tot?l.slice(1):l),tr=el("tr",sec?"sec":tot?"tot":null);
+      if(sec){const td=el("td",null,c[0]);td.colSpan=2;tr.append(td)}
+      else c.forEach((x,i)=>tr.append(el("td",i&&/^[−-]?[\d.,\s]+%?$|^[\d.,\s]+[%€]$/.test(x)?"n":i?"x":null,x)));
+      tbody.append(tr)});
+    const w=el("div","qtw");w.append(tb);
+    const prev=e.lastElementChild;if(prev&&prev.classList.contains("qtg"))prev.append(w);else{const g=el("div","qtg");g.append(w);e.append(g)}});
+  e.classList.toggle("rich",rich)}
+function setQText(id,t){const e=$(id);qRich(e,t);e.classList.toggle("long",t.length>170||e.classList.contains("rich"))}
 function renderQuestion(){
   show("question");
   const item=G.deck[G.qi],q=qOf(G.qi),typed=isT(G.qi);
