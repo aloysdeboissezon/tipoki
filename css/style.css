@@ -234,7 +234,7 @@ label.label{display:block;margin-bottom:6px}
   .bankpanel>.row .btn{flex:1 1 0}
   .bankpanel .bk-foot{grid-column:1/-1}
   .bankpanel h2{font-size:19px}
-  .bankpanel #bankBtn,.bankpanel #shareQuizBtn,.bankpanel #cardsJump{padding:10px 14px;min-height:44px;font-size:15px}
+  .bankpanel #bankBtn,.bankpanel #shareQuizBtn,.bankpanel #cardsJump,.bankpanel #sheetBtn{padding:10px 14px;min-height:44px;font-size:15px}
 }
 /* Tipoki: quiz maker */
 textarea{font:inherit;font-size:16px;padding:13px 16px;border-radius:16px;border:2px solid var(--line);background:#FAFAFD;color:var(--ink);width:100%;min-width:0;resize:vertical;margin-top:6px}
@@ -364,6 +364,8 @@ body.noscroll{overflow:hidden}
 .linkbtn{min-height:40px}
 .gamerow .btn{font-size:16px;padding:10px 16px;min-height:44px}
 #topic .bankpanel>.row .btn{flex:none;min-height:40px;padding:8px 16px;font-size:15px}
+#topic .bankpanel>.row{flex-wrap:wrap}
+#topic .bankpanel>.row .btn{flex:1 1 auto}
 @media (max-width:560px){
   #home,#topic{gap:12px!important}
   .hero{padding:20px 20px 22px;border-radius:24px}
