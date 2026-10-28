@@ -23,9 +23,9 @@ const EX=[
 EX.forEach(([e,a,x])=>ok(e+' '+a,[e,a],x));
 // slide examples 1–5 (Company A buys Company B): [price, %, expected classification line]
 const SL=[['7,200','100%','Goodwill of 1,300'],['4,500','100%','A gain from a bargain purchase of 1,400'],['7,200','80%','Goodwill of 2,480'],['4,100','75%','A gain from a bargain purchase of 325']];
-SL.forEach(([pr,p,x])=>ok('slide '+pr+' '+p,['Company A buys '+p+' of the shares of Company B for €'+pr,'retained earnings 1,400.','What does the Investment-Equity adjustment show'],x));
+SL.forEach(([pr,p,x])=>ok('slide '+pr+' '+p,['Company A buys '+p+' of the shares of Company B for €'+pr,'Retained earnings | 1,400\n\nWhat does the Investment-Equity adjustment show'],x));
 ok('slide 5 goodwill',['undervalued by 150','What does the Investment-Equity adjustment show'],'Goodwill of 2,360');
-ok('slide 3 NCI',['buys 80% of the shares of Company B for €7,200','legal reserves 2,500, retained earnings 1,400.','What is the NCI at the acquisition date?'],'1,180');
+ok('slide 3 NCI',['buys 80% of the shares of Company B for €7,200','Retained earnings | 1,400\n\nWhat is the NCI at the acquisition date?'],'1,180');
 ok('slide 4 NCI',['buys 75% of the shares of Company B for €4,100','What is the NCI at the acquisition date?'],'1,475');
 ok('slide 5 NCI',['undervalued by 150','What is the NCI at the acquisition date?'],'1,210');
 // internal transactions
@@ -57,7 +57,7 @@ ok('C2 reserves',['Case 2','consolidated reserves arising from Shove (€ thousa
 ok('C2 TA',['Case 2','What are the consolidated total assets (€ thousand)?'],'1,533.8');
 ok('C2 RE',['Case 2','consolidated retained earnings'],'228.8');
 // every numeric typed answer must also be reachable from its explanation (spot check on a few)
-const t=B.TQ.filter(q=>q.q.includes('Case 2. ')&&q.q.includes('consolidated total assets'));
+const t=B.TQ.filter(q=>q.q.includes('Case 2')&&q.q.includes('consolidated total assets'));
 if(!t.length||!t[0].a.includes('1533.8')){console.log('Typed case 2 total assets missing');fail++}
 console.log(fail?fail+' problem(s)':'all checks passed ('+B.Q.length+' choice questions, '+B.TQ.length+' typed)');
 process.exit(fail?1:0);

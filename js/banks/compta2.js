@@ -542,7 +542,7 @@ nm(6,"Case 1",C1F+"\n\nWhat are the consolidated loans to group companies (€)?
 nm(6,"Case 1",C1F+"\n\nWhat is the consolidated goodwill (€)?",114000,[27500,141500,336000,100000],"Goodwill of B = 114,000. The goodwill of the associate (27,500) is not shown separately.",2);
 nm(6,"Case 1",C1F+"\n\nWhat is the equity investment in C shown in the consolidated balance sheet (€)?",100000,[65000,35000,27500,290000],"65,000 + 25% × (190,000 − 50,000) = 100,000.",2);
 nm(6,"Case 1",C1F+"\n\nWhat are the consolidated total assets (€)?",2813000,[3396000,2620000,2913000,3396000-450000-65000],"3,396,000 − investments 515,000 − loans 200,000 − 100,000 (land) − 2,000 (inventories) + 20,000 (fair value) + 114,000 (goodwill) + 100,000 (equity investment) = 2,813,000.",3);
-tn(6,"Case 1. "+C1F+"\n\nWhat are the consolidated total assets (€)?",2813000,"2,813,000.",3);
+tn(6,C1F+"\n\nWhat are the consolidated total assets (€)?",2813000,"2,813,000.",3);
 nm(6,"Case 1",C1F+"\n\nWhat is the consolidated retained earnings of A (€)?",498000,[500000,502000,598000,474000],"500,000 − 2,000 (unrealised profit on inventories sold by A) = 498,000.",3);
 nm(6,"Case 1",C1F+"\n\nWhat is the consolidated total equity, including NCI (€)?",1996000,[1917200,1996000+78800,2813000,1898000],"Capital 1,000,000 + RE A 498,000 + share premium 300,000 + other reserves 105,000 + NCI 78,800 − reserves of B 20,800 + reserves of C 35,000 = 1,996,000.",3);
 nm(6,"Case 1",C1F+"\n\nWhat is the consolidated equity attributable to A's shareholders, excluding NCI (€)?",1917200,[1996000,1898000,1917200-35000,2000000],"1,996,000 − NCI 78,800 = 1,917,200.",3);
@@ -676,6 +676,44 @@ const FACTS=[
 [5,"eq","c","Goodwill of an associate","Included in the equity-method investment and only disclosed in the notes"],
 [5,"eq","c","Impairment loss","A reduction of the carrying amount of goodwill or of an equity-method investment when its value falls"]
 ];
+
+// ---------- readable statements ----------
+// The exercise statements above are written as running text; this turns them into paragraphs, balance-sheet tables and equity tables
+// (syntax: blank line = paragraph, "|" = table row, "|#" = section row, "|^" = total row, "• " = bullet; see qRich in app.js).
+const cap=x=>x[0].toUpperCase()+x.slice(1);
+function eqTable(sent){   // "At that date B's equity is: capital 2,000, reserves 3,000 and retained earnings 1,400; in addition, …"
+  const m=sent.match(/^(.*?)(\b[A-Z]\w*)'s equity (?:is|was): ([^;]+?)(?:;\s*(.*?))?\.?$/);if(!m)return null;
+  const rows=m[3].split(/,\s+|\s+and\s+/).map(c=>c.match(/^(.*?) (€?[\d,]+)$/));if(rows.some(r=>!r))return null;
+  const when=m[1].replace(/[,\s]+$/,"").replace(/^At/,"at");
+  const t=["| "+m[2]+"'s equity"+(when?" "+when:"")+" | "].concat(rows.map(r=>"| "+cap(r[1])+" | "+r[2])).join("\n");
+  return m[4]?t+"\n\n"+cap(m[4])+".":t}
+function bsTable(line,unit){   // "P: PPE 2,800 · investment in S 1,300 (total 4,950); share capital 1,000 · … ."
+  const m=line.match(/^([A-Z]\w*): (.*?) ?\(total ([\d,.]+)\); (.*?)\.?$/);if(!m)return null;
+  const it=x=>x.split(" · ").map(c=>c.match(/^(.*?) ([\d,.]+)$/));const a=it(m[2]),e=it(m[4]);if(a.concat(e).some(r=>!r))return null;
+  const row=r=>"| "+cap(r[1])+" | "+r[2];
+  return["| "+m[1]+" — balance sheet | "+(unit||""),"|# Assets",...a.map(row),"|^ Total assets | "+m[3],"|# Equity and liabilities",...e.map(row)].join("\n")}
+const memo=new Map();
+function fmtStmt(st){
+  if(memo.has(st))return memo.get(st);
+  const unit=(st.match(/\((€[^)]*)\)/)||[])[1];
+  const out=[];let list=null;
+  for(const line of st.split("\n")){
+    const lead=line.match(/^• (Balance sheets[^.]*\(€[^)]*\))\. (.*)$/);
+    if(lead){out.push(lead[1]+".");const t=bsTable(lead[2],unit);if(t)out.push(t);continue}
+    if(line.startsWith("• ")){if(!list){list=[];out.push(list)}list.push(line);continue}list=null;
+    const bs=bsTable(line,unit);if(bs){out.push(bs);continue}
+    let cur="";
+    const flush=()=>{if(cur)out.push(cur);cur=""};
+    for(const x of line.split(/(?<=\.)\s+(?=[A-Z(])/)){
+      const t=eqTable(x);
+      if(t){flush();out.push(t);continue}
+      if(/^(Case \d+|Slide example \d+ \(€\))\.$/.test(cur))cur=cur.slice(0,-1)+" — "+x;
+      else if(cur&&cur.length+x.length<120&&!/^(Exercise|Case)/.test(x))cur+=" "+x;
+      else{flush();cur=x}}
+    flush()}
+  const r=out.map(x=>Array.isArray(x)?x.join("\n"):x).join("\n\n");memo.set(st,r);return r}
+for(const q of Q.concat(TQ)){const i=q.q.lastIndexOf("\n\n");if(i>0)q.q=fmtStmt(q.q.slice(0,i))+q.q.slice(i)}
+
 
 return {id:"compta2",title:"Quiz compta 2",kw:"comptabilité compta consolidation consolidée consolidation financial statements goodwill NCI equity method associate subsidiary filiale analyse financière finance accounting quiz compta 2",subject:"Consolidation of financial statements: groups, full consolidation, internal transactions and equity method",lang:"en",sess:SESS,tags:TAGS,unit:["part","parts","a part"],balance:true,Q,TQ,facts:FACTS};
 })();

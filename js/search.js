@@ -8,8 +8,8 @@
     items=[];
     (BANK.facts||[]).forEach(f=>items.push({k:"card",s:f[0],t:f[3],x:f[4],al:f[5]||""}));
     // generated questions come from the facts (they would only repeat the cards): keep the hand-written ones
-    Q.slice(0,NHQ).forEach(q=>items.push({k:"q",s:q.s,t:q.q,x:q.o?q.o[0]:"",e:q.e||"",tf:!!q.tf}));
-    TQ.slice(0,NHT).forEach(q=>items.push({k:"q",s:q.s,t:q.q,x:(q.a||[])[0]||"",e:q.e||""}));
+    Q.slice(0,NHQ).forEach(q=>items.push({k:"q",s:q.s,t:qPlain(q.q),x:q.o?q.o[0]:"",e:q.e||"",tf:!!q.tf}));
+    TQ.slice(0,NHT).forEach(q=>items.push({k:"q",s:q.s,t:qPlain(q.q),x:(q.a||[])[0]||"",e:q.e||""}));
     items.forEach(i=>i.h=fold([i.t,i.x,i.al,i.e].join(" \n ")));
     bankId=BANK.id;
   }
