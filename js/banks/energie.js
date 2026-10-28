@@ -259,6 +259,85 @@ ty(6,"S = 2 m², E = 800 W·m⁻², Pmax = 400 W. Rendement en % ?",["25","25 %"
 ty(6,"r = 20 %, S = 1,5 m², E = 1 000 W·m⁻². Puissance électrique en W ?",["300","300 W"],"Pf = 1 500 W ; Pu = 0,20 × 1 500 = 300 W.");
 
 // key words of the course, turned into extra definition / true-false / typed questions by the engine
+// ===================== More questions, with a difficulty (d: 1 easy, 2 medium, 3 hard) =====================
+const lv=(d,f,...a)=>{f(...a);const L=f===ty?TQ:Q;L[L.length-1].d=d};
+// ---- 1. Induction
+lv(2,m,1,"Centrale hydraulique","Quelle est la chaîne de conversion d'énergie dans une centrale hydraulique ?","Énergie de l'eau qui s'écoule → énergie mécanique (turbine) → énergie électrique (alternateur)",["Énergie lumineuse → énergie électrique (cellules photovoltaïques)","Énergie thermique de la vapeur → énergie chimique → énergie électrique","Énergie électrique → énergie mécanique → énergie de l'eau"],"L'eau en mouvement fait tourner une turbine reliée à l'axe de l'alternateur, qui produit l'électricité par induction.");
+lv(2,m,1,"Éolienne","Dans une éolienne, quelle est la chaîne de conversion d'énergie ?","Énergie du vent → énergie mécanique (turbine, rotor) → énergie électrique (alternateur)",["Énergie lumineuse → énergie thermique → énergie électrique","Énergie électrique → énergie mécanique → énergie du vent","Énergie chimique → énergie du vent → énergie électrique"],"Le vent fait tourner la turbine, qui entraîne l'aimant de l'alternateur : c'est de l'induction électromagnétique.");
+lv(3,m,1,"Sens du courant","Un aimant est approché du pôle Nord devant une bobine, puis on l'éloigne. Que dire du courant induit ?","Il change de sens entre l'approche et l'éloignement",["Il garde le même sens, seule son intensité change","Il s'annule dès que l'aimant touche la bobine","Il ne dépend que de la longueur du fil de la bobine"],"Le sens du courant dépend du pôle présenté ET du sens de déplacement : approche puis éloignement donnent deux sens opposés.");
+lv(3,m,1,"Condition","Dans quelle situation n'obtient-on PAS de courant induit dans une bobine ?","L'aimant et la bobine sont immobiles l'un par rapport à l'autre",["L'aimant s'approche de la bobine","L'aimant s'éloigne de la bobine","La bobine se déplace devant l'aimant fixe"],"L'induction demande un mouvement relatif entre le conducteur et le champ magnétique : sans mouvement relatif, pas de courant induit.");
+lv(1,vf,1,"Faraday a découvert l'induction électromagnétique en 1831.",true,"Faraday (1831), puis Maxwell la théorise en 1865.");
+lv(2,vf,1,"Il suffit de poser un aimant immobile contre une bobine pour y induire un courant.",false,"Il faut un mouvement relatif entre l'aimant et la bobine.");
+lv(2,vf,1,"Une éolienne produit de l'électricité grâce à l'induction électromagnétique.",true,"Le vent entraîne la turbine, donc l'aimant de l'alternateur.");
+// ---- 2. Alternateur
+lv(2,m,2,"Chaîne énergétique","Dans une centrale thermique, quelle est la bonne suite de conversions ?","Énergie thermique (vapeur) → énergie mécanique (turbine) → énergie électrique (alternateur)",["Énergie électrique → énergie thermique → énergie mécanique","Énergie mécanique → énergie thermique (vapeur) → énergie électrique","Énergie thermique (vapeur) → énergie électrique → énergie mécanique"],"La vapeur fait tourner la turbine ; la turbine entraîne le rotor ; l'alternateur fournit de l'électricité.");
+lv(2,m,2,"Rotor en mouvement","Quand le rotor d'un alternateur tourne, que se passe-t-il aux bornes des enroulements du stator ?","Une tension alternative est induite",["Une tension continue constante apparaît","Aucune tension : le stator est isolé","Le stator se met à tourner à son tour"],"Les aimants du rotor se déplacent devant les bobines du stator : par induction, un courant alternatif apparaît.");
+lv(3,m,2,"Rendement","Pourquoi un alternateur d'une centrale dégage-t-il de la chaleur alors que son but est de produire de l'électricité ?","Une partie de l'énergie reçue est dissipée sous forme d'énergie thermique, c'est une perte",["Parce qu'il convertit l'électricité en chaleur avant de la distribuer","Parce que l'induction n'existe que si l'on chauffe le conducteur","Parce que l'énergie électrique se transforme spontanément en énergie mécanique"],"Ereçue = Eu + Edissipée : l'énergie dissipée (chaleur) est la raison pour laquelle r < 1.");
+lv(1,vf,2,"Le rotor d'un alternateur est la partie fixe.",false,"Le rotor est mobile ; le stator est fixe.");
+lv(2,vf,2,"La turbine d'une centrale est reliée à l'axe du rotor de l'alternateur.",true,"C'est elle qui entraîne l'aimant en rotation.");
+// ---- 3. Calculs : rendement et fréquence
+lv(1,m,3,"Rendement","Un alternateur a un rendement r = 0,93. Quel pourcentage de l'énergie reçue est dissipé en chaleur ?","7 %",["93 %","0,7 %","1,07 %"],"Pertes = 1 − r = 1 − 0,93 = 0,07, soit 7 %.");
+lv(2,m,3,"Rendement","Un alternateur reçoit Pf = 800 MW et son rendement vaut 0,95. Quelle puissance est dissipée sous forme de chaleur ?","40 MW",["760 MW","50 MW","4 MW"],"Pu = 0,95 × 800 = 760 MW, donc Pdissipée = 800 − 760 = 40 MW.");
+lv(2,m,3,"Rendement","Un alternateur fournit Pu = 45 MW avec un rendement de 90 %. Quelle puissance mécanique reçoit-il ?","50 MW",["40,5 MW","49,5 MW","54 MW"],"Pf = Pu / r = 45 / 0,90 = 50 MW (et non Pu × r).");
+lv(2,m,3,"Rendement","Un alternateur de rendement 0,85 fournit Pu = 17 kW. Quelle est la puissance qu'il reçoit ?","20 kW",["14,45 kW","15 kW","24 kW"],"Pf = Pu / r = 17 / 0,85 = 20 kW.");
+lv(3,m,3,"Rendement","Un alternateur reçoit 250 kJ et dissipe 20 kJ en chaleur. Quel est son rendement ?","0,92",["0,08","0,92 kJ","1,08"],"Eu = 250 − 20 = 230 kJ, donc r = 230 / 250 = 0,92 (sans unité).");
+lv(3,m,3,"Rendement","Un alternateur de rendement 0,96 dissipe 2 MW. Quelle puissance mécanique reçoit-il ?","50 MW",["2,08 MW","48 MW","52 MW"],"Pdissipée = (1 − 0,96) × Pf = 0,04 × Pf = 2 MW, donc Pf = 2 / 0,04 = 50 MW.");
+lv(3,m,3,"Chaîne de rendements","Une turbine de rendement 0,40 reçoit 2 000 MW d'énergie thermique et entraîne un alternateur de rendement 0,95. Quelle puissance électrique est fournie ?","760 MW",["800 MW","1 900 MW","1 140 MW"],"Pmécanique = 0,40 × 2 000 = 800 MW, puis Pélectrique = 0,95 × 800 = 760 MW (rendement global 0,38).");
+lv(3,m,3,"Énergie","Un alternateur fournit Pu = 10 kW pendant 2 h. Quelle énergie électrique a-t-il fournie, en kWh ?","20 kWh",["5 kWh","12 kWh","0,2 kWh"],"E = P × Δt = 10 kW × 2 h = 20 kWh.");
+lv(3,m,3,"Énergie","Sachant que 1 kWh = 3,6 MJ, que vaut 20 kWh en mégajoules ?","72 MJ",["5,6 MJ","20 MJ","7,2 MJ"],"20 × 3,6 = 72 MJ.");
+lv(3,m,3,"Fréquence","Un rotor de N = 8 aimants doit produire un courant de 50 Hz. À quelle vitesse doit-il tourner ?","6,25 tr/s, soit 375 tr/min",["400 tr/s","6,25 tr/min","0,16 tr/s"],"f = N × ω donc ω = f / N = 50 / 8 = 6,25 tr/s ; × 60 = 375 tr/min.");
+lv(3,m,3,"Fréquence","Un rotor de N = 12 aimants tourne à 250 tr/min. Quelle est la fréquence du courant ?","50 Hz",["3 000 Hz","20,8 Hz","250 Hz"],"ω = 250 / 60 ≈ 4,167 tr/s ; f = 12 × 4,167 = 50 Hz.");
+lv(2,m,3,"Fréquence","Un rotor de N = 2 aimants passe de 25 tr/s à 30 tr/s. Quelle est la nouvelle fréquence ?","60 Hz",["50 Hz","30 Hz","15 Hz"],"f = N × ω = 2 × 30 = 60 Hz.");
+lv(3,m,3,"Fréquence","Un rotor de N = 3 aimants tourne à 1 000 tr/min. Quelle est la fréquence du courant ?","50 Hz",["3 000 Hz","16,7 Hz","1 000 Hz"],"ω = 1 000 / 60 ≈ 16,67 tr/s ; f = 3 × 16,67 = 50 Hz.");
+lv(1,vf,3,"Un alternateur de rendement 0,93 dissipe 7 % de l'énergie reçue.",true,"Pertes = 1 − 0,93 = 0,07.");
+lv(2,vf,3,"Un rendement de 1,05 est possible pour un alternateur bien conçu.",false,"Un rendement est toujours inférieur à 1 : on ne crée pas d'énergie.");
+lv(3,vf,3,"Pour un alternateur de rendement 0,90 qui fournit 900 MW, la puissance reçue est 810 MW.",false,"Pf = Pu / r = 900 / 0,90 = 1 000 MW (et non Pu × r = 810 MW).");
+lv(2,ty,3,"r = 92 %, Pf = 50 kW. Puissance dissipée en kW ?",["4","4 kW"],"Pu = 0,92 × 50 = 46 kW, donc Pdissipée = 50 − 46 = 4 kW.");
+lv(2,ty,3,"Pu = 4,6 kW, r = 0,92. Puissance reçue en kW ?",["5","5 kW"],"Pf = Pu / r = 4,6 / 0,92 = 5 kW.");
+lv(1,ty,3,"Convertis 2 400 tr/min en tr/s.",["40","40 tr/s"],"2 400 / 60 = 40 tr/s.");
+lv(2,ty,3,"N = 3 aimants, ω = 1 000 tr/min. Fréquence en Hz ?",["50","50 Hz"],"ω = 16,67 tr/s ; f = 3 × 16,67 = 50 Hz.");
+lv(2,ty,3,"N = 5 aimants, ω = 10 tr/s. Fréquence en Hz ?",["50","50 Hz"],"f = 5 × 10 = 50 Hz.");
+lv(3,ty,3,"f = 50 Hz, N = 8 aimants. Vitesse de rotation en tr/min ?",["375","375 tr/min"],"ω = 50 / 8 = 6,25 tr/s ; × 60 = 375 tr/min.");
+lv(1,ty,3,"Combien de mégawatts font 1,2 GW ?",["1200","1 200","1200 MW"],"1 GW = 1 000 MW.");
+lv(2,ty,3,"Pu = 1,8 MW, r = 0,90. Puissance reçue en MW ?",["2","2 MW"],"Pf = 1,8 / 0,90 = 2 MW.");
+lv(3,ty,3,"Pf = 800 MW, r = 0,95. Puissance dissipée en MW ?",["40","40 MW"],"Pu = 760 MW ; Pdissipée = 800 − 760 = 40 MW.");
+// ---- 4. Semi-conducteurs et photovoltaïque
+lv(2,m,4,"Comparaison","Pourquoi un panneau photovoltaïque n'a-t-il ni rotor ni stator ?","Il ne fonctionne pas par induction : il convertit la lumière grâce à l'effet photoélectrique",["Parce qu'il est trop petit pour contenir un aimant","Parce qu'il produit du courant alternatif sans conversion","Parce qu'il fonctionne uniquement la nuit"],"Rotor et stator servent à l'induction (alternateur). Une cellule PV absorbe des photons et libère des électrons.");
+lv(2,m,4,"Chaîne énergétique","Quelle est la forme de l'énergie perdue dans un panneau photovoltaïque ?","L'énergie thermique (le panneau chauffe)",["L'énergie mécanique","L'énergie nucléaire","L'énergie chimique du silicium"],"Énergie lumineuse reçue = énergie électrique utile + énergie thermique dissipée.");
+lv(3,m,4,"Photon et gap","Sachant que E (en eV) ≈ 1 240 / λ (λ en nm), quelle énergie a un photon de longueur d'onde 620 nm ?","2 eV",["0,5 eV","620 eV","1,24 eV"],"E ≈ 1 240 / 620 = 2 eV.");
+lv(3,m,4,"Photon et gap","Un photon de longueur d'onde 1 500 nm (E ≈ 1 240 / λ) peut-il être absorbé par du silicium (Eg = 1,12 eV) ?","Non : son énergie (≈ 0,83 eV) est inférieure au gap",["Oui : plus la longueur d'onde est grande, plus l'énergie est grande","Oui : le silicium absorbe toutes les longueurs d'onde","Non : le silicium n'absorbe que l'infrarouge"],"E ≈ 1 240 / 1 500 ≈ 0,83 eV < 1,12 eV. Il faut E ≥ Eg, soit λ ≲ 1 100 nm.");
+lv(3,m,4,"Photon et gap","Un photon de 2 eV est absorbé par du silicium (Eg = 1,12 eV). Que devient l'énergie en excès (≈ 0,88 eV) ?","Elle est dissipée sous forme d'énergie thermique",["Elle est convertie intégralement en électricité","Elle sert à doper le silicium","Elle fait tourner un rotor"],"L'électron libéré ne garde utilement que l'énergie du gap ; le reste chauffe la cellule, ce qui limite le rendement.");
+lv(1,vf,4,"Une cellule photovoltaïque produit du courant continu.",true,"Contrairement à l'alternateur, qui produit un courant alternatif.");
+lv(2,vf,4,"Le rendement d'un panneau photovoltaïque au silicium est supérieur à celui d'un alternateur.",false,"Environ 20–25 % pour le silicium, contre 90–95 % pour un alternateur.");
+// ---- 5. Bandes d'énergie et silicium
+lv(1,m,5,"Conducteur","Lequel de ces matériaux est un bon conducteur ?","Le cuivre",["Le verre","Le silicium pur à basse température","Le caoutchouc"],"Le cuivre, l'or et l'argent sont des métaux conducteurs.");
+lv(2,m,5,"Isolant","Pourquoi un isolant (gap ≈ 6 eV) ne conduit-il pas à température ambiante ?","Les électrons ne reçoivent pas assez d'énergie pour franchir une bande interdite aussi large",["Il n'a aucun électron de valence","Sa bande de conduction est déjà remplie","Il n'a pas de bande de valence"],"Pour conduire, un électron doit passer dans la bande de conduction, ce qui demande au moins Eg ≈ 6 eV.");
+lv(2,m,5,"Électrons libres","Dans quelle bande se trouvent les électrons libres qui font circuler le courant ?","La bande de conduction",["La bande de valence","La bande interdite","Aucune bande"],"Un électron qui a franchi le gap est dans la bande de conduction ; il laisse un trou dans la bande de valence.");
+lv(3,m,5,"Photon et gap","Un photon de 3 eV arrive sur un isolant de gap 6 eV, puis sur du silicium (Eg = 1,12 eV). Que se passe-t-il ?","Il ne peut pas libérer d'électron dans l'isolant, mais il le peut dans le silicium",["Il libère un électron dans les deux matériaux","Il n'en libère dans aucun des deux","Il libère un électron dans l'isolant mais pas dans le silicium"],"Condition : E photon ≥ Eg. 3 eV < 6 eV (isolant) ; 3 eV ≥ 1,12 eV (silicium).");
+lv(3,m,5,"Conductivité","Pourquoi la conductivité d'un semi-conducteur augmente-t-elle quand on l'éclaire ou le chauffe ?","Plus d'électrons franchissent le gap et passent dans la bande de conduction",["Il perd ses électrons de valence","Sa bande interdite disparaît définitivement","Il devient un aimant"],"Chauffage ou éclairement apportent l'énergie nécessaire à franchir le gap : le nombre d'électrons libres augmente.");
+lv(1,vf,5,"Le cuivre est un matériau conducteur.",true,"Il fait partie des métaux cités dans le cours.");
+lv(2,vf,5,"Le gap du silicium est plus petit que celui d'un isolant.",true,"1,12 eV contre environ 6 eV.");
+lv(1,ty,5,"Matériau conducteur cité dans le cours, de couleur rouge-orangé ?",["cuivre"],"Avec l'or et l'argent, le cuivre est un métal conducteur.");
+lv(2,ty,5,"Un photon d'énergie 0,8 eV peut-il libérer un électron dans le silicium (Eg = 1,12 eV) ? (oui/non)",["non"],"0,8 eV < 1,12 eV : l'énergie est insuffisante.");
+// ---- 6. Calculs : capteur photovoltaïque
+lv(1,m,6,"Éclairement","Si l'éclairement diminue (nuage) alors que la surface du panneau reste la même, la puissance lumineuse reçue…","Diminue",["Augmente","Reste identique","Devient nulle"],"Pf = E × S : à S constante, Pf diminue avec E.");
+lv(2,m,6,"Puissance","Un panneau a Umax = 24 V et Imax = 6 A. Quelle est sa puissance maximale ?","144 W",["4 W","30 W","1 440 W"],"Pmax = Umax × Imax = 24 × 6 = 144 W.");
+lv(2,m,6,"Résistance","Un panneau a Umax = 24 V et Imax = 6 A. Quelle résistance faut-il brancher pour obtenir la puissance maximale ?","4 Ω",["144 Ω","0,25 Ω","30 Ω"],"Rmax = Umax / Imax = 24 / 6 = 4 Ω.");
+lv(2,m,6,"Puissance lumineuse","Un panneau de 2 m² reçoit E = 500 W·m⁻². Quelle puissance lumineuse reçoit-il ?","1 000 W",["250 W","2 500 W","100 W"],"Pf = E × S = 500 × 2 = 1 000 W.");
+lv(3,m,6,"Rendement","Un panneau de 1,5 m² éclairé à 1 000 W·m⁻² délivre Pmax = 270 W. Quel est son rendement ?","18 %",["27 %","0,18 %","5,6 %"],"Pf = 1 000 × 1,5 = 1 500 W ; r = 270 / 1 500 = 0,18.");
+lv(3,m,6,"Rendement","Un panneau de 1,6 m² à 1 000 W·m⁻² délivre 256 W ; un autre de 1,5 m² à 1 000 W·m⁻² délivre 270 W. Lequel a le meilleur rendement ?","Le second : 18 % contre 16 %",["Le premier : 256 W / 1,6 m² > 270 W / 1,5 m²","Les deux ont le même rendement","On ne peut pas comparer, les surfaces diffèrent"],"Premier : 256 / 1 600 = 0,16. Second : 270 / 1 500 = 0,18.");
+lv(3,m,6,"Puissance perdue","Un panneau de rendement 18 % reçoit 1 000 W de puissance lumineuse. Quelle puissance est dissipée en chaleur ?","820 W",["180 W","18 W","1 018 W"],"Pu = 0,18 × 1 000 = 180 W ; Pdissipée = 1 000 − 180 = 820 W.");
+lv(3,m,6,"Dimensionnement","On veut 400 W avec des panneaux de rendement 20 % éclairés à 1 000 W·m⁻². Quelle surface totale faut-il ?","2 m²",["0,08 m²","20 m²","0,5 m²"],"Pf = Pu / r = 400 / 0,20 = 2 000 W ; S = Pf / E = 2 000 / 1 000 = 2 m².");
+lv(2,m,6,"Énergie produite","10 panneaux de 300 W fonctionnent chacun à pleine puissance pendant 4 h. Quelle énergie électrique produisent-ils au total ?","12 kWh",["1,2 kWh","3 kWh","120 kWh"],"P totale = 10 × 300 = 3 000 W = 3 kW ; E = 3 × 4 = 12 kWh.");
+lv(1,vf,6,"Pour calculer Pf = E × S, la surface doit être exprimée en m².",true,"E est en W·m⁻², donc S en m².");
+lv(3,vf,6,"Un panneau de 1,5 m² éclairé à 1 000 W·m⁻² reçoit 150 W.",false,"Pf = 1 000 × 1,5 = 1 500 W.");
+lv(2,ty,6,"Umax = 24 V, Imax = 6 A. Pmax en W ?",["144","144 W"],"Pmax = 24 × 6 = 144 W.");
+lv(3,ty,6,"Pmax = 270 W, S = 1,5 m², E = 1 000 W·m⁻². Rendement en % ?",["18","18 %"],"r = 270 / (1 000 × 1,5) = 0,18.");
+lv(1,ty,6,"Combien font 250 cm² en m² ?",["0,025","0.025"],"1 m² = 10 000 cm², donc 250 cm² = 0,025 m².");
+lv(2,ty,6,"E = 500 W·m⁻², S = 2 m². Puissance lumineuse en W ?",["1000","1 000","1000 W"],"Pf = 500 × 2 = 1 000 W.");
+lv(3,ty,6,"r = 18 %, Pf = 1 000 W. Puissance dissipée en W ?",["820","820 W"],"Pu = 180 W ; Pdissipée = 1 000 − 180 = 820 W.");
+lv(1,ty,6,"1 kWh vaut combien de MJ ?",["3,6","3.6","3,6 MJ"],"1 kWh = 1 000 W × 3 600 s = 3,6 MJ.");
+
 const FACTS=[
 [2,"mots","c","Alternateur","Convertit l'énergie mécanique en énergie électrique grâce à l'induction ; constitué d'un stator et d'un rotor"],
 [4,"mots","c","Capteur photovoltaïque","Convertit l'énergie radiative lumineuse en énergie électrique ; constitué de semi-conducteurs","panneau photovoltaïque;panneau solaire"],
