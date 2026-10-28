@@ -267,7 +267,7 @@ function renderBankUI(){
 }
 function sLabel(s){return BANK.tags?BANK.tags[s]:(BANK.id==="socio"?"S":"Ch.")+s}
 function unit(k){return tl((BANK.unit||(BANK.id==="socio"?["session","sessions","a session"]:["chapter","chapters","a chapter"]))[k])}
-const BUILTIN={socio:()=>window.BANK_SOCIO,culture:()=>window.BANK_CULTURE,energie:()=>window.BANK_ENERGIE,populism:()=>window.BANK_POPULISM};
+const BUILTIN={socio:()=>window.BANK_SOCIO,culture:()=>window.BANK_CULTURE,energie:()=>window.BANK_ENERGIE,populism:()=>window.BANK_POPULISM,compta2:()=>window.BANK_COMPTA2};
 const bankCache={};
 async function useBank(id){
   id=id||"socio";if(BANK&&BANK.id===id)return true;
