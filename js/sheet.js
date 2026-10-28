@@ -1,77 +1,75 @@
-// study sheet: one scrollable, printable summary of the quiz, built from its flashcard facts (no AI call)
+// study sheet: a styled, A4-style revision document per quiz. The text is written by hand (js/sheets/<quiz id>.js, window.SHEETS[id]);
+// the PDF next to it (sheets/<quiz id>.pdf) is produced from this same rendering by tools/make-pdfs.js
 (function(){
   const btn=$("sheetBtn");
-  let root=null,cover=false,lastFocus=null;
+  let root=null,lastFocus=null;
+  const get=()=>BANK&&window.SHEETS&&window.SHEETS[BANK.id];
 
-  function has(){return !!(BANK&&BANK.facts&&BANK.facts.length)}
-  function accent(s){return "hsl("+((Number(s)*67+12)%360)+" 85% 78%)"}
+  // blocks: p, h3, dl (term / definition rows), ul, ol, formula, key (to remember), table, ex (worked example)
+  // the document speaks the quiz's language, whatever the interface language is
+  const L={fr:{key:"À retenir",ex:"Exemple chiffré",toc:"Sommaire",end:"Relis-la une fois, puis fais une partie pour bien l'ancrer."},en:{key:"Key takeaways",ex:"Worked example",toc:"Contents",end:"Read it through once, then play a round to lock it in."}};
+  let lg=L.en;
+  function block(b){
+    const t=b.t;let e;
+    if(t==="p"){e=el("p","dc-p");e.innerHTML=b.x}
+    else if(t==="h3"){e=el("h3","dc-h3");e.innerHTML=b.x}
+    else if(t==="dl"){e=el("dl","dc-dl");b.items.forEach(([k,v])=>{const r=el("div","dc-dr"),dt=el("dt"),dd=el("dd");dt.innerHTML=k;dd.innerHTML=v;r.append(dt,dd);e.append(r)})}
+    else if(t==="ul"||t==="ol"){e=el(t,"dc-l");b.items.forEach(x=>{const li=el("li");li.innerHTML=x;e.append(li)})}
+    else if(t==="formula"){e=el("div","dc-f");const n=el("div","dc-fn");n.innerHTML=b.name;const x=el("div","dc-fx");x.innerHTML=b.x;e.append(n,x);if(b.note){const s=el("div","dc-fs");s.innerHTML=b.note;e.append(s)}}
+    else if(t==="key"){e=el("aside","dc-key");const h=el("div","dc-kh");h.textContent=b.title||lg.key;e.append(h);const u=el("ul");b.items.forEach(x=>{const li=el("li");li.innerHTML=x;u.append(li)});e.append(u)}
+    else if(t==="table"){e=el("div","dc-tw");const tb=el("table","dc-t");
+      if(b.cap){const c=el("caption");c.innerHTML=b.cap;tb.append(c)}
+      const th=el("thead"),tr=el("tr");b.head.forEach(h=>{const c=el("th");c.innerHTML=h;tr.append(c)});th.append(tr);tb.append(th);
+      const tbd=el("tbody");b.rows.forEach(r=>{const tr=el("tr");r.forEach((x,i)=>{const c=el(i?"td":"th");if(!i)c.scope="row";c.innerHTML=x;tr.append(c)});tbd.append(tr)});tb.append(tbd);e.append(tb)}
+    else if(t==="ex"){e=el("div","dc-ex");const h=el("div","dc-eh");h.innerHTML=b.title||lg.ex;e.append(h);b.x.forEach(x=>{const p=el("p");p.innerHTML=x;e.append(p)})}
+    return e;
+  }
 
-  function build(){
-    root=el("div","sheet");root.id="sheet";root.setAttribute("role","dialog");root.setAttribute("aria-modal","true");
-    root.lang=BANK.lang||"fr";
-    const facts=BANK.facts,known=(()=>{try{return fcStore()}catch(e){return {}}})();
-    const groups=ALL_S.map(s=>({s,f:facts.filter(f=>Number(f[0])===s)})).filter(g=>g.f.length);
-    const nKnown=facts.filter(f=>known[f[3]]===1).length;
-
-    const bar=el("div","sh-bar");
-    const close=el("button","btn ghost sh-close",tl("Close"));close.type="button";close.onclick=hide;
-    const tools=el("div","sh-tools");
-    const cv=el("button","chip",tl("Cover definitions"));cv.type="button";cv.setAttribute("aria-pressed",cover);
-    cv.onclick=()=>{cover=!cover;cv.setAttribute("aria-pressed",cover);root.classList.toggle("covered",cover);root.querySelectorAll(".sh-n.open").forEach(n=>n.classList.remove("open"))};
-    const pr=el("button","chip","PDF");pr.type="button";pr.onclick=()=>window.print();
-    tools.append(cv,pr);bar.append(close,tools);
-
-    const nav=el("nav","sh-nav");nav.setAttribute("aria-label",tl("Sections"));
-    groups.forEach(g=>{const a=el("a","sh-jump",sLabel(g.s));a.href="#sh-s"+g.s;a.style.setProperty("--ac",accent(g.s));
-      a.onclick=e=>{e.preventDefault();const t=root.querySelector("#sh-s"+g.s);if(t)t.scrollIntoView({behavior:RM?"auto":"smooth",block:"start"})};nav.append(a)});
-
-    const hero=el("header","sh-hero");
-    hero.append(el("div","sh-kick",tl("Study sheet")),el("h2","sh-title",BANK.title));
-    if(BANK.subject)hero.append(el("p","sh-sub",BANK.subject));
-    const st=el("div","sh-stats");
-    [[facts.length,tl(facts.length>1?"key notions":"key notion")],[groups.length,unit(groups.length>1?1:0)]].forEach(([n,l])=>{
-      const d=el("div","sh-stat");d.append(el("b","",fmtN(n)),el("span","",l));st.append(d)});
-    if(nKnown){const d=el("div","sh-stat ok");d.append(el("b","",fmtN(nKnown)),el("span","",tl("already known")));st.append(d)}
-    hero.append(st);
-
-    const body=el("main","sh-body");
-    groups.forEach(g=>{
-      const sec=el("section","sh-sec");sec.id="sh-s"+g.s;sec.style.setProperty("--ac",accent(g.s));
-      const h=el("div","sh-sech");
-      h.append(el("span","sh-num",String(g.s)));
-      const ht=el("div","sh-sect");ht.append(el("h3","",SESS[g.s]||sLabel(g.s)),el("span","",tl(g.f.length>1?"{n} notions":"1 notion",{n:g.f.length})));
-      h.append(ht);sec.append(h);
-      const grid=el("div","sh-grid");
-      g.f.forEach(f=>{
-        const n=el("article","sh-n"+(f[2]==="p"?" who":"")+(known[f[3]]===1?" got":""));
-        n.tabIndex=0;
-        const top=el("div","sh-nt");
-        top.append(el("h4","",f[3]));
-        if(f[2]==="p")top.append(el("span","sh-tag",tl("Who")));
-        n.append(top,el("p","sh-d",f[4]));
-        if(f[5])n.append(el("div","sh-al",tl("Also: ")+f[5].split(";").join(" · ")));
-        const tog=()=>{if(cover)n.classList.toggle("open")};
-        n.onclick=tog;n.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();tog()}};
-        grid.append(n);
-      });
-      sec.append(grid);body.append(sec);
+  function build(S){
+    const doc=el("article","doc");doc.lang=S.lang||BANK.lang||"fr";lg=L[doc.lang]||L.en;
+    // cover
+    const cv=el("header","dc-cover"),top=el("div","dc-ctop");
+    top.append(el("div","dc-tag",S.tag||tl("Study sheet")));
+    const h=el("h1","dc-title");h.innerHTML=S.title;top.append(h);
+    if(S.sub){const p=el("p","dc-sub");p.innerHTML=S.sub;top.append(p)}
+    top.append(el("div","dc-brand","Tipoki"));
+    const bot=el("div","dc-cbot");bot.append(el("div","dc-toch",lg.toc));
+    const ol=el("ol","dc-toc");
+    S.sections.forEach((s,i)=>{const li=el("li"),a=el("a");a.href="#dc-"+i;a.innerHTML="<b>"+String(i+1).padStart(2,"0")+"</b><span>"+s.title+"</span>";
+      a.onclick=ev=>{ev.preventDefault();const t=doc.querySelector("#dc-"+i);if(t)t.scrollIntoView({behavior:RM?"auto":"smooth",block:"start"})};li.append(a);ol.append(li)});
+    bot.append(ol);
+    if(S.source)bot.append(el("div","dc-src",S.source));
+    cv.append(top,bot);doc.append(cv);
+    // body
+    const body=el("main","dc-body");
+    if(S.intro){const p=el("p","dc-intro");p.innerHTML=S.intro;body.append(p)}
+    S.sections.forEach((s,i)=>{
+      const sec=el("section","dc-sec");sec.id="dc-"+i;
+      const hd=el("div","dc-sh");hd.append(el("span","dc-num",String(i+1).padStart(2,"0")));
+      const h2=el("h2");h2.innerHTML=s.title;hd.append(h2);sec.append(hd);
+      if(s.lead){const p=el("p","dc-lead");p.innerHTML=s.lead;sec.append(p)}
+      s.blocks.forEach(b=>{const e=block(b);if(e)sec.append(e)});
+      body.append(sec);
     });
-    const foot=el("div","sh-foot");
-    const go=el("button","btn big",tl("Test yourself"));go.type="button";go.onclick=()=>{hide();$("createPanel").scrollIntoView({behavior:RM?"auto":"smooth",block:"start"})};
-    foot.append(el("p","muted",tl("Read it through once, then play a round to lock it in.")),go);
-    body.append(foot);
-
-    root.append(bar,nav,hero,body);
-    root.classList.toggle("covered",cover);
-    document.body.append(root);
+    const ft=el("footer","dc-end");ft.innerHTML="<span>Tipoki</span> · "+lg.end;body.append(ft);
+    doc.append(body);return doc;
   }
 
   function show(){
-    if(!has())return;
+    const S=get();if(!S)return;
     if(root)root.remove();
-    build();lastFocus=document.activeElement;
-    document.body.classList.add("sheet-open");
-    root.scrollTop=0;root.querySelector(".sh-close").focus({preventScroll:true});
+    root=el("div","sheet");root.id="sheet";root.setAttribute("role","dialog");root.setAttribute("aria-modal","true");root.setAttribute("aria-label",tl("Study sheet"));
+    const bar=el("div","sh-bar");
+    const close=el("button","btn ghost sh-close",tl("Close"));close.type="button";close.onclick=hide;
+    const dl=el("a","btn sh-dl",tl("Download PDF"));dl.href="sheets/"+encodeURIComponent(BANK.id)+".pdf";dl.setAttribute("download",(S.file||BANK.id)+".pdf");dl.target="_blank";dl.rel="noopener";
+    const pr=el("button","btn ghost sh-pr",tl("Print"));pr.type="button";pr.onclick=()=>window.print();
+    const sp=el("span","sh-sp");
+    bar.append(close,sp,pr,dl);
+    const stage=el("div","sh-stage");stage.append(build(S));
+    root.append(bar,stage);
+    lastFocus=document.activeElement;
+    document.body.append(root);document.body.classList.add("sheet-open");
+    root.scrollTop=0;close.focus({preventScroll:true});
   }
   function hide(){
     if(!root)return;
@@ -81,6 +79,6 @@
   btn.onclick=show;
   document.addEventListener("keydown",e=>{if(e.key==="Escape"&&root)hide()});
   const old=window.renderBankUI;
-  window.renderBankUI=function(){old.apply(this,arguments);btn.hidden=!has();if(root)hide()};
-  btn.hidden=!(BANK&&has());
+  window.renderBankUI=function(){old.apply(this,arguments);btn.hidden=!get();if(root)hide()};
+  btn.hidden=!get();
 })();
