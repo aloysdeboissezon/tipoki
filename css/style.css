@@ -105,6 +105,8 @@ label.label{display:block;margin-bottom:6px}
 .tbar>i{display:block;height:100%;background:var(--hl);width:100%;border-radius:10px}
 .tbar>i.warn{background:var(--bad)}
 .qtext{font-family:var(--f-display);font-weight:700;font-size:clamp(24px,4.6vw,38px);line-height:1.12;letter-spacing:-.02em;text-wrap:balance;animation:fadeUp .5s .1s both}
+.qtext{white-space:pre-line}
+.qtext.long{font-size:clamp(15px,3.6vw,19px)!important;line-height:1.38;font-weight:600;letter-spacing:0;text-wrap:pretty;text-align:left}
 .tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 @media (max-width:560px){.tiles{gap:10px}}
 .tile{animation:tileIn .42s cubic-bezier(.2,.8,.3,1.25) backwards;animation-delay:calc(var(--i,0)*70ms);display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;gap:14px;text-align:left;border:none;border-radius:20px;padding:16px 16px 18px;font:inherit;font-size:18px;font-weight:800;line-height:1.25;cursor:pointer;min-height:120px;color:#fff;position:relative;
