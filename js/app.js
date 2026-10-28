@@ -20,7 +20,7 @@ let ALL_S=[];
 // current question bank (built-in socio, or a quiz generated from someone's course)
 let BANK=null,SESS={},Q=[],TQ=[],NHQ=0,NHT=0;
 const LEN_INF="inf";
-let settings={sess:new Set(),len:15,T:20,fmt:"mix",fcSide:"term",fcSet:"due",fcOrd:"shuffle"};
+let settings={sess:new Set(),len:15,T:20,fmt:"mix",diff:0,fcSide:"term",fcSet:"due",fcOrd:"shuffle"};
 let writeChain=Promise.resolve();
 
 // ---------- backend (Supabase) ----------
@@ -119,6 +119,8 @@ function renderSettings(){
   $("lenAvail").textContent=av?tl("{n} available",{n:av.toLocaleString(LOCALE)}):"";
   const fc=$("fmtChips");fc.textContent="";
   [["mix",tl("Mix")],["mcq",tl("Multiple choice")],["typed",tl("Typed answer")]].forEach(([k,l])=>{const b=el("button","chip",l);b.setAttribute("aria-pressed",settings.fmt===k);b.onclick=()=>{settings.fmt=k;renderSettings()};fc.appendChild(b)});
+  const dc=$("diffChips");dc.textContent="";
+  DIFFS.forEach(([k,l])=>{const b=el("button","chip",tl(l));b.setAttribute("aria-pressed",settings.diff===k);if(k===4)b.title=tl("Starts easy, ends hard");b.onclick=()=>{settings.diff=k;renderSettings()};dc.appendChild(b)});
   const tc=$("timeChips");tc.textContent="";
   [15,20,30].forEach(n=>{const b=el("button","chip",n+" s");b.setAttribute("aria-pressed",settings.T===n);b.onclick=()=>{settings.T=n;renderSettings()};tc.appendChild(b)});
   renderCardsPanel();if(window.renderExamPanel)renderExamPanel();
@@ -126,10 +128,34 @@ function renderSettings(){
 
 const LENS=[5,10,15,20,30,50,LEN_INF];
 // how many distinct questions the current units + format can give (what buildDeck can fill at most)
-function poolSize(){const ss=settings.sess,u=new Set(),add=q=>u.add(q.q+(q.img||""));
-  if(settings.fmt!=="typed")Q.forEach(q=>{if(ss.has(q.s))add(q)});
-  if(settings.fmt!=="mcq")TQ.forEach(q=>{if(ss.has(q.s))add(q)});
+function poolSize(){const ss=settings.sess,u=new Set(),add=q=>u.add(q.q+(q.img||"")),dk=diffOk(settings.diff);
+  if(settings.fmt!=="typed")Q.forEach(q=>{if(ss.has(q.s)&&dk(q))add(q)});
+  if(settings.fmt!=="mcq")TQ.forEach(q=>{if(ss.has(q.s)&&dk(q))add(q)});
   return u.size}
+// ---------- difficulty: 1 easy, 2 medium, 3 hard ----------
+// a question can carry its own level (q.d, set by hand in the bank); the others are scored from their kind and wording,
+// then the lower third of the quiz is "easy", the middle third "medium" and the top third "hard" (so every quiz gets all three levels)
+function diffScore(q,typed){
+  const wd=t=>new Set(String(t).toLowerCase().split(/[^a-zà-ÿ0-9]+/).filter(w=>w.length>3));
+  const nm=/\d/.test(q.q)||/\d/.test(typed?q.a[0]:q.o[q.a]);
+  if(typed)return 2.5+Math.min(String(q.a[0]).length,40)/20+(nm?.6:0)+Math.min(q.q.length,240)/240;
+  const ok=String(q.o[q.a]);
+  if(q.tf)return Math.min(q.q.length,260)/130+(nm?.4:0);
+  const A=wd(ok);let sim=0,n=0;
+  q.o.forEach((o,i)=>{if(i===q.a)return;const B=wd(o);let c=0;A.forEach(w=>{if(B.has(w))c++});sim+=c/Math.max(1,Math.min(A.size,B.size));n++});
+  return 1+Math.min(ok.length,120)/50+Math.min(q.q.length,240)/120+(n?sim/n*2:0)+(nm?.6:0);
+}
+function diffInit(){   // called once the quiz's question lists are final; multiple choice and typed answers are ranked apart so each format has all three levels
+  [[Q,0],[TQ,1]].forEach(([L,typed])=>{
+    const items=[];L.forEach(q=>{if(!q.d)items.push([diffScore(q,typed),q])});
+    items.sort((x,y)=>x[0]-y[0]);const n=items.length;
+    items.forEach(([,q],i)=>{q.d=i<n/3?1:i<2*n/3?2:3});
+  });
+}
+function diffOf(q){return q.d||2}
+const DIFFS=[[0,"All levels"],[1,"Easy"],[2,"Medium"],[3,"Hard"],[4,"Climbing"]];
+function diffOk(dv){return dv>=1&&dv<=3?q=>diffOf(q)===dv:()=>true}   // "climbing" (4) keeps every question and orders them easy to hard
+function diffName(d){return tl(DIFFS[d][1])}
 function seenGet(){try{const s=JSON.parse(lsGet(lsKey("seen"))||"{}");return{m:new Set(s.m||[]),t:new Set(s.t||[])}}catch(e){return{m:new Set(),t:new Set()}}}
 function seenSave(s){lsSet(lsKey("seen"),JSON.stringify({m:[...s.m],t:[...s.t]}))}
 // round-robin over shuffled groups, so big banks alternate between themes (and kinds of question within a theme)
@@ -148,8 +174,9 @@ function buildDeck(sessArr,len,fmt,opt){
   const seen=seenGet(),ex=(opt&&opt.exclude)||[];
   const exM=new Set(ex.filter(d=>d.t==null).map(d=>d.id)),exT=new Set(ex.filter(d=>d.t!=null).map(d=>d.t));
   const qk=q=>q.q+(q.img||""),used=new Set(ex.map(d=>qk(d.t!=null?TQ[d.t]:Q[d.id])));
-  const mids=orderPool(Q.map((q,i)=>i).filter(i=>ss.has(Q[i].s)&&!exM.has(i)),i=>i<NHQ,seen.m,Q);
-  const tids=orderPool(TQ.map((q,i)=>i).filter(i=>ss.has(TQ[i].s)&&!exT.has(i)),i=>i<NHT,seen.t,TQ);
+  const dv=(opt&&opt.diff)||0,dk=diffOk(dv);
+  const mids=orderPool(Q.map((q,i)=>i).filter(i=>ss.has(Q[i].s)&&!exM.has(i)&&dk(Q[i])),i=>i<NHQ,seen.m,Q);
+  const tids=orderPool(TQ.map((q,i)=>i).filter(i=>ss.has(TQ[i].s)&&!exT.has(i)&&dk(TQ[i])),i=>i<NHT,seen.t,TQ);
   let a=0,b=0;
   const takeM=()=>{while(a<mids.length){const id=mids[a++],tx=qk(Q[id]);if(used.has(tx))continue;used.add(tx);return{id,o:Q[id].tf?tfOrder(Q[id]):shuffle([0,1,2,3])}}return null};
   const takeT=()=>{while(b<tids.length){const t=tids[b++],tx=qk(TQ[t]);if(used.has(tx))continue;used.add(tx);return{t}}return null};
@@ -159,6 +186,7 @@ function buildDeck(sessArr,len,fmt,opt){
     if(!it)break;out.push(it);
   }
   out.forEach(d=>d.t!=null?seen.t.add(d.t):seen.m.add(d.id));seenSave(seen);
+  if(dv===4)out.sort((x,y)=>diffOf(x.t!=null?TQ[x.t]:Q[x.id])-diffOf(y.t!=null?TQ[y.t]:Q[y.id]));   // stable: easy first, hard last
   return out;
 }
 // ---------- typed answers: tolerant matching ----------
@@ -248,6 +276,7 @@ function loadBank(raw){
   const b=normBank(raw);
   BANK=b;SESS={...b.sess};Q=b.Q.slice();TQ=b.TQ.slice();NHQ=Q.length;NHT=TQ.length;
   if(b.facts&&b.facts.length)expandFacts(b.facts,b.lang);
+  diffInit();
   ALL_S=Object.keys(SESS).map(Number).sort((x,y)=>x-y);
   settings.sess=new Set(ALL_S);
   // questions are in the quiz's language (often English): lets the browser hyphenate long words in the right language
@@ -403,7 +432,7 @@ async function createGame(){
   lsSet("socio-nick",myNick());
   $("createBtn").disabled=true;
   try{
-    const g={host:me,hostNick:myNick(),bank:BANK.id,bankTitle:BANK.title,status:"lobby",qi:0,deck:buildDeck(),T:settings.T,created:Date.now(),seq:1,sess:[...settings.sess],fmt:settings.fmt,inf:settings.len===LEN_INF};
+    const g={host:me,hostNick:myNick(),bank:BANK.id,bankTitle:BANK.title,status:"lobby",qi:0,deck:buildDeck(null,0,null,{diff:settings.diff}),T:settings.T,created:Date.now(),seq:1,sess:[...settings.sess],fmt:settings.fmt,diff:settings.diff,inf:settings.len===LEN_INF};
     const c=await insertGame(g);
     await joinGame(c);
   }catch(e){showErr("createErr",tl("Couldn't create the game. Check your connection."))}
@@ -464,7 +493,7 @@ function startSolo(customDeck,opt){
   if(!customDeck&&!settings.sess.size){showErr("createErr",tl("Choose at least {unit}.",{unit:unit(2)}));return}
   leaveGame(true);
   mode="solo";code=null;
-  G={host:me,status:"q",qi:0,deck:customDeck||buildDeck(),T:settings.T,created:Date.now(),seq:1,inf:!customDeck&&settings.len===LEN_INF,review:!!customDeck,sess:[...settings.sess],fmt:settings.fmt};
+  G={host:me,status:"q",qi:0,deck:customDeck||buildDeck(null,0,null,{diff:settings.diff}),T:settings.T,created:Date.now(),seq:1,inf:!customDeck&&settings.len===LEN_INF,review:!!customDeck,sess:[...settings.sess],fmt:settings.fmt,diff:settings.diff};
   if(opt&&opt.miss)G.miss=opt.miss;   // replaying the missed questions: remembers how many there were
   P={[me]:{nick:myNick(),joined:Date.now(),ans:{}}};local={qi:-1,shownAt:0,revealing:false,lastStatus:null};
   onGame(G);
@@ -586,7 +615,7 @@ function setQText(id,t){const e=$(id);e.textContent=t;e.classList.toggle("long",
 function renderQuestion(){
   show("question");
   const item=G.deck[G.qi],q=qOf(G.qi),typed=isT(G.qi);
-  $("qSess").textContent=sLabel(q.s);$("qNum").textContent=tl("Question {i} / {n}",{i:G.qi+1,n:G.inf?"∞":G.deck.length})+" · "+(typed?tl("Typed answer"):q.t);
+  $("qSess").textContent=sLabel(q.s);$("qNum").textContent=tl("Question {i} / {n}",{i:G.qi+1,n:G.inf?"∞":G.deck.length})+" · "+(typed?tl("Typed answer"):q.t)+" · "+diffName(diffOf(q));
   setQText("qText",q.q);
   showImg("qImgBox","qImg",q,"qHint");
   const st=G.qi>0?scoreRun(me,G.qi-1).streak:0;$("qStreak").hidden=st<2;$("qStreak").textContent=tl("STREAK ×{n}",{n:st});
@@ -684,7 +713,7 @@ function renderReveal(){
   show("reveal");
   if(local.autoQ!==G.qi){local.autoQ=G.qi;local.autoAt=performance.now()+AUTO_MS;local.paused=false;local.autoFired=false}
   const item=G.deck[G.qi],q=qOf(G.qi),cp=correctPos(G.qi),a=myAns(),typed=isT(G.qi);
-  $("rSess").textContent=sLabel(q.s);$("rNum").textContent=tl("Question {i} / {n}",{i:G.qi+1,n:G.inf?"∞":G.deck.length})+" · "+(typed?tl("Typed answer"):q.t);
+  $("rSess").textContent=sLabel(q.s);$("rNum").textContent=tl("Question {i} / {n}",{i:G.qi+1,n:G.inf?"∞":G.deck.length})+" · "+(typed?tl("Typed answer"):q.t)+" · "+diffName(diffOf(q));
   const v=$("rVerdict");
   const late=mode==="multi"&&local.joinQi>G.qi;   // just joined: this question was before your time
   if(local.sfxQ!==G.qi){local.sfxQ=G.qi;if(a&&isRight(a,G.qi)){sfx(scoreRun(me,G.qi).streak>=3?"streak":"ok");buzz(40)}else if(!late){sfx("bad");buzz([60,40,60])}}
@@ -727,7 +756,7 @@ function renderBoard(box,rows,gains){
 $("rNext").onclick=()=>{if(!isHost()||local.autoFired)return;local.autoFired=true;goNext()};
 function goNext(){
   if(!isHost()||G.status!=="reveal")return;$("rNext").disabled=true;setTimeout(()=>$("rNext").disabled=false,800);
-  if(G.inf){const p={status:"q",qi:G.qi+1};if(G.qi+1>=G.deck.length-5)p.deck=G.deck.concat(buildDeck(G.sess||[...settings.sess],LEN_INF,G.fmt||settings.fmt,{exclude:G.deck,more:true}));writeGame(p);return}
+  if(G.inf){const p={status:"q",qi:G.qi+1};if(G.qi+1>=G.deck.length-5)p.deck=G.deck.concat(buildDeck(G.sess||[...settings.sess],LEN_INF,G.fmt||settings.fmt,{exclude:G.deck,more:true,diff:G.diff}));writeGame(p);return}
   if(G.qi>=G.deck.length-1)writeGame({status:"end"});else writeGame({status:"q",qi:G.qi+1});
 }
 $("rEnd").onclick=()=>{if(isHost())writeGame({status:"end",deck:G.deck.slice(0,G.qi+1),inf:false})};
@@ -815,7 +844,7 @@ $("endAgain").onclick=async()=>{
   if(mode==="solo"){startSolo();return}
   $("endAgain").disabled=true;
   try{
-    const g={host:me,hostNick:myNick(),bank:BANK.id,bankTitle:BANK.title,status:"lobby",qi:0,deck:buildDeck(G.sess,G.inf?LEN_INF:G.deck.length,G.fmt||"mcq"),T:G.T,created:Date.now(),seq:1,sess:G.sess,fmt:G.fmt,inf:!!G.inf};
+    const g={host:me,hostNick:myNick(),bank:BANK.id,bankTitle:BANK.title,status:"lobby",qi:0,deck:buildDeck(G.sess,G.inf?LEN_INF:G.deck.length,G.fmt||"mcq",{diff:G.diff}),T:G.T,created:Date.now(),seq:1,sess:G.sess,fmt:G.fmt,diff:G.diff,inf:!!G.inf};
     const c=await insertGame(g);
     await writeGame({next:c});
     await writeChain;
