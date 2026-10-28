@@ -76,9 +76,11 @@
     root.remove();root=null;document.body.classList.remove("sheet-open");
     if(lastFocus&&lastFocus.focus)lastFocus.focus({preventScroll:true});
   }
-  btn.onclick=show;
+  const panel=$("sheetPanel"),pdf=$("sheetPdf");
+  function sync(){const S=get();btn.hidden=!S;panel.hidden=!S;if(S){pdf.href="sheets/"+encodeURIComponent(BANK.id)+".pdf";pdf.setAttribute("download",(S.file||BANK.id)+".pdf")}}
+  btn.onclick=show;$("sheetOpen").onclick=show;
   document.addEventListener("keydown",e=>{if(e.key==="Escape"&&root)hide()});
   const old=window.renderBankUI;
-  window.renderBankUI=function(){old.apply(this,arguments);btn.hidden=!get();if(root)hide()};
-  btn.hidden=!get();
+  window.renderBankUI=function(){old.apply(this,arguments);sync();if(root)hide()};
+  sync();
 })();
