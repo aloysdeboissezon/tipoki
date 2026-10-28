@@ -111,6 +111,8 @@ var FR={
 "Train {n} now":"Réviser {n} maintenant",
 "Train now":"Réviser maintenant",
 "Study sheet":"Fiche de synthèse",
+"The whole course on a few pages: key ideas, definitions, formulas and examples. Read it before you play, or download the PDF.":"Tout le cours en quelques pages : idées clés, définitions, formules et exemples. Lis-la avant de jouer, ou télécharge le PDF.",
+"Read the study sheet":"Lire la fiche de synthèse",
 "Download PDF":"Télécharger le PDF",
 "Print":"Imprimer",
 "Sections":"Sections",
