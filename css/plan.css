@@ -1,0 +1,12 @@
+/* exam planner: date + daily goal */
+.planpanel{gap:10px}
+.pl-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pl-top h2{margin:0}
+.pl-ctl{display:flex;align-items:center;gap:10px}
+.pl-ctl input[type=date]{font:inherit;font-size:16px;min-height:44px;padding:8px 12px;border:2px solid var(--line);border-radius:14px;background:var(--field,var(--card));color:var(--ink)}
+.pl-head{font:800 22px/1.2 var(--f-display)}
+.pl-sum{font-weight:700}
+.pl-bar{margin:4px 0}
+.pl-note{margin:0;font-size:14px}
+.pl-top h2{font-size:20px}
+.srchpanel:not([open]){gap:0}

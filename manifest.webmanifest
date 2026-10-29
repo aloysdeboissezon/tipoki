@@ -1,0 +1,14 @@
+{
+  "name": "Tipoki",
+  "short_name": "Tipoki",
+  "description": "Send in your notes and Tipoki turns them into a quiz. Play solo or with your friends.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F4F2FF",
+  "theme_color": "#4B2FE0",
+  "icons": [
+    {"src": "/img/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "/img/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"}
+  ]
+}
