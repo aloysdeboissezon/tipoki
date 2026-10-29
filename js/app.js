@@ -947,7 +947,7 @@ function fcAnswer(ok){
   setTimeout(()=>{c.classList.remove("out-r","out-l");FC.i++;renderCard()},RM?0:220);
 }
 $("fcGo").onclick=()=>startCards();
-$("cardsJump").onclick=()=>$("cardsPanel").scrollIntoView({behavior:RM?"auto":"smooth",block:"start"});
+
 $("fcCard").onclick=()=>{if(fcDrag.moved)return;fcSetFlip(!FC.flip)};
 $("fcFlip").onclick=()=>fcSetFlip(true);
 $("fcGot").onclick=()=>fcAnswer(true);
@@ -980,11 +980,18 @@ document.addEventListener("keydown",e=>{
 const MAKER_ON=false;
 function quizUrl(id){return location.origin+location.pathname+"?quiz="+id}
 function setQuizParam(){try{history.replaceState(null,"",BANK.id==="socio"?location.pathname:"?quiz="+BANK.id)}catch(e){}}
+// the quiz screen shows one way of studying at a time (quiz / flashcards / exam) so it stays short on a phone
+function setMode(m){
+  if(m==="cards"&&$("cardsJump").hidden||m==="exam"&&$("examJump").hidden)m="play";
+  $("topic").dataset.mode=m;
+  document.querySelectorAll("#modeTabs .mtab").forEach(b=>b.setAttribute("aria-pressed",b.dataset.mode===m));
+}
+document.querySelectorAll("#modeTabs .mtab").forEach(b=>b.onclick=()=>{setMode(b.dataset.mode);b.scrollIntoView({block:"nearest"})});
 // step 1 of the start flow: one card per quiz, tapping it opens the settings / create screen
 async function openQuiz(id,btn){
   if(btn)btn.disabled=true;const ok=await useBank(id);if(btn)btn.disabled=false;
   if(!ok){toast(tl("Quiz not found"));return}
-  setQuizParam();show("topic");recentMark(id);
+  setQuizParam();setMode("play");show("topic");recentMark(id);
 }
 // quizzes you opened most recently come first on the home screen
 function recentGet(){try{return JSON.parse(lsGet("tpk-recent")||"{}")}catch(e){return {}}}

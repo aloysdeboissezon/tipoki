@@ -92,6 +92,7 @@
       <div class="me-main">
         <label class="label" for="nick">Your first name or nickname</label>
         <input type="text" id="nick" maxlength="18" placeholder="E.g. Alex" autocomplete="given-name">
+        <p class="muted me-hint">Only needed to play with friends.</p>
         <div class="me-sub"><button type="button" class="linkbtn" id="pfpPick">Add a photo</button><button type="button" class="linkbtn" id="pfpDel" hidden>Remove photo</button></div>
         <p class="err" id="nickErr" hidden></p>
       </div>
@@ -101,13 +102,18 @@
   </section>
 
   <!-- TOPIC: 2) settings, create / solo for the chosen quiz -->
-  <section id="topic" hidden style="display:flex;flex-direction:column;gap:16px">
+  <section id="topic" data-mode="play" hidden style="display:flex;flex-direction:column;gap:16px">
     <div><button class="btn ghost back" id="topicBack">← Other quizzes</button></div>
     <div class="panel bankpanel">
       <div class="bk-ico" id="bankIco" aria-hidden="true">?</div>
       <div class="bk-main"><div class="muted" style="font-size:14px;font-weight:700">You're studying</div><h2 id="bankTitle"></h2><div class="muted" id="bankSub"></div><div class="bk-best" id="bankBest" hidden></div></div>
-      <div class="row"><button class="btn ghost" id="examJump">Exam</button><button class="btn ghost" id="cardsJump" hidden>Flashcards</button><button class="btn ghost" id="sheetBtn" hidden>Study sheet</button><button class="btn ghost" id="shareQuizBtn" hidden>Share</button></div>
+      <div class="row"><button class="btn ghost" id="sheetBtn" hidden>Study sheet</button><button class="btn ghost" id="shareQuizBtn" hidden>Share</button></div>
       <p class="muted bk-foot"><span id="qCount"></span> questions: multiple choice, true/false and typed answers (typos forgiven). The faster and more accurately you answer, the more you score.</p>
+    </div>
+    <div class="modetabs" id="modeTabs" role="group" aria-label="How do you want to study?">
+      <button type="button" class="mtab" id="playTab" data-mode="play" aria-pressed="true"><b>Quiz</b><span>Solo or with friends</span></button>
+      <button type="button" class="mtab" id="cardsJump" data-mode="cards" aria-pressed="false" hidden><b>Flashcards</b><span>Flip and memorize</span></button>
+      <button type="button" class="mtab" id="examJump" data-mode="exam" aria-pressed="false"><b>Exam</b><span>Timed, graded /20</span></button>
     </div>
     <div class="panel misspanel" id="missPanel" hidden>
       <div class="ms-n" id="missN" aria-hidden="true">0</div>

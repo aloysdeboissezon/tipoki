@@ -139,7 +139,7 @@ function examBusy(){return EX.on&&!$("exam").hidden}
 function exLeave(){EX.on=false;show("topic");renderExamPanel()}
 
 $("exGo").onclick=startExam;
-$("examJump").onclick=()=>$("examPanel").scrollIntoView({behavior:RM?"auto":"smooth",block:"start"});
+
 $("exPrev").onclick=()=>exGo(EX.i-1);
 $("exNext").onclick=()=>EX.i>=EX.deck.length-1?exAsk("hand"):exGo(EX.i+1);
 $("exSubmit").onclick=()=>exAsk("hand");
