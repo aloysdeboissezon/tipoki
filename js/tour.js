@@ -5,10 +5,15 @@
   if(!btn||!box)return;
   document.getElementById("tourPoster").src="video/tipoki-intro-"+L+"-poster.jpg";
   btn.onclick=function(){
-    var v=document.createElement("video");
+    var m=document.createElement("div"),v=document.createElement("video"),x=document.createElement("button");
+    m.className="tour-modal";
     v.src="video/tipoki-intro-"+L+".mp4";v.poster="video/tipoki-intro-"+L+"-poster.jpg";
     v.controls=true;v.autoplay=true;v.playsInline=true;v.preload="auto";
     v.setAttribute("aria-label",btn.getAttribute("aria-label"));
-    box.textContent="";box.appendChild(v);v.focus();
+    x.type="button";x.textContent="×";x.setAttribute("aria-label",fr?"Fermer":"Close");
+    function close(){document.removeEventListener("keydown",key);v.pause();m.remove();btn.focus()}
+    function key(e){if(e.key==="Escape")close()}
+    x.onclick=close;m.onclick=function(e){if(e.target===m)close()};document.addEventListener("keydown",key);
+    m.appendChild(v);m.appendChild(x);document.body.appendChild(m);x.focus();
   };
 })();

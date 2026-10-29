@@ -11,7 +11,7 @@
 /* the tour is a small bar, the video only loads when pressed */
 .tour-btn{aspect-ratio:auto;height:54px;display:flex;align-items:center;justify-content:center;gap:12px;box-shadow:0 4px 0 rgba(42,26,158,.35);border-radius:18px;background:var(--hl)}
 .tour-btn img{display:none}
-.tour-play{position:static;margin:0;width:34px;height:34px;flex:none;box-shadow:0 3px 0 #c9a600}
+.tour-play{position:relative;left:auto;top:auto;margin:0;width:34px;height:34px;flex:none;box-shadow:0 3px 0 #c9a600}
 .tour-play::after{left:13px;top:9px;border-left-width:12px;border-top-width:8px;border-bottom-width:8px}
 .tour-cap{position:static;padding:0;background:none;font-size:17px}
 .tour video{aspect-ratio:16/9;height:auto}
@@ -19,15 +19,13 @@
 .qcard{min-height:64px;padding:10px 14px}
 
 /* ---------- quiz screen ---------- */
-.modetabs{position:sticky;top:0;z-index:5;background:var(--bg);padding:4px 0 6px;margin:0}
-.mtab{min-height:58px}
 .bankpanel{padding:16px;gap:10px}
 .bankpanel .bk-ico{width:44px;height:44px;font-size:21px;border-radius:14px}
 .bankpanel .bk-foot{display:none}
 .bankpanel .bk-main>.muted:first-child{font-size:13px!important}
 #meTopic .me-panel{padding:12px 14px;gap:12px}
 #meTopic .av.big{width:52px;height:52px}
-#meTopic .sync-line,#meTopic .syncline{display:none}
+#meTopic .sync-line{display:none}
 /* settings: one swipeable line per setting instead of a tall wrapped block */
 .setgrid{gap:12px}
 .setgrid .label{margin-bottom:4px}
@@ -75,7 +73,7 @@
 }
 /* exam and flashcards: the start button is pinned to the bottom edge, whatever the settings above */
 #examPanel .actions,#cardsPanel .actions{position:fixed;left:0;right:0;bottom:0;margin:0;z-index:20;background:var(--card);border-top:2px solid var(--line);border-radius:0;padding:10px max(16px,calc((100vw - 920px)/2 + 16px)) calc(10px + env(safe-area-inset-bottom))}
-#topic[data-mode=exam],#topic[data-mode=cards]{padding-bottom:84px}
+#topic[data-mode=exam],#topic[data-mode=cards],#topic[data-mode=play]{padding-bottom:84px}
 /* name + photo: one slim row on every screen size */
 #meTopic .me-sub,#meTopic .me-hint{display:none}
 #meTopic .me-panel{padding:10px 14px}
@@ -84,3 +82,39 @@
   .setgrid{display:grid!important;grid-template-columns:1fr 1fr;gap:14px 28px}
   .setgrid>div:first-child{grid-column:1/-1}
 }
+
+/* ---------- quiz screen: four big cards that explain the options ---------- */
+.modecards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mcard{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:5px;aspect-ratio:1;min-width:0;padding:14px;border:0;border-radius:26px;font:inherit;text-align:left;color:#17162B;cursor:pointer;box-shadow:0 7px 0 rgba(23,22,43,.22);transition:transform .12s,box-shadow .12s}
+.mcard:hover{transform:translateY(-2px)}
+.mcard:active{transform:translateY(5px);box-shadow:0 2px 0 rgba(23,22,43,.22)}
+.mcard:focus-visible{outline:3px solid var(--hl);outline-offset:3px}
+.mcard svg{position:absolute;right:12px;top:12px;width:clamp(34px,10vw,56px);height:auto;fill:none;stroke:currentColor;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;opacity:.9}
+.mcard::before{content:"";position:absolute;right:-34px;top:-34px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.28)}
+.mcard b{position:relative;font-family:var(--f-display);font-size:clamp(20px,5.6vw,28px);line-height:1}
+.mcard span{position:relative;font-size:clamp(12px,3.2vw,15px);font-weight:700;line-height:1.25;opacity:.88}
+.c-quiz{background:var(--hl);color:#fff;box-shadow:0 7px 0 var(--hl-dk)}
+.c-cards{background:#FFE36E}
+.c-sheet{background:#8FE9D4}
+.c-exam{background:#FF8F73}
+.mcard[hidden]{display:none}
+@media (min-width:700px){.modecards{grid-template-columns:repeat(4,1fr)}}
+.modeback{align-self:flex-start}
+/* the menu shows the four cards; a chosen mode shows its own settings */
+#topic[data-mode=menu] #createPanel,#topic[data-mode=menu] #cardsPanel,#topic[data-mode=menu] #examPanel,#topic[data-mode=menu] #meTopic,#topic[data-mode=menu] .modeback,#topic[data-mode=menu] #modeBack{display:none!important}
+#topic:not([data-mode=menu]) .modecards,#topic:not([data-mode=menu]) #missPanel,#topic:not([data-mode=menu]) #weakPanel,#topic:not([data-mode=menu]) #planPanel,#topic:not([data-mode=menu]) #srchPanel,#topic:not([data-mode=menu]) #resumeTopic{display:none!important}
+#topic[data-mode=play] #cardsPanel,#topic[data-mode=play] #examPanel,#topic[data-mode=cards] #examPanel,#topic[data-mode=exam] #cardsPanel{display:none!important}
+#topic[data-mode=cards] #createPanel .setgrid>div:nth-child(n+2),#topic[data-mode=exam] #createPanel .setgrid>div:nth-child(n+3),#topic:not([data-mode=play]) #createPanel .actions{display:none}
+#sheetPanel,#sheetBtn{display:none!important}
+.ticker{display:none!important}
+/* tutorial: a small square tile next to the title instead of a big video */
+#home:not([hidden]){display:grid!important;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:stretch}
+#home:not([hidden])>*{grid-column:1/-1}
+#home .hero{grid-column:1;grid-row:1}
+#home .tour{grid-column:2;grid-row:1;order:1;width:auto;max-width:none;margin:0}
+.tour-btn{width:92px;height:100%;min-height:92px;flex-direction:column;gap:6px;border-radius:24px;box-shadow:0 5px 0 rgba(42,26,158,.35);background:#2A1A9E}
+.tour-play{position:relative;width:36px;height:36px}
+.tour-cap{font-size:14px;line-height:1}
+.tour-modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:16px;background:rgba(10,8,30,.82)}
+.tour-modal video{width:min(100%,960px);max-height:80vh;border-radius:20px;background:#000}
+.tour-modal button{position:absolute;right:14px;top:14px;width:46px;height:46px;border-radius:50%;border:0;font-size:26px;cursor:pointer;background:#fff;color:#17162B}

@@ -68,16 +68,3 @@ input[type=text],textarea,.qsearch input{background:var(--field,#FAFAFD)}
 html[lang="fr"] .tile.right::after{content:"Bonne réponse"}
 html[lang="fr"] .tile.mine::after,html[lang="fr"] .ex-tiles .tile.sel::after{content:"Ta réponse"}
 
-/* quiz screen: pick one way of studying, only that panel shows */
-.modetabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:10px}
-.mtab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:68px;padding:10px 6px;border:2px solid var(--line2);border-radius:18px;background:var(--card);color:var(--ink);font:inherit;cursor:pointer;text-align:center}
-.mtab b{font-family:var(--f-display);font-size:20px}
-.mtab span{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.2}
-.mtab[aria-pressed=true]{background:var(--hl);border-color:var(--hl);color:var(--hl-ink);box-shadow:0 5px 0 var(--hl-dk)}
-.mtab[aria-pressed=true] span{color:var(--hl-ink);opacity:.9}
-#topic:not([data-mode=play]) #missPanel,#topic:not([data-mode=play]) #weakPanel,#topic:not([data-mode=play]) #meTopic,#topic:not([data-mode=play]) .ticker{display:none!important}
-#topic[data-mode=play] #cardsPanel,#topic[data-mode=play] #examPanel,#topic[data-mode=cards] #examPanel,#topic[data-mode=exam] #cardsPanel{display:none!important}
-.me-hint{margin:2px 0 0;font-size:13px}
-/* flashcards use only the sessions, the exam also the format: the other settings and the game buttons stay with the quiz */
-#topic[data-mode=cards] #createPanel .setgrid>div:nth-child(n+2),#topic[data-mode=exam] #createPanel .setgrid>div:nth-child(n+3),#topic:not([data-mode=play]) #createPanel .actions{display:none}
-@media (max-width:420px){.mtab b{font-size:17px}.mtab{padding:10px 4px}}
