@@ -1,0 +1,86 @@
+/* Compact layout: little vertical scrolling in menus and during games.
+   Main actions stay pinned at the bottom of the screen; extras are small or tucked below. Loaded last. */
+
+/* ---------- home ---------- */
+#home{display:flex}
+#home #resumeHome{order:0}#home .hero{order:1}#home #pickPanel{order:2}#home .tour{order:3}#home #joinPanel{order:4}#home #meHome{order:5}#home #multiNote{order:6}
+.hero{padding:clamp(16px,4vw,28px);gap:6px;border-radius:24px}
+.hero h1{font-size:clamp(26px,6.5vw,44px)}
+.hero p{font-size:clamp(14px,2.2vw,17px)}
+.hero::after{width:150px;height:150px;right:-50px;top:-60px}.hero::before{width:70px;height:70px;right:60px;bottom:-34px}
+/* the tour is a small bar, the video only loads when pressed */
+.tour-btn{aspect-ratio:auto;height:54px;display:flex;align-items:center;justify-content:center;gap:12px;box-shadow:0 4px 0 rgba(42,26,158,.35);border-radius:18px;background:var(--hl)}
+.tour-btn img{display:none}
+.tour-play{position:static;margin:0;width:34px;height:34px;flex:none;box-shadow:0 3px 0 #c9a600}
+.tour-play::after{left:13px;top:9px;border-left-width:12px;border-top-width:8px;border-bottom-width:8px}
+.tour-cap{position:static;padding:0;background:none;font-size:17px}
+.tour video{aspect-ratio:16/9;height:auto}
+#pickPanel{gap:12px}
+.qcard{min-height:64px;padding:10px 14px}
+
+/* ---------- quiz screen ---------- */
+.modetabs{position:sticky;top:0;z-index:5;background:var(--bg);padding:4px 0 6px;margin:0}
+.mtab{min-height:58px}
+.bankpanel{padding:16px;gap:10px}
+.bankpanel .bk-ico{width:44px;height:44px;font-size:21px;border-radius:14px}
+.bankpanel .bk-foot{display:none}
+.bankpanel .bk-main>.muted:first-child{font-size:13px!important}
+#meTopic .me-panel{padding:12px 14px;gap:12px}
+#meTopic .av.big{width:52px;height:52px}
+#meTopic .sync-line,#meTopic .syncline{display:none}
+/* settings: one swipeable line per setting instead of a tall wrapped block */
+.setgrid{gap:12px}
+.setgrid .label{margin-bottom:4px}
+.setgrid .chips:not(.multi){flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -18px;padding:2px 18px 4px;-webkit-overflow-scrolling:touch}
+.setgrid .chips:not(.multi)::-webkit-scrollbar{display:none}
+.setgrid .chips:not(.multi) .chip{flex:none}
+.chip{min-width:44px;min-height:40px;padding:6px 13px;font-size:14.5px}
+.steph h2{font-size:20px}.stepn{width:30px;height:30px}
+.ex-intro,.fc-intro,.sp-intro{display:none}
+.fc-intro#fcNext:not(:empty){display:block}
+/* the start buttons stay in view */
+.panel .actions{position:sticky;bottom:0;z-index:4;margin:0 -18px -18px;padding:12px 18px 14px;background:linear-gradient(transparent,var(--card) 28%);border-radius:0 0 22px 22px}
+.panel .actions .btn{flex:1 1 140px;min-height:52px}
+
+/* ---------- during a game ---------- */
+#question,#reveal,#end,#lobby{gap:12px}
+#reveal .row.end,#end>.row{position:sticky;bottom:0;z-index:4;margin:0 -18px -18px;padding:12px 18px 14px;background:linear-gradient(transparent,var(--card) 28%);border-radius:0 0 22px 22px}
+#end>.row .btn,#reveal .row.end .btn{flex:1 1 140px}
+#end h1{font-size:clamp(26px,7vw,40px)}
+#endSess{display:none}
+#end .podium:empty{display:none}
+.verdict{font-size:20px}
+@media (max-width:560px){
+  .panel{padding:16px}
+  .panel .actions,#reveal .row.end,#end>.row{margin:0 -16px -16px;padding:12px 16px 14px}
+  .setgrid .chips:not(.multi){margin:0 -16px;padding:2px 16px 4px}
+  .wrap{gap:12px}
+  #home,#topic{gap:12px!important}
+}
+@media (max-width:420px){
+  .panel .actions,#reveal .row.end,#end>.row{margin:0 -16px -16px}
+  .setgrid .chips:not(.multi){margin:0 -16px}
+}
+@media (max-width:560px){
+  .hero>p:not(.streak){display:none}
+  .hero{padding:16px 18px}
+  #pickPanel .steph{display:none}
+  .bankpanel #bankSub{display:none}
+  .bankpanel>.row{flex-wrap:nowrap}
+  #meTopic .me-panel{padding:10px 12px}
+  #meTopic .me-sub,#meTopic .me-hint,#meTopic .me-panel .linkbtn{display:none}
+  #meTopic .me-main .label{font-size:12px;margin-bottom:2px}
+  #meTopic .pfp{flex:none}
+  #meTopic input#nick{min-height:44px;padding:8px 12px}
+}
+/* exam and flashcards: the start button is pinned to the bottom edge, whatever the settings above */
+#examPanel .actions,#cardsPanel .actions{position:fixed;left:0;right:0;bottom:0;margin:0;z-index:20;background:var(--card);border-top:2px solid var(--line);border-radius:0;padding:10px max(16px,calc((100vw - 920px)/2 + 16px)) calc(10px + env(safe-area-inset-bottom))}
+#topic[data-mode=exam],#topic[data-mode=cards]{padding-bottom:84px}
+/* name + photo: one slim row on every screen size */
+#meTopic .me-sub,#meTopic .me-hint{display:none}
+#meTopic .me-panel{padding:10px 14px}
+#meTopic .ticker,#topic .ticker{display:none}
+@media (min-width:700px){
+  .setgrid{display:grid!important;grid-template-columns:1fr 1fr;gap:14px 28px}
+  .setgrid>div:first-child{grid-column:1/-1}
+}
