@@ -2,8 +2,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
 <style>
 :root{--v:#6B4DFF;--pk:#FF3D8B;--y:#FFE36E;--a0:#FF3D5A;--a1:#3D8BFF;--a2:#FFC21A;--a3:#25D08A}
-*{box-sizing:border-box}html,body{margin:0;width:1280px;height:720px;overflow:hidden;background:#0A0816;font-family:"Bricolage Grotesque","Nunito",Inter,system-ui,sans-serif}
-#stage{position:absolute;inset:0;overflow:hidden;background:#0A0816;perspective:1500px}
+*{box-sizing:border-box}html,body{margin:0;width:1280px;height:720px;overflow:clip;background:#0A0816;font-family:"Bricolage Grotesque","Nunito",Inter,system-ui,sans-serif}
+#stage{position:absolute;inset:0;overflow:clip;background:#0A0816;perspective:1500px}
 #stage.shake{animation:shake .35s}
 @keyframes shake{0%,100%{transform:none}25%{transform:translate(-6px,3px)}60%{transform:translate(5px,-3px)}}
 .orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.75;animation:fl 9s ease-in-out infinite alternate}
@@ -82,5 +82,9 @@ function chip(html,x,y,ms=2000){const c=document.createElement('div');c.classNam
   c.animate([{transform:'translateY(30px) scale(.4) rotate(-6deg)',opacity:0},{transform:'translateY(0) scale(1.08) rotate(-2deg)',opacity:1,offset:.18},{transform:'translateY(-8px) scale(1) rotate(-2deg)',opacity:1,offset:.8},{transform:'translateY(-50px) scale(.9)',opacity:0}],{duration:ms,easing:'ease-out'}).onfinish=()=>c.remove()}
 function progress(ms){$('bar').animate([{width:'0'},{width:'1280px'}],{duration:ms,easing:'linear',fill:'forwards'})}
 function logo(show){const l=$('logo');l.animate(show?[{opacity:0,transform:'scale(.2) rotate(-25deg)'},{opacity:1,transform:'scale(1.12) rotate(3deg)',offset:.6},{opacity:1,transform:'none'}]:[{opacity:1},{opacity:0,transform:'scale(2)'}],{duration:show?800:400,fill:'forwards',easing:'ease-out'})}
+// big ghost scene number behind the phone, and a zoom punch on a phone
+function num(n){let e=$('num');if(!e){e=document.createElement('div');e.id='num';e.style.cssText='position:absolute;right:30px;top:-60px;font:800 560px/1 "Bricolage Grotesque",Inter,sans-serif;letter-spacing:-.06em;color:transparent;-webkit-text-stroke:3px rgba(255,255,255,.16);z-index:2';$('stage').insertBefore(e,$('hl'))}
+  e.textContent=n;e.animate([{opacity:0,transform:'translateX(120px) scale(.9)'},{opacity:1,transform:'none'}],{duration:700,easing:'cubic-bezier(.2,1.2,.3,1)',fill:'forwards'})}
+function punch(id){$(id).firstElementChild.animate([{transform:'scale(1)'},{transform:'scale(1.045)'},{transform:'scale(1)'}],{duration:420,easing:'ease-out'})}
 setP('pA',{x:-500,y:0});setP('pB',{x:1400,y:0});
 </script>

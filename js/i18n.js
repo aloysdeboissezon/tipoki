@@ -29,7 +29,7 @@ var FR={
 "Muted":"Muet",
 // home
 "Study by beating your friends.":"Révise en battant tes potes.",
-"Watch the 90-second tour":"Regarde la visite en 90 secondes",
+"Watch the tutorial video":"Regarder la vidéo tutoriel",
 "Pick what you want to study, then play solo or with friends.":"Choisis ce que tu veux réviser, puis joue seul ou en multi.",
 "Pick up where you left off":"Reprends ta partie en cours",
 "Discard":"Effacer",
