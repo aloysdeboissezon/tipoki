@@ -111,6 +111,10 @@
       <div class="row"><button class="btn ghost" id="sheetBtn" hidden>Study sheet</button><button class="btn ghost" id="shareQuizBtn" hidden>Share</button></div>
       <p class="muted bk-foot"><span id="qCount"></span> questions: multiple choice, true/false and typed answers (typos forgiven). The faster and more accurately you answer, the more you score.</p>
     </div>
+    <section class="showcase" id="showcase" aria-labelledby="scTitle">
+      <div class="sc-head"><h2 id="scTitle">What do you want to revise?</h2><div class="sc-ctl"><span class="muted" id="scCount"></span><button type="button" class="linkbtn" id="scAll"></button></div></div>
+      <div class="sc-grid" id="scGrid"></div>
+    </section>
     <div class="modecards" id="modeTabs" role="group" aria-label="How do you want to study?">
       <button type="button" class="mcard c-quiz" id="playTab" data-mode="play"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M26 4 10 27h11l-3 17 20-25H27z"/></svg><b>Quiz</b><span>Answer questions solo or challenge your friends in a live game.</span></button>
       <button type="button" class="mcard c-cards" id="cardsJump" data-mode="cards" hidden><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="12" y="6" width="28" height="30" rx="5"/><path d="M8 14v24a5 5 0 0 0 5 5h22"/></svg><b>Flashcards</b><span>Flip, memorize, repeat. The ones you miss come back soon.</span></button>
