@@ -69,7 +69,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
  for(const i of [1,2,3,4]){await fA.locator('#diffChips .chip').nth(i).click();await sleep(450)}
  await fA.locator('#lenChips .chip').nth(0).click();await sleep(300);
  await fA.fill('#nick','Alex');await fA.click('#soloBtn');
- await ans(fA,true);await say('streak');await nextQ(fA);await ans(fA,true);await nextQ(fA);await ans(fA,false);await nextQ(fA);await ans(fA,true);
+ await ans(fA,true);await E(()=>chip('<b>+972</b> pts',690,250));await say('streak');await nextQ(fA);await ans(fA,true);await E(()=>chip('STREAK <b>×3</b>',1080,140));await nextQ(fA);await ans(fA,false);await nextQ(fA);await ans(fA,true);
  await E(()=>{burst(900,300,26);shake()});await sleep(1200);
  // ---------- 3 flashcards + sheet (collision)
  await say('cards');
@@ -78,19 +78,19 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
  await E(()=>fly('pA',{x:790,y:0,r:0},{x:790,y:0,r:0},1));
  await scrollTo(await fr('fA'),'#cardsPanel');
  const FA=await fr('fA');await FA.click('#fcGo');await sleep(800);
- for(const g of ['#fcGot','#fcAgain','#fcGot']){await FA.click('#fcFlip');await sleep(900);await FA.click(g);await sleep(500)}
+ for(const g of ['#fcGot','#fcAgain','#fcGot']){await FA.click('#fcFlip');await sleep(900);await FA.click(g);await E(t=>chip(t,700,300+Math.random()*120),g==='#fcGot'?'Got it ✓':'<b>Not yet</b> ↺');await sleep(500)}
  // sheet phone B crashes into A
  await say('sheet',false,true);
  const FB=await fb;await FB.waitForSelector('#sheetPanel:not([hidden])',{timeout:8000}).catch(()=>{});
- await E(()=>fly('pA',{x:790,y:0,r:0},{x:610,y:20,r:-8,s:.96},700));
- await E(()=>fly('pB',{x:1400,y:0,r:30},{x:940,y:20,r:7,s:.96},650,'cubic-bezier(.5,0,.8,.4)'));
+ await E(()=>fly('pA',{x:790,y:0,r:0},{x:610,y:20,r:-4,ry:14,s:.96},700));
+ await E(()=>fly('pB',{x:1400,y:0,r:30},{x:940,y:20,r:4,ry:-14,s:.96},650,'cubic-bezier(.5,0,.8,.4)'));
  await E(()=>{flash();shake();burst(780,350,34)});
  await FB.evaluate(()=>document.querySelector('#sheetPanel').scrollIntoView({block:'start'}));await sleep(1200);
  await FB.click('#sheetOpen').catch(()=>{});await sleep(2200);
  // ---------- 4 exam
  await say('exam');
- await E(()=>fly('pB',{x:940,y:20,r:7,s:.96},{x:1500,y:80,r:30,s:.9},500,'ease-in'));
- await E(()=>fly('pA',{x:610,y:20,r:-8,s:.96},{x:790,y:0,r:0,s:1},600));
+ await E(()=>fly('pB',{x:940,y:20,r:4,ry:-14,s:.96},{x:1500,y:80,r:30,s:.9},500,'ease-in'));
+ await E(()=>fly('pA',{x:610,y:20,r:-4,ry:14,s:.96},{x:790,y:0,r:0,s:1},600));
  await load('fA','/?quiz=socio');const XA=await fr('fA');
  await scrollTo(XA,'#examPanel');
  await XA.locator('#exLenChips .chip').nth(0).click();await sleep(400);
@@ -103,24 +103,24 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
  // ---------- 5 multiplayer
  await say('multi',false,true);
  await E(()=>{const l=localStorage.getItem('tpk-lang');localStorage.clear();localStorage.setItem('tpk-lang',l)});await load('fA','/?quiz=socio');const MA=await fr('fA');
- await E(()=>fly('pA',{x:790,y:0,r:0},{x:610,y:20,r:-4},500));
+ await E(()=>fly('pA',{x:790,y:0,r:0},{x:610,y:20,r:-2,ry:12},500));
  await load('fB','/');const MB=await fr('fB');
- await E(()=>{fly('pB',{x:1400,y:0,r:20},{x:940,y:30,r:5},700)});await sleep(800);
+ await E(()=>{fly('pB',{x:1400,y:0,r:20},{x:940,y:30,r:3,ry:-12},700)});await sleep(800);
  await MB.fill('#nick','Lea');await MB.click('#codeIn');await MB.type('#codeIn','KTRM',{delay:260});await sleep(500);
  await MA.fill('#nick','Alex');await MA.locator('#lenChips .chip').nth(0).click();await MA.click('#createBtn');await sleep(1000);
  const code=(await MA.textContent('#lobbyCode')).trim();
- for(const [i,n] of ['Lea','Noah','Inès','Max'].entries()){await MA.evaluate(([c,i,n])=>__addPlayer(c,'f'+i,n),[code,i,n]);await E(()=>burst(610+165,420,6));await sleep(600)}
+ for(const [i,n] of ['Lea','Noah','Inès','Max'].entries()){await MA.evaluate(([c,i,n])=>__addPlayer(c,'f'+i,n),[code,i,n]);await E(([n,i])=>chip('👋 <b>'+n+'</b> joined',560,120+i*70),[n,i]);await sleep(600)}
 await p.screenshot({path:'/tmp/claude-0/-home-claude-tipoki/6991bf9c-3e70-51f6-a6f8-e536654e7812/scratchpad/dbg2.png'});console.log(await MA.evaluate(()=>[document.querySelector('#createErr').textContent,document.querySelector('#lobby').hidden,document.querySelector('#lobbyStart').hidden,String(isHost()),location.href]));
  await MA.click('#lobbyStart');await sleep(600);
  await MA.waitForSelector('#question:not([hidden])');await sleep(1800);
  await MA.evaluate(async c=>{const it=G.deck[G.qi];if(isT(G.qi))return;const k=it.o.indexOf(0),w=(k+1)%4;
    [['f0',k,2100],['f1',k,3400],['f2',w,2600]].forEach(([id,cc,ms])=>__setAns(c,id,{[G.qi]:{c:cc,ms}}));
    const tiles=[...$('qTiles').children];tiles[k].click()},code);
- await sleep(1500);await say('board',false,true);
+ await sleep(1500);await E(()=>chip('⚡ <b>2.1 s</b>',650,560));await say('board',false,true);
  await MA.evaluate(()=>writeGame({status:'reveal'}));await sleep(1200);
  await scrollTo(MA,'.board');await sleep(2800);
  // ---------- outro
- await E(()=>{fly('pA',{x:610,y:20,r:-4},{x:-500,y:40,r:-20},600,'ease-in');fly('pB',{x:940,y:30,r:5},{x:1500,y:40,r:20},600,'ease-in')});
+ await E(()=>{fly('pA',{x:610,y:20,r:-2,ry:12},{x:-500,y:40,r:-20},600,'ease-in');fly('pB',{x:940,y:30,r:3,ry:-12},{x:1500,y:40,r:20},600,'ease-in')});
  await sleep(500);await E(()=>{tiles();flash();shake()});await sleep(500);
  await E(()=>{logo(true);burst(640,360,40)});
  await say('end',true);await E(()=>{$('logo').style.top='24%'});await sleep(4200);
