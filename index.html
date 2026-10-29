@@ -63,7 +63,7 @@
       <button type="button" class="tour-btn" id="tourBtn" aria-label="Watch the 90-second tour">
         <img id="tourPoster" src="video/tipoki-intro-en-poster.jpg" alt="" width="960" height="540" loading="lazy">
         <span class="tour-play" aria-hidden="true"></span>
-        <span class="tour-cap">Watch the 90-second tour</span>
+        <span class="tour-cap">Tutorial</span>
       </button>
     </div>
     <div id="resumeHome"><div class="panel resume" id="resumeCard" hidden>
@@ -111,11 +111,13 @@
       <div class="row"><button class="btn ghost" id="sheetBtn" hidden>Study sheet</button><button class="btn ghost" id="shareQuizBtn" hidden>Share</button></div>
       <p class="muted bk-foot"><span id="qCount"></span> questions: multiple choice, true/false and typed answers (typos forgiven). The faster and more accurately you answer, the more you score.</p>
     </div>
-    <div class="modetabs" id="modeTabs" role="group" aria-label="How do you want to study?">
-      <button type="button" class="mtab" id="playTab" data-mode="play" aria-pressed="true"><b>Quiz</b><span>Solo or with friends</span></button>
-      <button type="button" class="mtab" id="cardsJump" data-mode="cards" aria-pressed="false" hidden><b>Flashcards</b><span>Flip and memorize</span></button>
-      <button type="button" class="mtab" id="examJump" data-mode="exam" aria-pressed="false"><b>Exam</b><span>Timed, graded /20</span></button>
+    <div class="modecards" id="modeTabs" role="group" aria-label="How do you want to study?">
+      <button type="button" class="mcard c-quiz" id="playTab" data-mode="play"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M26 4 10 27h11l-3 17 20-25H27z"/></svg><b>Quiz</b><span>Answer questions solo or challenge your friends in a live game.</span></button>
+      <button type="button" class="mcard c-cards" id="cardsJump" data-mode="cards" hidden><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="12" y="6" width="28" height="30" rx="5"/><path d="M8 14v24a5 5 0 0 0 5 5h22"/></svg><b>Flashcards</b><span>Flip, memorize, repeat. The ones you miss come back soon.</span></button>
+      <button type="button" class="mcard c-sheet" id="sheetCard" data-mode="sheet" hidden><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 5h17l9 9v27a2 2 0 0 1-2 2H12a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><path d="M28 5v10h10M16 24h16M16 31h16M16 38h10"/></svg><b>Study sheet</b><span>The whole course on a few pages. Read it or download the PDF.</span></button>
+      <button type="button" class="mcard c-exam" id="examJump" data-mode="exam"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="27" r="15"/><path d="M24 27V17M19 5h10M37 11l3-3"/></svg><b>Exam</b><span>Real conditions: one clock, no hints, a grade out of 20.</span></button>
     </div>
+    <div><button type="button" class="btn ghost modeback" id="modeBack">← Options</button></div>
     <div class="panel misspanel" id="missPanel" hidden>
       <div class="ms-n" id="missN" aria-hidden="true">0</div>
       <div class="ms-main"><h2 id="missTitle">Missed questions</h2><div class="muted">Get one right and it leaves the list.</div></div>
