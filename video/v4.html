@@ -1,0 +1,133 @@
+<!doctype html><meta charset=utf-8><title>Tipoki tutorial v4</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--y:#FFE36E}
+*{box-sizing:border-box}html,body{margin:0;width:1280px;height:720px;overflow:clip;background:#0A0816;font-family:"Bricolage Grotesque","Nunito",Inter,system-ui,sans-serif}
+#stage{position:absolute;inset:0;overflow:clip;background:#0A0816;perspective:1600px}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);will-change:transform}
+#grid{position:absolute;inset:-64px;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:64px 64px;-webkit-mask-image:radial-gradient(circle at 50% 50%,#000 0,transparent 75%);mask-image:radial-gradient(circle at 50% 50%,#000 0,transparent 75%)}
+#grain{position:absolute;inset:0;z-index:30;pointer-events:none;opacity:.08;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>")}
+#bar{position:absolute;left:0;top:0;height:4px;background:linear-gradient(90deg,#6B4DFF,#FF3D8B,#FFE36E);z-index:31}
+#ghost{position:absolute;white-space:nowrap;font:800 220px/1 "Bricolage Grotesque",Inter,sans-serif;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.07);top:230px;left:0;z-index:1}
+#logo{position:absolute;z-index:12;left:0;top:0;width:560px;transform-origin:50% 50%;filter:drop-shadow(0 10px 40px rgba(107,77,255,.55))}
+.txt{position:absolute;left:70px;color:#fff;z-index:10;width:560px;will-change:transform}
+.txt h1{margin:0;font-weight:800;font-size:84px;line-height:.92;letter-spacing:-.05em}
+.txt .w{display:inline-block;margin-right:.2em;will-change:transform,opacity,filter}
+.txt .w.y{background:linear-gradient(95deg,#FFE36E,#FF3D8B);-webkit-background-clip:text;background-clip:text;color:transparent}
+.txt.s2 h1{font-size:62px}.txt.s2{width:700px}.txt.c{text-align:center;left:190px!important;width:900px!important}.txt.c h1{font-size:66px}.txt p{margin:18px 0 0;font:700 27px/1.25 Nunito,Inter,sans-serif;color:rgba(255,255,255,.74);max-width:520px}
+.pill{display:inline-flex;gap:10px;align-items:center;color:#fff;font-weight:800;font-size:19px;padding:9px 18px;border-radius:99px;letter-spacing:.14em;text-transform:uppercase;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(14px);margin-bottom:22px}
+.pill::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--y);box-shadow:0 0 14px var(--y)}
+.phone{position:absolute;left:0;top:0;width:330px;height:700px;border-radius:50px;background:linear-gradient(160deg,#3b3560,#0c0a1c 40%,#2a2550);padding:9px;box-shadow:0 40px 90px rgba(0,0,0,.6),0 0 90px rgba(107,77,255,.45),inset 0 0 0 1.5px rgba(255,255,255,.25);z-index:5;will-change:transform}
+.scr{width:100%;height:100%;border-radius:42px;overflow:hidden;background:#fff;position:relative}
+.cam{position:absolute;left:0;top:0;width:390px;height:844px;transform-origin:0 0}
+.cam img{position:absolute;left:0;top:0;width:390px;height:844px;will-change:transform,opacity}
+.ripple{position:absolute;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;border:4px solid #FFE36E;background:rgba(255,227,110,.35);z-index:3}
+.tiles{position:absolute;z-index:6;width:420px;height:420px;left:0;top:0;will-change:transform}
+.tiles img{width:100%;height:100%;border-radius:36px;display:block;box-shadow:0 30px 70px rgba(0,0,0,.5)}
+.hi{position:absolute;border-radius:26px;border:4px solid #fff;box-shadow:0 0 0 6px rgba(255,255,255,.18),0 0 50px rgba(255,255,255,.6);will-change:transform,width,height}
+.chip{position:absolute;z-index:20;padding:11px 20px;border-radius:18px;font:800 26px/1 "Bricolage Grotesque",Inter,sans-serif;color:#fff;background:rgba(20,16,44,.72);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(16px);box-shadow:0 14px 40px rgba(0,0,0,.45);white-space:nowrap;will-change:transform,opacity}
+.chip b{background:linear-gradient(95deg,#FFE36E,#FF3D8B);-webkit-background-clip:text;background-clip:text;color:transparent}
+</style>
+<div id=stage>
+ <div class=orb id=o1 style="width:560px;height:560px;background:#6B4DFF"></div>
+ <div class=orb id=o2 style="width:520px;height:520px;background:#FF3D8B"></div>
+ <div class=orb id=o3 style="width:420px;height:420px;background:#2F7BF5"></div>
+ <div id=grid></div><div id=ghost></div>
+ <img id=logo src="/img/logo-dark.svg">
+ <div class=txt id=t0></div><div class=txt id=t1></div><div class=txt id=t2></div><div class=txt id=t3></div><div class=txt id=t4></div>
+ <div class=tiles id=tiles><img src="shots/tiles.png"><div class=hi id=hi></div></div>
+ <div class=phone id=ph><div class=scr><div class=cam id=cam></div></div></div>
+ <div id=chips></div><div id=bar></div><div id=grain></div>
+</div>
+<script>
+const L=new URLSearchParams(location.search).get('lang')||'en';
+const TX={en:{
+ t0:['','Study by *beating* your *friends.*','Tipoki · the quiz game that makes you revise'],
+ t1:['01 · Pick','Pick a *quiz*','Your course, split in parts.'],
+ t2:['02 · Study','Four ways to *study*',null],
+ t3:['03 · Play','Challenge your *friends*','Share a code. Fastest brain wins.'],
+ t4:['Free · No sign-up','Pick a quiz. Beat your friends. *Revise.*',null],
+ modes:['Quiz: answer fast, score big','Flashcards that adapt to you','The whole course on one sheet','A real exam, with a grade out of 20'],
+ chips:{pts:'<b>+955</b> pts',streak:'STREAK <b>×3</b>',got:'Got it ✓',join:'joined',fast:'⚡ <b>1.7 s</b>',nolim:'No time limit'}},
+fr:{
+ t0:['','Révise en *battant* tes *potes.*','Tipoki · le jeu de quiz qui fait réviser'],
+ t1:['01 · Choisis','Choisis un *quiz*','Ton cours, découpé en parties.'],
+ t2:['02 · Révise','Quatre façons de *réviser*',null],
+ t3:['03 · Joue','Défie tes *potes*','Partage un code. Le plus rapide gagne.'],
+ t4:['Gratuit · Sans inscription','Choisis un quiz. Bats tes potes. *Révise.*',null],
+ modes:['Quiz : réponds vite, marque gros','Des flashcards qui s\'adaptent','Tout le cours sur une fiche','Un vrai examen, noté sur 20'],
+ chips:{pts:'<b>+955</b> pts',streak:'SÉRIE <b>×3</b>',got:'Je sais ✓',join:'a rejoint',fast:'⚡ <b>1,7 s</b>',nolim:'Sans limite de temps'}}}[L];
+const $=id=>document.getElementById(id);
+// ---------- easing + keyframes
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const E={lin:x=>x,io:x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2,out:x=>1-Math.pow(1-x,3),outx:x=>x>=1?1:1-Math.pow(2,-10*x),back:x=>{const c=1.7;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)},in:x=>x*x*x};
+// keys: [[t,value,ease?],...] ; value number or array; ease applies to segment ending at that key
+function K(t,keys){if(t<=keys[0][0])return keys[0][1];for(let i=1;i<keys.length;i++){const [t1,v1,e]=keys[i],[t0,v0]=keys[i-1];if(t<=t1){const p=(E[e||'io'])(clamp((t-t0)/(t1-t0)));return Array.isArray(v0)?v0.map((a,j)=>a+(v1[j]-a)*p):v0+(v1-v0)*p}}return keys[keys.length-1][1]}
+const win=(t,a,b,fi=.35,fo=.35)=>clamp((t-a)/fi)*clamp((b-t)/fo);
+// ---------- text blocks: words rise in staggered, leave upward
+function mk(id,[pill,h,sub]){const el=$(id);let s='';if(pill)s+='<div class=pill>'+pill+'</div><br>';s+='<h1>'+h.split(' ').map(w=>'<span class="w'+(w[0]=='*'?' y':'')+'">'+w.replace(/\*/g,'')+'</span>').join(' ')+'</h1>';if(sub)s+='<p class=sub>'+sub+'</p>';el.innerHTML=s;return el}
+const blocks={};['t0','t1','t2','t3','t4'].forEach(k=>blocks[k]=mk(k,TX[k]));
+function showBlock(k,t,a,b,y){const el=blocks[k];el.style.top=y+'px';const ws=[...el.querySelectorAll('.w')];
+  const on=t>=a-.01&&t<=b+.6;el.style.visibility=on?'visible':'hidden';if(!on)return;
+  ws.forEach((w,i)=>{const pin=clamp((t-a-i*.09)/.7),pout=clamp((t-(b-.45)-i*.04)/.45);const e=E.outx(pin)*(1-E.in(pout));
+    w.style.opacity=e;w.style.transform=`translateY(${(1-E.outx(pin))*60-E.in(pout)*50}px) rotateX(${(1-E.outx(pin))*-40}deg)`;w.style.filter=`blur(${(1-e)*10}px)`});
+  [...el.children].filter(c=>!c.classList.contains('w')&&c.tagName!='H1'&&c.tagName!='BR').forEach((c,i)=>{const pin=clamp((t-a-.25-i*.1)/.6),pout=clamp((t-(b-.45))/.45);const e=E.out(pin)*(1-E.in(pout));c.style.opacity=e;c.style.transform=`translateY(${(1-E.out(pin))*24-E.in(pout)*24}px)`})}
+// ---------- phone screens: list of stills with show windows
+const IMGS=[['home',2.6,8.9],['menu',8.5,11.9],['question',11.4,13.2],['reveal',12.9,14.0],['card-front',13.8,15.0],['card-back',14.8,15.9],['sheet',15.7,17.6],['exam',17.4,19.8],['lobby',19.6,24.4],['multi-q',24.0,27.0],['board',26.6,34]];
+const imgEls={};IMGS.forEach(([n])=>{const i=new Image();i.src='shots/'+n+'.png';imgEls[n]=i;$('cam').appendChild(i)});
+// ripples (in 390x844 space)
+const TAPS=[[6.4,100,392],[12.7,95,300],[14.6,200,395],[25.2,270,300]];
+const tapEls=TAPS.map(()=>{const d=document.createElement('div');d.className='ripple';$('cam').appendChild(d);return d});
+// ---------- chips
+const CH=[
+ [12.9,'pts',700,250],[13.4,'streak',1040,150],[14.7,'got',720,330],[17.6,'nolim',700,410],
+ [21.0,'join:Lea',690,160],[21.6,'join:Noah',690,230],[22.2,'join:Inès',690,300],[22.8,'join:Max',690,370],[27.6,'fast',700,520]];
+const chipEls=CH.map(([t,k,x,y])=>{const d=document.createElement('div');d.className='chip';d.innerHTML=k.startsWith('join:')?'👋 <b>'+k.slice(5)+'</b> '+TX.chips.join:TX.chips[k];d.style.left=x+'px';d.style.top=y+'px';$('chips').appendChild(d);return d});
+function chipsAt(t){CH.forEach(([a],i)=>{const e=chipEls[i],p=(t-a)/2.4;if(p<0||p>1){e.style.opacity=0;return}
+  const pin=E.back(clamp(p/.14)),pout=clamp((p-.78)/.22);e.style.opacity=clamp(p/.1)*(1-pout);e.style.transform=`translateY(${(1-pin)*30-pout*40-p*10}px) scale(${.5+.5*pin}) rotate(-2deg)`})}
+// ---------- main render
+const DUR=36.8;
+function render(t){
+  // background drifts, continuous
+  [['o1',-160,380,60,-40,.0],['o2',900,-160,-70,50,1.7],['o3',520,500,50,40,3.1]].forEach(([id,x,y,dx,dy,ph])=>{const s=Math.sin(t*.35+ph);$(id).style.transform=`translate(${x+dx*s}px,${y+dy*Math.cos(t*.3+ph)}px) scale(${1+.12*s})`});
+  const palette=K(t,[[0,0],[10,0],[19,1],[31,2]]);
+  $('o1').style.opacity=.7;$('o2').style.opacity=.6+.15*Math.sin(t*.5);$('o3').style.opacity=.4+.2*Math.sin(t*.3+1);
+  $('o1').style.background=`hsl(${252+palette*14} 100% 62%)`;
+  $('grid').style.transform=`translate(${-(t*18)%64}px,${-(t*10)%64}px)`;
+  const gt=['QUIZ · FLASHCARDS · EXAM · MULTIPLAYER · '];$('ghost').textContent=gt[0].repeat(4);$('ghost').style.transform=`translateX(${-t*55}px)`;
+  $('bar').style.width=1280*t/DUR+'px';
+  // logo: pops in centre, glides to corner then returns big at the end
+  const lg=K(t,[[0,[640,360,.25,0],'out'],[.9,[640,360,1.05,1],'out'],[2.4,[640,360,1,1],'io'],[3.4,[150,58,.3,1],'io'],[30.6,[150,58,.3,1],'io'],[31.8,[640,250,1,1],'io'],[DUR,[640,250,1.05,1]]]);
+  const lw=560;$('logo').style.transform=`translate(${lg[0]-lw/2}px,${lg[1]-lw*.2733/2}px) scale(${lg[2]})`;$('logo').style.opacity=lg[3]*clamp(t/.4);
+  // text blocks
+  showBlock('t0',t,1.7,3.5,300);
+  showBlock('t1',t,3.4,8.8,230);
+  showBlock('t2',t,9.2,19.4,110);
+  showBlock('t3',t,19.6,31.0,220);
+  showBlock('t4',t,32.4,DUR+1,410);
+  $('t0').style.left='70px';$('t0').style.width='700px';$('t2').classList.add('s2');$('t4').classList.add('c');
+  // phone camera
+  const P=K(t,[[0,[820,820,1,-14,0]],[2.6,[820,820,1,-14,0]],[3.8,[800,10,1,-10,1.5],'back'],[8.6,[820,18,1,-8,-1]],[10.6,[860,12,.97,-12,2],'io'],[19.2,[868,12,.97,-12,2]],[20.8,[760,10,1,-8,-1],'io'],[31.0,[770,16,1,-7,1]],[32.6,[780,900,.9,-14,6],'in']]);
+  const fl=Math.sin(t*1.3)*6;
+  $('ph').style.transform=`translate(${P[0]}px,${P[1]+fl}px) scale(${P[2]}) rotateY(${P[3]}deg) rotateZ(${P[4]}deg)`;
+  // inner camera (zoom into the screen content)
+  const C=K(t,[[0,[1,195,330]],[5.2,[1,195,330],'io'],[6.3,[1.55,100,392],'io'],[7.2,[1.55,100,392]],[8.9,[1,195,330],'io'],[21.5,[1,195,330]],[22.6,[1.0,195,330]],[26.4,[1,195,330]],[27.4,[1.5,195,610],'io'],[30.6,[1.5,195,610]]]);
+  const s=C[0]*.8,tx=156-C[1]*.8*C[0],ty=341-C[2]*.8*C[0]; // screen is 312x682, centre (156,341)
+  const vv=C[0]===1;$('cam').style.transform=`translate(${vv?0:tx}px,${vv?0:ty}px) scale(${s})`;
+  IMGS.forEach(([n,a,b])=>{const e=imgEls[n],pin=clamp((t-a)/.45),pout=clamp((t-(b-.45))/.45),o=E.io(pin)*(1-E.io(pout));
+    e.style.opacity=o;e.style.zIndex=Math.round(a*10);e.style.transform=`scale(${1+.05*(1-E.out(pin))+.04*E.io(pout)})`;e.style.visibility=o>0?'visible':'hidden'});
+  TAPS.forEach(([a,x,y],i)=>{const p=(t-a)/.55,d=tapEls[i];if(p<0||p>1){d.style.opacity=0;return}d.style.left=x+'px';d.style.top=y+'px';d.style.opacity=(1-p)*1.2;d.style.transform=`scale(${.4+p*2.4})`});
+  // glass tiles panel (scene 2): slides in from the left, a highlight hops between the four squares
+  const tp=K(t,[[9.4,[-480,300,.9,0]],[10.8,[70,290,1,1],'out'],[18.8,[70,290,1,1],'io'],[20.0,[-520,300,.9,0],'in']]);
+  $('tiles').style.transform=`translate(${tp[0]}px,${tp[1]}px) scale(${tp[2]})`;$('tiles').style.opacity=clamp(tp[3]+(t>10?0:0))*(t>9.3&&t<20.1?1:0);
+  const Q=[[.04,.04],[.51,.04],[.04,.5],[.51,.5]],sz=[.445,.43];
+  const seg=[11.2,13.6,15.7,17.5];let idx=0;seg.forEach((a,i)=>{if(t>=a-.4)idx=i});
+  const prev=Math.max(0,idx-1),tt=clamp((t-(seg[idx]-.4))/.55),pos=idx===0?Q[0]:Q[prev].map((v,j)=>v+(Q[idx][j]-v)*E.io(tt));
+  const hi=$('hi');hi.style.left=pos[0]*100+'%';hi.style.top=pos[1]*100+'%';hi.style.width=sz[0]*100+'%';hi.style.height=sz[1]*100+'%';hi.style.opacity=win(t,10.9,19,.4,.5);
+  // per-mode sub line in scene 2
+  const t2=blocks.t2;if(!t2.querySelector('.sub')){const p=document.createElement('p');p.className='sub';t2.appendChild(p)}
+  const sub=t2.querySelector('.sub');const mi=idx,lt=t-seg[mi];sub.textContent=TX.modes[mi];sub.style.opacity=t<10.4?0:clamp((t-10.4)/.4)*(1-clamp((t-19.0)/.4))*(lt<0?1:1-Math.max(0,.0));
+  chipsAt(t);
+}
+window.render=render;window.DUR=DUR;
+</script>
