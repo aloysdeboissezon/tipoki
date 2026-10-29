@@ -1113,6 +1113,56 @@ $("mkGo").onclick=async()=>{
   finally{clearInterval(tick);st.hidden=true;$("mkGo").disabled=false}
 };
 
+// ---------- back button: one level up (game -> mode -> quiz page -> home) ----------
+// every level the visitor reaches is a browser-history entry, so the phone's back gesture and the arrow behave like the in-app buttons
+(function(){
+  const KEEP=history.replaceState.bind(history);
+  history.replaceState=(s,t,u)=>KEEP(s||history.state,t,u);   // other code rewrites the address with no state: keep ours
+  const stack=[],kindOf=id=>id==="topic"?"topic":(id==="home"||id==="make"||id==="stats")?"home":"run";
+  let cur=0,skip=0,rawShow=show,rawMode=setMode;
+  const url=e=>e.k==="topic"&&e.q&&e.q!=="socio"?"?quiz="+e.q:location.pathname;
+  const mk=k=>({k,q:BANK&&BANK.id,m:$("topic").dataset.mode||"menu"});
+  const put=(e,push)=>{e.i=push?cur+1:cur;if(push)cur++;stack[cur]=e;stack.length=cur+1;
+    try{if(push&&cur===1&&/[?&]quiz=/.test(location.search))KEEP(stack[0],"",location.pathname);push?history.pushState(e,"",url(e)):KEEP(e,"",e.k==="topic"?url(e):undefined)}catch(x){}};
+  const same=(a,b)=>a&&b&&a.k===b.k&&(a.k!=="topic"||a.q===b.q&&a.m===b.m);
+  const back=d=>{skip++;history.go(d)};
+  stack[0]={k:"home",i:0,q:null,m:"menu"};try{KEEP(stack[0],"")}catch(x){}
+  window.show=function(id){
+    rawShow(id);
+    const e=mk(kindOf(id)),top=stack[cur];
+    if(e.k==="home"){if(top.k==="home")put(e);else{let j=cur;while(j>0&&stack[j].k!=="home")j--;if(stack[j].k==="home"&&j<cur)back(j-cur);else put(e)}}
+    else if(e.k==="topic"){
+      if(top.k==="home")put(e,true);
+      else if(top.k==="topic")put(e);
+      else{const b=stack[cur-1];if(b&&b.k==="topic"&&b.q===e.q)back(-1);else put(e)}}
+    else if(top.k==="run")put(e);else put(e,true)};
+  window.setMode=function(m){
+    const prev=$("topic").dataset.mode||"menu";rawMode(m);
+    const now=$("topic").dataset.mode||"menu",top=stack[cur];
+    if(now===prev||!top||top.k!=="topic"||top.q!==(BANK&&BANK.id))return;
+    const e=mk("topic");
+    if(now==="menu"&&stack[cur-1]&&stack[cur-1].k==="topic"&&stack[cur-1].q===e.q)back(-1);
+    else if(prev==="menu")put(e,true);else put(e)};
+  function stopRun(){if(window.examBusy&&examBusy())EX.on=false;if(mode){leaveGame(true);mode=null;code=null;G=null;P={}}}
+  function running(){return (window.examBusy&&examBusy())||(mode==="multi"&&G&&(G.status==="q"||G.status==="reveal"))}
+  addEventListener("popstate",async ev=>{
+    const e=ev.state;
+    if(skip){skip--;if(e&&e.i!=null){cur=e.i;stack[cur]=e}return}
+    if(!e||e.i==null){history.go(cur-(history.length-1));return}
+    const from=stack[cur];
+    if(from&&from.k==="run"&&e.k!=="run"&&running()){
+      const q=window.examBusy&&examBusy()?tl("Quit the exam? Your answers will be lost."):tl("Leave the current game? The other players will carry on without you.");
+      if(!confirm(q)){back(cur-e.i);return}}
+    cur=e.i;stack[cur]=e;
+    if(e.k==="run"){if(!from||from.k!=="run")back(-1);return}   // a game can't be re-opened from history
+    stopRun();
+    if(e.k==="home"){rawShow("home");renderMyQuizzes();return}
+    if(!BANK||BANK.id!==e.q){if(!await useBank(e.q)){rawShow("home");return}}
+    rawMode(e.m);rawShow("topic");
+    if(typeof renderCardsPanel==="function")renderCardsPanel();if(window.renderExamPanel)renderExamPanel();
+  });
+})();
+
 loadBank(window.BANK_SOCIO);renderMyQuizzes();renderResume();
 if(sb){setMultiNote(true)}else setMultiNote(false);
 (async()=>{let id=null;try{id=new URLSearchParams(location.search).get("quiz")}catch(e){}
