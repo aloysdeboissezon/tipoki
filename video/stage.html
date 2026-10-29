@@ -1,0 +1,74 @@
+<!doctype html><meta charset=utf-8><title>Tipoki intro</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--v:#4B2FE0;--v2:#2A1A9E;--y:#FFE36E;--a0:#E8384F;--a1:#2F7BF5;--a2:#FFC21A;--a3:#22B573}
+*{box-sizing:border-box}html,body{margin:0;width:1280px;height:720px;overflow:hidden;background:#140B4A;font-family:"Bricolage Grotesque","Nunito",Inter,system-ui,sans-serif}
+#stage{position:absolute;inset:0;overflow:hidden;background:radial-gradient(circle at 20% 10%,#6A4CFF 0,transparent 55%),radial-gradient(circle at 90% 90%,#E8384F55 0,transparent 50%),linear-gradient(150deg,#4B2FE0,#1E0F7A)}
+#stage.shake{animation:shake .45s}
+@keyframes shake{0%,100%{transform:none}15%{transform:translate(-14px,6px) rotate(-.6deg)}35%{transform:translate(12px,-8px) rotate(.5deg)}55%{transform:translate(-8px,4px)}75%{transform:translate(6px,-3px)}}
+.blob{position:absolute;border-radius:50%;opacity:.5;filter:blur(2px);animation:fl 7s ease-in-out infinite alternate}
+@keyframes fl{to{transform:translate(40px,-60px) scale(1.15)}}
+.shape{position:absolute;border-radius:22px;will-change:transform}
+#hl{position:absolute;left:70px;top:0;height:720px;width:600px;display:flex;flex-direction:column;justify-content:center;gap:18px;color:#fff;z-index:5;}
+#hl.s{width:540px}#hl.s h1{font-size:68px}#hl.s p{font-size:24px}
+#hl.c{left:0;width:1280px;align-items:center;text-align:center}
+#hl h1{margin:0;font-weight:800;font-size:92px;line-height:.92;letter-spacing:-.04em;text-shadow:0 6px 0 rgba(0,0,0,.22)}
+#hl.c h1{font-size:120px}
+#hl h1 .w{display:inline-block;margin-right:.22em;animation:slam .55s cubic-bezier(.2,1.6,.4,1) both}
+#hl h1 .w.y{color:var(--y)}
+@keyframes slam{0%{transform:translateY(-80px) scale(2.4) rotate(-12deg);opacity:0}60%{opacity:1}100%{transform:none;opacity:1}}
+#hl p{margin:0;font:800 30px/1.2 Nunito,Inter,sans-serif;opacity:.92;animation:rise .6s .35s both}
+@keyframes rise{from{transform:translateY(24px);opacity:0}to{opacity:.92;transform:none}}
+#hl .pill{align-self:flex-start;background:var(--y);color:#241900;font-weight:800;font-size:24px;padding:8px 20px;border-radius:99px;letter-spacing:.02em;box-shadow:0 5px 0 #c9a600;animation:pop .5s cubic-bezier(.2,1.8,.4,1) both;transform:rotate(-3deg)}
+#hl.c .pill{align-self:center}
+@keyframes pop{from{transform:scale(0) rotate(-20deg)}}
+.phone{position:absolute;width:330px;height:700px;border-radius:46px;background:#0c0830;padding:11px;box-shadow:0 30px 70px rgba(0,0,0,.55),inset 0 0 0 3px #3a2f8f;z-index:3;will-change:transform;top:10px}
+.phone .scr{width:100%;height:100%;border-radius:36px;overflow:hidden;background:#fff;position:relative}
+.phone iframe{border:0;width:390px;height:824px;transform:scale(.7846);transform-origin:0 0;display:block}
+.phone .tag{position:absolute;bottom:-4px;left:50%;transform:translate(-50%,0);}
+#fx{position:absolute;inset:0;z-index:8;pointer-events:none}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;z-index:9;pointer-events:none}
+#logo{position:absolute;left:50%;top:50%;z-index:6;width:640px;margin:-90px 0 0 -320px;opacity:0}
+#bar{position:absolute;left:0;bottom:0;height:8px;background:var(--y);z-index:10;width:0}
+.ring{position:absolute;border:8px solid #fff;border-radius:50%;z-index:7;pointer-events:none;opacity:0}
+</style>
+<div id=stage>
+ <div class=blob style="left:-80px;top:380px;width:340px;height:340px;background:#E8384F"></div>
+ <div class=blob style="right:-60px;top:-60px;width:300px;height:300px;background:#22B573;animation-delay:-3s"></div>
+ <div class=blob style="left:520px;top:520px;width:220px;height:220px;background:#FFC21A;animation-delay:-5s"></div>
+ <img id=logo src="../img/logo-dark.svg">
+ <div id=hl></div>
+ <div class=phone id=pA><div class=scr><iframe id=fA></iframe></div></div>
+ <div class=phone id=pB><div class=scr><iframe id=fB></iframe></div></div>
+ <div id=fx></div><div id=flash></div><div id=bar></div>
+</div>
+<script>
+const COL=['#E8384F','#2F7BF5','#FFC21A','#22B573'];
+const $=id=>document.getElementById(id),st=$('stage'),fx=$('fx');
+const EASE='cubic-bezier(.2,1.2,.3,1)';
+// headline: words slam in one by one; "*word*" is highlighted
+function say(h,sub,pill,center,small){const el=$('hl');el.className=(center?'c ':'')+(small?'s':'');el.innerHTML='';
+  if(pill){const p=document.createElement('div');p.className='pill';p.textContent=pill;el.appendChild(p)}
+  const t=document.createElement('h1');h.split(' ').forEach((w,i)=>{const s=document.createElement('span');s.className='w'+(w[0]=='*'?' y':'');s.textContent=w.replace(/\*/g,'');s.style.animationDelay=i*90+'ms';t.appendChild(s)});if(h)el.appendChild(t);
+  if(sub){const p=document.createElement('p');p.textContent=sub;el.appendChild(p)}}
+function shake(){st.classList.remove('shake');void st.offsetWidth;st.classList.add('shake')}
+function flash(){$('flash').animate([{opacity:.85},{opacity:0}],{duration:380})}
+// burst of coloured tiles from a point
+function burst(x,y,n=22){for(let i=0;i<n;i++){const s=document.createElement('div');s.className='shape';const z=14+Math.random()*34;
+  Object.assign(s.style,{left:x+'px',top:y+'px',width:z+'px',height:z+'px',background:COL[i%4],borderRadius:(Math.random()>.5?'50%':'8px')});fx.appendChild(s);
+  const a=Math.random()*Math.PI*2,d=160+Math.random()*340;
+  s.animate([{transform:'translate(0,0) rotate(0) scale(1)',opacity:1},{transform:`translate(${Math.cos(a)*d}px,${Math.sin(a)*d+120}px) rotate(${Math.random()*720-360}deg) scale(.2)`,opacity:0}],{duration:900+Math.random()*500,easing:'cubic-bezier(.1,.7,.3,1)'}).onfinish=()=>s.remove()}
+  const r=document.createElement('div');r.className='ring';Object.assign(r.style,{left:x-30+'px',top:y-30+'px',width:'60px',height:'60px'});fx.appendChild(r);
+  r.animate([{transform:'scale(.2)',opacity:.9},{transform:'scale(9)',opacity:0}],{duration:700,easing:'ease-out'}).onfinish=()=>r.remove()}
+// fly a phone: from/to = {x,y,r,s}; returns promise
+function fly(id,from,to,ms=700,easing=EASE){const el=$(id);const f=o=>`translate(${o.x}px,${o.y}px) rotate(${o.r||0}deg) scale(${o.s||1})`;
+  const a=el.animate([{transform:f(from)},{transform:f(to)}],{duration:ms,easing,fill:'forwards'});return a.finished}
+function setP(id,o){$(id).style.transform=`translate(${o.x}px,${o.y}px) rotate(${o.r||0}deg) scale(${o.s||1})`;$(id).getAnimations().forEach(a=>a.cancel())}
+function load(id,url){return new Promise(r=>{const f=$(id);f.onload=()=>r();f.src=url})}
+// colliding tiles crossing the stage
+function tiles(){COL.forEach((c,i)=>{const s=document.createElement('div');s.className='shape';const z=120;Object.assign(s.style,{left:(i%2?1300:-140)+'px',top:80+i*150+'px',width:z+'px',height:z+'px',background:c,boxShadow:'0 8px 0 rgba(0,0,0,.25)',zIndex:4});fx.appendChild(s);
+  s.animate([{transform:`translateX(0) rotate(0)`},{transform:`translateX(${i%2?-1500:1500}px) rotate(${i%2?-540:540}deg)`}],{duration:1100,delay:i*90,easing:'cubic-bezier(.6,0,.3,1)'}).onfinish=()=>s.remove()})}
+function progress(ms){$('bar').animate([{width:'0'},{width:'1280px'}],{duration:ms,easing:'linear',fill:'forwards'})}
+function logo(show){const l=$('logo');l.animate(show?[{opacity:0,transform:'scale(.2) rotate(-25deg)'},{opacity:1,transform:'scale(1.12) rotate(3deg)',offset:.6},{opacity:1,transform:'none'}]:[{opacity:1},{opacity:0,transform:'scale(2)'}],{duration:show?800:400,fill:'forwards',easing:'ease-out'})}
+setP('pA',{x:-500,y:0});setP('pB',{x:1400,y:0});
+</script>
