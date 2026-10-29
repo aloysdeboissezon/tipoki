@@ -1,0 +1,10 @@
+/* home: short presentation video; the file is only fetched once the visitor presses play */
+.tour{max-width:720px;width:100%;margin:0 auto}
+.tour-btn{position:relative;display:block;width:100%;padding:0;border:0;border-radius:var(--r);overflow:hidden;cursor:pointer;background:#2A1A9E;box-shadow:0 8px 0 rgba(42,26,158,.35);aspect-ratio:16/9}
+.tour-btn img,.tour video{display:block;width:100%;height:100%;object-fit:cover}
+.tour-play{position:absolute;left:50%;top:46%;width:68px;height:68px;margin:-34px 0 0 -34px;border-radius:50%;background:#FFE36E;box-shadow:0 5px 0 #c9a600;transition:transform .15s}
+.tour-play::after{content:"";position:absolute;left:27px;top:20px;border-left:22px solid #241900;border-top:14px solid transparent;border-bottom:14px solid transparent}
+.tour-btn:hover .tour-play,.tour-btn:focus-visible .tour-play{transform:scale(1.1)}
+.tour-btn:focus-visible{outline:3px solid #FFE36E;outline-offset:3px}
+.tour-cap{position:absolute;left:0;right:0;bottom:0;padding:26px 14px 12px;color:#fff;font-family:var(--f-display);font-weight:800;font-size:18px;text-align:center;background:linear-gradient(transparent,rgba(20,11,74,.85))}
+.tour video{border-radius:var(--r);background:#140B4A;aspect-ratio:16/9;height:auto}

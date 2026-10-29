@@ -35,6 +35,7 @@
 <link rel="stylesheet" href="css/sync.css">
 <link rel="stylesheet" href="css/search.css">
 <link rel="stylesheet" href="css/sheet.css">
+<link rel="stylesheet" href="css/tour.css">
 <link rel="stylesheet" href="css/theme.css">
 <!-- Vercel Web Analytics (page views, visitors) -->
 <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};</script>
@@ -54,6 +55,13 @@
       <h1>Study by beating your friends.</h1>
       <p>Pick what you want to study, then play solo or with friends.</p>
       <p class="streak" id="homeStreak" hidden></p>
+    </div>
+    <div class="tour" id="tour">
+      <button type="button" class="tour-btn" id="tourBtn" aria-label="Watch the 90-second tour">
+        <img id="tourPoster" src="video/tipoki-intro-en-poster.jpg" alt="" width="960" height="540" loading="lazy">
+        <span class="tour-play" aria-hidden="true"></span>
+        <span class="tour-cap">Watch the 90-second tour</span>
+      </button>
     </div>
     <div id="resumeHome"><div class="panel resume" id="resumeCard" hidden>
       <div class="rs-main"><h2>Pick up where you left off</h2><div class="rs-title" id="resumeTitle"></div><div class="rs-sub" id="resumeSub"></div></div>
@@ -371,6 +379,7 @@
 <script src="js/sheet.js"></script>
 <script src="js/weak.js"></script>
 <script src="js/music.js"></script>
+<script src="js/tour.js"></script>
 <script src="js/theme.js"></script>
 <script src="js/sync.js"></script>
 
