@@ -1,73 +1,85 @@
 <!doctype html><meta charset=utf-8><title>Tipoki intro</title>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
 <style>
-:root{--v:#4B2FE0;--v2:#2A1A9E;--y:#FFE36E;--a0:#E8384F;--a1:#2F7BF5;--a2:#FFC21A;--a3:#22B573}
-*{box-sizing:border-box}html,body{margin:0;width:1280px;height:720px;overflow:hidden;background:#140B4A;font-family:"Bricolage Grotesque","Nunito",Inter,system-ui,sans-serif}
-#stage{position:absolute;inset:0;overflow:hidden;background:radial-gradient(circle at 20% 10%,#6A4CFF 0,transparent 55%),radial-gradient(circle at 90% 90%,#E8384F55 0,transparent 50%),linear-gradient(150deg,#4B2FE0,#1E0F7A)}
-#stage.shake{animation:shake .45s}
-@keyframes shake{0%,100%{transform:none}15%{transform:translate(-14px,6px) rotate(-.6deg)}35%{transform:translate(12px,-8px) rotate(.5deg)}55%{transform:translate(-8px,4px)}75%{transform:translate(6px,-3px)}}
-.blob{position:absolute;border-radius:50%;opacity:.5;filter:blur(2px);animation:fl 7s ease-in-out infinite alternate}
-@keyframes fl{to{transform:translate(40px,-60px) scale(1.15)}}
+:root{--v:#6B4DFF;--pk:#FF3D8B;--y:#FFE36E;--a0:#FF3D5A;--a1:#3D8BFF;--a2:#FFC21A;--a3:#25D08A}
+*{box-sizing:border-box}html,body{margin:0;width:1280px;height:720px;overflow:hidden;background:#0A0816;font-family:"Bricolage Grotesque","Nunito",Inter,system-ui,sans-serif}
+#stage{position:absolute;inset:0;overflow:hidden;background:#0A0816;perspective:1500px}
+#stage.shake{animation:shake .35s}
+@keyframes shake{0%,100%{transform:none}25%{transform:translate(-6px,3px)}60%{transform:translate(5px,-3px)}}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.75;animation:fl 9s ease-in-out infinite alternate}
+@keyframes fl{to{transform:translate(70px,-50px) scale(1.2)}}
+#grain{position:absolute;inset:0;z-index:12;pointer-events:none;opacity:.09;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>")}
+#grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:64px 64px;-webkit-mask-image:radial-gradient(circle at 50% 50%,#000 0,transparent 75%);mask-image:radial-gradient(circle at 50% 50%,#000 0,transparent 75%)}
+#mq{position:absolute;left:0;top:300px;white-space:nowrap;font:800 190px/1 "Bricolage Grotesque",Inter,sans-serif;letter-spacing:-.04em;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.07);animation:mq 28s linear infinite;z-index:1}
+@keyframes mq{to{transform:translateX(-50%)}}
 .shape{position:absolute;border-radius:22px;will-change:transform}
-#hl{position:absolute;left:70px;top:0;height:720px;width:600px;display:flex;flex-direction:column;justify-content:center;gap:18px;color:#fff;z-index:5;}
-#hl.s{width:540px}#hl.s h1{font-size:68px}#hl.s p{font-size:24px}
+#hl{position:absolute;left:70px;top:0;height:720px;width:620px;display:flex;flex-direction:column;justify-content:center;gap:20px;color:#fff;z-index:5}
 #hl.c{left:0;width:1280px;align-items:center;text-align:center}
-#hl h1{margin:0;font-weight:800;font-size:92px;line-height:.92;letter-spacing:-.04em;text-shadow:0 6px 0 rgba(0,0,0,.22)}
-#hl.c h1{font-size:120px}
-#hl h1 .w{display:inline-block;margin-right:.22em;animation:slam .55s cubic-bezier(.2,1.6,.4,1) both}
-#hl h1 .w.y{color:var(--y)}
-@keyframes slam{0%{transform:translateY(-80px) scale(2.4) rotate(-12deg);opacity:0}60%{opacity:1}100%{transform:none;opacity:1}}
-#hl p{margin:0;font:800 30px/1.2 Nunito,Inter,sans-serif;opacity:.92;animation:rise .6s .35s both}
-@keyframes rise{from{transform:translateY(24px);opacity:0}to{opacity:.92;transform:none}}
-#hl .pill{align-self:flex-start;background:var(--y);color:#241900;font-weight:800;font-size:24px;padding:8px 20px;border-radius:99px;letter-spacing:.02em;box-shadow:0 5px 0 #c9a600;animation:pop .5s cubic-bezier(.2,1.8,.4,1) both;transform:rotate(-3deg)}
+#hl h1{margin:0;font-weight:800;font-size:96px;line-height:.9;letter-spacing:-.05em}
+#hl.c h1{font-size:124px}
+#hl h1 .w{display:inline-block;margin-right:.2em;animation:slam .6s cubic-bezier(.2,1.5,.35,1) both}
+#hl h1 .w.y{background:linear-gradient(95deg,#FFE36E,#FF3D8B);-webkit-background-clip:text;background-clip:text;color:transparent}
+@keyframes slam{0%{transform:translateY(70px) rotateX(-70deg) scale(1.1);opacity:0;filter:blur(10px)}100%{transform:none;opacity:1;filter:none}}
+#hl p{margin:0;font:700 28px/1.25 Nunito,Inter,sans-serif;color:rgba(255,255,255,.72);max-width:540px;animation:rise .6s .4s both}
+#hl.c p{max-width:none}
+@keyframes rise{from{transform:translateY(20px);opacity:0}to{opacity:1;transform:none}}
+#hl .pill{align-self:flex-start;display:flex;gap:10px;align-items:center;color:#fff;font-weight:800;font-size:20px;padding:9px 18px;border-radius:99px;letter-spacing:.14em;text-transform:uppercase;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(14px);animation:pop .5s cubic-bezier(.2,1.6,.4,1) both}
+#hl .pill::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--y);box-shadow:0 0 14px var(--y)}
 #hl.c .pill{align-self:center}
-@keyframes pop{from{transform:scale(0) rotate(-20deg)}}
-.phone{position:absolute;width:330px;height:700px;border-radius:46px;background:#0c0830;padding:11px;box-shadow:0 30px 70px rgba(0,0,0,.55),inset 0 0 0 3px #3a2f8f;z-index:3;will-change:transform;top:10px}
-.phone .scr{width:100%;height:100%;border-radius:36px;overflow:hidden;background:#fff;position:relative}
+#hl.s{width:540px}#hl.s h1{font-size:72px}#hl.s p{font-size:23px}
+@keyframes pop{from{transform:scale(.3);opacity:0}}
+.phone{position:absolute;width:330px;height:700px;border-radius:50px;background:linear-gradient(160deg,#3b3560,#0c0a1c 40%,#2a2550);padding:9px;box-shadow:0 40px 90px rgba(0,0,0,.6),0 0 90px rgba(107,77,255,.45),inset 0 0 0 1.5px rgba(255,255,255,.25);z-index:3;will-change:transform;top:10px}
+.phone .scr{width:100%;height:100%;border-radius:42px;overflow:hidden;background:#fff;position:relative}
 .phone iframe{border:0;width:390px;height:824px;transform:scale(.7846);transform-origin:0 0;display:block}
-.phone .tag{position:absolute;bottom:-4px;left:50%;transform:translate(-50%,0);}
+.chip{position:absolute;z-index:11;padding:11px 20px;border-radius:18px;font:800 26px/1 "Bricolage Grotesque",Inter,sans-serif;color:#fff;background:rgba(20,16,44,.72);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(16px);box-shadow:0 14px 40px rgba(0,0,0,.45);white-space:nowrap}
+.chip b{background:linear-gradient(95deg,#FFE36E,#FF3D8B);-webkit-background-clip:text;background-clip:text;color:transparent}
 #fx{position:absolute;inset:0;z-index:8;pointer-events:none}
-#flash{position:absolute;inset:0;background:#fff;opacity:0;z-index:9;pointer-events:none}
-#logo{position:absolute;left:50%;top:50%;z-index:6;width:640px;margin:-90px 0 0 -320px;opacity:0}
-#bar{position:absolute;left:0;bottom:0;height:8px;background:var(--y);z-index:10;width:0}
-.ring{position:absolute;border:8px solid #fff;border-radius:50%;z-index:7;pointer-events:none;opacity:0}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;z-index:13;pointer-events:none}
+#wipe{position:absolute;top:-20px;left:-300px;width:1900px;height:760px;z-index:10;pointer-events:none;background:linear-gradient(100deg,#6B4DFF,#FF3D8B 70%,#FFE36E);transform:translateX(-110%) skewX(-14deg)}
+#logo{position:absolute;left:50%;top:50%;z-index:6;width:640px;margin:-90px 0 0 -320px;opacity:0;filter:drop-shadow(0 10px 40px rgba(107,77,255,.6))}
+#bar{position:absolute;left:0;top:0;height:5px;background:linear-gradient(90deg,#6B4DFF,#FF3D8B,#FFE36E);z-index:14;width:0}
+.ring{position:absolute;border:3px solid #fff;border-radius:50%;z-index:7;pointer-events:none;opacity:0}
 </style>
 <div id=stage>
- <div class=blob style="left:-80px;top:380px;width:340px;height:340px;background:#E8384F"></div>
- <div class=blob style="right:-60px;top:-60px;width:300px;height:300px;background:#22B573;animation-delay:-3s"></div>
- <div class=blob style="left:520px;top:520px;width:220px;height:220px;background:#FFC21A;animation-delay:-5s"></div>
+ <div class=orb style="left:-160px;top:380px;width:560px;height:560px;background:#6B4DFF"></div>
+ <div class=orb style="right:-140px;top:-160px;width:520px;height:520px;background:#FF3D8B;animation-delay:-4s"></div>
+ <div class=orb style="left:560px;top:520px;width:420px;height:420px;background:#2F7BF5;animation-delay:-7s;opacity:.5"></div>
+ <div id=grid></div><div id=mq>QUIZ · FLASHCARDS · EXAM · MULTIPLAYER · QUIZ · FLASHCARDS · EXAM · MULTIPLAYER ·</div>
  <img id=logo src="../img/logo-dark.svg">
  <div id=hl></div>
  <div class=phone id=pA><div class=scr><iframe id=fA></iframe></div></div>
  <div class=phone id=pB><div class=scr><iframe id=fB></iframe></div></div>
- <div id=fx></div><div id=flash></div><div id=bar></div>
+ <div id=fx></div><div id=wipe></div><div id=flash></div><div id=bar></div><div id=grain></div>
 </div>
 <script>
-const COL=['#E8384F','#2F7BF5','#FFC21A','#22B573'];
+const COL=['#FF3D5A','#3D8BFF','#FFC21A','#25D08A','#FF3D8B','#6B4DFF'];
 const $=id=>document.getElementById(id),st=$('stage'),fx=$('fx');
 const EASE='cubic-bezier(.2,1.2,.3,1)';
 // headline: words slam in one by one; "*word*" is highlighted
-function say(h,sub,pill,center,small){const el=$('hl');el.className=(center?'c ':'')+(small?'s':'');el.innerHTML='';
+function say(h,sub,pill,center,small){if(pill)wipe();setTimeout(()=>say2(h,sub,pill,center,small),pill?320:0)}
+function say2(h,sub,pill,center,small){const el=$('hl');el.className=(center?'c ':'')+(small?'s':'');el.innerHTML='';
   if(pill){const p=document.createElement('div');p.className='pill';p.textContent=pill;el.appendChild(p)}
   const t=document.createElement('h1');h.split(' ').forEach((w,i)=>{const s=document.createElement('span');s.className='w'+(w[0]=='*'?' y':'');s.textContent=w.replace(/\*/g,'');s.style.animationDelay=i*90+'ms';t.appendChild(s)});if(h)el.appendChild(t);
   if(sub){const p=document.createElement('p');p.textContent=sub;el.appendChild(p)}}
 function shake(){st.classList.remove('shake');void st.offsetWidth;st.classList.add('shake')}
 function flash(){$('flash').animate([{opacity:.85},{opacity:0}],{duration:380})}
 // burst of coloured tiles from a point
-function burst(x,y,n=22){for(let i=0;i<n;i++){const s=document.createElement('div');s.className='shape';const z=14+Math.random()*34;
-  Object.assign(s.style,{left:x+'px',top:y+'px',width:z+'px',height:z+'px',background:COL[i%4],borderRadius:(Math.random()>.5?'50%':'8px')});fx.appendChild(s);
+function burst(x,y,n=22){for(let i=0;i<n;i++){const s=document.createElement('div');s.className='shape';const z=8+Math.random()*18;
+  Object.assign(s.style,{left:x+'px',top:y+'px',width:z+'px',height:z+'px',background:COL[i%6],borderRadius:(Math.random()>.5?'50%':'4px')});fx.appendChild(s);
   const a=Math.random()*Math.PI*2,d=160+Math.random()*340;
   s.animate([{transform:'translate(0,0) rotate(0) scale(1)',opacity:1},{transform:`translate(${Math.cos(a)*d}px,${Math.sin(a)*d+120}px) rotate(${Math.random()*720-360}deg) scale(.2)`,opacity:0}],{duration:900+Math.random()*500,easing:'cubic-bezier(.1,.7,.3,1)'}).onfinish=()=>s.remove()}
   const r=document.createElement('div');r.className='ring';Object.assign(r.style,{left:x-30+'px',top:y-30+'px',width:'60px',height:'60px'});fx.appendChild(r);
   r.animate([{transform:'scale(.2)',opacity:.9},{transform:'scale(9)',opacity:0}],{duration:700,easing:'ease-out'}).onfinish=()=>r.remove()}
 // fly a phone: from/to = {x,y,r,s}; returns promise
-function fly(id,from,to,ms=700,easing=EASE){const el=$(id);const f=o=>`translate(${o.x}px,${o.y}px) rotate(${o.r||0}deg) scale(${o.s||1})`;
+function fly(id,from,to,ms=700,easing=EASE){const el=$(id);const f=o=>`translate(${o.x}px,${o.y}px) rotateY(${o.ry??-10}deg) rotateX(${o.rx??3}deg) rotate(${o.r||0}deg) scale(${o.s||1})`;
   const a=el.animate([{transform:f(from)},{transform:f(to)}],{duration:ms,easing,fill:'forwards'});return a.finished}
-function setP(id,o){$(id).style.transform=`translate(${o.x}px,${o.y}px) rotate(${o.r||0}deg) scale(${o.s||1})`;$(id).getAnimations().forEach(a=>a.cancel())}
+function setP(id,o){$(id).style.transform=`translate(${o.x}px,${o.y}px) rotateY(${o.ry??-10}deg) rotate(${o.r||0}deg) scale(${o.s||1})`;$(id).getAnimations().forEach(a=>a.cancel())}
 function load(id,url){return new Promise(r=>{const f=$(id);f.onload=()=>r();f.src=url})}
-// colliding tiles crossing the stage
-function tiles(){COL.forEach((c,i)=>{const s=document.createElement('div');s.className='shape';const z=120;Object.assign(s.style,{left:(i%2?1300:-140)+'px',top:80+i*150+'px',width:z+'px',height:z+'px',background:c,boxShadow:'0 8px 0 rgba(0,0,0,.25)',zIndex:4});fx.appendChild(s);
-  s.animate([{transform:`translateX(0) rotate(0)`},{transform:`translateX(${i%2?-1500:1500}px) rotate(${i%2?-540:540}deg)`}],{duration:1100,delay:i*90,easing:'cubic-bezier(.6,0,.3,1)'}).onfinish=()=>s.remove()})}
+function wipe(){$('wipe').animate([{transform:'translateX(-110%) skewX(-14deg)'},{transform:'translateX(0) skewX(-14deg)',offset:.5},{transform:'translateX(110%) skewX(-14deg)'}],{duration:760,easing:'cubic-bezier(.7,0,.3,1)'})}
+function tiles(){wipe()}
+// glass chip that pops next to a phone, floats up and leaves
+function chip(html,x,y,ms=2000){const c=document.createElement('div');c.className='chip';c.innerHTML=html;Object.assign(c.style,{left:x+'px',top:y+'px'});$('fx').appendChild(c);c.style.zIndex=11;c.parentNode.style.zIndex=11;
+  c.animate([{transform:'translateY(30px) scale(.4) rotate(-6deg)',opacity:0},{transform:'translateY(0) scale(1.08) rotate(-2deg)',opacity:1,offset:.18},{transform:'translateY(-8px) scale(1) rotate(-2deg)',opacity:1,offset:.8},{transform:'translateY(-50px) scale(.9)',opacity:0}],{duration:ms,easing:'ease-out'}).onfinish=()=>c.remove()}
 function progress(ms){$('bar').animate([{width:'0'},{width:'1280px'}],{duration:ms,easing:'linear',fill:'forwards'})}
 function logo(show){const l=$('logo');l.animate(show?[{opacity:0,transform:'scale(.2) rotate(-25deg)'},{opacity:1,transform:'scale(1.12) rotate(3deg)',offset:.6},{opacity:1,transform:'none'}]:[{opacity:1},{opacity:0,transform:'scale(2)'}],{duration:show?800:400,fill:'forwards',easing:'ease-out'})}
 setP('pA',{x:-500,y:0});setP('pB',{x:1400,y:0});
