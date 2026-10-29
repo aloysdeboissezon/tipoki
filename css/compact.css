@@ -62,7 +62,6 @@
 @media (max-width:560px){
   .hero>p:not(.streak){display:none}
   .hero{padding:16px 18px}
-  #pickPanel .steph{display:none}
   .bankpanel #bankSub{display:none}
   .bankpanel>.row{flex-wrap:nowrap}
   #meTopic .me-panel{padding:10px 12px}
@@ -153,3 +152,27 @@
 #topic[data-mode=menu]{padding-bottom:92px}
 #topic:not([data-mode=menu]) .showcase{display:none}
 @media (min-width:700px){#topic[data-mode=menu] .mcard{flex-direction:row;gap:10px}#topic[data-mode=menu] .mcard b{font-size:17px}}
+
+/* home: the quizzes are big colourful tiles, easy to spot and tap */
+#pickPanel{background:none;border:0;box-shadow:none;padding:0;gap:12px}
+#pickPanel .steph h2{font-size:clamp(22px,6vw,30px)}
+#pickPanel .qsearch{background:var(--card)}
+.quizgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (min-width:700px){.quizgrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}}
+.quizgrid .qcard{--c1:#6C4DFF;--c2:#A58BFF;--ink:#fff;position:relative;overflow:hidden;isolation:isolate;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:8px;min-height:176px;padding:14px;border:0;border-radius:26px;color:var(--ink);background:linear-gradient(150deg,var(--c1),var(--c2));box-shadow:0 7px 0 rgba(23,22,43,.2)}
+.quizgrid .qcard:nth-child(8n+2){--c1:#FF8F73;--c2:#FFC1A8;--ink:#2a1208}
+.quizgrid .qcard:nth-child(8n+3){--c1:#18C29C;--c2:#7DEBCB;--ink:#04251d}
+.quizgrid .qcard:nth-child(8n+4){--c1:#FFC933;--c2:#FFE58A;--ink:#2b2200}
+.quizgrid .qcard:nth-child(8n+5){--c1:#2F9BFF;--c2:#8FCBFF;--ink:#041a30}
+.quizgrid .qcard:nth-child(8n+6){--c1:#FF5FA2;--c2:#FFA6CB;--ink:#32061a}
+.quizgrid .qcard:nth-child(8n+7){--c1:#7AC943;--c2:#BDEE96;--ink:#12260a}
+.quizgrid .qcard:nth-child(8n+8){--c1:#9B6BFF;--c2:#D3BCFF;--ink:#1b0b3a}
+.quizgrid .qcard::before{content:"";position:absolute;z-index:-1;right:-40px;top:-40px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.25)}
+.quizgrid .qcard:hover{border:0;box-shadow:0 7px 0 rgba(23,22,43,.2);transform:translateY(-3px)}
+.quizgrid .qcard:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(23,22,43,.2)}
+.quizgrid .qico{position:static;margin-bottom:auto;align-self:flex-start;width:52px;height:52px;border-radius:18px;background:rgba(255,255,255,.88)!important;color:#17162B;font-size:28px}
+.quizgrid .qtxt{padding-right:34px;width:100%}
+.quizgrid .qtxt b{font-family:var(--f-display);font-size:clamp(17px,4.6vw,21px);line-height:1.1;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.quizgrid .qtxt small{color:inherit;opacity:.85;font-weight:700;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:normal}
+.quizgrid .qgo{position:absolute;right:12px;bottom:12px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#17162B;font-size:22px;font-weight:800;line-height:1}
+.quizgrid .qcard[hidden]{display:none}
