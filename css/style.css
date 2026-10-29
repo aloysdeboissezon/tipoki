@@ -336,7 +336,11 @@ body.noscroll{overflow:hidden}
 .qtxt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .qtxt b{font-family:var(--f-display);font-size:18px;line-height:1.2;overflow-wrap:anywhere}
 .qtxt small{font-size:13px;font-weight:700;color:var(--muted);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.qgo{flex:none;font:800 28px/1 var(--f-display);color:var(--hl)}
+.qgo{flex:none;font:700 30px/1 system-ui,sans-serif;width:22px;text-align:center;color:var(--hl)}
+.sess-sel{margin:8px 0 0;font-size:14px}
+.srchpanel>summary{list-style:none;cursor:pointer}.srchpanel>summary::-webkit-details-marker{display:none}.srchpanel[open]>summary{margin-bottom:12px}
+.srchpanel>summary::after{content:"+";margin-left:auto;font:800 24px/1 var(--f-display);color:var(--hl)}.srchpanel[open]>summary::after{content:"–"}
+.srchpanel>summary:focus-visible{outline:3px solid var(--hl);outline-offset:3px;border-radius:8px}
 .back{padding:8px 16px;min-height:44px;font-size:16px}
 #topic .bankpanel{grid-template-columns:52px minmax(0,1fr)}
 #topic .bankpanel>.row{grid-column:1/-1}

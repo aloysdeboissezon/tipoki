@@ -17,6 +17,7 @@
 </script>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Tipoki">
 <meta property="og:title" content="Tipoki · Study by challenging your friends">
@@ -32,6 +33,7 @@
 <link rel="stylesheet" href="css/music.css">
 <link rel="stylesheet" href="css/exam.css">
 <link rel="stylesheet" href="css/weak.css">
+<link rel="stylesheet" href="css/plan.css">
 <link rel="stylesheet" href="css/sync.css">
 <link rel="stylesheet" href="css/search.css">
 <link rel="stylesheet" href="css/sheet.css">
@@ -69,6 +71,13 @@
       <div class="quizgrid" id="quizGrid" aria-live="polite"></div>
       <div class="qempty" id="quizEmpty" hidden><p>No quiz found for “<b id="quizEmptyQ"></b>”.</p><button type="button" class="linkbtn" id="quizEmptyClear">Clear search</button></div>
     </div>
+    <div class="panel" id="joinPanel">
+      <h2>Got a code from a friend?</h2>
+      <div class="joinrow"><input type="text" id="codeIn" class="codein" maxlength="4" placeholder="CODE" autocomplete="off" autocapitalize="characters" aria-label="Game code"><button class="btn dark" id="joinBtn">Join</button></div>
+      <p class="err" id="joinErr" hidden></p>
+      <p class="muted">No code? Ask your friend, or open the link they sent you.</p>
+    </div>
+
     <div id="meHome">
     <div class="panel me-panel">
       <label class="pfp" id="pfpBtn" title="Add your profile picture"><input type="file" id="pfpIn" accept="image/*" hidden><span class="av big" id="pfpAv"></span><span class="pfp-add" aria-hidden="true">+</span></label>
@@ -80,14 +89,6 @@
       </div>
     </div>
     </div>
-    <div class="panel" id="joinPanel">
-      <h2>Got a code from a friend?</h2>
-      <div class="joinrow"><input type="text" id="codeIn" class="codein" maxlength="4" placeholder="CODE" autocomplete="off" autocapitalize="characters" aria-label="Game code"><button class="btn dark" id="joinBtn">Join</button></div>
-      <p class="err" id="joinErr" hidden></p>
-      <div class="label">Open games</div>
-      <div class="games" id="openGames"><p class="muted">No open games right now.</p></div>
-    </div>
-
     <p class="note" id="multiNote" hidden></p>
   </section>
 
@@ -110,20 +111,13 @@
       <div class="wk-main"><h2 id="weakTitle">Your weak points</h2><div class="muted" id="weakSub"></div><div class="chips" id="weakChips"></div></div>
       <button class="btn dark" id="weakBtn">Train now</button>
     </div>
-    <div class="panel srchpanel" id="srchPanel">
-      <div class="steph"><span class="stepn sr-ico" aria-hidden="true"></span><h2>Find a notion</h2></div>
-      <input type="text" id="srchIn" placeholder="Search a term, a definition, a question…" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" aria-label="Search this quiz">
-      <div class="chips" id="srchKind" role="group" aria-label="Search in" hidden></div>
-      <div class="sr-sum muted" id="srchSum" aria-live="polite"></div>
-      <div class="sr-list" id="srchList"></div>
-    </div>
     <div class="ticker" aria-hidden="true"><div id="tickerTxt"></div></div>
     <div id="resumeTopic"></div>
     <div id="meTopic"></div>
       <div class="panel" id="createPanel">
         <div class="steph"><span class="stepn">2</span><h2>Set up your game</h2></div>
         <div class="optsbody setgrid">
-          <div><div class="label" id="sessLbl">Sessions</div><div class="chips multi" id="sessChips"></div></div>
+          <div><div class="label" id="sessLbl">Sessions</div><div class="chips multi" id="sessChips"></div><p class="muted sess-sel" id="sessSel"></p></div>
           <div><div class="label">Format</div><div class="chips" id="fmtChips"></div></div>
           <div><div class="label">Difficulty</div><div class="chips" id="diffChips"></div></div>
           <div><div class="label">Questions <span class="muted lbl-sub" id="lenAvail"></span></div><div class="chips" id="lenChips"></div></div>
@@ -135,6 +129,10 @@
         </div>
         <p class="err" id="createErr" hidden></p>
       </div>
+      <div class="panel planpanel" id="planPanel">
+      <div class="pl-top"><h2>Exam planner</h2><div class="pl-ctl"><input type="date" id="planDate" aria-label="Exam date"><button type="button" class="linkbtn" id="planClear" hidden>Clear</button></div></div>
+      <div id="planBody"></div>
+    </div>
       <div class="panel" id="examPanel" hidden>
         <div class="steph"><span class="stepn ex-ico" aria-hidden="true"></span><h2>Exam mode</h2></div>
         <p class="muted ex-intro">Like the real thing: random questions from the <span id="exUnits">sessions</span> and format picked above, one clock for the whole exam, no corrections until you hand in. You get a grade out of 20.</p>
@@ -163,6 +161,13 @@
         <p class="muted sp-intro">The whole course on a few pages: key ideas, definitions, formulas and examples. Read it before you play, or download the PDF.</p>
         <div class="row actions"><button class="btn dark big" id="sheetOpen">Read the study sheet</button><a class="btn ghost big" id="sheetPdf" href="#" download>Download PDF</a></div>
       </div>
+    <details class="panel srchpanel" id="srchPanel">
+      <summary class="steph"><span class="stepn sr-ico" aria-hidden="true"></span><h2>Find a notion</h2></summary>
+      <input type="text" id="srchIn" placeholder="Search a term or a question…" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" aria-label="Search this quiz">
+      <div class="chips" id="srchKind" role="group" aria-label="Search in" hidden></div>
+      <div class="sr-sum muted" id="srchSum" aria-live="polite"></div>
+      <div class="sr-list" id="srchList"></div>
+    </details>
   </section>
 
   <!-- MAKE / PICK A QUIZ -->
@@ -279,7 +284,7 @@
   <section id="reveal" class="panel" hidden>
     <div class="hud"><div class="row"><span class="stag" id="rSess"></span><span class="label" id="rNum"></span></div><button type="button" class="autonext" id="rAuto"></button></div>
     <div class="tbar"><i id="rBar"></i></div>
-    <div class="verdict" id="rVerdict"></div>
+    <div class="verdict" id="rVerdict" role="status" aria-live="polite"></div>
     <div class="qtext" id="rText" style="font-size:clamp(18px,3.8vw,22px)"></div>
     <figure class="qimg small" id="rImgBox" hidden><img id="rImg" alt=""></figure>
     <div class="tiles" id="rTiles"></div>
@@ -370,9 +375,11 @@
 <script src="js/sheets/compta2.js"></script>
 <script src="js/sheet.js"></script>
 <script src="js/weak.js"></script>
+<script src="js/plan.js"></script>
 <script src="js/music.js"></script>
 <script src="js/theme.js"></script>
 <script src="js/sync.js"></script>
+<script>if("serviceWorker"in navigator&&location.protocol==="https:")addEventListener("load",function(){navigator.serviceWorker.register("/sw.js").catch(function(){})})</script>
 
 </body>
 </html>

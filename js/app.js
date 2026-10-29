@@ -105,6 +105,8 @@ $("pfpDel").onclick=()=>{try{localStorage.removeItem("tpk-avatar")}catch(e){}del
 renderMe();
 function renderSettings(){
   const sc=$("sessChips");sc.textContent="";
+  const sl=[...settings.sess].sort((a,b)=>a-b);
+  $("sessSel").textContent=!sl.length?tl("Pick at least one."):sl.length===ALL_S.length?"":sl.length<=2?sl.map(s=>sLabel(s)+" · "+(SESS[s]||"")).join("  |  "):tl("{n} selected",{n:sl.length});
   const all=el("button","chip",tl("All"));all.setAttribute("aria-pressed",settings.sess.size===ALL_S.length);
   all.onclick=()=>{settings.sess=new Set(settings.sess.size===ALL_S.length?[]:ALL_S);renderSettings()};sc.appendChild(all);
   for(const s of ALL_S){const b=el("button","chip",sLabel(s));b.title=SESS[s];b.setAttribute("aria-pressed",settings.sess.has(s));
@@ -314,21 +316,6 @@ function rememberQuiz(b){if(BUILTIN[b.id])return;const l=myQuizzes().filter(x=>x
 function esc(t){return String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 function genCode(){const A="ABCDEFGHJKLMNPQRSTUVWXYZ";let s="";for(let i=0;i<4;i++)s+=A[Math.floor(Math.random()*A.length)];return s}
 
-async function refreshOpen(){
-  const since=new Date(Date.now()-4*3600e3).toISOString();
-  const {data,error}=await sb.from("games").select("code,state,updated_at").gt("updated_at",since).order("updated_at",{ascending:false}).limit(15);
-  if(error||!data)return;
-  const list=data.filter(r=>r.state&&r.state.status!=="end");
-  const box=$("openGames");box.textContent="";
-  if(!list.length){box.appendChild(el("p","muted",tl("No open games right now. Create one or enter a code.")));return}
-  list.forEach(r=>{const g=r.state;
-    const row=el("div","gamerow");
-    const left=el("div");left.appendChild(el("div","code",r.code));
-    left.appendChild(el("div","muted",(g.hostNick||tl("Someone"))+" · "+(g.bankTitle||"Tipoki")+" · "+(g.status==="lobby"?tl("waiting"):tl("question {n}",{n:(g.qi+1)+(g.inf?"":"/"+g.deck.length)}))+" · "+(g.inf?"∞":g.deck.length)+" "+tl("questions")));
-    const b=el("button","btn dark",tl("Join"));b.onclick=()=>joinGame(r.code);
-    row.append(left,b);box.appendChild(row)});
-}
-function watchOpenGames(){refreshOpen();setInterval(()=>{if(!$("home").hidden)refreshOpen()},4000)}
 $("codeIn").addEventListener("input",e=>{e.target.value=e.target.value.toUpperCase().replace(/[^A-Z]/g,"")});
 $("codeIn").addEventListener("keydown",e=>{if(e.key==="Enter")$("joinBtn").click()});
 $("joinBtn").onclick=()=>{const c=$("codeIn").value.trim();if(c.length!==4){showErr("joinErr",tl("The code is 4 letters."));return}joinGame(c)};
@@ -458,7 +445,7 @@ async function loadAvatars(ids){
   if(got&&code===c)onPlayers();
 }
 async function poll(){
-  if(mode!=="multi"||!code)return;
+  if(mode!=="multi"||!code||document.hidden)return;
   const {data}=await sb.from("games").select("state").eq("code",code).maybeSingle();
   if(data)applyGame(data.state);
   await loadPlayers();
@@ -501,7 +488,7 @@ function startSolo(customDeck,opt){
 function leaveGame(silent){
   if(chan){try{sb.removeChannel(chan)}catch(e){}chan=null}
   if(pollT){clearInterval(pollT);pollT=null}
-  if(!silent){mode=null;code=null;G=null;P={};show("topic");if(sb)refreshOpen()}   // back to the quiz you just played, ready for another round
+  if(!silent){mode=null;code=null;G=null;P={};show("topic")}   // back to the quiz you just played, ready for another round
 }
 function isHost(){return G&&G.host===me}
 
@@ -997,14 +984,18 @@ function setQuizParam(){try{history.replaceState(null,"",BANK.id==="socio"?locat
 async function openQuiz(id,btn){
   if(btn)btn.disabled=true;const ok=await useBank(id);if(btn)btn.disabled=false;
   if(!ok){toast(tl("Quiz not found"));return}
-  setQuizParam();show("topic");
+  setQuizParam();show("topic");recentMark(id);
 }
+// quizzes you opened most recently come first on the home screen
+function recentGet(){try{return JSON.parse(lsGet("tpk-recent")||"{}")}catch(e){return {}}}
+function recentMark(id){const r=recentGet();r[id]=Date.now();const ks=Object.keys(r);if(ks.length>40)ks.sort((a,b)=>r[a]-r[b]).slice(0,ks.length-40).forEach(k=>delete r[k]);lsSet("tpk-recent",JSON.stringify(r))}
 function quizList(extra){const seen=new Set();return Object.keys(BUILTIN).map(id=>{const b=BUILTIN[id]();return {id,title:b.title,subject:b.subject,kw:b.kw,sess:b.sess,tags:b.tags}}).concat(myQuizzes(),extra||[]).filter(q=>!seen.has(q.id)&&seen.add(q.id))}
 // search: lowercase, no accents, punctuation as spaces, so "energie" finds "Énergie électrique"
 function fold(s){return String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()}
 function quizHay(q){return fold([q.title,q.subject,q.kw].concat(Object.values(q.sess||(q.data&&q.data.sess)||{}),Object.values(q.tags||{})).join(" "))}
 function renderQuizGrid(list){
   const box=$("quizGrid");box.textContent="";
+  const rc=recentGet();list=list.map((q,i)=>[q,i]).sort((a,b)=>(rc[b[0].id]||0)-(rc[a[0].id]||0)||a[1]-b[1]).map(x=>x[0]);
   list.forEach(q=>{const c=el("button","qcard");c.type="button";c.dataset.hay=quizHay(q);c.dataset.id=q.id;
     const ico=el("span","qico",(q.title||"?").trim().charAt(0).toUpperCase());ico.style.background="hsl("+hue(q.id||q.title||"")+" 90% 80%)";
     const t=el("span","qtxt");t.append(el("b",null,q.title));if(q.subject)t.append(el("small",null,q.subject));const qb=el("span","qbest");qb.hidden=true;t.append(qb);
@@ -1042,7 +1033,7 @@ $("brandHome").onclick=e=>{
   else if(G&&mode==="multi"&&(G.status==="q"||G.status==="reveal")&&!confirm(tl("Leave the current game? The other players will carry on without you.")))return;   // a solo game is saved, it can be resumed
   if(mode){leaveGame(true);mode=null;code=null;G=null;P={}}
   try{history.replaceState(null,"",location.pathname)}catch(e){}
-  show("home");renderMyQuizzes();if(sb)refreshOpen()};
+  show("home");renderMyQuizzes()};
 $("shareQuizBtn").onclick=async()=>{const u=quizUrl(BANK.id);try{await navigator.clipboard.writeText(u);toast(tl("Quiz link copied"))}catch(e){prompt(tl("Quiz link"),u)}};
 let mkFile=null;
 function setMkFile(f){
@@ -1083,7 +1074,7 @@ $("mkGo").onclick=async()=>{
 };
 
 loadBank(window.BANK_SOCIO);renderMyQuizzes();renderResume();
-if(sb){setMultiNote(true);watchOpenGames()}else setMultiNote(false);
+if(sb){setMultiNote(true)}else setMultiNote(false);
 (async()=>{let id=null;try{id=new URLSearchParams(location.search).get("quiz")}catch(e){}
   if(!id||!(BUILTIN[id]||/^[0-9a-f-]{36}$/i.test(id)))return;
   if(!await useBank(id)){toast(tl("Quiz not found"));return}
