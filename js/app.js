@@ -103,7 +103,37 @@ $("pfpIn").onchange=async e=>{const f=e.target.files[0];e.target.value="";if(!f)
   catch(err){showErr("nickErr",tl("Can't use this image, try another photo (JPG or PNG)."))}};
 $("pfpDel").onclick=()=>{try{localStorage.removeItem("tpk-avatar")}catch(e){}delete avs[me];renderMe()};
 renderMe();
+// showcase: one big illustrated tile per part of the quiz; tapping toggles it in the selection used by every mode
+const SC_PAL=[["#6C4DFF","#A58BFF","#fff"],["#FF8F73","#FFC1A8","#2a1208"],["#18C29C","#7DEBCB","#04251d"],["#FFC933","#FFE58A","#2b2200"],["#2F9BFF","#8FCBFF","#041a30"],["#FF5FA2","#FFA6CB","#32061a"],["#7AC943","#BDEE96","#12260a"],["#9B6BFF","#D3BCFF","#1b0b3a"]];
+const SC_ICO=[[/induct|électromag|magn|aimant|champ/i,"🧲"],[/altern|moteur|machine|turbine/i,"⚙️"],[/calcul|exercice|formule|rendement|math|chiffr/i,"🧮"],[/photovolta|solaire|soleil|solar/i,"☀️"],[/semi|silicium|bande|puce|transistor/i,"🔬"],[/énerg|energ|électri|electri|courant|puissance/i,"⚡"],[/compta|bilan|compte|financ|invest|capital|budget|bourse/i,"📊"],[/histoir|guerre|révolution|siècle|empire|histor/i,"🏛️"],[/géo|monde|pays|europe|carte|geo/i,"🌍"],[/science|chimi|biolog|cell|atom/i,"🧪"],[/art|cinéma|film|musique|peinture|litt/i,"🎨"],[/sport|jeu|game/i,"🏅"],[/popul|politi|démocra|élection|etat|état|pouvoir|gouvern/i,"🗳️"],[/social|sociolog|classe|culture|société|norme|groupe|famille|école|travail/i,"👥"],[/droit|loi|justice|jurid/i,"⚖️"],[/langue|mot|gramm|anglais|english|vocab/i,"💬"]];
+const SC_FALL=["📚","💡","🎯","🧠","✨","🔍","🚀","🧩"];
+function scIcon(s,i){for(const t of [SESS[s]||"",BANK.tags&&BANK.tags[s]||""])for(const [re,e] of SC_ICO)if(re.test(t))return e;return SC_FALL[i%SC_FALL.length]}
+function renderShowcase(){
+  const g=$("scGrid");if(!g||!BANK)return;g.textContent="";
+  const st=fcStore(),cnt={};
+  ALL_S.forEach(s=>cnt[s]={q:0,f:0,k:0});
+  Q.forEach(q=>{if(cnt[q.s])cnt[q.s].q++});TQ.forEach(q=>{if(cnt[q.s])cnt[q.s].q++});
+  (BANK.facts||[]).forEach(f=>{const c=cnt[Number(f[0])];if(c){c.f++;if(st[f[3]]===1)c.k++}});
+  ALL_S.forEach((s,i)=>{
+    const [c1,c2,ink]=SC_PAL[i%SC_PAL.length],c=cnt[s],on=settings.sess.has(s);
+    const b=el("button","sctile");b.type="button";b.setAttribute("aria-pressed",on);
+    b.style.cssText="--c1:"+c1+";--c2:"+c2+";--ink:"+ink;
+    b.appendChild(el("span","sc-n",String(i+1)));
+    b.appendChild(el("span","sc-ico",scIcon(s,i)));
+    b.appendChild(el("span","sc-ck","✓"));
+    b.appendChild(el("b","sc-t",SESS[s]||sLabel(s)));
+    const meta=[tl(c.q===1?"{n} question":"{n} questions",{n:c.q})];if(c.f)meta.push(tl(c.f===1?"{n} card":"{n} cards",{n:c.f}));
+    b.appendChild(el("span","sc-m",meta.join(" · ")));
+    if(c.f){const bar=el("span","sc-bar");const fi=el("i");fi.style.width=Math.round(100*c.k/c.f)+"%";bar.appendChild(fi);b.appendChild(bar)}
+    b.onclick=()=>{settings.sess.has(s)?settings.sess.delete(s):settings.sess.add(s);renderSettings()};
+    g.appendChild(b)});
+  const all=settings.sess.size===ALL_S.length;
+  $("scCount").textContent=tl("{n} of {m} selected",{n:settings.sess.size,m:ALL_S.length});
+  $("scAll").textContent=all?tl("Deselect all"):tl("Select all");
+  $("scAll").onclick=()=>{settings.sess=new Set(all?[]:ALL_S);renderSettings()};
+}
 function renderSettings(){
+  renderShowcase();
   const sc=$("sessChips");sc.textContent="";
   const sl=[...settings.sess].sort((a,b)=>a-b);
   $("sessSel").textContent=!sl.length?tl("Pick at least one."):sl.length===ALL_S.length?"":sl.length<=2?sl.map(s=>sLabel(s)+" · "+(SESS[s]||"")).join("  |  "):tl("{n} selected",{n:sl.length});

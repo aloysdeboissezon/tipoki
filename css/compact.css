@@ -118,3 +118,38 @@
 .tour-modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:16px;background:rgba(10,8,30,.82)}
 .tour-modal video{width:min(100%,960px);max-height:80vh;border-radius:20px;background:#000}
 .tour-modal button{position:absolute;right:14px;top:14px;width:46px;height:46px;border-radius:50%;border:0;font-size:26px;cursor:pointer;background:#fff;color:#17162B}
+
+/* ---------- showcase: one big illustrated tile per part of the quiz ---------- */
+.showcase{display:flex;flex-direction:column;gap:12px}
+.sc-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.sc-head h2{font-size:clamp(20px,5vw,26px);margin:0}
+.sc-ctl{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:700}
+.sc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (min-width:700px){.sc-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}}
+@media (min-width:1000px){.sc-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.sctile{position:relative;overflow:hidden;isolation:isolate;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;min-height:176px;padding:14px;border:0;border-radius:26px;text-align:left;font:inherit;color:var(--ink);cursor:pointer;background:linear-gradient(150deg,var(--c1),var(--c2));box-shadow:0 7px 0 rgba(23,22,43,.2);transition:transform .15s,filter .2s,opacity .2s,box-shadow .15s}
+.sctile::before{content:"";position:absolute;z-index:-1;right:-40px;top:-40px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.25)}
+.sctile::after{content:"";position:absolute;z-index:-1;left:-30px;bottom:-50px;width:110px;height:110px;border-radius:30px;background:rgba(255,255,255,.14);transform:rotate(20deg)}
+.sctile:hover{transform:translateY(-3px)}
+.sctile:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(23,22,43,.2)}
+.sctile:focus-visible{outline:3px solid var(--hl);outline-offset:3px}
+.sctile[aria-pressed=false]{filter:grayscale(.85) brightness(1.05);opacity:.55;box-shadow:0 4px 0 rgba(23,22,43,.12)}
+.sc-n{position:absolute;left:14px;top:12px;min-width:30px;height:30px;padding:0 9px;border-radius:999px;display:grid;place-items:center;background:rgba(255,255,255,.88);color:#17162B;font-family:var(--f-display);font-weight:800;font-size:15px}
+.sc-ico{position:absolute;right:14px;top:10px;font-size:clamp(40px,11vw,56px);line-height:1;filter:drop-shadow(0 4px 0 rgba(0,0,0,.12))}
+.sc-ck{position:absolute;right:12px;bottom:12px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#17162B;font-weight:800;font-size:15px;box-shadow:0 2px 0 rgba(0,0,0,.18)}
+.sctile[aria-pressed=false] .sc-ck{visibility:hidden}
+.sc-t{font-family:var(--f-display);font-size:clamp(16px,4.3vw,21px);line-height:1.08;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:break-word;hyphens:manual;padding-right:14px}
+.sc-m{font-size:12.5px;font-weight:800;opacity:.85}
+.sc-bar{height:7px;border-radius:99px;background:rgba(255,255,255,.55);overflow:hidden;margin-right:34px}
+.sc-bar i{display:block;height:100%;background:rgba(23,22,43,.7);border-radius:99px}
+
+/* the four ways to study: a slim dock at the bottom of the screen */
+#topic[data-mode=menu] .modecards{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;gap:8px;margin:0;padding:10px max(12px,calc((100vw - 920px)/2 + 12px)) calc(10px + env(safe-area-inset-bottom));background:var(--card);border-top:2px solid var(--line);box-shadow:0 -10px 30px -18px rgba(40,30,120,.35)}
+#topic[data-mode=menu] .mcard{flex:1 1 0;aspect-ratio:auto;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:58px;padding:6px 4px;border-radius:16px;box-shadow:0 4px 0 rgba(23,22,43,.2);text-align:center}
+#topic[data-mode=menu] .mcard::before{display:none}
+#topic[data-mode=menu] .mcard svg{position:static;width:24px;height:24px;stroke-width:3.4}
+#topic[data-mode=menu] .mcard b{font-size:14px}
+#topic[data-mode=menu] .mcard span{display:none}
+#topic[data-mode=menu]{padding-bottom:92px}
+#topic:not([data-mode=menu]) .showcase{display:none}
+@media (min-width:700px){#topic[data-mode=menu] .mcard{flex-direction:row;gap:10px}#topic[data-mode=menu] .mcard b{font-size:17px}}
