@@ -322,12 +322,11 @@ function renderPreviews(){
   if(!BANK)return;
   const clear=id=>{const b=$(id);b.textContent="";return b};
   const ok=q=>q&&q.q&&!q.img;
-  const mc=Q.filter(q=>ok(q)&&q.o&&q.o.length>=3&&!q.tf),short=mc.filter(q=>q.q.length<95&&q.o.every(o=>String(o).length<34));
+  const mc=Q.filter(q=>ok(q)&&q.o&&q.o.length>=3&&!q.tf),short=mc.filter(q=>q.q.length<80&&q.o.every(o=>String(o).length<20));
   const q1=pickOne(short.length?short:mc);let b=clear("pvQuiz");
-  if(q1){b.append(el("span","pv-q",cut(q1.q,90)));const t=el("span","pv-tiles");shuffle(q1.o.slice(0,4)).forEach((o,i)=>t.append(el("i","pv-t"+i,cut(String(o),28))));b.append(t)}
-  const all=Q.concat(TQ).filter(ok),sh=all.filter(q=>q.q.length<110),q2=pickOne(sh.length?sh:all);b=clear("pvExam");
-  if(q2){const bar=el("span","pv-bar");bar.append(el("b",null,"12:30"),el("em",null,"/ 20"));const dots=el("span","pv-dots");for(let i=0;i<8;i++)dots.append(el("u",i<3?"on":null));
-    b.append(bar,dots,el("span","pv-q",cut(q2.q,80)),el("span","pv-ans"),el("span","pv-ans s"))}
+  if(q1){b.append(el("span","pv-q",cut(q1.q,80)));const t=el("span","pv-tiles");shuffle(q1.o.slice(0,4)).forEach((o,i)=>t.append(el("i","pv-t"+i,cut(String(o),28))));b.append(t)}
+  const all=Q.concat(TQ).filter(ok),sh=all.filter(q=>q.q.length<70),q2=pickOne(sh.length?sh:all);b=clear("pvExam");
+  if(q2){const bar=el("span","pv-bar");bar.append(el("b",null,"12:30"),el("em",null,"/ 20"));b.append(bar,el("span","pv-q",cut(q2.q,64)),el("span","pv-ans"))}
   const f=pickOne((BANK.facts||[]).filter(x=>x[3]&&x[3].length<40&&x[4]));b=clear("pvCards");
   if(f){b.append(el("span","pv-card back"),el("span","pv-card front"));const fr=b.querySelector(".front");fr.append(el("small",null,tl("Concept")),el("b",null,f[3]),el("span",null,cut(f[4],110)))}
   const S=window.SHEETS&&window.SHEETS[BANK.id];b=clear("pvSheet");
@@ -335,7 +334,16 @@ function renderPreviews(){
     const sec=S.sections&&S.sections[0];if(sec){page.append(el("em",null,plainText(sec.title)));
       const dl=(sec.blocks||[]).find(x=>x.t==="dl");if(dl&&dl.items.length)dl.items.slice(0,2).forEach(([k,v])=>page.append(el("span","pv-line",cut(k+" · "+v,70))));else page.append(el("span","pv-line",cut(sec.lead||S.intro,90)))}
     page.append(el("span","pv-bars"));b.append(page)}
+  requestAnimationFrame(fitPreviews);
 }
+// the previews must always fit inside their square: drop the optional pieces until nothing is cut
+function fitPreviews(){
+  document.querySelectorAll("#topic .mc-pv").forEach(pv=>{
+    pv.classList.remove("tight","tighter");if(!pv.offsetParent)return;
+    if(pv.scrollHeight>pv.clientHeight+1){pv.classList.add("tight");
+      if(pv.scrollHeight>pv.clientHeight+1)pv.classList.add("tighter")}})
+}
+addEventListener("resize",()=>{if(!$("topic").hidden)fitPreviews()});
 function cut(s,n){s=plainText(s);if(s.length<=n)return s;s=s.slice(0,n);return s.replace(/\s+\S*$/,"")+"…"}
 function renderBankUI(){
   $("bankTitle").textContent=BANK.title;
@@ -1037,7 +1045,7 @@ function setMode(m){
   if(m==="sheet"){$("sheetBtn").click();return}
   if(m==="cards"&&$("cardsJump").hidden||m==="exam"&&$("examJump").hidden)m="menu";
   $("topic").dataset.mode=m;
-  if(m!=="menu")window.scrollTo(0,0);
+  if(m!=="menu")window.scrollTo(0,0);else requestAnimationFrame(fitPreviews);
 }
 document.querySelectorAll("#modeTabs .mcard").forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
 $("modeBack").onclick=()=>setMode("menu");
@@ -1062,6 +1070,10 @@ function renderQuizGrid(list){
     const ico=el("span","qico",(q.title||"?").trim().charAt(0).toUpperCase());ico.style.background="hsl("+hue(q.id||q.title||"")+" 90% 80%)";
     const t=el("span","qtxt");t.append(el("b",null,q.title));if(q.subject)t.append(el("small",null,q.subject));const qb=el("span","qbest");qb.hidden=true;t.append(qb);
     c.append(ico,t,el("span","qgo","›"));c.onclick=()=>openQuiz(q.id,c);box.appendChild(c)});
+  const L=$("qList");L.textContent="";
+  list.forEach((q,i)=>{const b=el("button","qchip");b.type="button";b.dataset.hay=quizHay(q);b.dataset.id=q.id;b.dataset.i=i%8;
+    b.append(el("span","qchip-l",(q.title||"?").trim().charAt(0).toUpperCase()),el("b",null,q.title),el("span","qgo","›"));b.onclick=()=>openQuiz(q.id,b);L.appendChild(b)});
+  $("qAllT").textContent=tl("All quizzes ({n})",{n:list.length});
   filterQuizzes();renderProgressUI();carouselUpdate();
 }
 // every typed word must appear somewhere in the quiz's title, subject, keywords or chapter names
@@ -1089,7 +1101,7 @@ function filterQuizzes(){
   const raw=$("quizSearch").value,words=fold(raw).split(" ").filter(Boolean);let n=0;
   $("quizGrid").querySelectorAll(".qcard").forEach(c=>{const ok=words.every(w=>c.dataset.hay.includes(w));c.hidden=!ok;if(ok)n++});
   $("quizSearchClear").hidden=!raw;
-  $("quizEmpty").hidden=n>0||!words.length;carouselUpdate();$("quizEmptyQ").textContent=raw.trim();
+  $("qList").querySelectorAll(".qchip").forEach(c=>{c.hidden=!words.every(w=>c.dataset.hay.includes(w))});$("quizEmpty").hidden=n>0||!words.length;carouselUpdate();$("quizEmptyQ").textContent=raw.trim();
 }
 function clearQuizSearch(focus){$("quizSearch").value="";filterQuizzes();if(focus)$("quizSearch").focus()}
 $("quizSearch").addEventListener("input",filterQuizzes);

@@ -279,3 +279,57 @@
 .cdot{width:9px;height:9px;padding:0;border:0;border-radius:99px;background:var(--line2);cursor:pointer;transition:width .25s,background .25s}
 .cdot[aria-current=true]{width:24px;background:var(--hl)}
 .quizgrid{--cw:clamp(190px,58vw,250px)}
+
+/* v4: everything visible at once, previews never cut */
+.qall{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.qall h3{margin:0;font-size:16px;color:var(--muted)}
+.qlist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (min-width:700px){.qlist{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.qchip{display:flex;align-items:center;gap:10px;min-height:56px;padding:8px 12px 8px 8px;border:0;border-radius:18px;font:inherit;text-align:left;color:#17162B;cursor:pointer;background:linear-gradient(135deg,var(--a),var(--b));box-shadow:0 4px 0 rgba(23,22,43,.18);min-width:0}
+.qchip:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(23,22,43,.18)}
+.qchip[hidden]{display:none}
+.qchip b{flex:1;min-width:0;font:800 14.5px/1.15 var(--f-display);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.qchip-l{flex:none;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.88);font:800 19px var(--f-display)}
+.qchip .qgo{flex:none;font-size:20px;font-weight:800}
+.qchip[data-i="0"]{--a:#8E78FF;--b:#BBA9FF;color:#1b0b3a}
+.qchip[data-i="1"]{--a:#FF8F73;--b:#FFC1A8}
+.qchip[data-i="2"]{--a:#18C29C;--b:#7DEBCB}
+.qchip[data-i="3"]{--a:#FFC933;--b:#FFE58A}
+.qchip[data-i="4"]{--a:#2F9BFF;--b:#8FCBFF}
+.qchip[data-i="5"]{--a:#FF5FA2;--b:#FFA6CB}
+.qchip[data-i="6"]{--a:#7AC943;--b:#BDEE96}
+.qchip[data-i="7"]{--a:#9B6BFF;--b:#D3BCFF}
+/* previews: no fade, they end cleanly inside the glass */
+#topic[data-mode=menu] .mc-pv{-webkit-mask-image:none;mask-image:none;height:auto;bottom:62px;gap:5px}
+#topic[data-mode=menu] .mc-pv .pv-q{-webkit-line-clamp:3}
+#topic[data-mode=menu] .mc-pv .pv-ans{flex:none}
+#topic[data-mode=menu] .mc-pv .pv-card.front{margin-top:8px}
+#topic[data-mode=menu] .mc-pv .pv-bars{height:auto;min-height:12px;flex:1;overflow:hidden}
+
+/* v5: the preview is a normal block between the top of the square and its title, so it can never overlap or run under it */
+#topic[data-mode=menu] .mcard{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-end;padding:10px}
+#topic[data-mode=menu] .mc-pv{position:static;left:auto;right:auto;top:auto;bottom:auto;flex:1 1 0;min-height:0;height:auto;margin:0 0 8px;overflow:hidden;border-radius:14px;-webkit-mask-image:none;mask-image:none}
+#topic[data-mode=menu] .mcard>b{flex:none;font-size:clamp(16px,4.6vw,24px);line-height:1.1;padding:0 2px}
+#topic[data-mode=menu] .mc-pv .pv-q{-webkit-line-clamp:2}
+#topic[data-mode=menu] .mc-pv .pv-tiles i{min-height:0;-webkit-line-clamp:1;padding:5px 6px}
+#topic[data-mode=menu] .mc-pv .pv-card.front{margin:2px 4px 0 2px;padding:8px}
+#topic[data-mode=menu] .mc-pv .pv-card span{-webkit-line-clamp:2}
+#topic[data-mode=menu] .mc-pv .pv-card.back{display:none}
+#topic[data-mode=menu] .mc-pv .pv-page{margin:0;min-height:0}
+#topic[data-mode=menu] .mc-pv .pv-line{-webkit-line-clamp:1}
+#topic[data-mode=menu] .mc-pv.tight .pv-bars,#topic[data-mode=menu] .mc-pv.tight .pv-ans,#topic[data-mode=menu] .mc-pv.tight .pv-card span{display:none}
+#topic[data-mode=menu] .mc-pv.tight .pv-tiles i:nth-child(n+3){display:none}
+#topic[data-mode=menu] .mc-pv.tighter .pv-line,#topic[data-mode=menu] .mc-pv.tighter .pv-page em,#topic[data-mode=menu] .mc-pv.tighter .pv-tiles{display:none}
+#topic[data-mode=menu] .mc-pv.tighter .pv-q{-webkit-line-clamp:1}
+#topic[data-mode=menu] .mc-pv.tight .pv-cover small{display:none}
+#topic[data-mode=menu] .mc-pv.tighter .pv-cover b{-webkit-line-clamp:1}
+#topic[data-mode=menu] .mc-pv.tighter .pv-cover{margin:0;border-radius:6px}
+@media (min-width:700px) and (max-width:999px){#topic[data-mode=menu] .mcard{aspect-ratio:2/3}}
+#topic[data-mode=menu] .mc-pv.tighter .pv-card small{display:none}
+/* wide screens: every quiz is a tile in a grid, nothing to swipe */
+@media (min-width:1000px){
+  .quizgrid{flex-wrap:wrap;overflow:visible;padding:18px 4px 24px;margin:0;gap:18px;scroll-snap-type:none;perspective:none}
+  .quizgrid .qcard{--s:1;--o:1;margin:0;flex:0 0 calc((100% - 36px)/3);width:auto;transform:none;opacity:1}
+  .quizgrid .qcard:hover{transform:translateY(-4px) scale(1.02)}
+  .cdots,.qall{display:none}
+}

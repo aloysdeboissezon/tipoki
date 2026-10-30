@@ -170,6 +170,7 @@ var FR={
 "Time per question":"Temps par question",
 "Create game":"Créer la partie",
 "Quiz":"Quiz",
+"All quizzes ({n})":"Tous les quiz ({n})",
 "What do you want to revise?":"Que veux-tu réviser ?",
 "{n} of {m} selected":"{n} sur {m} sélectionnés",
 "Select all":"Tout sélectionner",
