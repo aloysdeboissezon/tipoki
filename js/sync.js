@@ -5,7 +5,7 @@
 (()=>{
 if(typeof sb==="undefined"||!sb)return;   // no backend: the app stays local-only
 const ACCT="tpk-sync",DIRTY="tpk-sync-dirty";
-const NOSYNC=new Set(["socio-pid","socio-sound","tpk-theme","tpk-lang","tpk-resume","tpk-examrun","tpk-sid"]);   // per device (a paused solo game stays on its device)
+const NOSYNC=new Set(["socio-pid","socio-sound","tpk-theme","tpk-lang","tpk-resume","tpk-examrun","tpk-sid","tpk-lgq","tpk-lgseen"]);   // per device (a paused solo game stays on its device)
 function synced(k){return /^(socio-|tpk-)/.test(k)&&!NOSYNC.has(k)&&!k.startsWith(ACCT)}
 const S=Storage.prototype,oGet=S.getItem,oSet=S.setItem,oDel=S.removeItem;
 function ls(){try{return window.localStorage}catch(e){return null}}

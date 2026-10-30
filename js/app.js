@@ -647,7 +647,7 @@ function renderScreen(){
   else if(G.status==="reveal"){show("reveal");renderReveal()}
   else if(G.status==="end"){show("end");renderEnd()}
 }
-function show(id){["home","topic","make","lobby","question","reveal","end","cards","stats","exam"].forEach(s=>$(s).hidden=s!==id);
+function show(id){["home","topic","make","lobby","question","reveal","end","cards","stats","exam","league"].forEach(s=>$(s).hidden=s!==id);
   // the name + photo panel follows the player between the two start screens
   const slot=id==="home"?$("meHome"):id==="topic"?$("meTopic"):null,me=document.querySelector(".me-panel");if(slot&&me.parentNode!==slot)slot.appendChild(me);
   $("langBtn").hidden=!(id==="home"||id==="topic");   // switching reloads the page, so only offer it between games
