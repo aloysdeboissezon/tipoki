@@ -6,7 +6,7 @@
   document.getElementById("tourPoster").src="video/tipoki-intro-"+L+"-poster.jpg";
   btn.onclick=function(){
     var m=document.createElement("div"),v=document.createElement("video"),x=document.createElement("button");
-    m.className="tour-modal";
+    m.className="tour-modal";m.setAttribute("data-lenis-prevent","");
     v.src="video/tipoki-intro-"+L+".mp4";v.poster="video/tipoki-intro-"+L+"-poster.jpg";
     v.controls=true;v.autoplay=true;v.playsInline=true;v.preload="auto";
     v.setAttribute("aria-label",btn.getAttribute("aria-label"));

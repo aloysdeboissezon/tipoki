@@ -1,0 +1,199 @@
+/* Refine layer (loaded last): "frosted arcade". One brand violet, a harmonised quiz palette, soft depth instead of hard offsets,
+   a calm ambient backdrop, readable names, and motion tokens shared with js/motion.js. */
+
+/* ---------- tokens ---------- */
+:root{
+  --ease-out:cubic-bezier(.23,1,.32,1);      /* entering / feedback: fast start, long settle */
+  --ease-in-out:cubic-bezier(.77,0,.175,1);  /* things that move across the screen */
+  --t-press:140ms; --t-hover:180ms; --t-enter:420ms;
+  --depth:0 1px 0 rgba(255,255,255,.7) inset,0 18px 40px -24px rgba(48,28,150,.38),0 2px 6px -2px rgba(48,28,150,.10);
+  --glass:rgba(255,255,255,.72);
+  --edge:rgba(255,255,255,.55);
+  --r-card:22px; --r-ctl:14px;
+  /* quiz palette: same chroma and lightness family, violet stays the brand colour */
+  --p0a:#6D50F5; --p0b:#A894FF; --p0i:#fff;
+  --p1a:#F27E67; --p1b:#FFB9A4; --p1i:#3a1208;
+  --p2a:#1FB59C; --p2b:#78DDC8; --p2i:#03261f;
+  --p3a:#F5B83A; --p3b:#FFDD87; --p3i:#2b1d00;
+  --p4a:#4C8FF0; --p4b:#94C2FA; --p4i:#04203f;
+  --p5a:#E5629F; --p5b:#F7A9C9; --p5i:#3a0820;
+  --p6a:#62B866; --p6b:#B2E19A; --p6i:#0f2a0a;
+  --p7a:#8F6BEA; --p7b:#CEBBFA; --p7i:#1b0b3a;
+}
+:root[data-theme="dark"]{
+  --depth:0 1px 0 rgba(255,255,255,.07) inset,0 18px 40px -22px rgba(0,0,0,.75);
+  --glass:rgba(27,26,48,.72);
+  --edge:rgba(255,255,255,.09);
+}
+
+/* ---------- ambient backdrop ---------- */
+html{background:var(--bg)}
+body{background:transparent;caret-color:var(--hl);accent-color:var(--hl)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(60% 42% at 8% -4%,rgba(109,80,245,.22),transparent 70%),
+    radial-gradient(46% 38% at 100% 14%,rgba(242,126,103,.14),transparent 70%),
+    radial-gradient(60% 46% at 60% 104%,rgba(31,181,156,.13),transparent 70%)}
+:root[data-theme="dark"] body::before{background:
+    radial-gradient(60% 42% at 8% -4%,rgba(122,99,255,.30),transparent 70%),
+    radial-gradient(46% 38% at 100% 14%,rgba(229,98,159,.12),transparent 70%),
+    radial-gradient(60% 46% at 60% 104%,rgba(31,181,156,.10),transparent 70%)}
+
+/* ---------- type ---------- */
+h1,h2,h3,.hero p{text-wrap:balance}
+h1,h2{letter-spacing:-.025em}
+.label{font-weight:700;letter-spacing:.005em}
+#status,.rk,.pts,.ex-clock,.pv-bar,.cnt{font-variant-numeric:tabular-nums}
+.steph .stepn{display:none}
+input::placeholder,textarea::placeholder{color:#6B7088}
+:root[data-theme="dark"] input::placeholder,:root[data-theme="dark"] textarea::placeholder{color:#9A9DB8}
+::selection{background:color-mix(in srgb,var(--hl) 85%,#fff);color:#fff}
+*{scrollbar-color:var(--line2) transparent}
+:focus-visible{outline:2px solid var(--hl);outline-offset:3px;border-radius:inherit}
+
+/* ---------- surfaces: frosted panels, one elevation language (soft shadow, 1px edge) ---------- */
+.panel{background:var(--glass);border:1px solid var(--edge);border-radius:var(--r-card);box-shadow:var(--depth)}
+.iconbtn,#status{border-width:1px;background:var(--glass);box-shadow:0 1px 0 var(--edge) inset;transition:transform var(--t-press) var(--ease-out),border-color var(--t-hover),background var(--t-hover)}
+.iconbtn:active{transform:scale(.94)}
+.chip{border-width:1px;transition:transform var(--t-press) var(--ease-out),background var(--t-hover),border-color var(--t-hover),color var(--t-hover)}
+.chip:active{transform:scale(.96)}
+input[type=text],textarea,.qsearch input{border-width:1px}
+
+/* ---------- buttons: glossy violet, pressed = slight sink, no hard offset ---------- */
+.btn{border-radius:var(--r-ctl);background:linear-gradient(180deg,color-mix(in srgb,var(--hl) 82%,#fff),var(--hl) 70%);
+  box-shadow:0 1px 0 rgba(255,255,255,.35) inset,0 -3px 0 rgba(0,0,0,.14) inset,0 12px 22px -12px var(--hl-glow);
+  transition:transform var(--t-press) var(--ease-out),box-shadow var(--t-hover),filter var(--t-hover)}
+.btn:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.05)}
+.btn:active:not(:disabled){transform:scale(.97);box-shadow:0 1px 0 rgba(255,255,255,.25) inset,0 -1px 0 rgba(0,0,0,.14) inset,0 6px 12px -10px var(--hl-glow)}
+.btn.dark{background:var(--ink);box-shadow:0 1px 0 rgba(255,255,255,.16) inset,0 12px 22px -14px rgba(0,0,0,.6)}
+.btn.dark:active:not(:disabled){box-shadow:0 6px 12px -10px rgba(0,0,0,.6)}
+:root[data-theme="dark"] .btn.dark{background:#F1F0FA;box-shadow:0 12px 22px -14px rgba(0,0,0,.7)}
+.btn.ghost{background:var(--glass);border:1px solid var(--line2);box-shadow:0 1px 0 var(--edge) inset}
+.btn.ghost:active:not(:disabled){transform:scale(.97);box-shadow:none}
+
+/* answer tiles keep their Kahoot colours; the hard block shadow becomes a soft coloured lift + a pressed edge */
+.t0{box-shadow:0 -4px 0 rgba(0,0,0,.16) inset,0 14px 22px -14px var(--a0)}
+.t1{box-shadow:0 -4px 0 rgba(0,0,0,.16) inset,0 14px 22px -14px var(--a1)}
+.t2{box-shadow:0 -4px 0 rgba(0,0,0,.12) inset,0 14px 22px -14px var(--a2)}
+.t3{box-shadow:0 -4px 0 rgba(0,0,0,.16) inset,0 14px 22px -14px var(--a3)}
+.tile{transition:transform var(--t-press) var(--ease-out),box-shadow var(--t-hover),opacity .25s,filter .15s}
+.tile:active:not(:disabled){transform:scale(.97)}
+.t0:active:not(:disabled),.t1:active:not(:disabled),.t2:active:not(:disabled),.t3:active:not(:disabled){box-shadow:0 -2px 0 rgba(0,0,0,.14) inset}
+
+/* ---------- home hero: mesh gradient, no decorative circles ---------- */
+.hero{background:
+    radial-gradient(70% 90% at 100% 0%,rgba(255,111,168,.55),transparent 62%),
+    radial-gradient(60% 80% at 0% 100%,rgba(31,181,156,.38),transparent 65%),
+    linear-gradient(135deg,#4B2FE0,#7A5CFF);
+  border-radius:28px;box-shadow:0 1px 0 rgba(255,255,255,.3) inset,0 28px 50px -28px rgba(75,47,224,.7)}
+.hero::before,.hero::after{display:none}
+.hero h1{font-size:clamp(30px,8.4vw,60px);line-height:1.02;letter-spacing:-.035em;font-weight:800}
+.hero h1 .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
+.hero h1 .w>span{display:inline-block;will-change:transform}
+@media (max-width:560px){.hero{padding:18px 20px}.hero h1{font-size:clamp(28px,8.6vw,34px)}}
+.tour-btn{background:linear-gradient(160deg,#3A25C4,#2A1A9E);border-radius:24px;box-shadow:0 1px 0 rgba(255,255,255,.22) inset,0 18px 30px -18px rgba(42,26,158,.8);transition:transform var(--t-press) var(--ease-out)}
+.tour-btn:active{transform:scale(.96)}
+.tour-play{box-shadow:0 8px 16px -8px rgba(0,0,0,.5)}
+.hero .streak{box-shadow:none}
+
+/* ---------- quiz tiles: harmonised palette, soft depth, pointer spotlight ---------- */
+.quizgrid .qcard{--c1:var(--p0a);--c2:var(--p0b);--ink:var(--p0i);border-radius:var(--r-card);
+  box-shadow:0 1px 0 rgba(255,255,255,.45) inset,0 20px 32px -18px color-mix(in srgb,var(--c1) 80%,#1a1050)}
+.quizgrid .qcard:nth-child(8n+2){--c1:var(--p1a);--c2:var(--p1b);--ink:var(--p1i)}
+.quizgrid .qcard:nth-child(8n+3){--c1:var(--p2a);--c2:var(--p2b);--ink:var(--p2i)}
+.quizgrid .qcard:nth-child(8n+4){--c1:var(--p3a);--c2:var(--p3b);--ink:var(--p3i)}
+.quizgrid .qcard:nth-child(8n+5){--c1:var(--p4a);--c2:var(--p4b);--ink:var(--p4i)}
+.quizgrid .qcard:nth-child(8n+6){--c1:var(--p5a);--c2:var(--p5b);--ink:var(--p5i)}
+.quizgrid .qcard:nth-child(8n+7){--c1:var(--p6a);--c2:var(--p6b);--ink:var(--p6i)}
+.quizgrid .qcard:nth-child(8n+8){--c1:var(--p7a);--c2:var(--p7b);--ink:var(--p7i)}
+.quizgrid .qcard:hover,.quizgrid .qcard:active{box-shadow:0 1px 0 rgba(255,255,255,.45) inset,0 24px 36px -18px color-mix(in srgb,var(--c1) 85%,#1a1050)}
+.quizgrid .qcard{transition:transform .45s var(--ease-out),opacity .35s,box-shadow .35s}
+.quizgrid .qcard::before,.sctile::before,.sctile::after,#topic[data-mode=menu] .mcard::before{display:none}
+.quizgrid .qico{box-shadow:0 8px 14px -8px rgba(0,0,0,.35)}
+.quizgrid .qgo,.sc-ck{box-shadow:0 6px 12px -6px rgba(0,0,0,.35)}
+.quizgrid .qtxt small{opacity:.78}
+
+/* "all quizzes" list: full names (2 lines), one column on phones so nothing is cut */
+.qlist{grid-template-columns:minmax(0,1fr);gap:10px}
+@media (min-width:560px){.qlist{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:900px){.qlist{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.qchip{position:relative;overflow:hidden;isolation:isolate;min-height:60px;border-radius:var(--r-ctl);
+  box-shadow:0 1px 0 rgba(255,255,255,.45) inset,0 14px 22px -16px color-mix(in srgb,var(--a) 85%,#1a1050);
+  transition:transform var(--t-press) var(--ease-out),box-shadow var(--t-hover);color:var(--ci,#17162B)}
+.qchip:hover{transform:translateY(-2px)}
+.qchip:active{transform:scale(.97);box-shadow:0 1px 0 rgba(255,255,255,.45) inset}
+.qchip b{font-size:15px;line-height:1.18;-webkit-line-clamp:3}
+.qchip-l{border-radius:11px;box-shadow:0 6px 10px -6px rgba(0,0,0,.35)}
+.qchip[data-i="0"]{--a:var(--p0a);--b:var(--p0b);--ci:var(--p0i)}
+.qchip[data-i="1"]{--a:var(--p1a);--b:var(--p1b);--ci:var(--p1i)}
+.qchip[data-i="2"]{--a:var(--p2a);--b:var(--p2b);--ci:var(--p2i)}
+.qchip[data-i="3"]{--a:var(--p3a);--b:var(--p3b);--ci:var(--p3i)}
+.qchip[data-i="4"]{--a:var(--p4a);--b:var(--p4b);--ci:var(--p4i)}
+.qchip[data-i="5"]{--a:var(--p5a);--b:var(--p5b);--ci:var(--p5i)}
+.qchip[data-i="6"]{--a:var(--p6a);--b:var(--p6b);--ci:var(--p6i)}
+.qchip[data-i="7"]{--a:var(--p7a);--b:var(--p7b);--ci:var(--p7i)}
+.qchip[data-i]{color:var(--ci)}
+.qall h3{font-size:14px;font-weight:800;letter-spacing:.01em}
+
+/* spotlight (React Bits style): a soft light follows the pointer over tiles */
+.qcard::after,.qchip::after,.sctile::after,.mcard::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s;
+  background:radial-gradient(240px circle at var(--mx,50%) var(--my,0%),rgba(255,255,255,.38),transparent 62%)}
+@media (hover:hover) and (pointer:fine){.qcard:hover::after,.qchip:hover::after,.sctile:hover::after,.mcard:hover::after{opacity:1}}
+.mcard,.sctile{transition:transform var(--t-hover) var(--ease-out),box-shadow var(--t-hover),background var(--t-hover)}
+
+/* ---------- quiz page: frosted squares over a soft mesh ---------- */
+#topic[data-mode=menu] .modecards{background:
+    radial-gradient(60% 55% at 92% 4%,rgba(255,122,92,.9),transparent 62%),
+    radial-gradient(55% 55% at 4% 100%,rgba(15,169,138,.85),transparent 62%),
+    radial-gradient(50% 50% at 50% 50%,rgba(255,111,168,.45),transparent 70%),
+    linear-gradient(140deg,#4B2FE0,#7A5CFF 60%,#9A6BFF);
+  box-shadow:0 1px 0 rgba(255,255,255,.3) inset,0 30px 50px -28px rgba(75,47,224,.7);border-radius:30px}
+#topic[data-mode=menu] .modecards::before,#topic[data-mode=menu] .modecards::after{display:none}
+#topic[data-mode=menu] .mcard{border:1px solid rgba(255,255,255,.5);border-radius:24px;transform:perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+  box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 24px 36px -22px rgba(20,10,80,.6)}
+#topic[data-mode=menu] .mcard:hover{background:rgba(255,255,255,.28);transform:perspective(800px) translateY(-3px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg))}
+#topic[data-mode=menu] .mcard:active{transform:scale(.97)}
+.bankpanel{overflow:hidden;border:0;background:
+    radial-gradient(70% 120% at 100% 0%,rgba(255,111,168,.5),transparent 62%),
+    radial-gradient(60% 100% at 0% 100%,rgba(31,181,156,.3),transparent 65%),
+    linear-gradient(135deg,#4B2FE0,#7A5CFF);
+  box-shadow:0 1px 0 rgba(255,255,255,.3) inset,0 24px 40px -26px rgba(75,47,224,.7)}
+.bankpanel::after{display:none}
+#pickPanel{background:none;border:0;box-shadow:none;padding:0}
+.qchip-l,.qchip .qgo{color:#17162B}
+.sctile{border-radius:var(--r-card);box-shadow:0 1px 0 rgba(255,255,255,.45) inset,0 18px 28px -18px rgba(23,22,43,.45)}
+.sctile:active{box-shadow:0 1px 0 rgba(255,255,255,.45) inset;transform:scale(.97)}
+
+/* ---------- mode pages / exam / podium ---------- */
+.pod .blk{border-radius:16px 16px 0 0}
+.pod.p1 .blk{background:linear-gradient(180deg,#7A5CFF,var(--hl));box-shadow:0 -1px 0 rgba(255,255,255,.4) inset}
+#topic[data-mode=play] #createPanel .actions,#examPanel .actions,#cardsPanel .actions{background:var(--glass);-webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3);border-top:1px solid var(--edge)}
+.jointoast{border-radius:16px;box-shadow:0 18px 30px -14px rgba(0,0,0,.5)}
+
+/* ---------- modal (tutorial video) ---------- */
+.tour-modal{animation:fadeOnly .22s var(--ease-out) both;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.tour-modal video{animation:modalIn .3s var(--ease-out) both}
+@keyframes fadeOnly{from{opacity:0}to{opacity:1}}
+@keyframes modalIn{from{opacity:0;transform:scale(.96) translateY(8px)}to{opacity:1;transform:none}}
+
+/* ---------- smooth scroll (Lenis, desktop only; the class is added by js/motion.js) ---------- */
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-stopped{overflow:hidden}
+
+/* ---------- reduced motion: soften, don't strip. No travel, no loops, no parallax, no tilt; state changes still fade quickly ---------- */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;scroll-behavior:auto!important;
+    transition-property:opacity,color,background-color,border-color,box-shadow,filter!important;transition-duration:.14s!important;transition-delay:0s!important}
+  .tour-modal,.tour-modal video{animation:none!important}
+  #topic[data-mode=menu] .mcard,#topic[data-mode=menu] .mcard:hover{transform:none!important}
+  .quizgrid .qcard,.quizgrid .qcard:hover,.quizgrid .qcard:active{transition-property:opacity,box-shadow!important}
+}
+
+/* ---------- fixes found in review ---------- */
+#pickPanel .qsearch{background:transparent}
+.hero h1{margin-bottom:6px}
+@media (min-width:700px){
+  #topic[data-mode=menu] .modecards{grid-template-columns:repeat(auto-fit,minmax(160px,240px));justify-content:center}
+}
+@media (max-width:360px){.hero h1{font-size:26px}}
