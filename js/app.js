@@ -456,9 +456,15 @@ function countUp(elm,from,to){if(RM||from===to){elm.textContent=to+" pts";return
   (function f(t){const k=Math.min(1,(t-t0)/700),v=Math.round(from+(to-from)*(1-Math.pow(1-k,3)));elm.textContent=v+" pts";if(k<1)requestAnimationFrame(f)})(t0)}
 
 // ---------- engine: writes ----------
-function queue(fn){writeChain=writeChain.then(fn).catch(err=>{console.warn(err);toast(tl("Connection problem, try again"))});return writeChain}
+// network state: a thin banner shows while writes or polls fail; writes are retried a few times before giving up
+let netBad=false;
+function setNet(bad){if(bad===netBad)return;netBad=bad;let b=$("netBar");if(!b&&bad){b=el("div","netbar");b.id="netBar";b.setAttribute("role","status");b.textContent=tl("Reconnecting…");document.body.appendChild(b)}if(b)b.hidden=!bad}
+window.addEventListener("online",()=>{if(mode==="multi")poll()});
+async function withRetry(fn){for(let i=0;;i++){try{const r=await fn();setNet(false);return r}catch(err){setNet(true);if(i>=3)throw err;await new Promise(r=>setTimeout(r,800*(i+1)))}}}
+function queue(fn){writeChain=writeChain.then(()=>withRetry(fn)).catch(err=>{console.warn(err);toast(tl("Connection problem, try again"))});return writeChain}
 function writeGame(patch){
   const ng={...G,...patch,seq:(G.seq||0)+1};
+  if(patch.status&&!("pz" in patch))ng.pz=0;
   if(patch.status==="q")ng.qAt=Date.now();   // lets someone who joins mid-question get the time that is really left
   onGame(ng);
   if(mode==="solo")return Promise.resolve();
@@ -525,9 +531,13 @@ async function loadAvatars(ids){
 }
 async function poll(){
   if(mode!=="multi"||!code||document.hidden)return;
-  const {data}=await sb.from("games").select("state").eq("code",code).maybeSingle();
-  if(data)applyGame(data.state);
-  await loadPlayers();
+  try{
+    const {data,error}=await sb.from("games").select("state").eq("code",code).maybeSingle();
+    if(error)throw error;
+    setNet(false);
+    if(data)applyGame(data.state);
+    await loadPlayers();
+  }catch(e){setNet(true)}
 }
 async function joinGame(c){
   showErr("joinErr","");if(needNick())return;
@@ -797,8 +807,8 @@ function renderAuto(left){
   if(!host)$("rWait").textContent=sec>0?tl("{what} in {n} s",{what:last?tl("Podium"):tl("Next question"),n:sec})+"…":tl("The host is starting the next one…");
 }
 $("rAuto").onclick=()=>{if(!isHost()||!local.autoAt||local.autoFired)return;
-  if(local.paused){local.paused=false;local.autoAt=performance.now()+Math.max(1500,local.autoLeft)}
-  else{local.paused=true;local.autoLeft=local.autoAt-performance.now()}
+  if(local.paused){local.paused=false;local.autoAt=performance.now()+Math.max(1500,local.autoLeft);writeGame({pz:0})}
+  else{local.paused=true;local.autoLeft=local.autoAt-performance.now();writeGame({pz:Date.now()})}
   renderAuto(local.paused?local.autoLeft:local.autoAt-performance.now())};
 
 // ---------- reveal ----------
@@ -852,6 +862,19 @@ function goNext(){
   if(G.inf){const p={status:"q",qi:G.qi+1};if(G.qi+1>=G.deck.length-5)p.deck=G.deck.concat(buildDeck(G.sess||[...settings.sess],LEN_INF,G.fmt||settings.fmt,{exclude:G.deck,more:true,diff:G.diff}));writeGame(p);return}
   if(G.qi>=G.deck.length-1)writeGame({status:"end"});else writeGame({status:"q",qi:G.qi+1});
 }
+// the host's client drives the game: if it goes quiet (closed tab, lost connection), the longest-standing other player takes over.
+// each candidate waits longer than the one before, so only one steps in; a paused game (G.pz) is left alone
+function succession(){return Object.keys(P).filter(id=>id!==G.host).sort((a,b)=>(P[a].joined||0)-(P[b].joined||0)||(a<b?-1:1))}
+setInterval(()=>{
+  if(mode!=="multi"||!G||isHost()||document.hidden||netBad)return;
+  if(G.status==="q"&&!$("question").hidden)var over=-timeLeft();
+  else if(G.status==="reveal"&&local.autoAt)over=performance.now()-local.autoAt;
+  else return;
+  if(G.pz&&Date.now()-G.pz<10*60000)return;
+  const rank=succession().indexOf(me);if(rank<0)return;
+  const grace=(G.status==="q"?4000:7000)+rank*6000;
+  if(over>grace){writeGame({host:me,pz:0}).then(()=>{local.autoFired=false;local.revealing=false;joinToast(tl("The host left the game, you are now running it"))})}
+},1000);
 $("rEnd").onclick=()=>{if(isHost())writeGame({status:"end",deck:G.deck.slice(0,G.qi+1),inf:false})};
 
 // ---------- progress: best score per quiz + daily study streak ----------

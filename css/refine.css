@@ -390,3 +390,19 @@ body::before{inset:-25%;
 #topic[data-mode=menu] .mcard .mc-pv .pv-page>:not(.pv-bars),#topic[data-mode=menu] .mcard .mc-pv .pv-card.front>*{flex:none}
 #topic[data-mode=menu] .mcard .mc-pv .pv-page .pv-line{overflow:visible}
 }
+
+/* connection lost banner (multiplayer) */
+.netbar{position:fixed;left:50%;top:calc(10px + env(safe-area-inset-top));transform:translateX(-50%);z-index:70;background:#E8492B;color:#fff;font-weight:800;font-size:14px;padding:8px 16px;border-radius:999px;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.netbar[hidden]{display:none}
+
+/* report a question */
+.reportbox{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.linkbtn{background:none;border:0;padding:6px 2px;font:inherit;font-size:13px;font-weight:700;color:var(--muted);text-decoration:underline;cursor:pointer}
+.linkbtn:disabled{text-decoration:none;opacity:.7;cursor:default}
+.reportpick{display:flex;flex-wrap:wrap;gap:8px}
+
+/* "Today" panel on the quiz page */
+.todaypanel{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between}
+.todaypanel h2{margin:0}
+.today-btns{display:flex;gap:8px;flex-wrap:wrap}
+.todaypanel[hidden]{display:none}

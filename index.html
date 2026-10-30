@@ -130,6 +130,10 @@
       <div class="ms-main"><h2 id="missTitle">Missed questions</h2><div class="muted">Get one right and it leaves the list.</div></div>
       <button class="btn dark" id="missBtn">Replay them</button>
     </div>
+    <div class="panel todaypanel" id="todayPanel" hidden>
+      <div class="wk-main"><h2>Today</h2><div class="muted" id="todaySub"></div></div>
+      <div class="today-btns"><button class="btn dark" id="todayCards" hidden></button><button class="btn dark" id="todayQs" hidden></button></div>
+    </div>
     <div class="panel weakpanel" id="weakPanel" hidden>
       <div class="wk-ico" aria-hidden="true"></div>
       <div class="wk-main"><h2 id="weakTitle">Your weak points</h2><div class="muted" id="weakSub"></div><div class="chips" id="weakChips"></div></div>
@@ -316,6 +320,10 @@
     <p class="fast" id="rFast" hidden></p>
     <p class="missnote" id="rMiss" hidden></p>
     <div class="expl" id="rExplBox"><div class="expl-h">Why?</div><p id="rExpl"></p><p class="expl-not" id="rWhyNot" hidden></p></div>
+    <div class="reportbox" id="rReportBox" hidden>
+      <button type="button" class="linkbtn" id="rReport" aria-expanded="false">Report this question</button>
+      <div class="reportpick" id="rReportPick" hidden><button type="button" class="chip" data-why="wrong">Wrong answer</button><button type="button" class="chip" data-why="ambiguous">Ambiguous</button><button type="button" class="chip" data-why="typo">Typo</button><button type="button" class="chip" data-why="other">Other</button></div>
+    </div>
     <div class="label">Leaderboard</div>
     <div class="board" id="rBoard"></div>
     <div class="row end">
@@ -399,7 +407,9 @@
 <script src="js/sheets/compta2.js?v=20261030b"></script>
 <script src="js/sheet.js?v=20261030b"></script>
 <script src="js/weak.js?v=20261030b"></script>
+<script src="js/report.js?v=20261030b"></script>
 <script src="js/plan.js?v=20261030b"></script>
+<script src="js/today.js?v=20261030b"></script>
 <script src="js/music.js?v=20261030b"></script>
 <script src="js/tour.js?v=20261030b"></script>
 <script src="js/theme.js?v=20261030b"></script>
