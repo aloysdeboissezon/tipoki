@@ -213,3 +213,50 @@
 @media (min-width:700px){#topic[data-mode=menu] .modecards{padding:20px;gap:18px}}
 #topic[data-mode=play] #createPanel .actions{position:fixed;left:0;right:0;bottom:0;margin:0;z-index:20;background:var(--card);border-top:2px solid var(--line);border-radius:0;padding:10px max(16px,calc((100vw - 920px)/2 + 16px)) calc(10px + env(safe-area-inset-bottom))}
 #topic[data-mode=play]{padding-bottom:84px}
+
+/* ---------- home carousel: swipe, the centred quiz grows ---------- */
+.quizgrid{--cw:clamp(210px,66vw,270px);display:flex;grid-template-columns:none;gap:0;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-x:contain;padding:26px calc(50% - var(--cw)/2) 34px;margin:-10px -16px 0;perspective:900px;touch-action:pan-x pan-y}
+.quizgrid::-webkit-scrollbar{display:none}
+.quizgrid.dragging{scroll-snap-type:none;cursor:grabbing}
+.quizgrid .qcard{--s:.86;--o:.6;flex:0 0 var(--cw);width:var(--cw);min-height:236px;margin:0 8px;scroll-snap-align:center;scroll-snap-stop:always;transform:scale(var(--s));opacity:var(--o);transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .35s,box-shadow .35s;box-shadow:0 calc(var(--s)*14px - 4px) 0 rgba(23,22,43,.2),0 24px 36px -18px rgba(23,22,43,calc((var(--s) - .84)*5))}
+.quizgrid .qcard:hover{transform:scale(var(--s));box-shadow:0 calc(var(--s)*14px - 4px) 0 rgba(23,22,43,.2),0 24px 36px -18px rgba(23,22,43,.5)}
+.quizgrid .qcard:active{transform:scale(calc(var(--s) - .03))}
+.quizgrid .qico{width:60px;height:60px;font-size:32px;border-radius:20px}
+.quizgrid .qtxt b{font-size:clamp(20px,5.4vw,24px)}
+.quizgrid .qtxt small{-webkit-line-clamp:3}
+@media (min-width:700px){.quizgrid{--cw:290px;margin:-10px 0 0}}
+@media (prefers-reduced-motion:reduce){.quizgrid .qcard{transition:none}}
+
+/* ---------- quiz page: big glass squares showing a real preview of the content ---------- */
+#topic[data-mode=menu] .mcard{aspect-ratio:4/5;justify-content:flex-end;overflow:hidden}
+#topic[data-mode=menu] .mcard svg{display:none}
+#topic[data-mode=menu] .modecards{gap:14px}
+@media (min-width:700px){#topic[data-mode=menu] .mcard{aspect-ratio:3/4}}
+.mc-pv{position:absolute;left:10px;right:10px;top:10px;height:56%;display:flex;flex-direction:column;gap:6px;overflow:hidden;pointer-events:none;-webkit-mask-image:linear-gradient(#000 62%,transparent);mask-image:linear-gradient(#000 62%,transparent);color:#17162B;text-align:left}
+.mcard>b,.mcard>span:not(.mc-pv){position:relative;z-index:1}
+.mcard:has(.mc-pv:empty)>.mc-pv{display:none}
+#topic[data-mode=menu] .mc-pv .pv-q{font:800 clamp(11px,3.1vw,14px)/1.2 var(--f-display);background:rgba(255,255,255,.82);border-radius:12px;padding:8px 9px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#topic[data-mode=menu] .mc-pv .pv-tiles{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+#topic[data-mode=menu] .mc-pv .pv-tiles i{font:700 clamp(9.5px,2.6vw,12px)/1.15 var(--f-body);font-style:normal;color:#fff;border-radius:10px;padding:7px 7px;min-height:36px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;opacity:.92}
+#topic[data-mode=menu] .mc-pv .pv-t0{background:#E5484D}.pv-t1{background:#2F7DE1}.pv-t2{background:#E0A100}.pv-t3{background:#22A06B}
+#topic[data-mode=menu] .mc-pv .pv-bar{display:flex;align-items:baseline;justify-content:space-between;background:rgba(23,22,43,.55);color:#fff;border-radius:12px;padding:5px 10px;font:800 13px var(--f-display)}
+#topic[data-mode=menu] .mc-pv .pv-bar em{font-style:normal;opacity:.85}
+#topic[data-mode=menu] .mc-pv .pv-card{position:absolute;border-radius:14px}
+#topic[data-mode=menu] .mc-pv .pv-card.back{left:14px;right:6px;top:14px;bottom:-30px;background:rgba(255,255,255,.4);transform:rotate(4deg)}
+#topic[data-mode=menu] .mc-pv .pv-card.front{position:relative;margin:6px 8px 0 4px;background:rgba(255,255,255,.85);padding:10px;display:flex;flex-direction:column;gap:3px;transform:rotate(-3deg);box-shadow:0 8px 18px -8px rgba(20,10,80,.5)}
+#topic[data-mode=menu] .mc-pv .pv-card small{font:800 9.5px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:#6a5bd8}
+#topic[data-mode=menu] .mc-pv .pv-card b{font:800 clamp(14px,4vw,18px)/1.1 var(--f-display)}
+#topic[data-mode=menu] .mc-pv .pv-card span{font:700 clamp(9.5px,2.6vw,11.5px)/1.25 var(--f-body);opacity:.75;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+#topic[data-mode=menu] .mc-pv .pv-page{background:rgba(255,255,255,.8);border-radius:6px 6px 0 0;padding:10px;display:flex;flex-direction:column;gap:5px;min-height:100%;margin:0 8px;box-shadow:0 8px 18px -8px rgba(20,10,80,.5)}
+#topic[data-mode=menu] .mc-pv .pv-page b{font:800 clamp(12px,3.4vw,15px)/1.1 var(--f-display);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#topic[data-mode=menu] .mc-pv .pv-page em{font:800 9.5px var(--f-body);font-style:normal;color:#6a5bd8;text-transform:uppercase;letter-spacing:.06em}
+#topic[data-mode=menu] .mc-pv .pv-line{font:600 clamp(9px,2.5vw,11px)/1.3 var(--f-body);opacity:.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;filter:blur(.35px)}
+#topic[data-mode=menu] .mcard{aspect-ratio:3/4}
+.mc-pv{height:62%;-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}
+@media (max-width:560px){#topic[data-mode=menu] .mcard>span:not(.mc-pv){display:none}#topic[data-mode=menu] .mcard{padding:12px}}
+@media (min-width:700px){#topic[data-mode=menu] .mcard{aspect-ratio:3/4}.mc-pv{height:55%}}
+#topic[data-mode=menu] .mc-pv *{text-shadow:none}
+#topic[data-mode=menu] .mc-pv .pv-q,#topic[data-mode=menu] .mc-pv .pv-card b,#topic[data-mode=menu] .mc-pv .pv-card span,#topic[data-mode=menu] .mc-pv .pv-page b,#topic[data-mode=menu] .mc-pv .pv-line{color:#17162B}
+#topic[data-mode=menu] .mc-pv .pv-card small,#topic[data-mode=menu] .mc-pv .pv-page em{color:#6a5bd8}
+#topic[data-mode=menu] .mc-pv .pv-tiles i,#topic[data-mode=menu] .mc-pv .pv-bar,#topic[data-mode=menu] .mc-pv .pv-bar b,#topic[data-mode=menu] .mc-pv .pv-bar em{color:#fff}
+#topic[data-mode=menu] .mc-pv .pv-card span,#topic[data-mode=menu] .mc-pv .pv-card b,#topic[data-mode=menu] .mc-pv .pv-card small{display:block}
