@@ -17,7 +17,7 @@
       row.append(el("span","chap-nm",sLabel(r.s)),bar,el("span","chap-sc",r.ok+" / "+r.n));row.title=SESS[r.s]||"";box.appendChild(row)});
     const w=rows[0];
     if(w.miss.length&&w.ok/w.n<.7){
-      const b=el("button","btn dark",tl("Train {unit} {s} ({n})",{unit:unit(1),s:sLabel(w.s),n:w.miss.length}));b.type="button";
+      const b=el("button","btn dark",tl("Train {unit} {s} ({n})",{unit:unit(0),s:sLabel(w.s),n:w.miss.length}));b.type="button";
       b.onclick=()=>{const keys=w.miss.map(i=>missKey(i));startSolo(shuffle(keys.map(missItem)))};
       box.appendChild(b)}
   }
