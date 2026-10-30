@@ -370,3 +370,23 @@ body::before{inset:-25%;
 #topic[data-mode=menu] .mcard{container-type:inline-size}
 #topic[data-mode=menu] .mcard>b{font-size:clamp(10px,14cqi,24px)}
 @media (max-width:350px){#topic[data-mode=menu] .mcard>b{font-size:9px}}
+
+/* =====================================================================
+   Phones only (<= 700px): the showcases become real squares in a 2x2 grid. Desktop and tablets keep the four tall strips untouched.
+   ===================================================================== */
+@media (max-width:700px){
+  #topic[data-mode=menu] .modecards{grid-auto-flow:row;grid-auto-columns:auto;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:12px}
+  #topic[data-mode=menu] .modecards[data-n="3"] #examJump{grid-column:1/-1}
+  #topic[data-mode=menu] .modecards[data-n="2"],#topic[data-mode=menu] .modecards[data-n="1"]{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #topic[data-mode=menu] .mcard{aspect-ratio:1;height:auto;padding:8px;gap:6px;border-radius:22px}
+  #topic[data-mode=menu] .modecards[data-n="3"] #examJump{aspect-ratio:2/1}
+  #topic[data-mode=menu] .mcard>b{font-size:clamp(13px,8.5cqi,18px);letter-spacing:-.01em;padding:0 3px 1px}
+  @container (min-width:100px){#topic[data-mode=menu] .mcard .mc-pv .pv-tiles{grid-template-columns:1fr 1fr}}
+  #topic[data-mode=menu] .mcard .mc-pv{border-radius:14px}
+  #topic[data-mode=menu] .mcard .mc-pv .pv-q{padding:6px 7px}
+}
+@media (max-width:700px){#topic[data-mode=menu] .mcard .mc-pv .pv-page .pv-bars{display:none}}
+@media (max-width:700px){
+#topic[data-mode=menu] .mcard .mc-pv .pv-page>:not(.pv-bars),#topic[data-mode=menu] .mcard .mc-pv .pv-card.front>*{flex:none}
+#topic[data-mode=menu] .mcard .mc-pv .pv-page .pv-line{overflow:visible}
+}

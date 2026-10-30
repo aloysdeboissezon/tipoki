@@ -341,7 +341,7 @@ function fitsBox(box,flow){
   const cs=getComputedStyle(box),pb=parseFloat(cs.paddingBottom),pv=parseFloat(cs.paddingTop)+pb,ph=parseFloat(cs.paddingLeft)+parseFloat(cs.paddingRight),br=box.getBoundingClientRect();
   if(flow){const kids=[...box.children].filter(c=>!c.classList.contains("pv-bars"));if(!kids.length)return true;
     if(kids.some(k=>k.scrollWidth>k.clientWidth+1))return false;
-    return kids[kids.length-1].getBoundingClientRect().bottom<=br.bottom-pb-(flow===2?24:0)+.5}
+    return kids[kids.length-1].getBoundingClientRect().bottom<=br.bottom-pb-(flow===2&&box.querySelector(".pv-bars")&&box.querySelector(".pv-bars").offsetHeight?24:0)+.5}
   const r=document.createRange();r.selectNodeContents(box);const rr=r.getBoundingClientRect();
   return rr.height<=box.clientHeight-pv+.5&&rr.width<=box.clientWidth-ph+.5;
 }
@@ -353,6 +353,7 @@ function fitText(box,min,max,set,flow){
   if(run()===min&&!fitsBox(box,flow)){box.style.overflowWrap="anywhere";run()}   // a very long word in a very narrow showcase may be broken, as a last resort
 }
 function fitPreviews(){
+  const mt=$("modeTabs");if(mt)mt.dataset.n=mt.querySelectorAll(".mcard:not([hidden])").length;   // lets the phone layout (2x2) know how many squares there are
   document.querySelectorAll("#topic .mc-pv").forEach(pv=>{
     pv.classList.remove("tight","tighter");if(!pv.offsetParent)return;pv.lang=(BANK&&BANK.lang)||"fr";
     pv.querySelectorAll(".pv-q").forEach(q=>fitText(q,7,26,v=>{q.style.fontSize=v+"px"}));
