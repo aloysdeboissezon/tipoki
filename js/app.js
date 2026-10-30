@@ -321,19 +321,22 @@ function pickOne(list){return list.length?list[Math.floor(Math.random()*list.len
 function renderPreviews(){
   if(!BANK)return;
   const clear=id=>{const b=$(id);b.textContent="";return b};
-  const mcq=Q.filter(q=>q.o&&q.o.length>=3&&!q.tf&&!q.img&&q.q.length<95&&q.o.every(o=>String(o).length<34));
-  const q1=pickOne(mcq);let b=clear("pvQuiz");
-  if(q1){b.append(el("span","pv-q",q1.q));const t=el("span","pv-tiles");shuffle(q1.o.slice(0,4)).forEach((o,i)=>t.append(el("i","pv-t"+i,String(o))));b.append(t)}
-  const q2=pickOne(Q.concat(TQ).filter(q=>q.q.length<130&&!q.img));b=clear("pvExam");
-  if(q2){const bar=el("span","pv-bar");bar.append(el("b",null,"12:30"),el("em",null,"/ 20"));b.append(bar,el("span","pv-q",q2.q))}
-  const f=pickOne((BANK.facts||[]).filter(x=>x[3]&&x[3].length<40&&x[4]&&x[4].length<160));b=clear("pvCards");
-  if(f){b.append(el("span","pv-card back"),el("span","pv-card front"));const fr=b.querySelector(".front");fr.append(el("small",null,tl("Concept")),el("b",null,f[3]),el("span",null,plainText(f[4])))}
+  const ok=q=>q&&q.q&&!q.img;
+  const mc=Q.filter(q=>ok(q)&&q.o&&q.o.length>=3&&!q.tf),short=mc.filter(q=>q.q.length<95&&q.o.every(o=>String(o).length<34));
+  const q1=pickOne(short.length?short:mc);let b=clear("pvQuiz");
+  if(q1){b.append(el("span","pv-q",cut(q1.q,90)));const t=el("span","pv-tiles");shuffle(q1.o.slice(0,4)).forEach((o,i)=>t.append(el("i","pv-t"+i,cut(String(o),28))));b.append(t)}
+  const all=Q.concat(TQ).filter(ok),sh=all.filter(q=>q.q.length<110),q2=pickOne(sh.length?sh:all);b=clear("pvExam");
+  if(q2){const bar=el("span","pv-bar");bar.append(el("b",null,"12:30"),el("em",null,"/ 20"));const dots=el("span","pv-dots");for(let i=0;i<8;i++)dots.append(el("u",i<3?"on":null));
+    b.append(bar,dots,el("span","pv-q",cut(q2.q,80)),el("span","pv-ans"),el("span","pv-ans s"))}
+  const f=pickOne((BANK.facts||[]).filter(x=>x[3]&&x[3].length<40&&x[4]));b=clear("pvCards");
+  if(f){b.append(el("span","pv-card back"),el("span","pv-card front"));const fr=b.querySelector(".front");fr.append(el("small",null,tl("Concept")),el("b",null,f[3]),el("span",null,cut(f[4],110)))}
   const S=window.SHEETS&&window.SHEETS[BANK.id];b=clear("pvSheet");
-  if(S){const page=el("span","pv-page");page.append(el("b",null,plainText(S.title)));
+  if(S){const page=el("span","pv-page"),cv=el("span","pv-cover");cv.append(el("small",null,plainText(S.tag||"")),el("b",null,plainText(S.title)));page.append(cv);
     const sec=S.sections&&S.sections[0];if(sec){page.append(el("em",null,plainText(sec.title)));
-      const dl=(sec.blocks||[]).find(x=>x.t==="dl");if(dl)dl.items.slice(0,3).forEach(([k,v])=>page.append(el("span","pv-line",plainText(k)+" · "+plainText(v))));else page.append(el("span","pv-line",plainText(sec.lead||S.intro)))}
-    b.append(page)}
+      const dl=(sec.blocks||[]).find(x=>x.t==="dl");if(dl&&dl.items.length)dl.items.slice(0,2).forEach(([k,v])=>page.append(el("span","pv-line",cut(k+" · "+v,70))));else page.append(el("span","pv-line",cut(sec.lead||S.intro,90)))}
+    page.append(el("span","pv-bars"));b.append(page)}
 }
+function cut(s,n){s=plainText(s);if(s.length<=n)return s;s=s.slice(0,n);return s.replace(/\s+\S*$/,"")+"…"}
 function renderBankUI(){
   $("bankTitle").textContent=BANK.title;
   $("bankIco").textContent=(BANK.title||"?").trim().charAt(0).toUpperCase();$("bankIco").style.background="hsl("+hue(BANK.id||BANK.title||"")+" 90% 80%)";
@@ -1043,7 +1046,7 @@ new MutationObserver(()=>{$("sheetCard").hidden=$("sheetBtn").hidden}).observe($
 async function openQuiz(id,btn){
   if(btn)btn.disabled=true;const ok=await useBank(id);if(btn)btn.disabled=false;
   if(!ok){toast(tl("Quiz not found"));return}
-  setQuizParam();setMode("menu");show("topic");recentMark(id);
+  setQuizParam();setMode("menu");show("topic");recentMark(id);renderPreviews();
 }
 // quizzes you opened most recently come first on the home screen
 function recentGet(){try{return JSON.parse(lsGet("tpk-recent")||"{}")}catch(e){return {}}}
@@ -1065,9 +1068,13 @@ function renderQuizGrid(list){
 // home carousel: swipe sideways, the quiz in the middle grows and the others shrink back
 function carouselUpdate(){
   const box=$("quizGrid");if(!box)return;const r=box.getBoundingClientRect(),mid=r.left+r.width/2;
-  box.querySelectorAll(".qcard:not([hidden])").forEach(c=>{const b=c.getBoundingClientRect();if(!b.width)return;
-    const d=Math.min(1,Math.abs(b.left+b.width/2-mid)/(b.width*1.1));
-    c.style.setProperty("--s",(1-.14*d).toFixed(3));c.style.setProperty("--o",(1-.4*d).toFixed(3));c.style.zIndex=String(10-Math.round(d*10))})
+  const cards=[...box.querySelectorAll(".qcard:not([hidden])")],dots=$("cDots");let best=0,bd=1e9;
+  if(dots.childElementCount!==cards.length){dots.textContent="";cards.forEach((c,i)=>{const d=el("button","cdot");d.type="button";d.setAttribute("aria-label",c.querySelector("b").textContent);d.onclick=()=>c.scrollIntoView({behavior:RM?"auto":"smooth",inline:"center",block:"nearest"});dots.appendChild(d)})}
+  cards.forEach((c,i)=>{const b=c.getBoundingClientRect();if(!b.width)return;
+    const ad=Math.abs(b.left+b.width/2-mid);if(ad<bd){bd=ad;best=i}
+    const d=Math.min(1,ad/(b.width*1.1));
+    c.style.setProperty("--s",(1-.14*d).toFixed(3));c.style.setProperty("--o",(1-.4*d).toFixed(3));c.style.zIndex=String(10-Math.round(d*10))});
+  [...dots.children].forEach((d,i)=>d.setAttribute("aria-current",i===best))
 }
 let carRaf=0;
 $("quizGrid").addEventListener("scroll",()=>{if(!carRaf)carRaf=requestAnimationFrame(()=>{carRaf=0;carouselUpdate()})},{passive:true});
@@ -1198,7 +1205,7 @@ $("mkGo").onclick=async()=>{
   });
 })();
 
-loadBank(window.BANK_SOCIO);renderMyQuizzes();renderResume();
+loadBank(window.BANK_SOCIO);renderMyQuizzes();renderResume();addEventListener("load",()=>renderPreviews());
 if(sb){setMultiNote(true)}else setMultiNote(false);
 (async()=>{let id=null;try{id=new URLSearchParams(location.search).get("quiz")}catch(e){}
   if(!id||!(BUILTIN[id]||/^[0-9a-f-]{36}$/i.test(id)))return;
