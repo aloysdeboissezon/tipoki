@@ -406,3 +406,20 @@ body::before{inset:-25%;
 .todaypanel h2{margin:0}
 .today-btns{display:flex;gap:8px;flex-wrap:wrap}
 .todaypanel[hidden]{display:none}
+
+/* text for screen readers only */
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* resume an exam in progress */
+.ex-resume{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;border-radius:14px;background:var(--hl-soft);font-weight:700;font-size:14.5px}
+.ex-resume span{flex:1 1 180px}
+.ex-resume[hidden]{display:none}
+
+/* end of game: results by chapter */
+.endchap{display:flex;flex-direction:column;gap:8px;align-items:stretch;margin:6px 0}
+.endchap .btn{align-self:flex-start;margin-top:4px}
+.chap-row{display:grid;grid-template-columns:minmax(64px,auto) 1fr auto;gap:10px;align-items:center;font-weight:800;font-size:14px}
+.chap-bar{height:10px;border-radius:99px;background:var(--line);overflow:hidden}
+.chap-bar i{display:block;height:100%;border-radius:99px;background:var(--hl)}
+.chap-bar i.hi{background:#158A4A}.chap-bar i.mid{background:#FFC21A}.chap-bar i.lo{background:#E8492B}
+.chap-sc{font-variant-numeric:tabular-nums;color:var(--muted)}
