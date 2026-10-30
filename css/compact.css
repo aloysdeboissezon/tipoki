@@ -101,7 +101,7 @@
 .modeback{align-self:flex-start}
 /* the menu shows the four cards; a chosen mode shows its own settings */
 #topic[data-mode=menu] #createPanel,#topic[data-mode=menu] #cardsPanel,#topic[data-mode=menu] #examPanel,#topic[data-mode=menu] #meTopic,#topic[data-mode=menu] .modeback,#topic[data-mode=menu] #modeBack{display:none!important}
-#topic:not([data-mode=menu]) .modecards,#topic:not([data-mode=menu]) #missPanel,#topic:not([data-mode=menu]) #weakPanel,#topic:not([data-mode=menu]) #planPanel,#topic:not([data-mode=menu]) #srchPanel,#topic:not([data-mode=menu]) #resumeTopic{display:none!important}
+#topic:not([data-mode=menu]) .modecards,#topic:not([data-mode=menu]) #missPanel,#topic:not([data-mode=menu]) #weakPanel,#topic:not([data-mode=menu]) #todayPanel,#topic:not([data-mode=menu]) #planPanel,#topic:not([data-mode=menu]) #srchPanel,#topic:not([data-mode=menu]) #resumeTopic{display:none!important}
 #topic[data-mode=play] #cardsPanel,#topic[data-mode=play] #examPanel,#topic[data-mode=cards] #examPanel,#topic[data-mode=exam] #cardsPanel{display:none!important}
 #topic[data-mode=cards] #createPanel .setgrid>div:nth-child(n+2),#topic[data-mode=exam] #createPanel .setgrid>div:nth-child(n+3),#topic:not([data-mode=play]) #createPanel .actions{display:none}
 #sheetPanel,#sheetBtn{display:none!important}

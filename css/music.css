@@ -19,7 +19,9 @@
 .mu-tip{margin:0;font-size:13px;line-height:1.4}
 .mu-frame iframe{display:block;width:100%;border:0;border-radius:12px;background:var(--soft)}
 /* minimized: keep the iframe loaded (music keeps playing), just fold it out of view */
-#music.min .mu-body{height:0;padding:0;overflow:hidden}
+/* (the iframe keeps its real size, only moved off screen: a 0-height embed can be paused or reloaded by the player) */
+#music.min .mu-body{height:0;padding:0;overflow:hidden;position:relative}
+#music.min .mu-frame{position:absolute;left:-9999px;top:0;width:340px}
 #music.min #muEdit{display:none}
 @media (max-width:700px){
   #music{left:max(10px,env(safe-area-inset-left,0px));right:max(10px,env(safe-area-inset-right,0px));bottom:max(10px,env(safe-area-inset-bottom,0px));width:auto;max-width:none}

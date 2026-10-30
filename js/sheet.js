@@ -58,7 +58,7 @@
   function show(){
     const S=get();if(!S)return;
     if(root)root.remove();
-    root=el("div","sheet");root.id="sheet";root.setAttribute("role","dialog");root.setAttribute("aria-modal","true");root.setAttribute("aria-label",tl("Study sheet"));
+    root=el("div","sheet");root.id="sheet";root.setAttribute("data-lenis-prevent","");root.setAttribute("role","dialog");root.setAttribute("aria-modal","true");root.setAttribute("aria-label",tl("Study sheet"));
     const bar=el("div","sh-bar");
     const close=el("button","btn ghost sh-close",tl("Close"));close.type="button";close.onclick=hide;
     const dl=el("a","btn sh-dl",tl("Download PDF"));dl.href="sheets/"+encodeURIComponent(BANK.id)+".pdf";dl.setAttribute("download",(S.file||BANK.id)+".pdf");dl.target="_blank";dl.rel="noopener";

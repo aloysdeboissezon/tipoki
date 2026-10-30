@@ -58,7 +58,7 @@ function play(raw){
   const p=parse(raw);if(p.err){$("muErr").textContent=p.err;$("muErr").hidden=false;return false}
   cur=p;lsSet("tipoki-music",String(raw).trim());
   const f=document.createElement("iframe");
-  f.src=p.src;f.height=p.h;f.title=tl("{name} player",{name:p.name});f.loading="lazy";
+  f.src=p.src;f.height=p.h;f.title=tl("{name} player",{name:p.name});
   f.allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
   $("muFrame").replaceChildren(f);$("muTitle").textContent=tl("Music")+" · "+p.name;
   $("muOpen").href=p.open;document.querySelectorAll(".muName").forEach(e=>e.textContent=p.name);
