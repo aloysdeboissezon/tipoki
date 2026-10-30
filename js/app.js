@@ -315,6 +315,25 @@ function loadBank(raw){
   ["question","reveal","end","cards","exam"].forEach(id=>$(id).lang=b.lang||"fr");
   renderBankUI();
 }
+// previews behind the glass of the four squares, drawn from the quiz's own content
+function plainText(h){const d=document.createElement("div");d.innerHTML=(h||"").replace(/<br\s*\/?>/gi," ");return (d.textContent||"").replace(/\s+/g," ").trim()}
+function pickOne(list){return list.length?list[Math.floor(Math.random()*list.length)]:null}
+function renderPreviews(){
+  if(!BANK)return;
+  const clear=id=>{const b=$(id);b.textContent="";return b};
+  const mcq=Q.filter(q=>q.o&&q.o.length>=3&&!q.tf&&!q.img&&q.q.length<95&&q.o.every(o=>String(o).length<34));
+  const q1=pickOne(mcq);let b=clear("pvQuiz");
+  if(q1){b.append(el("span","pv-q",q1.q));const t=el("span","pv-tiles");shuffle(q1.o.slice(0,4)).forEach((o,i)=>t.append(el("i","pv-t"+i,String(o))));b.append(t)}
+  const q2=pickOne(Q.concat(TQ).filter(q=>q.q.length<130&&!q.img));b=clear("pvExam");
+  if(q2){const bar=el("span","pv-bar");bar.append(el("b",null,"12:30"),el("em",null,"/ 20"));b.append(bar,el("span","pv-q",q2.q))}
+  const f=pickOne((BANK.facts||[]).filter(x=>x[3]&&x[3].length<40&&x[4]&&x[4].length<160));b=clear("pvCards");
+  if(f){b.append(el("span","pv-card back"),el("span","pv-card front"));const fr=b.querySelector(".front");fr.append(el("small",null,tl("Concept")),el("b",null,f[3]),el("span",null,plainText(f[4])))}
+  const S=window.SHEETS&&window.SHEETS[BANK.id];b=clear("pvSheet");
+  if(S){const page=el("span","pv-page");page.append(el("b",null,plainText(S.title)));
+    const sec=S.sections&&S.sections[0];if(sec){page.append(el("em",null,plainText(sec.title)));
+      const dl=(sec.blocks||[]).find(x=>x.t==="dl");if(dl)dl.items.slice(0,3).forEach(([k,v])=>page.append(el("span","pv-line",plainText(k)+" · "+plainText(v))));else page.append(el("span","pv-line",plainText(sec.lead||S.intro)))}
+    b.append(page)}
+}
 function renderBankUI(){
   $("bankTitle").textContent=BANK.title;
   $("bankIco").textContent=(BANK.title||"?").trim().charAt(0).toUpperCase();$("bankIco").style.background="hsl("+hue(BANK.id||BANK.title||"")+" 90% 80%)";
@@ -325,7 +344,7 @@ function renderBankUI(){
   const words=shuffle(w).slice(0,28).map((t,i)=>i%2?esc(t):"<b>"+esc(t)+"</b>");
   const h=words.join("  ·  ")+"  ·  ";$("tickerTxt").innerHTML=words.length?h+h:"";
   $("shareQuizBtn").hidden=BANK.id==="socio";
-  renderSettings();renderMissBtn();
+  renderSettings();renderMissBtn();renderPreviews();
 }
 function sLabel(s){return BANK.tags?BANK.tags[s]:(BANK.id==="socio"?"S":"Ch.")+s}
 function unit(k){return tl((BANK.unit||(BANK.id==="socio"?["session","sessions","a session"]:["chapter","chapters","a chapter"]))[k])}
@@ -1040,14 +1059,30 @@ function renderQuizGrid(list){
     const ico=el("span","qico",(q.title||"?").trim().charAt(0).toUpperCase());ico.style.background="hsl("+hue(q.id||q.title||"")+" 90% 80%)";
     const t=el("span","qtxt");t.append(el("b",null,q.title));if(q.subject)t.append(el("small",null,q.subject));const qb=el("span","qbest");qb.hidden=true;t.append(qb);
     c.append(ico,t,el("span","qgo","›"));c.onclick=()=>openQuiz(q.id,c);box.appendChild(c)});
-  filterQuizzes();renderProgressUI();
+  filterQuizzes();renderProgressUI();carouselUpdate();
 }
 // every typed word must appear somewhere in the quiz's title, subject, keywords or chapter names
+// home carousel: swipe sideways, the quiz in the middle grows and the others shrink back
+function carouselUpdate(){
+  const box=$("quizGrid");if(!box)return;const r=box.getBoundingClientRect(),mid=r.left+r.width/2;
+  box.querySelectorAll(".qcard:not([hidden])").forEach(c=>{const b=c.getBoundingClientRect();if(!b.width)return;
+    const d=Math.min(1,Math.abs(b.left+b.width/2-mid)/(b.width*1.1));
+    c.style.setProperty("--s",(1-.14*d).toFixed(3));c.style.setProperty("--o",(1-.4*d).toFixed(3));c.style.zIndex=String(10-Math.round(d*10))})
+}
+let carRaf=0;
+$("quizGrid").addEventListener("scroll",()=>{if(!carRaf)carRaf=requestAnimationFrame(()=>{carRaf=0;carouselUpdate()})},{passive:true});
+addEventListener("resize",carouselUpdate);
+// mouse: drag to swipe
+(()=>{const box=$("quizGrid");let x0=0,s0=0,down=false,moved=false;
+  box.addEventListener("pointerdown",e=>{if(e.pointerType!=="mouse")return;down=true;moved=false;x0=e.clientX;s0=box.scrollLeft});
+  addEventListener("pointermove",e=>{if(!down)return;const dx=e.clientX-x0;if(Math.abs(dx)>6){moved=true;box.classList.add("dragging")}if(moved)box.scrollLeft=s0-dx});
+  addEventListener("pointerup",()=>{if(!down)return;down=false;box.classList.remove("dragging")});
+  box.addEventListener("click",e=>{if(moved){e.stopPropagation();e.preventDefault();moved=false}},true)})();
 function filterQuizzes(){
   const raw=$("quizSearch").value,words=fold(raw).split(" ").filter(Boolean);let n=0;
   $("quizGrid").querySelectorAll(".qcard").forEach(c=>{const ok=words.every(w=>c.dataset.hay.includes(w));c.hidden=!ok;if(ok)n++});
   $("quizSearchClear").hidden=!raw;
-  $("quizEmpty").hidden=n>0||!words.length;$("quizEmptyQ").textContent=raw.trim();
+  $("quizEmpty").hidden=n>0||!words.length;carouselUpdate();$("quizEmptyQ").textContent=raw.trim();
 }
 function clearQuizSearch(focus){$("quizSearch").value="";filterQuizzes();if(focus)$("quizSearch").focus()}
 $("quizSearch").addEventListener("input",filterQuizzes);
