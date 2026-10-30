@@ -336,13 +336,31 @@ function renderPreviews(){
     page.append(el("span","pv-bars"));b.append(page)}
   requestAnimationFrame(fitPreviews);
 }
-// the previews must always fit inside their square: drop the optional pieces until nothing is cut
+// the previews fill their square: every text block grows to the biggest size that still fits its box (css/refine.css gives the boxes their share of the height)
+function fitsBox(box,flow){
+  const cs=getComputedStyle(box),pb=parseFloat(cs.paddingBottom),pv=parseFloat(cs.paddingTop)+pb,ph=parseFloat(cs.paddingLeft)+parseFloat(cs.paddingRight),br=box.getBoundingClientRect();
+  if(flow){const kids=[...box.children].filter(c=>!c.classList.contains("pv-bars"));if(!kids.length)return true;
+    if(kids.some(k=>k.scrollWidth>k.clientWidth+1))return false;
+    return kids[kids.length-1].getBoundingClientRect().bottom<=br.bottom-pb-(flow===2?24:0)+.5}
+  const r=document.createRange();r.selectNodeContents(box);const rr=r.getBoundingClientRect();
+  return rr.height<=box.clientHeight-pv+.5&&rr.width<=box.clientWidth-ph+.5;
+}
+function fitText(box,min,max,set,flow){
+  const run=()=>{let lo=min,hi=max,best=min;
+    for(let i=0;i<8&&lo<=hi;i++){const m=Math.floor((lo+hi)/2);set(m);if(fitsBox(box,flow)){best=m;lo=m+1}else hi=m-1}
+    set(best);return best};
+  box.style.overflowWrap="";
+  if(run()===min&&!fitsBox(box,flow)){box.style.overflowWrap="anywhere";run()}   // a very long word in a very narrow showcase may be broken, as a last resort
+}
 function fitPreviews(){
   document.querySelectorAll("#topic .mc-pv").forEach(pv=>{
-    pv.classList.remove("tight","tighter");if(!pv.offsetParent)return;
-    if(pv.scrollHeight>pv.clientHeight+1){pv.classList.add("tight");
-      if(pv.scrollHeight>pv.clientHeight+1)pv.classList.add("tighter")}})
+    pv.classList.remove("tight","tighter");if(!pv.offsetParent)return;pv.lang=(BANK&&BANK.lang)||"fr";
+    pv.querySelectorAll(".pv-q").forEach(q=>fitText(q,7,26,v=>{q.style.fontSize=v+"px"}));
+    pv.querySelectorAll(".pv-tiles i").forEach(t=>fitText(t,7,20,v=>{t.style.fontSize=v+"px"}));
+    const f=pv.querySelector(".pv-card.front");if(f){const tb=f.querySelector("b");fitText(f,6,22,v=>{f.style.setProperty("--fs",v+"px");if(tb)for(let k=2.6;k>=1;k-=.2){tb.style.fontSize=(v*k).toFixed(1)+"px";if(tb.scrollWidth<=tb.clientWidth+1)break}},1)}
+    const pg=pv.querySelector(".pv-page");if(pg)fitText(pg,6,16,v=>{pg.style.setProperty("--fs",v+"px")},2)})
 }
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(!$("topic").hidden)fitPreviews()});
 addEventListener("resize",()=>{if(!$("topic").hidden)fitPreviews()});
 function cut(s,n){s=plainText(s);if(s.length<=n)return s;s=s.slice(0,n);return s.replace(/\s+\S*$/,"")+"…"}
 function renderBankUI(){

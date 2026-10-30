@@ -281,3 +281,92 @@ body::before{inset:-25%;
 .quizgrid .qcard{padding:14px 14px 16px}
 .hero::after{right:clamp(14px,3.5vw,56px)}
 @media (max-width:560px){.hero::after{right:8px}}
+
+/* =====================================================================
+   v4: review fixes
+   1) hero: the four-tile mark has its own reserved column, it can never touch the title
+   2) home tiles: translucent decorative circle back, original mint green for the green quiz
+   3) quiz page: the four showcases always sit on ONE row, each preview fills its whole showcase
+   ===================================================================== */
+/* 1 */
+.hero{--mk:clamp(84px,22vw,170px);padding-right:calc(var(--mk) + 34px)}
+.hero::after{width:var(--mk);height:var(--mk);margin-top:calc(var(--mk)/-2);right:18px}
+.hero h1{font-size:clamp(28px,8.4vw,76px);max-width:none}
+.hero>p:not(.streak){max-width:none}
+@media (max-width:560px){.hero{padding:22px 16px 22px 20px;padding-right:calc(var(--mk) + 26px)}.hero::after{right:12px}.hero h1{font-size:clamp(28px,8.6vw,40px);max-width:none}.hero>p:not(.streak){max-width:none;font-size:14px}}
+@media (min-width:561px) and (max-width:900px){.hero h1{font-size:clamp(40px,8vw,64px)}}
+
+/* 2 */
+:root{--p2a:#18C29C;--p2b:#7DEBCB;--p2i:#04251d}
+.quizgrid .qcard::before{display:block;content:"";position:absolute;z-index:-1;right:-40px;top:-40px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.25);pointer-events:none}
+.quizgrid .qcard::after{z-index:0}
+
+/* 3 */
+#topic[data-mode=menu] .modecards{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);grid-template-columns:none;justify-content:stretch;gap:clamp(7px,1.8vw,18px);padding:clamp(9px,2.4vw,20px);
+  background:
+    radial-gradient(52% 46% at 96% 0%,rgba(255,122,92,.95),transparent 68%),
+    radial-gradient(62% 56% at 2% 102%,#0FA98A,rgba(15,169,138,.55) 45%,transparent 74%),
+    radial-gradient(46% 46% at 50% 55%,rgba(255,111,168,.4),transparent 70%),
+    linear-gradient(140deg,#4B2FE0,#7A5CFF 60%,#9A6BFF)}
+#topic[data-mode=menu] .mcard{aspect-ratio:auto;height:clamp(320px,84vw,400px);padding:clamp(6px,1.6vw,12px);gap:clamp(6px,1.4vw,10px);min-width:0;border-radius:clamp(16px,4vw,24px)}
+#topic[data-mode=menu] .mcard>b{font-size:clamp(11.5px,3.3vw,22px);line-height:1.08;padding:0 2px 2px;overflow-wrap:anywhere;hyphens:manual}
+@media (min-width:900px){#topic[data-mode=menu] .mcard{height:420px}}
+@media (max-width:899px){#topic[data-mode=menu] .mcard>span:not(.mc-pv){display:none}}
+#topic[data-mode=menu] .mcard .mc-pv{container-type:inline-size;display:flex;flex-direction:column;gap:clamp(4px,1.2cqi,8px);flex:1 1 0;min-height:0;height:auto;margin:0;overflow:hidden;border-radius:clamp(10px,3vw,16px)}
+#topic[data-mode=menu] .mcard .mc-pv>*{min-height:0}
+/* Quiz: question on top, answers share the rest of the height */
+#topic[data-mode=menu] .mcard .mc-pv .pv-q{flex:1.25 1 0;display:-webkit-box;-webkit-box-orient:vertical;-webkit-box-pack:center;-webkit-line-clamp:9;overflow:hidden;
+  font:800 clamp(9px,10.5cqi,15px)/1.2 var(--f-display);padding:clamp(5px,6cqi,10px);border-radius:clamp(8px,8cqi,14px)}
+#topic[data-mode=menu] .mcard .mc-pv .pv-tiles{flex:1.7 1 0;display:grid;grid-template-columns:1fr;grid-auto-rows:minmax(0,1fr);gap:clamp(3px,3cqi,6px)}
+@container (min-width:140px){#topic[data-mode=menu] .mcard .mc-pv .pv-tiles{grid-template-columns:1fr 1fr}}
+#topic[data-mode=menu] .mcard .mc-pv .pv-tiles i{display:-webkit-box;-webkit-box-orient:vertical;-webkit-box-pack:center;-webkit-line-clamp:3;overflow:hidden;min-height:0;
+  font:700 clamp(8.5px,9.5cqi,13px)/1.15 var(--f-body);padding:clamp(3px,4cqi,8px);border-radius:clamp(7px,7cqi,12px)}
+/* Exam: clock, question, answer field */
+#topic[data-mode=menu] .mcard .mc-pv .pv-bar{flex:none;font:800 clamp(10px,11cqi,18px) var(--f-display);padding:clamp(4px,5cqi,9px) clamp(5px,7cqi,12px);border-radius:clamp(8px,8cqi,14px)}
+#topic[data-mode=menu] .mcard .mc-pv .pv-ans{flex:.9 1 0;height:auto;border-radius:clamp(8px,8cqi,14px);background:rgba(255,255,255,.55);border:2px solid rgba(255,255,255,.9);
+  background-image:repeating-linear-gradient(rgba(23,22,43,.16) 0 2px,transparent 2px 14px);background-size:76% 100%;background-position:50% 0;background-repeat:no-repeat}
+/* Flashcards: one card filling the showcase */
+#topic[data-mode=menu] .mcard .mc-pv .pv-card.back{display:none}
+#topic[data-mode=menu] .mcard .mc-pv .pv-card.front{flex:1 1 0;position:relative;margin:0;transform:none;display:flex;flex-direction:column;justify-content:center;gap:clamp(3px,3cqi,8px);
+  padding:clamp(7px,9cqi,16px);border-radius:clamp(10px,9cqi,16px);box-shadow:0 14px 24px -14px rgba(20,10,80,.55);overflow:hidden}
+#topic[data-mode=menu] .mcard .mc-pv .pv-card small{font:800 clamp(7px,7.5cqi,10px) var(--f-body)}
+#topic[data-mode=menu] .mcard .mc-pv .pv-card b{font:800 clamp(13px,17cqi,24px)/1.05 var(--f-display);overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden}
+#topic[data-mode=menu] .mcard .mc-pv .pv-card span{font:700 clamp(8.5px,9cqi,12.5px)/1.25 var(--f-body);-webkit-line-clamp:8;opacity:.8}
+/* Study sheet: a page whose cover, headings and text fill the height */
+#topic[data-mode=menu] .mcard .mc-pv .pv-page{flex:1 1 0;margin:0;min-height:0;overflow:hidden;gap:clamp(3px,3.5cqi,8px);padding:clamp(7px,9cqi,14px);border-radius:clamp(8px,8cqi,14px) clamp(8px,8cqi,14px) 0 0;box-shadow:0 14px 24px -14px rgba(20,10,80,.55)}
+#topic[data-mode=menu] .mcard .mc-pv .pv-cover{margin:calc(clamp(7px,9cqi,14px)*-1) calc(clamp(7px,9cqi,14px)*-1) 2px;padding:clamp(7px,9cqi,14px);border-radius:inherit}
+#topic[data-mode=menu] .mcard .mc-pv .pv-cover small{display:block;font:800 clamp(6.5px,7cqi,9px) var(--f-body)}
+#topic[data-mode=menu] .mcard .mc-pv .pv-cover b{font:800 clamp(11px,13cqi,19px)/1.08 var(--f-display);-webkit-line-clamp:4;overflow-wrap:anywhere}
+#topic[data-mode=menu] .mcard .mc-pv .pv-page em{font:800 clamp(7px,8cqi,10px) var(--f-body)}
+#topic[data-mode=menu] .mcard .mc-pv .pv-line{font:600 clamp(8px,9cqi,12px)/1.3 var(--f-body);-webkit-line-clamp:4;opacity:.8;filter:none}
+#topic[data-mode=menu] .mcard .mc-pv .pv-bars{flex:1 1 auto;min-height:10px;height:auto;background:repeating-linear-gradient(rgba(23,22,43,.14) 0 3px,transparent 3px 9px)}
+/* v4b: finishing touches on the showcases */
+#topic[data-mode=menu] .mcard .mc-pv,#topic[data-mode=menu] .mcard .mc-pv *{text-shadow:none}
+#topic[data-mode=menu] .mcard>b{font-size:clamp(10px,3vw,22px);letter-spacing:-.02em;overflow-wrap:normal}
+@media (max-width:350px){#topic[data-mode=menu] .mcard>b{font-size:9px;letter-spacing:-.03em}#topic[data-mode=menu] .modecards{padding:8px;gap:6px}}
+#topic[data-mode=menu] .mcard .mc-pv .pv-bar b,#topic[data-mode=menu] .mcard .mc-pv .pv-bar em{font:inherit;text-shadow:none}
+#topic[data-mode=menu] .mcard .mc-pv .pv-bar em{opacity:.75;font-size:.7em}
+@container (max-width:110px){#topic[data-mode=menu] .mcard .mc-pv .pv-bar{justify-content:center}#topic[data-mode=menu] .mcard .mc-pv .pv-bar em{display:none}}
+#topic[data-mode=menu] .mcard .mc-pv .pv-card b{font:800 clamp(9px,13cqi,24px)/1.05 var(--f-display)}
+#topic[data-mode=menu] .mcard .mc-pv .pv-cover b{font:800 clamp(9px,11cqi,19px)/1.08 var(--f-display)}
+#topic[data-mode=menu] .mcard .mc-pv .pv-page em{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* v4c: text blocks are sized by fitPreviews() to fill their box, centred vertically */
+#topic[data-mode=menu] .mcard .mc-pv .pv-q{display:flex;flex-direction:column;justify-content:center;-webkit-line-clamp:none;font-size:12px;overflow-wrap:normal}
+#topic[data-mode=menu] .mcard .mc-pv .pv-tiles i{display:flex;flex-direction:column;justify-content:center;-webkit-line-clamp:none;font-size:10px;overflow-wrap:normal}
+#topic[data-mode=menu] .mcard .mc-pv .pv-card.front{--fs:10px;justify-content:center}
+#topic[data-mode=menu] .mcard .mc-pv .pv-card.front small{font-size:calc(var(--fs)*.75)}
+#topic[data-mode=menu] .mcard .mc-pv .pv-card.front b{font-size:calc(var(--fs)*1.9);-webkit-line-clamp:none;display:block}
+#topic[data-mode=menu] .mcard .mc-pv .pv-card.front span{font-size:var(--fs);-webkit-line-clamp:none;display:block}
+#topic[data-mode=menu] .mcard .mc-pv .pv-page{--fs:10px}
+#topic[data-mode=menu] .mcard .mc-pv .pv-page .pv-line{font-size:var(--fs);-webkit-line-clamp:none;display:block;overflow:hidden}
+#topic[data-mode=menu] .mcard .mc-pv .pv-page em{font-size:calc(var(--fs)*.8)}
+#topic[data-mode=menu] .mcard .mc-pv .pv-cover b{font-size:calc(var(--fs)*1.6);-webkit-line-clamp:none}
+#topic[data-mode=menu] .mcard .mc-pv .pv-cover small{font-size:calc(var(--fs)*.7)}
+#topic[data-mode=menu] .mcard .mc-pv .pv-card b,#topic[data-mode=menu] .mcard .mc-pv .pv-cover b,#topic[data-mode=menu] .mcard .mc-pv .pv-card span,#topic[data-mode=menu] .mcard .mc-pv .pv-line{overflow-wrap:normal;word-break:normal;overflow:visible}
+#topic[data-mode=menu] .mcard .mc-pv .pv-card.front{justify-content:center;gap:calc(var(--fs)*.5)}
+#topic[data-mode=menu] .mcard .mc-pv .pv-q,#topic[data-mode=menu] .mcard .mc-pv .pv-tiles i,#topic[data-mode=menu] .mcard .mc-pv .pv-card b,#topic[data-mode=menu] .mcard .mc-pv .pv-card span,#topic[data-mode=menu] .mcard .mc-pv .pv-cover b,#topic[data-mode=menu] .mcard .mc-pv .pv-line{hyphens:auto;-webkit-hyphens:auto}
+.hero h1{text-shadow:none}
+.hero h1 .w>span{will-change:auto}
+#topic[data-mode=menu] .mcard{container-type:inline-size}
+#topic[data-mode=menu] .mcard>b{font-size:clamp(10px,14cqi,24px)}
+@media (max-width:350px){#topic[data-mode=menu] .mcard>b{font-size:9px}}
