@@ -197,3 +197,87 @@ html.lenis,html.lenis body{height:auto}
   #topic[data-mode=menu] .modecards{grid-template-columns:repeat(auto-fit,minmax(160px,240px));justify-content:center}
 }
 @media (max-width:360px){.hero h1{font-size:26px}}
+
+/* =====================================================================
+   v2: bolder. Stronger aurora, expressive hero with the four-tile mark, real frosted glass, livelier tiles.
+   ===================================================================== */
+body::before{inset:-25%;
+  background:
+    radial-gradient(38% 34% at 18% 14%,rgba(109,80,245,.55),transparent 70%),
+    radial-gradient(34% 30% at 86% 22%,rgba(242,98,140,.42),transparent 70%),
+    radial-gradient(40% 34% at 70% 86%,rgba(31,181,156,.38),transparent 70%),
+    radial-gradient(30% 28% at 12% 80%,rgba(76,143,240,.34),transparent 70%);
+  animation:aurora 26s var(--ease-in-out) infinite alternate;will-change:transform}
+:root[data-theme="dark"] body::before{
+  background:
+    radial-gradient(38% 34% at 18% 14%,rgba(122,99,255,.62),transparent 70%),
+    radial-gradient(34% 30% at 86% 22%,rgba(229,98,159,.38),transparent 70%),
+    radial-gradient(40% 34% at 70% 86%,rgba(31,181,156,.30),transparent 70%),
+    radial-gradient(30% 28% at 12% 80%,rgba(76,143,240,.34),transparent 70%)}
+@keyframes aurora{from{transform:translate3d(-3%,-2%,0) rotate(0deg) scale(1)}to{transform:translate3d(4%,3%,0) rotate(7deg) scale(1.1)}}
+
+/* real frosted glass on panels (not on the three that hold position:fixed start bars) */
+:root{--glass:rgba(255,255,255,.52)}
+:root[data-theme="dark"]{--glass:rgba(30,28,56,.52)}
+.panel:not(#createPanel):not(#examPanel):not(#cardsPanel),.iconbtn,#status,.btn.ghost{-webkit-backdrop-filter:blur(18px) saturate(1.6);backdrop-filter:blur(18px) saturate(1.6)}
+.panel{border:1px solid rgba(255,255,255,.65)}
+:root[data-theme="dark"] .panel{border-color:rgba(255,255,255,.10)}
+
+/* hero: bigger, with the four-tile mark floating on the right */
+.hero{padding:clamp(22px,5vw,44px);min-height:clamp(180px,34vw,260px);justify-content:center;overflow:hidden}
+.hero h1{font-size:clamp(38px,10.5vw,76px);line-height:.98;letter-spacing:-.04em;text-shadow:0 8px 30px rgba(20,10,80,.35)}
+.hero::after{display:block;content:"";position:absolute;z-index:0;right:clamp(-30px,-2vw,0px);top:50%;margin-top:calc(clamp(110px,26vw,200px)/-2);width:clamp(110px,26vw,200px);height:clamp(110px,26vw,200px);
+  background:url(../img/mark.svg) center/contain no-repeat;transform:rotate(12deg);filter:drop-shadow(0 24px 28px rgba(20,10,80,.5));animation:floaty 7s var(--ease-in-out) infinite;opacity:.95}
+@keyframes floaty{0%,100%{transform:translateY(-6px) rotate(10deg)}50%{transform:translateY(8px) rotate(15deg)}}
+.hero p{font-size:clamp(15px,2.2vw,19px)}
+@media (max-width:560px){
+  .hero>p:not(.streak){display:block;padding-right:0;opacity:.9;max-width:62%}
+  .hero{padding:22px 20px;min-height:190px}
+  .hero::after{opacity:.9}
+  .hero h1{font-size:clamp(36px,11vw,46px);max-width:70%}
+  /* tutorial: slim glass bar under the hero instead of a tall square beside it */
+  #home .tour{grid-column:1/-1;grid-row:2}
+  .tour-btn{width:100%;height:56px;min-height:0;flex-direction:row;gap:12px;border-radius:18px}
+  .tour-cap{font-size:16px}
+}
+.steph h2{font-size:clamp(24px,5.5vw,32px);letter-spacing:-.03em}
+.tour-btn{background:linear-gradient(160deg,rgba(58,37,196,.92),rgba(42,26,158,.92));-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+
+/* carousel: the centred card glows in its own colour, side cards recede */
+.quizgrid .qcard{box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 calc(var(--s)*30px) calc(var(--s)*40px) -18px color-mix(in srgb,var(--c1) 90%,#1a1050)}
+.quizgrid .qcard:hover,.quizgrid .qcard:active{box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 34px 44px -18px color-mix(in srgb,var(--c1) 95%,#1a1050)}
+.quizgrid .qico{width:64px;height:64px;border-radius:20px}
+.quizgrid .qtxt b{font-size:clamp(22px,6vw,28px);letter-spacing:-.02em}
+.qchip{min-height:64px}
+
+/* buttons: a light sweep crosses the main button on hover (desktop) */
+.btn:not(.ghost):not(.dark)::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.4) 50%,transparent 65%);transform:translateX(-120%)}
+@media (hover:hover) and (pointer:fine){.btn:not(.ghost):not(.dark):hover:not(:disabled)::after{transform:translateX(120%);transition:transform .7s var(--ease-out)}}
+.btn{overflow:hidden}
+
+/* quiz page squares: bigger lift */
+#topic[data-mode=menu] .mcard:hover{transform:perspective(800px) translateY(-6px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));box-shadow:0 1px 0 rgba(255,255,255,.6) inset,0 36px 44px -22px rgba(20,10,80,.75)}
+.bankpanel h2{font-size:clamp(22px,5.5vw,30px);letter-spacing:-.03em}
+@media (prefers-reduced-motion:reduce){body::before,.hero::after{animation:none!important}}
+
+/* =====================================================================
+   v3: no sliding carousel. Every quiz is a tile in a grid (2 columns on phones, 3 then 4 wider), full names, no horizontal scroll.
+   ===================================================================== */
+.quizgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;overflow:visible;padding:4px 0 8px;margin:0;perspective:none;scroll-snap-type:none;touch-action:auto;--cw:auto;cursor:auto}
+@media (min-width:700px){.quizgrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}}
+@media (min-width:1100px){.quizgrid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.quizgrid .qcard,.quizgrid .qcard:hover,.quizgrid .qcard:active{--s:1;--o:1;flex:none;width:auto;min-height:176px;margin:0;transform:none;opacity:1;scroll-snap-align:none}
+@media (hover:hover) and (pointer:fine){.quizgrid .qcard:hover{transform:translateY(-4px)}}
+.quizgrid .qcard:active{transform:scale(.97)}
+.quizgrid .qtxt b{-webkit-line-clamp:4;font-size:clamp(17px,4.6vw,22px)}
+.quizgrid .qtxt small{-webkit-line-clamp:2}
+.cdots,.qall{display:none!important}
+.quizgrid.dragging{cursor:auto}
+/* tile names: use the full tile width, break only when a word really does not fit, arrow only constrains the subtitle */
+.quizgrid .qtxt{padding-right:0}
+.quizgrid .qtxt b{font-size:clamp(16px,4.3vw,21px);overflow-wrap:break-word;word-break:normal;hyphens:manual}
+.quizgrid .qtxt small{padding-right:40px}
+.quizgrid .qcard{padding:14px 14px 16px}
+.hero::after{right:clamp(14px,3.5vw,56px)}
+@media (max-width:560px){.hero::after{right:8px}}
