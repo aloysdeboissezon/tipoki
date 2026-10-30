@@ -57,7 +57,7 @@
       const s=document.createElement("span");s.textContent=w;o.appendChild(s);h.appendChild(o);inner.push(s);
       if(i<a.length-1)h.appendChild(document.createTextNode(" "));
     });
-    g.fromTo(inner,{yPercent:110},{yPercent:0,duration:.8,ease,stagger:.07,clearProps:"transform",delay:.05});
+    g.fromTo(inner,{yPercent:115,rotate:4},{yPercent:0,rotate:0,duration:1,ease:"power4.out",stagger:.1,clearProps:"transform",delay:.1});
   }
 
   // ---- screen entrances: children of a screen rise in with a short stagger (not on question/reveal: those repeat all game long) ----
@@ -68,9 +68,12 @@
     if(!kids.length)return;
     const fixedKids=kids.filter(k=>FIXED_KIDS.includes(k.id)),moving=kids.filter(k=>!fixedKids.includes(k));
     g.killTweensOf(kids);
-    g.fromTo(moving,{opacity:0,y:18},{opacity:1,y:0,duration:.5,ease,stagger:.05,clearProps:"transform,opacity"});
+    g.fromTo(moving,{opacity:0,y:34},{opacity:1,y:0,duration:.75,ease:"power4.out",stagger:.09,clearProps:"transform,opacity"});
     if(fixedKids.length)g.fromTo(fixedKids,{opacity:0},{opacity:1,duration:.35,ease:"power2.out",clearProps:"opacity"});
-    if(sec.id==="home")heroWords();
+    if(sec.id==="home"){heroWords();
+      g.from("#quizGrid .qcard",{opacity:0,y:40,scale:.94,duration:.8,ease:"power4.out",stagger:.07,delay:.25,clearProps:"opacity,y,scale"});
+    }
+    if(sec.id==="topic")g.from(".modecards .mcard",{opacity:0,y:50,scale:.92,duration:.8,ease:"power4.out",stagger:.1,delay:.15,clearProps:"opacity,y,scale"});
     if(sec.id==="end")endFlourish(sec);
   }
   // end screen: the podium columns grow (CSS) and the score title lands with a little weight

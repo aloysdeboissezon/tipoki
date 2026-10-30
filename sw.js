@@ -1,9 +1,11 @@
 // Tipoki service worker: the site opens instantly on repeat visits and the built-in quizzes work offline.
 // Strategy: same-origin files are served from the cache and refreshed in the background (so a new deploy shows up on the next visit).
 // Supabase, analytics and the fonts are never touched.
-const CACHE="tipoki-v2";
+const CACHE="tipoki-v3";
 self.addEventListener("install",e=>{self.skipWaiting()});
-self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
+// activation: drop every older cache; when this replaces an older version, reload the open tabs once so nobody keeps looking at a stale page
+self.addEventListener("activate",e=>{e.waitUntil((async()=>{const ks=await caches.keys(),old=ks.filter(k=>k!==CACHE);await Promise.all(old.map(k=>caches.delete(k)));await self.clients.claim();
+  if(old.length){const cs=await self.clients.matchAll({type:"window"});cs.forEach(c=>{try{c.navigate(c.url)}catch(err){}})}})())});
 // network first: a new deploy shows up on the very next visit (no stale mix of old and new files); the cache only answers when offline
 self.addEventListener("fetch",e=>{
   const r=e.request,u=new URL(r.url);
