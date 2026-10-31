@@ -326,7 +326,9 @@ function renderPreviews(){
   const q1=pickOne(short.length?short:mc);let b=clear("pvQuiz");
   if(q1){b.append(el("span","pv-q",cut(q1.q,80)));const t=el("span","pv-tiles");shuffle(q1.o.slice(0,4)).forEach((o,i)=>t.append(el("i","pv-t"+i,cut(String(o),28))));b.append(t)}
   const all=Q.concat(TQ).filter(ok),sh=all.filter(q=>q.q.length<70),q2=pickOne(sh.length?sh:all);b=clear("pvExam");
-  if(q2){const bar=el("span","pv-bar");bar.append(el("b",null,"12:30"),el("em",null,"/ 20"));b.append(bar,el("span","pv-q",cut(q2.q,64)),el("span","pv-ans"))}
+  if(q2){const bar=el("span","pv-bar"),NS="http://www.w3.org/2000/svg",sv=document.createElementNS(NS,"svg");sv.setAttribute("viewBox","0 0 24 24");sv.setAttribute("aria-hidden","true");
+    [["path","M6 2h12M6 22h12M7 2c0 6 5 7 5 10s-5 4-5 10M17 2c0 6-5 7-5 10s5 4 5 10"],["path","M9.5 19.5h5L12 16z","fill"],["path","M10 6h4l-2 3z","fill"]].forEach(([t,d,f])=>{const p=document.createElementNS(NS,t);p.setAttribute("d",d);if(f)p.setAttribute("class","sand");sv.append(p)});
+    const tr=el("span","pv-time");tr.append(el("i"));bar.append(sv,tr);b.append(bar,el("span","pv-q",cut(q2.q,64)),el("span","pv-ans"))}
   const f=pickOne((BANK.facts||[]).filter(x=>x[3]&&x[3].length<40&&x[4]));b=clear("pvCards");
   if(f){b.append(el("span","pv-card back"),el("span","pv-card front"));const fr=b.querySelector(".front");fr.append(el("small",null,tl("Concept")),el("b",null,f[3]),el("span",null,cut(f[4],110)))}
   const S=window.SHEETS&&window.SHEETS[BANK.id];b=clear("pvSheet");

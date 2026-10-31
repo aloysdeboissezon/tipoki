@@ -452,3 +452,16 @@ body::before{inset:-25%;
 .lg-xp{font-variant-numeric:tabular-nums;color:var(--muted)}
 .lg-how{font-size:13px;margin:0}
 .lg-row .av{width:34px;height:34px}
+
+/* mode names: big, bright pills so every mode is readable at a glance */
+#topic[data-mode=menu] .mcard>b{display:inline-block;align-self:center;max-width:100%;box-sizing:border-box;text-align:center;font-weight:900;text-transform:uppercase;letter-spacing:.03em;color:#2B1A9E;text-shadow:none;background:linear-gradient(180deg,#FFF08A,#FFC933);border-radius:999px;padding:.28em .7em .3em;box-shadow:0 3px 0 rgba(43,26,158,.55),0 6px 14px rgba(20,10,80,.3);font-size:clamp(12px,1.45vw,20px);white-space:nowrap}
+@media (max-width:899px){#topic[data-mode=menu] .mcard>b{font-size:clamp(12px,4.2vw,19px)}}
+@media (max-width:350px){#topic[data-mode=menu] .mcard>b{font-size:11px}}
+/* exam preview: hourglass + a time bar that drains */
+#topic[data-mode=menu] .mc-pv .pv-bar{justify-content:flex-start;gap:8px;align-items:center}
+#topic[data-mode=menu] .mcard .mc-pv .pv-bar svg{display:block;position:static;opacity:1;filter:none;flex:none;width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#topic[data-mode=menu] .mc-pv .pv-bar svg .sand{fill:#FFD84D;stroke:none}
+#topic[data-mode=menu] .mc-pv .pv-time{flex:1;height:8px;border-radius:9px;background:rgba(255,255,255,.28);overflow:hidden}
+#topic[data-mode=menu] .mc-pv .pv-time i{display:block;height:100%;width:100%;border-radius:9px;background:linear-gradient(90deg,#FF5A5F,#FFD84D);transform-origin:left;animation:pvdrain 4s ease-in-out infinite alternate}
+@keyframes pvdrain{from{transform:scaleX(.9)}to{transform:scaleX(.25)}}
+@media (prefers-reduced-motion:reduce){#topic[data-mode=menu] .mc-pv .pv-time i{animation:none;transform:scaleX(.55)}}
