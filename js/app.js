@@ -824,35 +824,16 @@ setInterval(()=>{
   if(isHost()&&!local.revealing&&(left<-800||all)){local.revealing=true;const qi=G.qi,c=G.created;setTimeout(()=>{if(G&&G.created===c&&G.qi===qi&&G.status==="q")writeGame({status:"reveal"})},all?600:0)}
   $("qTakeRow").hidden=!(mode==="multi"&&!isHost()&&left<-10000);
 },150);
-// after each answer reveal, the next question starts by itself after AUTO_MS (the host's clock drives everyone)
-const AUTO_MS=5000;
-setInterval(()=>{
-  if(!G||G.status!=="reveal"||$("reveal").hidden||!local.autoAt)return;
-  const left=local.paused?local.autoLeft:local.autoAt-performance.now();
-  renderAuto(left);
-  
-},150);
-function renderAuto(left){
-  // no countdown between questions: answers can carry long explanations, so the host reads at their own pace and taps Next
-  $("rAuto").hidden=true;$("rBar").parentElement.hidden=true;
-  if(!isHost())$("rWait").textContent=tl("Waiting for the host to go on…");
-  return;
-  const sec=Math.max(0,Math.ceil(left/1000)),host=isHost(),b=$("rAuto");
-  $("rBar").style.width=Math.max(0,Math.min(1,left/AUTO_MS))*100+"%";
-  const last=!G.inf&&G.qi>=G.deck.length-1,what=last?tl("Podium"):tl("auto|Next");
-  b.disabled=!host;b.classList.toggle("paused",!!local.paused);
-  b.textContent=local.paused?tl("Paused · Resume"):(sec>0?tl("{what} in {n} s",{what,n:sec}):what+"…")+(host&&sec>0?" · "+tl("Pause"):"");
-  if(!host)$("rWait").textContent=sec>0?tl("{what} in {n} s",{what:last?tl("Podium"):tl("Next question"),n:sec})+"…":tl("The host is starting the next one…");
+// no timer on the answer screen: explanations can be long (diagrams, images), so only the host's Next button moves the game on
+function renderAuto(){
+  const last=!G.inf&&G.qi>=G.deck.length-1;
+  $("rWait").textContent=last?tl("Waiting for the host to show the podium…"):tl("Waiting for the host to go to the next question…");
 }
-$("rAuto").onclick=()=>{if(!isHost()||!local.autoAt||local.autoFired)return;
-  if(local.paused){local.paused=false;local.autoAt=performance.now()+Math.max(1500,local.autoLeft);writeGame({pz:0})}
-  else{local.paused=true;local.autoLeft=local.autoAt-performance.now();writeGame({pz:Date.now()})}
-  renderAuto(local.paused?local.autoLeft:local.autoAt-performance.now())};
 
 // ---------- reveal ----------
 function renderReveal(){
   show("reveal");
-  if(local.autoQ!==G.qi){local.autoQ=G.qi;local.autoAt=performance.now()+AUTO_MS;local.paused=false;local.autoFired=false}
+  if(local.autoQ!==G.qi){local.autoQ=G.qi;local.autoAt=performance.now();local.autoFired=false}
   const item=G.deck[G.qi],q=qOf(G.qi),cp=correctPos(G.qi),a=myAns(),typed=isT(G.qi);
   $("rSess").textContent=sLabel(q.s);$("rNum").textContent=tl("Question {i} / {n}",{i:G.qi+1,n:G.inf?"∞":G.deck.length})+" · "+(typed?tl("Typed answer"):q.t)+" · "+diffName(diffOf(q));
   const v=$("rVerdict");$("rBreak").hidden=true;
@@ -887,7 +868,7 @@ function renderReveal(){
   $("rEnd").hidden=!(G.inf&&isHost());
   $("rNext").hidden=!isHost();$("rNext").textContent=last?tl("See the podium"):tl("Next question");
   $("rWait").hidden=isHost();
-  renderAuto(local.paused?local.autoLeft:local.autoAt-performance.now());
+  renderAuto();
 }
 function renderBoard(box,rows,gains){
   box.textContent="";

@@ -381,6 +381,8 @@ var FR={
 "Expected answer":"Réponse attendue",
 "Leaderboard":"Classement",
 "The host is starting the next one…":"L'hôte lance la suite…",
+"Waiting for the host to go to the next question…":"En attente de l'hôte pour passer à la question suivante…",
+"Waiting for the host to show the podium…":"En attente de l'hôte pour afficher le podium…",
 "End game":"Terminer la partie",
 "Next":"Suivante",
 "auto|Next":"Suite",
