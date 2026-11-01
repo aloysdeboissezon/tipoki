@@ -388,9 +388,12 @@ async function useBank(id){
   id=id||"socio";if(BANK&&BANK.id===id)return true;
   if(BUILTIN[id]){loadBank(BUILTIN[id]());return true}
   let b=bankCache[id];
-  if(!b){if(!sb)return false;
-    const {data,error}=await sb.from("quizzes").select("id,title,subject,lang,data").eq("id",id).maybeSingle();
-    if(error||!data)return false;
+  if(!b){
+    let data=null;
+    if(sb&&navigator.onLine){try{const r=await sb.from("quizzes").select("id,title,subject,lang,data").eq("id",id).maybeSingle();if(!r.error)data=r.data}catch(e){}}
+    if(data)tpkSaveData("quiz-"+id,data);   // a copy on the device, for offline
+    else data=await tpkLoadData("quiz-"+id);
+    if(!data)return false;
     b=bankCache[id]={...data.data,id:data.id,title:data.title,subject:data.subject,lang:data.lang}}
   loadBank(b);rememberQuiz(b);return true;
 }
@@ -1174,8 +1177,10 @@ $("quizSearchClear").onclick=()=>clearQuizSearch(true);
 $("quizEmptyClear").onclick=()=>clearQuizSearch(true);
 async function renderMyQuizzes(){
   renderQuizGrid(quizList());
-  if(!sb)return;
-  const {data}=await sb.from("quizzes").select("id,title,subject,sess:data->sess").order("created_at",{ascending:false}).limit(50);
+  let data=null;
+  if(sb&&navigator.onLine){try{const r=await sb.from("quizzes").select("id,title,subject,sess:data->sess").order("created_at",{ascending:false}).limit(50);data=r.data}catch(e){}}
+  if(data&&data.length)tpkSaveData("quiz-list",data);
+  else data=await tpkLoadData("quiz-list");
   if(data&&data.length)renderQuizGrid(quizList(data));
 }
 $("makePanel").hidden=!MAKER_ON;

@@ -486,6 +486,8 @@ var FR={
 "Link not recognised. Paste a Spotify or Deezer playlist, album or track link.":"Lien non reconnu. Colle un lien de playlist, d'album ou de titre Spotify ou Deezer.",
 // online save
 "Saving…":"Enregistrement…",
+"You're offline. You can still revise; your progress syncs when you're back.":"Tu es hors ligne. Tu peux continuer à réviser ; ta progression se synchronise au retour du réseau.",
+"{n} waiting to send":"{n} en attente d'envoi",
 "Offline, will retry":"Hors ligne, nouvel essai bientôt",
 "Saved online as {u}":"Sauvegardé en ligne sous {u}",
 "Sign out":"Se déconnecter",
