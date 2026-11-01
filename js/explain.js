@@ -19,5 +19,23 @@ window.TipokiWhy=(function(){
     if(d)return tl("That describes “{t}”.",{t:trim(d[3])});
     return "";
   }
-  return {whyNot};
+  // richer explanation after an answer: the term in bold, a worked example or context taken from the quiz's study sheet, and a link into that sheet
+  const plain=h=>{const d=document.createElement("div");d.innerHTML=h;return d.textContent.trim()};
+  function fill(q,box,main,more){
+    const e=q.e||"",i=e.indexOf(" — "),st=e.indexOf(": ");
+    main.textContent="";more.textContent="";
+    const k=i>0&&i<=60?i:-1,from=k>0&&st>=0&&st<k?st+2:0;
+    if(k>0){const b=document.createElement("b");b.className="expl-t";b.textContent=e.slice(from,k);
+      if(from)main.append(e.slice(0,from));main.append(b," — "+e.slice(k+3))}
+    else main.textContent=e;
+    const S=window.SHEETS&&BANK&&window.SHEETS[BANK.id],sec=S&&S.sections[(q.s||0)-1];
+    if(!sec)return;
+    const ex=sec.blocks.find(b=>b.t==="ex");
+    const txt=ex?plain((ex.x||[])[0]||""):(sec.lead?plain(sec.lead):"");
+    if(txt){const p=document.createElement("p");p.className="expl-ex";const h=document.createElement("span");h.className="expl-xh";
+      h.textContent=ex?tl("Example"):tl("In context");p.append(h," ",txt.length>260?txt.slice(0,257).replace(/\s+\S*$/,"")+"…":txt);more.append(p)}
+    if(window.TipokiSheet&&window.TipokiSheet.has()){const a=document.createElement("button");a.type="button";a.className="expl-link";
+      a.textContent=tl("Read it in the study sheet")+" → "+plain(sec.title);a.onclick=()=>window.TipokiSheet.open((q.s||1)-1);more.append(a)}
+  }
+  return {whyNot,fill};
 })();
