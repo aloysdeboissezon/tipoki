@@ -447,9 +447,18 @@ function sfx(kind){if(!soundOn)return;try{audio();
   else if(kind==="bad"){tone(196,0,.22,"sawtooth",.09);tone(147,.18,.3,"sawtooth",.08)}
   else if(kind==="join")tone(1047,0,.1,"sine",.1);
   else if(kind==="streak"){[784,988,1175,1568].forEach((f,i)=>tone(f,i*.07,.14,"triangle",.12))}
+  else if(kind==="streak5"){[784,988,1175,1568,1976].forEach((f,i)=>tone(f,i*.06,.14,"triangle",.13));tone(2349,.32,.3,"sine",.1)}
+  else if(kind==="streak10"){[523,659,784,1047,1319,1568,2093].forEach((f,i)=>tone(f,i*.055,.16,"triangle",.14));[1047,1319,1568,2093].forEach(f=>tone(f,.45,.5,"sine",.07))}
   else if(kind==="win"){[523,659,784,1047,784,1047].forEach((f,i)=>tone(f,i*.13,.22,"triangle",.15))}
 }catch(e){}}
-function buzz(p){try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
+// haptics follow the sound toggle (muted = silent and still) and are skipped for reduced-motion users
+function buzz(p){if(!soundOn)return;try{if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
+// feedback for a right answer, escalating with the run of right answers: 1-2 plain, 3-4 chime, 5-9 fuller chime, 10+ fanfare
+function rightFx(n){
+  if(n>=10){sfx("streak10");buzz([40,30,40,30,40,30,120])}
+  else if(n>=5){sfx("streak5");buzz([35,30,35,30,80])}
+  else if(n>=3){sfx("streak");buzz([30,30,60])}
+  else{sfx("ok");buzz(n===2?[25,30,25]:40)}}
 document.addEventListener("pointerdown",()=>{if(soundOn&&!actx){try{audio()}catch(e){}}},{once:true});
 
 // ---------- confetti ----------
@@ -826,7 +835,7 @@ function renderReveal(){
   $("rSess").textContent=sLabel(q.s);$("rNum").textContent=tl("Question {i} / {n}",{i:G.qi+1,n:G.inf?"∞":G.deck.length})+" · "+(typed?tl("Typed answer"):q.t)+" · "+diffName(diffOf(q));
   const v=$("rVerdict");
   const late=mode==="multi"&&local.joinQi>G.qi;   // just joined: this question was before your time
-  if(local.sfxQ!==G.qi){local.sfxQ=G.qi;if(a&&isRight(a,G.qi)){sfx(scoreRun(me,G.qi).streak>=3?"streak":"ok");buzz(40)}else if(!late){sfx("bad");buzz([60,40,60])}}
+  if(local.sfxQ!==G.qi){local.sfxQ=G.qi;if(a&&isRight(a,G.qi)){rightFx(scoreRun(me,G.qi).streak)}else if(!late){sfx("bad");buzz([60,40,60])}}
   const winners=Object.keys(P).map(id=>({id,a:P[id].ans&&P[id].ans[G.qi]})).filter(x=>isRight(x.a,G.qi)).sort((x,y)=>x.a.ms-y.a.ms);
   $("rFast").hidden=mode!=="multi"||!winners.length;if(winners.length)$("rFast").textContent=tl("Fastest: {name} in {s} s",{name:nameOf(winners[0].id),s:fmtDec(winners[0].a.ms/1000)});
   const ok=isRight(a,G.qi);$("rMiss").hidden=!G.miss||!a;$("rMiss").className="missnote "+(ok?"ok":"bad");
