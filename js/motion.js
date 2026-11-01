@@ -82,7 +82,7 @@
     if(t)g.fromTo(t,{scale:.86,opacity:0},{scale:1,opacity:1,duration:.7,ease,clearProps:"transform,opacity"});
   }
 
-  const watch=["home","topic","lobby","end"];
+  const watch=["home","topic","lobby","end","league","stats"];
   watch.forEach(id=>{
     const s=$(id);if(!s)return;
     new MutationObserver(m=>{
