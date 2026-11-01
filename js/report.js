@@ -21,4 +21,25 @@
   });
   const orig=renderReveal;
   renderReveal=function(){orig();refresh()};
+
+  // one-tap flag during the question: sends a report ("other") straight away, no menu
+  const flag=$("qFlag");
+  if(flag){
+    function flagRefresh(){
+      if(!G||!BANK||G.status!=="q"){return}
+      const done=store().includes(missKey(G.qi));
+      flag.classList.toggle("on",done);flag.disabled=done;
+      flag.setAttribute("aria-label",done?tl("Thanks, reported"):tl("Report this question"));
+    }
+    flag.onclick=async()=>{
+      if(!G||!BANK)return;
+      const k=missKey(G.qi),s=store();
+      if(s.includes(k))return;
+      s.push(k);lsSet(lsKey("reported"),JSON.stringify(s.slice(-300)));
+      flagRefresh();toast(tl("Thanks, reported"));
+      try{await tpkInsert("question_reports",{quiz:BANK.id,q:k,reason:"other",player:me})}catch(err){}
+    };
+    const oq=renderQuestion;
+    renderQuestion=function(){oq();flagRefresh()};
+  }
 })();
