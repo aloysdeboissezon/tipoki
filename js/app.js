@@ -882,7 +882,7 @@ $("rEnd").onclick=()=>{if(isHost())writeGame({status:"end",deck:G.deck.slice(0,G
 // ---------- progress: best score per quiz + daily study streak ----------
 // kept in this browser for now: statsLoad / statsSave are the only functions touching storage, so an online save can plug in there
 const STATS_KEY="tpk-stats",BEST_MIN=5;   // a game needs 5+ questions to count as a record
-function statsLoad(){try{const s=JSON.parse(lsGet(STATS_KEY)||"{}");return {best:s.best||{},days:s.days||[]}}catch(e){return {best:{},days:[]}}}
+function statsLoad(){try{const s=JSON.parse(lsGet(STATS_KEY)||"{}");return {best:s.best||{},days:s.days||[],daily:s.daily||{},goal:s.goal||0}}catch(e){return {best:{},days:[],daily:{},goal:0}}}
 function statsSave(s){lsSet(STATS_KEY,JSON.stringify(s))}
 function dayKey(d){d=d||new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function accPct(r){return Math.round(100*r.c/r.n)}
@@ -892,6 +892,19 @@ function beats(a,b){return !b||a.c*b.n>b.c*a.n||(a.c*b.n===b.c*a.n&&a.pts>b.pts)
 function recordGame(id,r){const s=statsLoad(),prev=s.best[id]||null;if(r.n>=BEST_MIN&&beats(r,prev)){s.best[id]={c:r.c,n:r.n,pts:r.pts,at:Date.now()};statsSave(s)}return prev}
 // true when today is a new study day
 function markStudyDay(){const s=statsLoad(),k=dayKey();if(s.days[s.days.length-1]===k)return false;s.days=s.days.filter(d=>d!==k).concat(k).slice(-400);statsSave(s);return true}
+// daily goal: questions/cards answered per day (kept 60 days, saved online with the rest of tpk-stats)
+const GOALS=[5,10,20,30];
+function goalOf(){const g=statsLoad().goal;return GOALS.includes(g)?g:10}
+function addDaily(n){if(!(n>0))return;const s=statsLoad(),k=dayKey();s.daily[k]=(s.daily[k]||0)+n;
+  Object.keys(s.daily).sort().slice(0,-60).forEach(d=>delete s.daily[d]);statsSave(s)}
+function goalInfo(){const s=statsLoad(),g=goalOf(),done=s.daily[dayKey()]||0;return {g,done,hit:done>=g}}
+function setGoal(g){const s=statsLoad();s.goal=g;statsSave(s);renderProgressUI()}
+document.addEventListener('click',e=>{if(e.target.id==='goalSet'){const g=goalOf();setGoal(GOALS[(GOALS.indexOf(g)+1)%GOALS.length])}});
+function renderGoal(){const box=$("homeGoal");if(!box)return;const {g,done,hit}=goalInfo(),st=streakInfo();
+  $("goalFill").style.width=Math.min(100,Math.round(100*done/g))+"%";box.classList.toggle("hit",hit);
+  $("goalTxt").textContent=tl("Daily goal: {d}/{g}",{d:Math.min(done,g),g});
+  $("goalHint").textContent=hit?tl("Goal reached. Nice!"):st.n&&!st.today?tl("{k} more to keep your {n}-day streak",{k:g-done,n:st.n}):tl(g-done===1?"1 more to go":"{k} more to go",{k:g-done});
+  $("goalSet").textContent=tl("Goal")+": "+g}
 // days in a row up to today (or up to yesterday while today is not done yet)
 function streakInfo(){const days=new Set(statsLoad().days),d=new Date(),today=days.has(dayKey(d));if(!today)d.setDate(d.getDate()-1);
   let n=0;while(days.has(dayKey(d))){n++;d.setDate(d.getDate()-1)}return {n,today}}
@@ -899,6 +912,7 @@ const FLAME='<svg class="flame" viewBox="0 0 24 24" aria-hidden="true"><path d="
 function renderStreak(box,txt){const st=streakInfo();box.hidden=!st.n;if(!st.n)return st;
   box.innerHTML=FLAME+"<b></b><span></span>";box.children[1].textContent=tl(st.n===1?"1-day streak":"{n}-day streak",{n:st.n});box.children[2].textContent=txt(st);return st}
 function renderProgressUI(){
+  renderGoal();
   renderStreak($("homeStreak"),st=>st.today?tl("Done for today"):tl("Play today to keep it"));
   const best=statsLoad().best;
   $("quizGrid").querySelectorAll(".qcard").forEach(c=>{const b=best[c.dataset.id],x=c.querySelector(".qbest");
@@ -906,7 +920,7 @@ function renderProgressUI(){
   const b=BANK&&best[BANK.id];$("bankBest").hidden=!b;if(b)$("bankBest").textContent=tl("Your best: {p}% ({c}/{n})",{p:accPct(b),c:b.c,n:b.n});
 }
 function renderEndProgress(){
-  const R=local.endRes,box=$("endProg");$("endStreak").hidden=box.hidden=!R;if(!R)return;
+  const R=local.endRes,box=$("endProg");$("endStreak").hidden=box.hidden=$("endGoal").hidden=!R;if(!R)return;
   const r=R.r,prev=R.prev,counts=r.n>=BEST_MIN&&!G.review;box.hidden=!counts;
   if(counts){const nb=beats(r,prev);let badge,txt;
     if(!prev){badge=tl("First score");txt=tl("{p}% correct. Play again to beat it!",{p:accPct(r)})}
@@ -917,6 +931,7 @@ function renderEndProgress(){
     box.classList.toggle("rec",nb);$("endBadge").textContent=badge;$("endProgTxt").textContent=txt;
     $("endMark").hidden=!prev||nb;if(prev)$("endMark").style.left=accPct(prev)+"%";
     const f=$("endFill");f.style.width="0%";requestAnimationFrame(()=>requestAnimationFrame(()=>f.style.width=accPct(r)+"%"))}
+  const gi=goalInfo();$("endGoal").hidden=false;$("endGoal").textContent=gi.hit?tl("Daily goal reached ({d}/{g})",{d:gi.done,g:gi.g}):tl("Daily goal: {d}/{g}",{d:gi.done,g:gi.g});
   renderStreak($("endStreak"),st=>R.newDay?(st.n>1?tl("Day {n} in a row. See you tomorrow!",{n:st.n}):tl("Day 1. Come back tomorrow to keep it going.")):tl("You already studied today. Come back tomorrow for day {n}.",{n:st.n+1}));
 }
 
@@ -936,7 +951,7 @@ function renderEnd(){
   if(typeof recordPlay==="function")recordPlay();
   if(local.confEnd!==G.created){local.confEnd=G.created;
     const r={c:correct,n:G.deck.length-from,pts:(t.find(x=>x.id===me)||{t:0}).t},played=!!P[me],prev=!played||G.review?bestOf(BANK.id):recordGame(BANK.id,r);
-    local.endRes=played?{r,prev,newDay:markStudyDay()}:null;
+    local.endRes=played?{r,prev,newDay:markStudyDay()}:null;if(played)addDaily(r.n);
     // light confetti, a bigger burst for a new record or a win
     const big=(!G.review&&r.n>=BEST_MIN&&prev&&beats(r,prev))||(mode==="multi"&&myRank===1);
     if(big||(played&&r.c*2>=r.n))setTimeout(()=>confetti(big?160:60),300);sfx("win")}
@@ -985,7 +1000,7 @@ function fcSchedule(f,ok){const sr=fcSrStore(),st=fcStore(),e=sr[f[3]],now=Date.
   let b=e?e.b:(st[f[3]]===1?1:0);b=ok?Math.min(b+1,FC_GAPS.length-1):0;
   sr[f[3]]={b,d:now+(ok?FC_GAPS[b]*FC_DAY:FC_SOON),t:now};lsSet(lsKey("cards-sr"),JSON.stringify(sr))}
 function fcWhen(d){const m=Math.round((d-Date.now())/6e4);return m<=0?tl("now"):m<60?tl("in {n} min",{n:m}):m<2880?tl("in {n} h",{n:Math.round(m/60)}):tl("in {n} days",{n:Math.round(m/1440)})}
-function fcMark(f,ok){fcSchedule(f,ok);const st=fcStore();st[f[3]]=ok?1:0;lsSet(lsKey("cards"),JSON.stringify(st));markStudyDay()}
+function fcMark(f,ok){fcSchedule(f,ok);const st=fcStore();st[f[3]]=ok?1:0;lsSet(lsKey("cards"),JSON.stringify(st));markStudyDay();addDaily(1)}
 function fcPool(){return (BANK.facts||[]).filter(f=>settings.sess.has(Number(f[0])))}
 function fcPick(){const st=fcStore(),pool=fcPool();
   if(settings.fcSet==="due"){const sr=fcSrStore();return pool.filter(f=>fcDue(f,sr))}
