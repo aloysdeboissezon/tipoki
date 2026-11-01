@@ -1,0 +1,34 @@
+/* Accessibility layer (loaded last): skip link, text size, stronger focus, contrast fixes, forced colours, reduced motion */
+
+/* skip link: first tab stop, visible only when focused */
+.skip-link{position:fixed;left:12px;top:-80px;z-index:10000;background:var(--hl);color:var(--hl-ink);font:800 16px/1 var(--f-display);padding:12px 18px;border-radius:12px;text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,.35)}
+.skip-link:focus{top:max(12px,env(safe-area-inset-top))}
+
+/* text size: the stylesheet is in px, so scale the whole page (A button in the header: 100 / 115 / 130 %) */
+html[data-tsize="1"] body{zoom:1.15}
+html[data-tsize="2"] body{zoom:1.3}
+#sizeBtn .bt{font-weight:800;letter-spacing:-.02em}
+#sizeBtn[data-level="1"] .bt::after{content:"+"}
+#sizeBtn[data-level="2"] .bt::after{content:"++"}
+
+/* focus ring that stays visible on pale, dark and coloured surfaces: ring + contrasting halo */
+:focus-visible{outline:3px solid var(--hl)!important;outline-offset:3px;box-shadow:0 0 0 6px var(--card)}
+:root[data-theme="dark"] :focus-visible{outline-color:#B8AAFF!important}
+.tile:focus-visible,.sctile:focus-visible,.mcard:focus-visible,.qcard:focus-visible{outline-color:var(--ink)!important;box-shadow:0 0 0 7px var(--card)}
+:root[data-theme="dark"] .tile:focus-visible,:root[data-theme="dark"] .sctile:focus-visible,:root[data-theme="dark"] .mcard:focus-visible,:root[data-theme="dark"] .qcard:focus-visible{outline-color:#fff!important}
+/* hidden file inputs: the visible label takes the focus ring */
+.drop:focus-visible,.pfp:focus-visible{outline:3px solid var(--hl)!important;outline-offset:3px}
+[tabindex="-1"]:focus{outline:none!important;box-shadow:none}
+
+/* contrast: white text on these fills reaches 4.5:1 */
+:root{--a0:#D93A1C;--a3:#127A40}
+:root[data-theme="dark"]{--ok:#1E8A4F;--bad:#D9402B}
+
+/* Windows high contrast / forced colours: keep borders and focus */
+@media (forced-colors:active){
+  .tile,.sctile,.mcard,.qcard,.chip,.btn,.iconbtn{border:2px solid ButtonText}
+  .chip[aria-pressed="true"],.sctile[aria-pressed="true"]{border-color:Highlight;outline:2px solid Highlight}
+  :focus-visible{outline:3px solid Highlight!important}
+}
+/* "Reduce motion" also stops auto-playing smooth scroll */
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}

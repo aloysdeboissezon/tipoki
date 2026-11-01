@@ -22,6 +22,7 @@ var FR={
 "Back to home":"Retour à l'accueil",
 "Tipoki, back to home":"Tipoki, retour à l'accueil",
 "Switch to dark mode":"Passer en mode sombre",
+"Text size":"Taille du texte","Text size {n}%":"Taille du texte {n} %","Skip to content":"Aller au contenu","Language":"Langue","Choose a file":"Choisir un fichier",
 "Switch to light mode":"Passer en mode clair",
 "Turn sound effects on":"Activer les effets sonores",
 "Turn sound effects off":"Couper les effets sonores",
