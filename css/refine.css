@@ -475,3 +475,9 @@ body.qpaused #qTiles,body.qpaused #qType{opacity:.35;pointer-events:none}
 .off-bar{position:fixed;left:0;right:0;bottom:0;z-index:60;padding:8px 14px calc(8px + env(safe-area-inset-bottom));background:#17162B;color:#fff;font:600 13px/1.3 Nunito,system-ui,sans-serif;text-align:center}
 .off-bar[hidden]{display:none}
 html[data-theme="dark"] .off-bar{background:#2B2A45}
+/* pause button on solo question / answer screens, resume bar on flashcards */
+.pausebtn{min-height:34px;padding:4px 12px;font-size:14px;flex:none}
+.pausebtn[hidden]{display:none}
+.fc-resume{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;border-radius:14px;background:var(--hl-soft);font-weight:700;font-size:14.5px;margin-bottom:12px}
+.fc-resume span{flex:1 1 180px}
+.fc-resume[hidden]{display:none}

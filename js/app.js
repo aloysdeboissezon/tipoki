@@ -602,10 +602,10 @@ function isHost(){return G&&G.host===me}
 const RESUME_KEY="tpk-resume",RESUME_MAX=7*864e5;
 function savedSolo(){try{const s=JSON.parse(lsGet(RESUME_KEY)||"null");if(s&&s.G&&s.G.deck&&s.ans&&Date.now()-s.at<RESUME_MAX)return s}catch(e){}return null}
 function clearSolo(){try{localStorage.removeItem(RESUME_KEY)}catch(e){}}
-function saveSolo(){
+function saveSolo(force){
   if(!G||!BANK)return;
   if(G.status==="end"){clearSolo();return}
-  const ans=(P[me]&&P[me].ans)||{};if(!Object.keys(ans).length)return;   // nothing answered yet: keep any older save
+  const ans=(P[me]&&P[me].ans)||{};if(!force&&!Object.keys(ans).length)return;   // force = the player paused on purpose   // nothing answered yet: keep any older save
   lsSet(RESUME_KEY,JSON.stringify({bank:BANK.id,title:BANK.title,G,ans,at:Date.now()}));
 }
 function ago(t){const m=Math.round((Date.now()-t)/60000);return m<2?tl("just now"):m<60?tl("{n} min ago",{n:m}):m<1440?tl("{n} h ago",{n:Math.round(m/60)}):tl("{n} d ago",{n:Math.round(m/1440)})}
@@ -1202,7 +1202,7 @@ $("topicBack").onclick=()=>{show("home");renderMyQuizzes()};
 $("brandHome").onclick=e=>{
   if(e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;   // let "open in a new tab" work
   e.preventDefault();
-  if(window.examBusy&&examBusy()){if(!confirm(tl("Quit the exam? Your answers will be lost.")))return;EX.on=false}
+  if(window.examBusy&&examBusy()){if(!confirm(tl("Leave the exam? It stays paused and you can resume it from this quiz page.")))return;EX.on=false}
   else if(G&&mode==="multi"&&(G.status==="q"||G.status==="reveal")&&!confirm(tl("Leave the current game? The other players will carry on without you.")))return;   // a solo game is saved, it can be resumed
   if(mode){leaveGame(true);mode=null;code=null;G=null;P={}}
   try{history.replaceState(null,"",location.pathname)}catch(e){}
@@ -1276,7 +1276,7 @@ $("mkGo").onclick=async()=>{
     const e=mk("topic");
     if(now==="menu"&&stack[cur-1]&&stack[cur-1].k==="topic"&&stack[cur-1].q===e.q)back(-1);
     else if(prev==="menu")put(e,true);else put(e)};
-  function stopRun(){if(window.examBusy&&examBusy())EX.on=false;if(mode){leaveGame(true);mode=null;code=null;G=null;P={}}}
+  function stopRun(){if(window.examBusy&&examBusy()){if(window.exSnap)exSnap();window.exPaused=true;EX.on=false}if(mode){leaveGame(true);mode=null;code=null;G=null;P={}}}
   function running(){return (window.examBusy&&examBusy())||(mode==="multi"&&G&&(G.status==="q"||G.status==="reveal"))}
   addEventListener("popstate",async ev=>{
     const e=ev.state;
@@ -1284,7 +1284,7 @@ $("mkGo").onclick=async()=>{
     if(!e||e.i==null){history.go(cur-(history.length-1));return}
     const from=stack[cur];
     if(from&&from.k==="run"&&e.k!=="run"&&running()){
-      const q=window.examBusy&&examBusy()?tl("Quit the exam? Your answers will be lost."):tl("Leave the current game? The other players will carry on without you.");
+      const q=window.examBusy&&examBusy()?tl("Leave the exam? It stays paused and you can resume it from this quiz page."):tl("Leave the current game? The other players will carry on without you.");
       if(!confirm(q)){back(cur-e.i);return}}
     cur=e.i;stack[cur]=e;
     if(e.k==="run"){if(!from||from.k!=="run")back(-1);return}   // a game can't be re-opened from history

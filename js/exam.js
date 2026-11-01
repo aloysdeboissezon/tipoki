@@ -79,8 +79,8 @@ function exAsk(kind){
   const left=EX.ans.filter(a=>!exAnswered(a)).length,c=$("exConfirm");
   if(kind==="hand"&&!left){handInExam(false);return}
   c.dataset.kind=kind;c.hidden=false;
-  $("exConfirmTxt").textContent=kind==="quit"?tl("Quit the exam? Your answers will be lost."):tl(left>1?"{n} questions not answered yet. Hand in anyway?":"1 question not answered yet. Hand in anyway?",{n:left});
-  $("exConfirmOk").textContent=kind==="quit"?tl("Quit"):tl("Hand in");
+  $("exConfirmTxt").textContent=kind==="quit"?tl("Pause the exam? Your answers are kept and you can resume it from this quiz page."):tl(left>1?"{n} questions not answered yet. Hand in anyway?":"1 question not answered yet. Hand in anyway?",{n:left});
+  $("exConfirmOk").textContent=kind==="quit"?tl("Pause"):tl("Hand in");
   c.scrollIntoView({block:"nearest",behavior:RM?"auto":"smooth"});$("exConfirmNo").focus()}
 function exTick(){
   if(!EX.on)return;
@@ -136,7 +136,7 @@ function renderExRev(){
 }
 function exMissDeck(){return EX.deck.filter((d,i)=>EX.res[i]!==1).map(d=>d.t!=null?{t:d.t}:{id:d.id,o:Q[d.id].tf?tfOrder(Q[d.id]):shuffle([0,1,2,3])})}
 function examBusy(){return EX.on&&!$("exam").hidden}
-function exLeave(){EX.on=false;show("topic");renderExamPanel()}
+function exLeave(){if(window.exSnap)exSnap();window.exPaused=true;EX.on=false;show("topic");renderExamPanel()}
 
 $("exGo").onclick=startExam;
 
