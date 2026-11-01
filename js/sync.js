@@ -93,6 +93,7 @@ async function pull(){
   }catch(e){if(e.message==="bad_token"){dropAcct();setState("expired")}else setState("offline")}
 }
 function dropAcct(){acct=null;saveAcct()}
+addEventListener("online",()=>{if(acct&&!busy){get(DIRTY)?push():pull()}});
 document.addEventListener("visibilitychange",()=>{if(!acct)return;
   if(document.visibilityState==="hidden"&&get(DIRTY))push();
   else if(document.visibilityState==="visible"&&!busy)pull()});

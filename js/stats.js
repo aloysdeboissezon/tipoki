@@ -15,7 +15,7 @@ async function recordPlay(){
   const qs={};let correct=0;
   G.deck.forEach((d,i)=>{const ok=isRight(mine[i],i);qs[d.t!=null?"t"+d.t:"m"+d.id]=ok?1:0;if(ok)correct++});
   const row={quiz:BANK.id,game,player:await statsPlayer(BANK.id),mode:mode==="multi"?"multi":G.review?"review":"solo",n:G.deck.length,correct,qs};
-  try{const {error}=await sb.from("play_stats").insert(row);if(error)console.warn(error)}catch(e){console.warn(e)}
+  try{await tpkInsert("play_stats",row)}catch(e){console.warn(e)}
 }
 
 // ---------- stats page ----------

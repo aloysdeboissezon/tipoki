@@ -17,7 +17,7 @@
     const k=missKey(G.qi),why=b.dataset.why;
     const s=store();if(!s.includes(k)){s.push(k);lsSet(lsKey("reported"),JSON.stringify(s.slice(-300)))}
     pick.hidden=true;btn.disabled=true;btn.textContent=tl("Thanks, reported");
-    if(sb){try{await sb.from("question_reports").insert({quiz:BANK.id,q:k,reason:why,player:me})}catch(err){}}
+    try{await tpkInsert("question_reports",{quiz:BANK.id,q:k,reason:why,player:me})}catch(err){}
   });
   const orig=renderReveal;
   renderReveal=function(){orig();refresh()};
