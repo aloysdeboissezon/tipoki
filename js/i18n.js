@@ -390,6 +390,10 @@ var FR={
 "You're in! You'll play from the next question":"C'est parti ! Tu joues à partir de la prochaine question",
 "verdict|Correct":"Correct",
 "streak ×{n}":"série ×{n}",
+"+{n} pts":"+{n} pts",
+"speed bonus +{n}":"bonus de rapidité +{n}",
+"Base {b} + speed bonus {s}":"Base {b} + bonus de rapidité {s}",
+"streak bonus {n}":"bonus de série {n}",
 "verdict|Wrong":"Raté",
 // end
 "Final results":"Résultats finaux",

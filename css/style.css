@@ -556,3 +556,4 @@ body.noscroll{overflow:hidden}
 .goal-hint{color:var(--muted);font-size:12px;font-weight:600}
 .goal.hit .goal-hint{color:var(--ok)}
 .goal-end{margin:0;align-self:center;font-weight:800;font-size:14px;color:var(--muted)}
+.pot{margin:0;font-size:14px;font-weight:800;color:var(--hl);font-variant-numeric:tabular-nums;min-height:1.3em}

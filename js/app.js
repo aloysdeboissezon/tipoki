@@ -666,8 +666,11 @@ function nameOf(id){const p=P[id];return (p&&p.nick)||(profiles[id]&&profiles[id
 // ---------- scoring ----------
 function correctPos(qi){return isT(qi)?-1:G.deck[qi].o.indexOf(0)}
 function isRight(a,qi){return !!a&&(isT(qi)?a.ok===true:a.c===correctPos(qi))}
-function pts(id,qi){const a=P[id]&&P[id].ans&&P[id].ans[qi];if(!isRight(a,qi))return 0;
-  const sp=Math.max(0,1-a.ms/qT(qi));return isT(qi)?700+Math.round(500*sp):500+Math.round(500*sp)}
+function ptsParts(id,qi){const a=P[id]&&P[id].ans&&P[id].ans[qi];if(!isRight(a,qi))return null;
+  const sp=Math.max(0,1-a.ms/qT(qi)),base=isT(qi)?700:500;return {base,speed:Math.round(500*sp)}}
+function pts(id,qi){const x=ptsParts(id,qi);return x?x.base+x.speed:0}
+// live value of a correct answer right now (base + speed bonus still on the table)
+function potential(qi){const left=Math.max(0,Math.min(1,timeLeft()/qT(qi)));return {base:isT(qi)?700:500,speed:Math.round(500*left)}}
 function scoreRun(id,upto){let t=0,st=0,gain=0;for(let i=0;i<=upto;i++){const p=pts(id,i);let g=0;if(p>0){st++;g=p+Math.min(300,(st-1)*100)}else st=0;t+=g;if(i===upto)gain=g}return {t,gain,streak:st}}
 function totals(upto){return Object.keys(P).map(id=>({id,...scoreRun(id,upto)})).sort((a,b)=>b.t-a.t)}
 
@@ -791,6 +794,7 @@ setInterval(()=>{
   const sec=Math.max(0,Math.ceil(Math.min(left,qT(G.qi))/1000));$("qTimer").textContent=sec;$("qTimer").style.setProperty("--p",Math.max(0,Math.min(1,left/qT(G.qi))).toFixed(3));
   const warn=left<5000&&left>0&&!myAns();if(warn&&local.lastTick!==sec){local.lastTick=sec;sfx("tick")}$("qTimer").classList.toggle("warn",warn);$("qBar").classList.toggle("warn",warn);
   $("qBar").style.width=Math.max(0,Math.min(1,left/qT(G.qi))*100)+"%";
+  const pe=$("qPot");pe.hidden=!!myAns();if(!pe.hidden){const o=potential(G.qi);pe.textContent=tl("+{n} pts",{n:o.base+o.speed})+" · "+tl("speed bonus +{n}",{n:o.speed})}
   if(left<=0&&!myAns()&&$("qWait").hidden)renderQState();
   const ids=Object.keys(P);
   const all=ids.length>0&&ids.every(id=>P[id].ans&&P[id].ans[G.qi]);
@@ -824,7 +828,7 @@ function renderReveal(){
   if(local.autoQ!==G.qi){local.autoQ=G.qi;local.autoAt=performance.now()+AUTO_MS;local.paused=false;local.autoFired=false}
   const item=G.deck[G.qi],q=qOf(G.qi),cp=correctPos(G.qi),a=myAns(),typed=isT(G.qi);
   $("rSess").textContent=sLabel(q.s);$("rNum").textContent=tl("Question {i} / {n}",{i:G.qi+1,n:G.inf?"∞":G.deck.length})+" · "+(typed?tl("Typed answer"):q.t)+" · "+diffName(diffOf(q));
-  const v=$("rVerdict");
+  const v=$("rVerdict");$("rBreak").hidden=true;
   const late=mode==="multi"&&local.joinQi>G.qi;   // just joined: this question was before your time
   if(local.sfxQ!==G.qi){local.sfxQ=G.qi;if(a&&isRight(a,G.qi)){sfx(scoreRun(me,G.qi).streak>=3?"streak":"ok");buzz(40)}else if(!late){sfx("bad");buzz([60,40,60])}}
   const winners=Object.keys(P).map(id=>({id,a:P[id].ans&&P[id].ans[G.qi]})).filter(x=>isRight(x.a,G.qi)).sort((x,y)=>x.a.ms-y.a.ms);
@@ -832,7 +836,8 @@ function renderReveal(){
   const ok=isRight(a,G.qi);$("rMiss").hidden=!G.miss||!a;$("rMiss").className="missnote "+(ok?"ok":"bad");
   $("rMiss").textContent=ok?tl("✓ Off your missed questions list"):tl("Still on your missed questions list");
   if(late&&!a){v.textContent=tl("You're in! You'll play from the next question");v.className="verdict late"}
-  else if(isRight(a,G.qi)){const r=scoreRun(me,G.qi);v.textContent=tl("verdict|Correct")+" · +"+r.gain+(r.streak>=2?" · "+tl("streak ×{n}",{n:r.streak}):"");if(local.confQ!==G.qi){local.confQ=G.qi;confetti(r.streak>=3?120:60)}v.className="verdict ok pop"}
+  else if(isRight(a,G.qi)){const r=scoreRun(me,G.qi),pp=ptsParts(me,G.qi);v.textContent=tl("verdict|Correct")+" · +"+r.gain+(r.streak>=2?" · "+tl("streak ×{n}",{n:r.streak}):"");
+    $("rBreak").hidden=false;$("rBreak").textContent=tl("Base {b} + speed bonus {s}",{b:pp.base,s:pp.speed})+(r.gain>pp.base+pp.speed?" + "+tl("streak bonus {n}",{n:r.gain-pp.base-pp.speed}):"");if(local.confQ!==G.qi){local.confQ=G.qi;confetti(r.streak>=3?120:60)}v.className="verdict ok pop"}
   else if(!a){v.textContent=tl("No answer");v.className="verdict bad pop"}
   else {v.textContent=tl("verdict|Wrong");v.className="verdict bad pop"}
   setQText("rText",q.q);
