@@ -741,11 +741,13 @@ function renderQuestion(){
 function myAns(){return P[me]&&P[me].ans&&P[me].ans[G.qi]}
 function pick(k){
   if(myAns()||G.status!=="q"||isT(G.qi))return;
+  if(local.qPause)return;
   const ms=performance.now()-local.shownAt;if(ms<0||ms>qT(G.qi))return;
   writeAnswer(G.qi,{c:k,ms:Math.round(ms)});
 }
 function sendTyped(){
   if(myAns()||G.status!=="q"||!isT(G.qi))return;
+  if(local.qPause)return;
   const txt=$("qInput").value.trim().slice(0,80);if(!txt)return;
   const ms=performance.now()-local.shownAt;if(ms<0||ms>qT(G.qi))return;
   writeAnswer(G.qi,{txt,ok:checkTyped(txt,TQ[G.deck[G.qi].t].a,TQ[G.deck[G.qi].t].n),ms:Math.round(ms)});
@@ -780,7 +782,7 @@ function renderAnswered(ids,done){
     c.append(avatar(id,nameOf(id)),el("span","nm",id===me?tl("You"):nameOf(id)));if(ok)c.appendChild(el("span","ck","✓"));
     c.title=tl(ok?"{name} has answered":"{name} is thinking…",{name:nameOf(id)});box.appendChild(c)});
 }
-function timeLeft(){return qT(G.qi)-(performance.now()-local.shownAt)}
+function timeLeft(){return qT(G.qi)-((local.qPause||performance.now())-local.shownAt)}
 $("qSkip").onclick=()=>{if(isHost()&&G.status==="q"&&!local.revealing){local.revealing=true;writeGame({status:"reveal"})}};
 $("qTake").onclick=()=>{if(G.status==="q")writeGame({host:me,status:"reveal"})};
 
@@ -856,16 +858,15 @@ function goNext(){
 }
 // the host's client drives the game: if it goes quiet (closed tab, lost connection), the longest-standing other player takes over.
 // each candidate waits longer than the one before, so only one steps in; a paused game (G.pz) is left alone
-const REVEAL_GRACE=120000;   // a host silent for 2 min on the answer screen is treated as gone
 function succession(){return Object.keys(P).filter(id=>id!==G.host).sort((a,b)=>(P[a].joined||0)-(P[b].joined||0)||(a<b?-1:1))}
 setInterval(()=>{
   if(mode!=="multi"||!G||isHost()||document.hidden||netBad)return;
   if(G.status==="q"&&!$("question").hidden)var over=-timeLeft();
-  else if(G.status==="reveal"&&local.autoAt)over=performance.now()-local.autoAt-REVEAL_GRACE;   // no timer here: the host may be reading a long explanation, so be patient
+  else if(G.status==="reveal"&&local.autoAt)over=performance.now()-local.autoAt;
   else return;
   if(G.pz&&Date.now()-G.pz<10*60000)return;
   const rank=succession().indexOf(me);if(rank<0)return;
-  const grace=4000+rank*6000;
+  const grace=(G.status==="q"?4000:300000)+rank*6000;
   if(over>grace){writeGame({host:me,pz:0}).then(()=>{local.autoFired=false;local.revealing=false;joinToast(tl("The host left the game, you are now running it"))})}
 },1000);
 $("rEnd").onclick=()=>{if(isHost())writeGame({status:"end",deck:G.deck.slice(0,G.qi+1),inf:false})};
