@@ -306,9 +306,14 @@
     <div class="intro" id="qIntro" hidden><div><span id="qIntroType"></span><b>Question <mark id="qIntroN"></mark></b></div></div>
     <div class="hud">
       <div class="row"><span class="stag" id="qSess"></span><span class="label" id="qNum"></span><span class="streakchip" id="qStreak" hidden></span></div>
+      <button type="button" class="flagbtn" id="qFlag" aria-label="Report this question" title="Report this question">&#9873;</button>
       <span class="timer" id="qTimer"></span>
     </div>
     <p class="pot" id="qPot" hidden aria-hidden="true"></p>
+    <div class="pausebox" id="qPauseBox" role="group" aria-label="Report this question" hidden>
+      <b>Timer paused</b>
+      <div class="reportpick"><button type="button" class="chip" data-why="wrong">Wrong answer</button><button type="button" class="chip" data-why="ambiguous">Ambiguous</button><button type="button" class="chip" data-why="typo">Typo</button><button type="button" class="chip" data-why="other">Other</button><button type="button" class="chip ghostchip" id="qPauseBack">Resume</button></div>
+    </div>
     <div class="tbar"><i id="qBar"></i></div>
     <div class="qtext" id="qText"></div>
     <figure class="qimg" id="qImgBox" hidden><img id="qImg" alt=""><figcaption id="qHint"></figcaption></figure>
@@ -416,7 +421,7 @@
 
 <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>try{window.TPK_CH=new URLSearchParams(location.search).get("ch")}catch(e){}</script>
-<script defer src="js/i18n.js?v=20261101a"></script>
+<script defer src="js/i18n.js?v=20261101b"></script>
 <script defer src="js/offline.js?v=20261101a"></script>
 <script defer src="js/banks/socio.js?v=20261101a"></script>
 <script defer src="js/banks/culture.js?v=20261101a"></script>
@@ -424,7 +429,7 @@
 <script defer src="js/banks/populism.js?v=20261101a"></script>
 <script defer src="js/banks/compta2.js?v=20261101a"></script>
 <script defer src="js/explain.js?v=20261101a"></script>
-<script defer src="js/app.js?v=20261101a"></script>
+<script defer src="js/app.js?v=20261101b"></script>
 <script defer src="js/stats.js?v=20261101a"></script>
 <script defer src="js/exam.js?v=20261101a"></script>
 <script defer src="js/examresume.js?v=20261101a"></script>
@@ -435,7 +440,7 @@
 <script defer src="js/sheets/compta2.js?v=20261101a"></script>
 <script defer src="js/sheet.js?v=20261101a"></script>
 <script defer src="js/weak.js?v=20261101a"></script>
-<script defer src="js/report.js?v=20261101a"></script>
+<script defer src="js/report.js?v=20261101c"></script>
 <script defer src="js/plan.js?v=20261101a"></script>
 <script defer src="js/league.js?v=20261101a"></script>
 <script defer src="js/today.js?v=20261101a"></script>

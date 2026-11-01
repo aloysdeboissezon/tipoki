@@ -528,6 +528,8 @@ var FR={
 "Reconnecting…":"Reconnexion…",
 "The host left the game, you are now running it":"L'hôte a quitté la partie, c'est toi qui la diriges maintenant",
 "Report this question":"Signaler cette question",
+"Timer paused":"Chrono en pause",
+"Waiting for the host to go on…":"En attente de l'hôte pour la suite…",
 "Thanks, reported":"Merci, c'est signalé",
 "Wrong answer":"Mauvaise réponse",
 "Ambiguous":"Ambiguë",

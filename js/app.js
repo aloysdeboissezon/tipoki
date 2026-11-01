@@ -746,6 +746,7 @@ function renderQuestion(){
 function myAns(){return P[me]&&P[me].ans&&P[me].ans[G.qi]}
 function pick(k){
   if(myAns()||G.status!=="q"||isT(G.qi))return;
+  if(local.qPause)return;
   const ms=performance.now()-local.shownAt;if(ms<0||ms>qT(G.qi))return;
   const e={c:k,ms:Math.round(ms)};if(hinted())e.h=1;
   writeAnswer(G.qi,e);
@@ -760,6 +761,7 @@ $("qHint2").onclick=()=>{
   [...$("qTiles").children].forEach(b=>{if(ks.includes(+b.dataset.k)){b.hidden=true;b.disabled=true}});renderQState()};
 function sendTyped(){
   if(myAns()||G.status!=="q"||!isT(G.qi))return;
+  if(local.qPause)return;
   const txt=$("qInput").value.trim().slice(0,80);if(!txt)return;
   const ms=performance.now()-local.shownAt;if(ms<0||ms>qT(G.qi))return;
   writeAnswer(G.qi,{txt,ok:checkTyped(txt,TQ[G.deck[G.qi].t].a,TQ[G.deck[G.qi].t].n),ms:Math.round(ms)});
@@ -795,7 +797,7 @@ function renderAnswered(ids,done){
     c.append(avatar(id,nameOf(id)),el("span","nm",id===me?tl("You"):nameOf(id)));if(ok)c.appendChild(el("span","ck","✓"));
     c.title=tl(ok?"{name} has answered":"{name} is thinking…",{name:nameOf(id)});box.appendChild(c)});
 }
-function timeLeft(){return qT(G.qi)-(performance.now()-local.shownAt)}
+function timeLeft(){return qT(G.qi)-((local.qPause||performance.now())-local.shownAt)}
 $("qSkip").onclick=()=>{if(isHost()&&G.status==="q"&&!local.revealing){local.revealing=true;writeGame({status:"reveal"})}};
 $("qTake").onclick=()=>{if(G.status==="q")writeGame({host:me,status:"reveal"})};
 
@@ -819,9 +821,13 @@ setInterval(()=>{
   if(!G||G.status!=="reveal"||$("reveal").hidden||!local.autoAt)return;
   const left=local.paused?local.autoLeft:local.autoAt-performance.now();
   renderAuto(left);
-  if(isHost()&&!local.paused&&left<=0&&!local.autoFired){local.autoFired=true;goNext()}
+  
 },150);
 function renderAuto(left){
+  // no countdown between questions: answers can carry long explanations, so the host reads at their own pace and taps Next
+  $("rAuto").hidden=true;$("rBar").parentElement.hidden=true;
+  if(!isHost())$("rWait").textContent=tl("Waiting for the host to go on…");
+  return;
   const sec=Math.max(0,Math.ceil(left/1000)),host=isHost(),b=$("rAuto");
   $("rBar").style.width=Math.max(0,Math.min(1,left/AUTO_MS))*100+"%";
   const last=!G.inf&&G.qi>=G.deck.length-1,what=last?tl("Podium"):tl("auto|Next");
@@ -896,7 +902,7 @@ setInterval(()=>{
   else return;
   if(G.pz&&Date.now()-G.pz<10*60000)return;
   const rank=succession().indexOf(me);if(rank<0)return;
-  const grace=(G.status==="q"?4000:7000)+rank*6000;
+  const grace=(G.status==="q"?4000:300000)+rank*6000;
   if(over>grace){writeGame({host:me,pz:0}).then(()=>{local.autoFired=false;local.revealing=false;joinToast(tl("The host left the game, you are now running it"))})}
 },1000);
 $("rEnd").onclick=()=>{if(isHost())writeGame({status:"end",deck:G.deck.slice(0,G.qi+1),inf:false})};
