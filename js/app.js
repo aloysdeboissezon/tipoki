@@ -846,7 +846,7 @@ function renderReveal(){
   $("rMiss").textContent=ok?tl("✓ Off your missed questions list"):tl("Still on your missed questions list");
   if(late&&!a){v.textContent=tl("You're in! You'll play from the next question");v.className="verdict late"}
   else if(isRight(a,G.qi)){const r=scoreRun(me,G.qi),pp=ptsParts(me,G.qi);v.textContent=tl("verdict|Correct")+" · +"+r.gain+(r.streak>=2?" · "+tl("streak ×{n}",{n:r.streak}):"");
-    $("rBreak").hidden=false;$("rBreak").textContent=tl("Base {b} + speed bonus {s}",{b:pp.base,s:pp.speed})+(r.gain>pp.base+pp.speed?" + "+tl("streak bonus {n}",{n:r.gain-pp.base-pp.speed}):"");if(local.confQ!==G.qi){local.confQ=G.qi;confetti(r.streak>=3?120:60)}v.className="verdict ok pop"}
+    $("rBreak").hidden=false;$("rBreak").textContent=tl("Base {b} + speed bonus {s}",{b:pp.base,s:pp.speed})+(pp.hint?" − "+tl("hint {n}",{n:pp.hint}):"")+(r.gain>pp.base+pp.speed-pp.hint?" + "+tl("streak bonus {n}",{n:r.gain-(pp.base+pp.speed-pp.hint)}):"");if(local.confQ!==G.qi){local.confQ=G.qi;confetti(r.streak>=3?120:60)}v.className="verdict ok pop"}
   else if(!a){v.textContent=tl("No answer");v.className="verdict bad pop"}
   else {v.textContent=tl("verdict|Wrong");v.className="verdict bad pop"}
   setQText("rText",q.q);

@@ -125,6 +125,7 @@ var FR={
 "in {n} days":"dans {n} jours",
 "Your answer: ":"Ta réponse : ",
 "Why?":"Pourquoi ?",
+"hint {n}":"indice {n}",
 "Example":"Exemple",
 "In context":"En contexte",
 "Read it in the study sheet":"À lire dans la fiche synthèse",
