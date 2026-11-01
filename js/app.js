@@ -666,9 +666,10 @@ function nameOf(id){const p=P[id];return (p&&p.nick)||(profiles[id]&&profiles[id
 // ---------- scoring ----------
 function correctPos(qi){return isT(qi)?-1:G.deck[qi].o.indexOf(0)}
 function isRight(a,qi){return !!a&&(isT(qi)?a.ok===true:a.c===correctPos(qi))}
+const HINT_COST=250;
 function ptsParts(id,qi){const a=P[id]&&P[id].ans&&P[id].ans[qi];if(!isRight(a,qi))return null;
-  const sp=Math.max(0,1-a.ms/qT(qi)),base=isT(qi)?700:500;return {base,speed:Math.round(500*sp)}}
-function pts(id,qi){const x=ptsParts(id,qi);return x?x.base+x.speed:0}
+  const sp=Math.max(0,1-a.ms/qT(qi)),base=isT(qi)?700:500;return {base,speed:Math.round(500*sp),hint:a.h?HINT_COST:0}}
+function pts(id,qi){const x=ptsParts(id,qi);return x?x.base+x.speed-x.hint:0}
 // live value of a correct answer right now (base + speed bonus still on the table)
 function potential(qi){const left=Math.max(0,Math.min(1,timeLeft()/qT(qi)));return {base:isT(qi)?700:500,speed:Math.round(500*left)}}
 function scoreRun(id,upto){let t=0,st=0,gain=0;for(let i=0;i<=upto;i++){const p=pts(id,i);let g=0;if(p>0){st++;g=p+Math.min(300,(st-1)*100)}else st=0;t+=g;if(i===upto)gain=g}return {t,gain,streak:st}}
@@ -737,16 +738,26 @@ function renderQuestion(){
   if(performance.now()<local.shownAt){intro.hidden=false;clearTimeout(local.introT);local.introT=setTimeout(()=>{intro.hidden=true;if(isT(G.qi))$("qInput").focus()},Math.max(0,local.shownAt-performance.now()))}else intro.hidden=true;
   const box=$("qTiles");box.textContent="";box.hidden=typed;$("qType").hidden=!typed;
   if(typed){$("qInput").value="";$("qInput").disabled=false;$("qSend").disabled=false;setTimeout(()=>$("qInput").focus(),50)}
+  const hid=local.hint&&local.hint.qi===G.qi?local.hint.ks:[];
   if(!typed)item.o.forEach((oi,k)=>{const b=el("button","tile t"+k);b.dataset.k=k;b.style.setProperty("--i",k+3);
-    b.append(el("span","k",LETTERS[k]),el("span",null,q.o[oi]));b.onclick=()=>pick(k);box.appendChild(b)});
+    b.append(el("span","k",LETTERS[k]),el("span",null,q.o[oi]));b.onclick=()=>pick(k);if(hid.includes(k)){b.hidden=true;b.disabled=true}box.appendChild(b)});
   renderQState();
 }
 function myAns(){return P[me]&&P[me].ans&&P[me].ans[G.qi]}
 function pick(k){
   if(myAns()||G.status!=="q"||isT(G.qi))return;
   const ms=performance.now()-local.shownAt;if(ms<0||ms>qT(G.qi))return;
-  writeAnswer(G.qi,{c:k,ms:Math.round(ms)});
+  const e={c:k,ms:Math.round(ms)};if(hinted())e.h=1;
+  writeAnswer(G.qi,e);
 }
+function hinted(){return !!(local.hint&&local.hint.qi===G.qi)}
+// hint: hides two wrong answers; a correct answer then scores HINT_COST points less
+$("qHint2").onclick=()=>{
+  if(myAns()||G.status!=="q"||isT(G.qi)||hinted()||timeLeft()<=0)return;
+  const wrong=[...$("qTiles").children].map(b=>+b.dataset.k).filter(k=>k!==correctPos(G.qi)),ks=[];
+  while(ks.length<2&&wrong.length){ks.push(wrong.splice(Math.floor(Math.random()*wrong.length),1)[0])}
+  local.hint={qi:G.qi,ks};sfx("tick");
+  [...$("qTiles").children].forEach(b=>{if(ks.includes(+b.dataset.k)){b.hidden=true;b.disabled=true}});renderQState()};
 function sendTyped(){
   if(myAns()||G.status!=="q"||!isT(G.qi))return;
   const txt=$("qInput").value.trim().slice(0,80);if(!txt)return;
@@ -761,6 +772,7 @@ function renderQState(){
   if(isT(G.qi)){const off=!!a||timeLeft()<=0;$("qInput").disabled=off;$("qSend").disabled=off}
   [...$("qTiles").children].forEach(b=>{const k=+b.dataset.k;b.disabled=!!a||timeLeft()<=0;
     b.classList.toggle("picked",!!a&&a.c===k);b.classList.toggle("dim",!!a&&a.c!==k)});
+  $("qHintRow").hidden=isT(G.qi)||!!a||hinted()||timeLeft()<=0||[...$("qTiles").children].length<4;
   const ids=Object.keys(P),done=ids.filter(id=>P[id].ans&&P[id].ans[G.qi]).length;
   const w=$("qWait");
   if(a){w.hidden=false;w.textContent=mode==="multi"&&done<ids.length?tl("Answer sent · waiting for {n} more",{n:ids.length-done}):tl("Answer sent")}
