@@ -847,7 +847,7 @@ function renderReveal(){
     if(k===cp)b.classList.add("right");else b.classList.add("dim");if(a&&a.c===k&&k!==cp)b.classList.add("mine");
     if(mode==="multi")b.appendChild(el("span","cnt",tl(counts[k]===1?"{n} player":"{n} players",{n:counts[k]})));
     box.appendChild(b)});
-  $("rExplBox").hidden=!q.e;$("rExpl").textContent=q.e;
+  $("rExplBox").hidden=!q.e;TipokiWhy.fill(q,$("rExplBox"),$("rExpl"),$("rExplMore"));
   const wn=$("rWhyNot"),mine=a&&!ok?(typed?a.txt:a.c!=null?q.o[item.o[a.c]]:""):"",why=mine?TipokiWhy.whyNot(BANK&&BANK.facts,mine):"";
   wn.hidden=!why;wn.textContent=why?tl("Your answer: ")+why:"";
   renderBoard($("rBoard"),totals(G.qi).slice(0,mode==="solo"?1:6),true);

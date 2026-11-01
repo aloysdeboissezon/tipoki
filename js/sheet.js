@@ -55,7 +55,7 @@
     doc.append(body);return doc;
   }
 
-  function show(){
+  function show(at){
     const S=get();if(!S)return;
     if(root)root.remove();
     root=el("div","sheet");root.id="sheet";root.setAttribute("data-lenis-prevent","");root.setAttribute("role","dialog");root.setAttribute("aria-modal","true");root.setAttribute("aria-label",tl("Study sheet"));
@@ -70,6 +70,7 @@
     lastFocus=document.activeElement;
     document.body.append(root);document.body.classList.add("sheet-open");
     root.scrollTop=0;close.focus({preventScroll:true});
+    if(typeof at==="number"){const t=root.querySelector("#dc-"+at);if(t)setTimeout(()=>t.scrollIntoView({block:"start"}),30)}
   }
   function hide(){
     if(!root)return;
@@ -78,7 +79,7 @@
   }
   const panel=$("sheetPanel"),pdf=$("sheetPdf");
   function sync(){const S=get();btn.hidden=!S;panel.hidden=!S;if(S){pdf.href="sheets/"+encodeURIComponent(BANK.id)+".pdf";pdf.setAttribute("download",(S.file||BANK.id)+".pdf")}}
-  btn.onclick=show;$("sheetOpen").onclick=show;
+  btn.onclick=()=>show();$("sheetOpen").onclick=()=>show();window.TipokiSheet={has:()=>!!get(),open:show};
   document.addEventListener("keydown",e=>{if(e.key==="Escape"&&root)hide()});
   const old=window.renderBankUI;
   window.renderBankUI=function(){old.apply(this,arguments);sync();if(root)hide()};

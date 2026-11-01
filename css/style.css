@@ -556,3 +556,10 @@ body.noscroll{overflow:hidden}
 .goal-hint{color:var(--muted);font-size:12px;font-weight:600}
 .goal.hit .goal-hint{color:var(--ok)}
 .goal-end{margin:0;align-self:center;font-weight:800;font-size:14px;color:var(--muted)}
+
+.expl-t{font-weight:800}
+.expl-more{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.expl-more:empty{display:none}
+.expl-ex{margin:0;font-size:15px;color:var(--muted);line-height:1.45}
+.expl-xh{font-weight:800;color:var(--hl);text-transform:uppercase;letter-spacing:.06em;font-size:12px}
+.expl-link{align-self:flex-start;background:none;border:0;padding:4px 0;font:inherit;font-size:15px;font-weight:700;color:var(--hl);cursor:pointer;text-align:left;text-decoration:underline;text-underline-offset:3px}
