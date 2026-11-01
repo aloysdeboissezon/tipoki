@@ -465,3 +465,8 @@ body::before{inset:-25%;
 #topic[data-mode=menu] .mc-pv .pv-time i{display:block;height:100%;width:100%;border-radius:9px;background:linear-gradient(90deg,#FF5A5F,#FFD84D);transform-origin:left;animation:pvdrain 4s ease-in-out infinite alternate}
 @keyframes pvdrain{from{transform:scaleX(.9)}to{transform:scaleX(.25)}}
 @media (prefers-reduced-motion:reduce){#topic[data-mode=menu] .mc-pv .pv-time i{animation:none;transform:scaleX(.55)}}
+
+/* offline mode: a thin bar while there's no network */
+.off-bar{position:fixed;left:0;right:0;bottom:0;z-index:60;padding:8px 14px calc(8px + env(safe-area-inset-bottom));background:#17162B;color:#fff;font:600 13px/1.3 Nunito,system-ui,sans-serif;text-align:center}
+.off-bar[hidden]{display:none}
+html[data-theme="dark"] .off-bar{background:#2B2A45}

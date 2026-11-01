@@ -15,7 +15,7 @@ async function recordPlay(){
   const qs={};let correct=0;
   G.deck.forEach((d,i)=>{const ok=isRight(mine[i],i);qs[d.t!=null?"t"+d.t:"m"+d.id]=ok?1:0;if(ok)correct++});
   const row={quiz:BANK.id,game,player:await statsPlayer(BANK.id),mode:mode==="multi"?"multi":G.review?"review":"solo",n:G.deck.length,correct,qs};
-  try{const {error}=await sb.from("play_stats").insert(row);if(error)console.warn(error)}catch(e){console.warn(e)}
+  try{await tpkInsert("play_stats",row)}catch(e){console.warn(e)}
 }
 
 // ---------- stats page ----------
@@ -43,7 +43,7 @@ function renderStats(s){
   const tb=$("stTiles");tb.textContent="";
   tiles.forEach(([l,v])=>{const d=el("div","st-tile");d.append(el("b",null,typeof v==="number"?v.toLocaleString(LOCALE):v),el("span",null,l));tb.appendChild(d)});
   const m=s.modes||{},parts=[["multi",tl("multiplayer")],["solo",tl("solo")],["review",tl("mistake reviews")]].filter(([k])=>m[k]).map(([k,l])=>m[k]+" "+l);
-  $("stModes").textContent=s.games?tl("Games: {list}.",{list:parts.join(" · ")}):tl("No games yet. Stats appear here after the first finished game.");
+  $("stModes").hidden=!s.games;$("stModes").textContent=s.games?tl("Games: {list}.",{list:parts.join(" · ")}):tl("No games yet. Stats appear here after the first finished game.");
   // last 30 days, one bar per day
   const days=new Map((s.days||[]).map(x=>[x[0],x])),bars=$("stDays");bars.textContent="";
   const list=[];for(let i=29;i>=0;i--){const d=new Date(Date.now()-i*864e5);list.push(d.toLocaleDateString("en-CA",{timeZone:"Europe/Paris"}))}
@@ -51,6 +51,8 @@ function renderStats(s){
   list.forEach(d=>{const x=days.get(d),g=x?x[1]:0,b=el("div","st-bar"+(g?"":" zero"));b.style.setProperty("--h",(g/max).toFixed(3));
     b.title=new Date(d+"T12:00:00").toLocaleDateString(LANG==="fr"?"fr-FR":"en-GB",{day:"numeric",month:"short"})+": "+tl(g===1?"{n} game":"{n} games",{n:g})+(x?", "+tl(x[2]===1?"{n} player":"{n} players",{n:x[2]}):"");bars.appendChild(b)});
   $("stDaysWrap").hidden=!s.games;
+  const old=$("stBody").querySelector(".empty");if(old)old.remove();
+  if(!s.games)$("stTiles").after(emptyState("M4 20V10M10 20V4M16 20v-8M22 20H2",tl("No games yet"),tl("Share the quiz link with your class: stats show up here after the first finished game.")));
   // questions: resolve keys with the quiz loaded on this page
   const qs=(s.qs||[]).map(([k,t,w])=>({q:k[0]==="t"?TQ[+k.slice(1)]:Q[+k.slice(1)],typed:k[0]==="t",t,w})).filter(x=>x.q);
   const bys={};qs.forEach(x=>{const b=bys[x.q.s]=bys[x.q.s]||[0,0];b[0]+=x.t-x.w;b[1]+=x.t});

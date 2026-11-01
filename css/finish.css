@@ -1,0 +1,23 @@
+/* Finishing touches: empty states, skeleton loaders, screen fades. Loaded after refine.css; reuses the existing tokens. */
+.empty{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding:26px 16px;border:2px dashed var(--line);border-radius:22px;color:var(--muted);font-weight:600}
+.empty .em-ico{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;background:color-mix(in srgb,var(--brand,#4B2FE0) 14%,transparent);margin-bottom:4px}
+.empty .em-ico svg{width:28px;height:28px;fill:none;stroke:var(--brand,#4B2FE0);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.empty b{color:var(--ink);font:800 17px var(--f-display,inherit)}
+.empty p{margin:0;max-width:34ch}
+.qempty .qe-ico{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;opacity:.6;margin-bottom:4px}
+.qempty:not([hidden]){animation:emIn .35s var(--ease-out,ease-out) both}
+@keyframes emIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* skeleton shimmer */
+.skel{display:flex;flex-direction:column;gap:10px}
+.skel i{display:block;height:54px;border-radius:16px;background:linear-gradient(100deg,var(--line) 30%,color-mix(in srgb,var(--line) 40%,transparent) 50%,var(--line) 70%);background-size:220% 100%;animation:shimmer 1.3s linear infinite}
+.skel i:nth-child(1){height:84px}
+.skel i:nth-child(n+4){opacity:.6}
+@keyframes shimmer{from{background-position:120% 0}to{background-position:-120% 0}}
+
+/* shared fade for screens that GSAP does not drive (question / reveal) */
+#question:not([hidden]),#reveal:not([hidden]){animation:scrFade .28s var(--ease-out,ease-out) both}
+@keyframes scrFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.lg-row,.st-tile{animation:scrFade .4s var(--ease-out,ease-out) both}
+.lg-row:nth-child(2){animation-delay:.04s}.lg-row:nth-child(3){animation-delay:.08s}.lg-row:nth-child(n+4){animation-delay:.12s}
+@media (prefers-reduced-motion:reduce){.skel i,.qempty:not([hidden]),#question:not([hidden]),#reveal:not([hidden]),.lg-row,.st-tile{animation:none!important}}

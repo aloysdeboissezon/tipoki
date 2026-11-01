@@ -42,7 +42,7 @@
   function left(ms){const m=Math.max(0,Math.floor(ms/6e4)),d=Math.floor(m/1440),h=Math.floor(m%1440/60);return d>0?tl("{d} d {h} h",{d,h}):h>0?tl("{h} h {m} min",{h,m:m%60}):tl("{m} min",{m})}
   function renderLeague(){
     const root=$("leagueBody");root.textContent="";
-    if(!LG){root.appendChild(el("p","muted",tl("Loading the league…")));return}
+    if(!LG){const k=el("div","skel");k.setAttribute("aria-label",tl("Loading the league…"));for(let i=0;i<5;i++)k.appendChild(el("i"));root.appendChild(k);return}
     const lg=LG.league,ends=Date.parse(LG.ends_at)||0,xp=LG.xp+pend();
     const head=el("div","lg-head");head.innerHTML=gem(lg,84);
     const ht=el("div","lg-ht");ht.append(el("h2",null,tl("{name} league",{name:lgName(lg)})),el("div","muted",tl("Ends in {t}",{t:left(ends-Date.now())})));head.append(ht);root.appendChild(head);
@@ -73,7 +73,7 @@
       const av=el("div","av",(r.nick||"?").charAt(0).toUpperCase());av.style.backgroundColor="hsl("+hue(r.nick)+" 55% 42%)";
       row.append(el("span","lg-rk",String(i+1)),av,el("span","lg-nm",r.me?tl("You"):r.nick),el("span","lg-xp",r.xp+" XP"));
       box.appendChild(row)});
-    if(!rows.length)box.appendChild(el("p","muted",tl("Nobody has earned XP in this league yet this week. Be the first!")));
+    if(!rows.length)box.appendChild(emptyState("M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3",tl("No one on the board yet"),tl("Nobody has earned XP in this league yet this week. Be the first!")));
     root.appendChild(box);
     root.appendChild(el("p","muted lg-how",tl("XP: +10 for a right answer, +2 for a wrong one, +3 for a flashcard you know. Every Monday the top players move up a league.")));
     if(!$("nick").value.trim())root.appendChild(el("p","muted lg-how",tl("Add a nickname on the home page so friends see your name.")));
