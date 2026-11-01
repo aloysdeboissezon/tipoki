@@ -99,7 +99,7 @@ function handInExam(timeUp){
   // mistakes go to the "Review my mistakes" bank of the quiz, right answers leave it
   let mb=missBank();EX.deck.forEach((d,i)=>{const k=d.t!=null?"t"+d.t:"m"+d.id;mb=mb.filter(x=>x!==k);if(EX.res[i]!==1)mb.push(k)});
   lsSet(lsKey("miss"),JSON.stringify(mb.slice(-300)));renderMissBtn();
-  const h=exHist();h.unshift({g:EX.grade,n,ok,at:Date.now()});lsSet(lsKey("exam"),JSON.stringify(h.slice(0,20)));markStudyDay();
+  const h=exHist();h.unshift({g:EX.grade,n,ok,at:Date.now()});lsSet(lsKey("exam"),JSON.stringify(h.slice(0,20)));markStudyDay();addDaily(n);
   renderExDone();
 }
 function exVerdict(g){return g>=16?tl("Outstanding, top marks."):g>=14?tl("Very good, well done."):g>=12?tl("Good, a solid pass."):g>=10?tl("Passed. A few gaps to fill."):tl("Not passed yet. Go over your mistakes and try again.")}
