@@ -364,6 +364,7 @@ var FR={
 "Answered":"Ont répondu",
 "You joined mid-game. Your score starts with this question, good luck!":"Tu as rejoint en cours de partie. Ton score démarre à cette question, bonne chance !",
 "Reveal now":"Révéler maintenant",
+"💡 Hint · −2 wrong answers (−250 pts)":"💡 Indice · −2 mauvaises réponses (−250 pts)",
 "Host not responding?":"L'hôte ne répond plus ?",
 "Take over":"Prendre la main",
 "STREAK ×{n}":"SÉRIE ×{n}",
