@@ -33,20 +33,22 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Nunito:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Nunito:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap"></noscript>
-<link rel="stylesheet" href="css/style.css?v=20261101a">
-<link rel="stylesheet" href="css/music.css?v=20261101a">
-<link rel="stylesheet" href="css/exam.css?v=20261101a">
-<link rel="stylesheet" href="css/weak.css?v=20261101a">
-<link rel="stylesheet" href="css/plan.css?v=20261101a">
-<link rel="stylesheet" href="css/sync.css?v=20261101a">
-<link rel="stylesheet" href="css/search.css?v=20261101a">
-<link rel="stylesheet" href="css/sheet.css?v=20261101a">
-<link rel="stylesheet" href="css/tour.css?v=20261101a">
-<link rel="stylesheet" href="css/theme.css?v=20261101a">
-<link rel="stylesheet" href="css/compact.css?v=20261101a">
-<link rel="stylesheet" href="css/refine.css?v=20261101a">
-<link rel="stylesheet" href="css/finish.css?v=20261101a">
-<link rel="stylesheet" href="css/a11y.css?v=20261101a">
+<link rel="stylesheet" href="css/style.css?v=20261101n">
+<link rel="stylesheet" href="css/music.css?v=20261101n">
+<link rel="stylesheet" href="css/exam.css?v=20261101n">
+<link rel="stylesheet" href="css/weak.css?v=20261101n">
+<link rel="stylesheet" href="css/plan.css?v=20261101n">
+<link rel="stylesheet" href="css/sync.css?v=20261101n">
+<link rel="stylesheet" href="css/search.css?v=20261101n">
+<link rel="stylesheet" href="css/sheet.css?v=20261101n">
+<link rel="stylesheet" href="css/tour.css?v=20261101n">
+<link rel="stylesheet" href="css/theme.css?v=20261101n">
+<link rel="stylesheet" href="css/compact.css?v=20261101n">
+<link rel="stylesheet" href="css/refine.css?v=20261101n">
+<link rel="stylesheet" href="css/finish.css?v=20261101n">
+<link rel="stylesheet" href="css/a11y.css?v=20261101n">
+<link rel="stylesheet" href="css/flag.css?v=20261101n">
+<link rel="stylesheet" href="css/reactions.css?v=20261101n">
 <!-- Vercel Web Analytics (page views, visitors) -->
 <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};</script>
 <script defer src="/_vercel/insights/script.js"></script>
@@ -141,6 +143,12 @@
       <div class="ms-n" id="missN" aria-hidden="true">0</div>
       <div class="ms-main"><h2 id="missTitle">Missed questions</h2><div class="muted">Get one right and it leaves the list.</div></div>
       <button class="btn dark" id="missBtn">Replay them</button>
+    </div>
+    <div class="panel flagpanel" id="flagPanel" hidden>
+      <div class="fl-n" id="flagN" aria-hidden="true">0</div>
+      <div class="fl-main"><h2>Flagged questions</h2><div class="muted">Questions you starred to review later.</div><button type="button" class="linkbtn" id="flagToggle" aria-expanded="false">Show the list</button></div>
+      <button class="btn dark" id="flagBtn">Review them</button>
+      <ul class="flaglist" id="flagList" hidden></ul>
     </div>
     <div class="panel todaypanel" id="todayPanel" hidden>
       <div class="wk-main"><h2>Today</h2><div class="muted" id="todaySub"></div></div>
@@ -306,13 +314,20 @@
     <div class="intro" id="qIntro" hidden><div><span id="qIntroType"></span><b>Question <mark id="qIntroN"></mark></b></div></div>
     <div class="hud">
       <div class="row"><span class="stag" id="qSess"></span><span class="label" id="qNum"></span><span class="streakchip" id="qStreak" hidden></span></div>
+      <button type="button" class="rptbtn" id="qFlag" aria-label="Report this question" title="Report this question">&#9873;</button>
       <span class="timer" id="qTimer"></span>
+    </div>
+    <p class="pot" id="qPot" hidden aria-hidden="true"></p>
+    <div class="pausebox" id="qPauseBox" role="group" aria-label="Report this question" hidden>
+      <b>Timer paused</b>
+      <div class="reportpick"><button type="button" class="chip" data-why="wrong">Wrong answer</button><button type="button" class="chip" data-why="ambiguous">Ambiguous</button><button type="button" class="chip" data-why="typo">Typo</button><button type="button" class="chip" data-why="other">Other</button><button type="button" class="chip ghostchip" id="qPauseBack">Resume</button></div>
     </div>
     <div class="tbar"><i id="qBar"></i></div>
     <div class="qtext" id="qText"></div>
     <figure class="qimg" id="qImgBox" hidden><img id="qImg" alt=""><figcaption id="qHint"></figcaption></figure>
     <div class="tiles" id="qTiles"></div>
     <div class="typed" id="qType" hidden><input type="text" id="qInput" placeholder="Type your answer…" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="btn big" id="qSend">Submit</button></div>
+    <div class="row end" id="qHintRow" hidden><button type="button" class="btn ghost" id="qHint2">💡 Hint · −2 wrong answers (−250 pts)</button></div>
     <p class="waiting" id="qWait" hidden></p>
     <div class="answered" id="qPlayers" hidden><div class="ans-head"><span class="label">Answered</span><b id="qAnsN" aria-live="polite"></b></div><div class="ans-list" id="qAnsList"></div></div>
     <p class="latenote" id="qLate" hidden>You joined mid-game. Your score starts with this question, good luck!</p>
@@ -322,16 +337,16 @@
 
   <!-- REVEAL -->
   <section id="reveal" class="panel" hidden>
-    <div class="hud"><div class="row"><span class="stag" id="rSess"></span><span class="label" id="rNum"></span></div><button type="button" class="autonext" id="rAuto"></button></div>
-    <div class="tbar"><i id="rBar"></i></div>
+    <div class="hud"><div class="row"><span class="stag" id="rSess"></span><span class="label" id="rNum"></span></div></div>
     <div class="verdict" id="rVerdict" role="status" aria-live="polite"></div>
     <div class="qtext" id="rText" style="font-size:clamp(18px,3.8vw,22px)"></div>
     <figure class="qimg small" id="rImgBox" hidden><img id="rImg" alt=""></figure>
     <div class="tiles" id="rTiles"></div>
     <div id="rTyped" hidden style="display:flex;flex-direction:column;gap:10px"><div class="label">Expected answer</div><div class="goodans" id="rGood"></div><div class="ansl" id="rAns"></div></div>
+    <p class="fast" id="rBreak" hidden></p>
     <p class="fast" id="rFast" hidden></p>
     <p class="missnote" id="rMiss" hidden></p>
-    <div class="expl" id="rExplBox"><div class="expl-h">Why?</div><p id="rExpl"></p><p class="expl-not" id="rWhyNot" hidden></p></div>
+    <div class="expl" id="rExplBox"><div class="expl-h">Why?</div><p id="rExpl"></p><div class="expl-more" id="rExplMore"></div><p class="expl-not" id="rWhyNot" hidden></p></div>
     <div class="reportbox" id="rReportBox" hidden>
       <button type="button" class="linkbtn" id="rReport" aria-expanded="false">Report this question</button>
       <div class="reportpick" id="rReportPick" hidden><button type="button" class="chip" data-why="wrong">Wrong answer</button><button type="button" class="chip" data-why="ambiguous">Ambiguous</button><button type="button" class="chip" data-why="typo">Typo</button><button type="button" class="chip" data-why="other">Other</button></div>
@@ -339,7 +354,7 @@
     <div class="label">Leaderboard</div>
     <div class="board" id="rBoard"></div>
     <div class="row end">
-      <span class="waiting" id="rWait" hidden>The host is starting the next one…</span>
+      <span class="waiting" id="rWait" hidden>Waiting for the host to go to the next question…</span>
       <button class="btn ghost" id="rEnd" hidden>End game</button>
       <button class="btn big" id="rNext" hidden>Next</button>
     </div>
@@ -413,39 +428,42 @@
 
 <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>try{window.TPK_CH=new URLSearchParams(location.search).get("ch")}catch(e){}</script>
-<script defer src="js/i18n.js?v=20261101a"></script>
-<script defer src="js/offline.js?v=20261101a"></script>
-<script defer src="js/banks/socio.js?v=20261101a"></script>
-<script defer src="js/banks/culture.js?v=20261101a"></script>
-<script defer src="js/banks/energie.js?v=20261101a"></script>
-<script defer src="js/banks/populism.js?v=20261101a"></script>
-<script defer src="js/banks/compta2.js?v=20261101a"></script>
-<script defer src="js/explain.js?v=20261101a"></script>
-<script defer src="js/app.js?v=20261101a"></script>
-<script defer src="js/stats.js?v=20261101a"></script>
-<script defer src="js/exam.js?v=20261101a"></script>
-<script defer src="js/examresume.js?v=20261101a"></script>
-<script defer src="js/search.js?v=20261101a"></script>
-<script defer src="js/sheets/socio.js?v=20261101a"></script>
-<script defer src="js/sheets/populism.js?v=20261101a"></script>
-<script defer src="js/sheets/energie.js?v=20261101a"></script>
-<script defer src="js/sheets/compta2.js?v=20261101a"></script>
-<script defer src="js/sheet.js?v=20261101a"></script>
-<script defer src="js/weak.js?v=20261101a"></script>
-<script defer src="js/report.js?v=20261101a"></script>
-<script defer src="js/plan.js?v=20261101a"></script>
-<script defer src="js/league.js?v=20261101a"></script>
-<script defer src="js/today.js?v=20261101a"></script>
-<script defer src="js/a11y.js?v=20261101a"></script>
-<script defer src="js/endsum.js?v=20261101a"></script>
-<script defer src="js/challenge.js?v=20261101a"></script>
-<script defer src="js/music.js?v=20261101a"></script>
-<script defer src="js/tour.js?v=20261101a"></script>
-<script defer src="js/theme.js?v=20261101a"></script>
-<script defer src="js/sync.js?v=20261101a"></script>
-<script defer src="js/vendor/gsap.min.js?v=20261101a"></script>
-<script defer src="js/vendor/lenis.min.js?v=20261101a"></script>
-<script defer src="js/motion.js?v=20261101a"></script>
+<script defer src="js/i18n.js?v=20261101n"></script>
+<script defer src="js/offline.js?v=20261101n"></script>
+<script defer src="js/banks/socio.js?v=20261101n"></script>
+<script defer src="js/banks/culture.js?v=20261101n"></script>
+<script defer src="js/banks/energie.js?v=20261101n"></script>
+<script defer src="js/banks/populism.js?v=20261101n"></script>
+<script defer src="js/banks/compta2.js?v=20261101n"></script>
+<script defer src="js/explain.js?v=20261101n"></script>
+<script defer src="js/app.js?v=20261101n"></script>
+<script defer src="js/stats.js?v=20261101n"></script>
+<script defer src="js/exam.js?v=20261101n"></script>
+<script defer src="js/examresume.js?v=20261101n"></script>
+<script defer src="js/pause.js?v=20261101n"></script>
+<script defer src="js/search.js?v=20261101n"></script>
+<script defer src="js/sheets/socio.js?v=20261101n"></script>
+<script defer src="js/sheets/populism.js?v=20261101n"></script>
+<script defer src="js/sheets/energie.js?v=20261101n"></script>
+<script defer src="js/sheets/compta2.js?v=20261101n"></script>
+<script defer src="js/sheet.js?v=20261101n"></script>
+<script defer src="js/weak.js?v=20261101n"></script>
+<script defer src="js/report.js?v=20261101n"></script>
+<script defer src="js/flag.js?v=20261101n"></script>
+<script defer src="js/plan.js?v=20261101n"></script>
+<script defer src="js/league.js?v=20261101n"></script>
+<script defer src="js/today.js?v=20261101n"></script>
+<script defer src="js/a11y.js?v=20261101n"></script>
+<script defer src="js/endsum.js?v=20261101n"></script>
+<script defer src="js/challenge.js?v=20261101n"></script>
+<script defer src="js/reactions.js?v=20261101n"></script>
+<script defer src="js/music.js?v=20261101n"></script>
+<script defer src="js/tour.js?v=20261101n"></script>
+<script defer src="js/theme.js?v=20261101n"></script>
+<script defer src="js/sync.js?v=20261101n"></script>
+<script defer src="js/vendor/gsap.min.js?v=20261101n"></script>
+<script defer src="js/vendor/lenis.min.js?v=20261101n"></script>
+<script defer src="js/motion.js?v=20261101n"></script>
 <script>if("serviceWorker"in navigator&&(location.protocol==="https:"||location.hostname==="localhost"))addEventListener("load",function(){navigator.serviceWorker.register("/sw.js").catch(function(){})})</script>
 
 </body>

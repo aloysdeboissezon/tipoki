@@ -21,4 +21,36 @@
   });
   const orig=renderReveal;
   renderReveal=function(){orig();refresh()};
+
+  // flag during the question: tapping it pauses the timer and opens the reasons; picking one sends the report and resumes
+  const flag=$("qFlag"),pbox=$("qPauseBox");
+  if(flag&&pbox){
+    function flagRefresh(){
+      if(!G||!BANK||G.status!=="q")return;
+      const done=store().includes(missKey(G.qi));
+      flag.classList.toggle("on",done);flag.disabled=done;
+      flag.setAttribute("aria-label",done?tl("Thanks, reported"):tl("Report this question"));
+    }
+    function resume(){
+      if(local.qPause){local.shownAt+=performance.now()-local.qPause;local.qPause=0}
+      pbox.hidden=true;document.body.classList.remove("qpaused");
+    }
+    flag.onclick=()=>{
+      if(!G||!BANK||G.status!=="q"||local.qPause||myAns())return;
+      local.qPause=performance.now();pbox.hidden=false;document.body.classList.add("qpaused");
+    };
+    $("qPauseBack").onclick=resume;
+    pbox.addEventListener("click",async e=>{
+      const b=e.target.closest("[data-why]");if(!b)return;
+      const k=missKey(G.qi),why=b.dataset.why,s=store();
+      if(!s.includes(k)){s.push(k);lsSet(lsKey("reported"),JSON.stringify(s.slice(-300)))}
+      resume();flagRefresh();toast(tl("Thanks, reported"));
+      try{await tpkInsert("question_reports",{quiz:BANK.id,q:k,reason:why,player:me})}catch(err){}
+    });
+    const oq=renderQuestion;
+    renderQuestion=function(){
+      if(local.qPause&&local.goQ!==G.qi){local.qPause=0;pbox.hidden=true;document.body.classList.remove("qpaused")}
+      oq();flagRefresh();
+    };
+  }
 })();

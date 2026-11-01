@@ -447,9 +447,18 @@ function sfx(kind){if(!soundOn)return;try{audio();
   else if(kind==="bad"){tone(196,0,.22,"sawtooth",.09);tone(147,.18,.3,"sawtooth",.08)}
   else if(kind==="join")tone(1047,0,.1,"sine",.1);
   else if(kind==="streak"){[784,988,1175,1568].forEach((f,i)=>tone(f,i*.07,.14,"triangle",.12))}
+  else if(kind==="streak5"){[784,988,1175,1568,1976].forEach((f,i)=>tone(f,i*.06,.14,"triangle",.13));tone(2349,.32,.3,"sine",.1)}
+  else if(kind==="streak10"){[523,659,784,1047,1319,1568,2093].forEach((f,i)=>tone(f,i*.055,.16,"triangle",.14));[1047,1319,1568,2093].forEach(f=>tone(f,.45,.5,"sine",.07))}
   else if(kind==="win"){[523,659,784,1047,784,1047].forEach((f,i)=>tone(f,i*.13,.22,"triangle",.15))}
 }catch(e){}}
-function buzz(p){try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
+// haptics follow the sound toggle (muted = silent and still) and are skipped for reduced-motion users
+function buzz(p){if(!soundOn)return;try{if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
+// feedback for a right answer, escalating with the run of right answers: 1-2 plain, 3-4 chime, 5-9 fuller chime, 10+ fanfare
+function rightFx(n){
+  if(n>=10){sfx("streak10");buzz([40,30,40,30,40,30,120])}
+  else if(n>=5){sfx("streak5");buzz([35,30,35,30,80])}
+  else if(n>=3){sfx("streak");buzz([30,30,60])}
+  else{sfx("ok");buzz(n===2?[25,30,25]:40)}}
 document.addEventListener("pointerdown",()=>{if(soundOn&&!actx){try{audio()}catch(e){}}},{once:true});
 
 // ---------- confetti ----------
@@ -564,7 +573,8 @@ async function joinGame(c){
   let res=await save(avCol?{nick:myNick(),avatar:myAv()}:{nick:myNick()});
   if(res.error&&avCol){avCol=false;res=await save({nick:myNick()})}   // no avatar column yet: play without photos
   if(res.error){mode=null;code=null;show("home");showErr("joinErr",tl("Couldn't join, try again."));return}
-  chan=sb.channel("g-"+c)
+  chan=sb.channel("g-"+c,{config:{broadcast:{self:true}}})
+    .on("broadcast",{event:"react"},m=>{if(code===c&&window.tpkReact)tpkReact(m.payload)})
     .on("postgres_changes",{event:"*",schema:"public",table:"games",filter:"code=eq."+c},p=>{if(code===c&&p.new&&p.new.state)applyGame(p.new.state)})
     .on("postgres_changes",{event:"*",schema:"public",table:"players",filter:"code=eq."+c},p=>{if(code===c&&p.new&&p.new.pid){if(p.new.avatar&&p.new.pid!==me)avs[p.new.pid]=p.new.avatar;P={...P,[p.new.pid]:rowToPlayer(p.new)};onPlayers()}})
     .subscribe();
@@ -593,10 +603,10 @@ function isHost(){return G&&G.host===me}
 const RESUME_KEY="tpk-resume",RESUME_MAX=7*864e5;
 function savedSolo(){try{const s=JSON.parse(lsGet(RESUME_KEY)||"null");if(s&&s.G&&s.G.deck&&s.ans&&Date.now()-s.at<RESUME_MAX)return s}catch(e){}return null}
 function clearSolo(){try{localStorage.removeItem(RESUME_KEY)}catch(e){}}
-function saveSolo(){
+function saveSolo(force){
   if(!G||!BANK)return;
   if(G.status==="end"){clearSolo();return}
-  const ans=(P[me]&&P[me].ans)||{};if(!Object.keys(ans).length)return;   // nothing answered yet: keep any older save
+  const ans=(P[me]&&P[me].ans)||{};if(!force&&!Object.keys(ans).length)return;   // force = the player paused on purpose   // nothing answered yet: keep any older save
   lsSet(RESUME_KEY,JSON.stringify({bank:BANK.id,title:BANK.title,G,ans,at:Date.now()}));
 }
 function ago(t){const m=Math.round((Date.now()-t)/60000);return m<2?tl("just now"):m<60?tl("{n} min ago",{n:m}):m<1440?tl("{n} h ago",{n:Math.round(m/60)}):tl("{n} d ago",{n:Math.round(m/1440)})}
@@ -666,8 +676,12 @@ function nameOf(id){const p=P[id];return (p&&p.nick)||(profiles[id]&&profiles[id
 // ---------- scoring ----------
 function correctPos(qi){return isT(qi)?-1:G.deck[qi].o.indexOf(0)}
 function isRight(a,qi){return !!a&&(isT(qi)?a.ok===true:a.c===correctPos(qi))}
-function pts(id,qi){const a=P[id]&&P[id].ans&&P[id].ans[qi];if(!isRight(a,qi))return 0;
-  const sp=Math.max(0,1-a.ms/qT(qi));return isT(qi)?700+Math.round(500*sp):500+Math.round(500*sp)}
+const HINT_COST=250;
+function ptsParts(id,qi){const a=P[id]&&P[id].ans&&P[id].ans[qi];if(!isRight(a,qi))return null;
+  const sp=Math.max(0,1-a.ms/qT(qi)),base=isT(qi)?700:500;return {base,speed:Math.round(500*sp),hint:a.h?HINT_COST:0}}
+function pts(id,qi){const x=ptsParts(id,qi);return x?x.base+x.speed-x.hint:0}
+// live value of a correct answer right now (base + speed bonus still on the table)
+function potential(qi){const left=Math.max(0,Math.min(1,timeLeft()/qT(qi)));return {base:isT(qi)?700:500,speed:Math.round(500*left)}}
 function scoreRun(id,upto){let t=0,st=0,gain=0;for(let i=0;i<=upto;i++){const p=pts(id,i);let g=0;if(p>0){st++;g=p+Math.min(300,(st-1)*100)}else st=0;t+=g;if(i===upto)gain=g}return {t,gain,streak:st}}
 function totals(upto){return Object.keys(P).map(id=>({id,...scoreRun(id,upto)})).sort((a,b)=>b.t-a.t)}
 
@@ -734,18 +748,30 @@ function renderQuestion(){
   if(performance.now()<local.shownAt){intro.hidden=false;clearTimeout(local.introT);local.introT=setTimeout(()=>{intro.hidden=true;if(isT(G.qi))$("qInput").focus()},Math.max(0,local.shownAt-performance.now()))}else intro.hidden=true;
   const box=$("qTiles");box.textContent="";box.hidden=typed;$("qType").hidden=!typed;
   if(typed){$("qInput").value="";$("qInput").disabled=false;$("qSend").disabled=false;setTimeout(()=>$("qInput").focus(),50)}
+  const hid=local.hint&&local.hint.qi===G.qi?local.hint.ks:[];
   if(!typed)item.o.forEach((oi,k)=>{const b=el("button","tile t"+k);b.dataset.k=k;b.style.setProperty("--i",k+3);
-    b.append(el("span","k",LETTERS[k]),el("span",null,q.o[oi]));b.onclick=()=>pick(k);box.appendChild(b)});
+    b.append(el("span","k",LETTERS[k]),el("span",null,q.o[oi]));b.onclick=()=>pick(k);if(hid.includes(k)){b.hidden=true;b.disabled=true}box.appendChild(b)});
   renderQState();
 }
 function myAns(){return P[me]&&P[me].ans&&P[me].ans[G.qi]}
 function pick(k){
   if(myAns()||G.status!=="q"||isT(G.qi))return;
+  if(local.qPause)return;
   const ms=performance.now()-local.shownAt;if(ms<0||ms>qT(G.qi))return;
-  writeAnswer(G.qi,{c:k,ms:Math.round(ms)});
+  const e={c:k,ms:Math.round(ms)};if(hinted())e.h=1;
+  writeAnswer(G.qi,e);
 }
+function hinted(){return !!(local.hint&&local.hint.qi===G.qi)}
+// hint: hides two wrong answers; a correct answer then scores HINT_COST points less
+$("qHint2").onclick=()=>{
+  if(myAns()||G.status!=="q"||isT(G.qi)||hinted()||timeLeft()<=0)return;
+  const wrong=[...$("qTiles").children].map(b=>+b.dataset.k).filter(k=>k!==correctPos(G.qi)),ks=[];
+  while(ks.length<2&&wrong.length){ks.push(wrong.splice(Math.floor(Math.random()*wrong.length),1)[0])}
+  local.hint={qi:G.qi,ks};sfx("tick");
+  [...$("qTiles").children].forEach(b=>{if(ks.includes(+b.dataset.k)){b.hidden=true;b.disabled=true}});renderQState()};
 function sendTyped(){
   if(myAns()||G.status!=="q"||!isT(G.qi))return;
+  if(local.qPause)return;
   const txt=$("qInput").value.trim().slice(0,80);if(!txt)return;
   const ms=performance.now()-local.shownAt;if(ms<0||ms>qT(G.qi))return;
   writeAnswer(G.qi,{txt,ok:checkTyped(txt,TQ[G.deck[G.qi].t].a,TQ[G.deck[G.qi].t].n),ms:Math.round(ms)});
@@ -758,6 +784,7 @@ function renderQState(){
   if(isT(G.qi)){const off=!!a||timeLeft()<=0;$("qInput").disabled=off;$("qSend").disabled=off}
   [...$("qTiles").children].forEach(b=>{const k=+b.dataset.k;b.disabled=!!a||timeLeft()<=0;
     b.classList.toggle("picked",!!a&&a.c===k);b.classList.toggle("dim",!!a&&a.c!==k)});
+  $("qHintRow").hidden=isT(G.qi)||!!a||hinted()||timeLeft()<=0||[...$("qTiles").children].length<4;
   const ids=Object.keys(P),done=ids.filter(id=>P[id].ans&&P[id].ans[G.qi]).length;
   const w=$("qWait");
   if(a){w.hidden=false;w.textContent=mode==="multi"&&done<ids.length?tl("Answer sent · waiting for {n} more",{n:ids.length-done}):tl("Answer sent")}
@@ -780,7 +807,7 @@ function renderAnswered(ids,done){
     c.append(avatar(id,nameOf(id)),el("span","nm",id===me?tl("You"):nameOf(id)));if(ok)c.appendChild(el("span","ck","✓"));
     c.title=tl(ok?"{name} has answered":"{name} is thinking…",{name:nameOf(id)});box.appendChild(c)});
 }
-function timeLeft(){return qT(G.qi)-(performance.now()-local.shownAt)}
+function timeLeft(){return qT(G.qi)-((local.qPause||performance.now())-local.shownAt)}
 $("qSkip").onclick=()=>{if(isHost()&&G.status==="q"&&!local.revealing){local.revealing=true;writeGame({status:"reveal"})}};
 $("qTake").onclick=()=>{if(G.status==="q")writeGame({host:me,status:"reveal"})};
 
@@ -791,48 +818,35 @@ setInterval(()=>{
   const sec=Math.max(0,Math.ceil(Math.min(left,qT(G.qi))/1000));$("qTimer").textContent=sec;$("qTimer").style.setProperty("--p",Math.max(0,Math.min(1,left/qT(G.qi))).toFixed(3));
   const warn=left<5000&&left>0&&!myAns();if(warn&&local.lastTick!==sec){local.lastTick=sec;sfx("tick")}$("qTimer").classList.toggle("warn",warn);$("qBar").classList.toggle("warn",warn);
   $("qBar").style.width=Math.max(0,Math.min(1,left/qT(G.qi))*100)+"%";
+  const pe=$("qPot");pe.hidden=!!myAns();if(!pe.hidden){const o=potential(G.qi);pe.textContent=tl("+{n} pts",{n:o.base+o.speed})+" · "+tl("speed bonus +{n}",{n:o.speed})}
   if(left<=0&&!myAns()&&$("qWait").hidden)renderQState();
   const ids=Object.keys(P);
   const all=ids.length>0&&ids.every(id=>P[id].ans&&P[id].ans[G.qi]);
   if(isHost()&&!local.revealing&&(left<-800||all)){local.revealing=true;const qi=G.qi,c=G.created;setTimeout(()=>{if(G&&G.created===c&&G.qi===qi&&G.status==="q")writeGame({status:"reveal"})},all?600:0)}
   $("qTakeRow").hidden=!(mode==="multi"&&!isHost()&&left<-10000);
 },150);
-// after each answer reveal, the next question starts by itself after AUTO_MS (the host's clock drives everyone)
-const AUTO_MS=5000;
-setInterval(()=>{
-  if(!G||G.status!=="reveal"||$("reveal").hidden||!local.autoAt)return;
-  const left=local.paused?local.autoLeft:local.autoAt-performance.now();
-  renderAuto(left);
-  if(isHost()&&!local.paused&&left<=0&&!local.autoFired){local.autoFired=true;goNext()}
-},150);
-function renderAuto(left){
-  const sec=Math.max(0,Math.ceil(left/1000)),host=isHost(),b=$("rAuto");
-  $("rBar").style.width=Math.max(0,Math.min(1,left/AUTO_MS))*100+"%";
-  const last=!G.inf&&G.qi>=G.deck.length-1,what=last?tl("Podium"):tl("auto|Next");
-  b.disabled=!host;b.classList.toggle("paused",!!local.paused);
-  b.textContent=local.paused?tl("Paused · Resume"):(sec>0?tl("{what} in {n} s",{what,n:sec}):what+"…")+(host&&sec>0?" · "+tl("Pause"):"");
-  if(!host)$("rWait").textContent=sec>0?tl("{what} in {n} s",{what:last?tl("Podium"):tl("Next question"),n:sec})+"…":tl("The host is starting the next one…");
+// no timer on the answer screen: explanations can be long (diagrams, images), so only the host's Next button moves the game on
+function renderAuto(){
+  const last=!G.inf&&G.qi>=G.deck.length-1;
+  $("rWait").textContent=last?tl("Waiting for the host to show the podium…"):tl("Waiting for the host to go to the next question…");
 }
-$("rAuto").onclick=()=>{if(!isHost()||!local.autoAt||local.autoFired)return;
-  if(local.paused){local.paused=false;local.autoAt=performance.now()+Math.max(1500,local.autoLeft);writeGame({pz:0})}
-  else{local.paused=true;local.autoLeft=local.autoAt-performance.now();writeGame({pz:Date.now()})}
-  renderAuto(local.paused?local.autoLeft:local.autoAt-performance.now())};
 
 // ---------- reveal ----------
 function renderReveal(){
   show("reveal");
-  if(local.autoQ!==G.qi){local.autoQ=G.qi;local.autoAt=performance.now()+AUTO_MS;local.paused=false;local.autoFired=false}
+  if(local.autoQ!==G.qi){local.autoQ=G.qi;local.autoAt=performance.now();local.autoFired=false}
   const item=G.deck[G.qi],q=qOf(G.qi),cp=correctPos(G.qi),a=myAns(),typed=isT(G.qi);
   $("rSess").textContent=sLabel(q.s);$("rNum").textContent=tl("Question {i} / {n}",{i:G.qi+1,n:G.inf?"∞":G.deck.length})+" · "+(typed?tl("Typed answer"):q.t)+" · "+diffName(diffOf(q));
-  const v=$("rVerdict");
+  const v=$("rVerdict");$("rBreak").hidden=true;
   const late=mode==="multi"&&local.joinQi>G.qi;   // just joined: this question was before your time
-  if(local.sfxQ!==G.qi){local.sfxQ=G.qi;if(a&&isRight(a,G.qi)){sfx(scoreRun(me,G.qi).streak>=3?"streak":"ok");buzz(40)}else if(!late){sfx("bad");buzz([60,40,60])}}
+  if(local.sfxQ!==G.qi){local.sfxQ=G.qi;if(a&&isRight(a,G.qi)){rightFx(scoreRun(me,G.qi).streak)}else if(!late){sfx("bad");buzz([60,40,60])}}
   const winners=Object.keys(P).map(id=>({id,a:P[id].ans&&P[id].ans[G.qi]})).filter(x=>isRight(x.a,G.qi)).sort((x,y)=>x.a.ms-y.a.ms);
   $("rFast").hidden=mode!=="multi"||!winners.length;if(winners.length)$("rFast").textContent=tl("Fastest: {name} in {s} s",{name:nameOf(winners[0].id),s:fmtDec(winners[0].a.ms/1000)});
   const ok=isRight(a,G.qi);$("rMiss").hidden=!G.miss||!a;$("rMiss").className="missnote "+(ok?"ok":"bad");
   $("rMiss").textContent=ok?tl("✓ Off your missed questions list"):tl("Still on your missed questions list");
   if(late&&!a){v.textContent=tl("You're in! You'll play from the next question");v.className="verdict late"}
-  else if(isRight(a,G.qi)){const r=scoreRun(me,G.qi);v.textContent=tl("verdict|Correct")+" · +"+r.gain+(r.streak>=2?" · "+tl("streak ×{n}",{n:r.streak}):"");if(local.confQ!==G.qi){local.confQ=G.qi;confetti(r.streak>=3?120:60)}v.className="verdict ok pop"}
+  else if(isRight(a,G.qi)){const r=scoreRun(me,G.qi),pp=ptsParts(me,G.qi);v.textContent=tl("verdict|Correct")+" · +"+r.gain+(r.streak>=2?" · "+tl("streak ×{n}",{n:r.streak}):"");
+    $("rBreak").hidden=false;$("rBreak").textContent=tl("Base {b} + speed bonus {s}",{b:pp.base,s:pp.speed})+(pp.hint?" − "+tl("hint {n}",{n:pp.hint}):"")+(r.gain>pp.base+pp.speed-pp.hint?" + "+tl("streak bonus {n}",{n:r.gain-(pp.base+pp.speed-pp.hint)}):"");if(local.confQ!==G.qi){local.confQ=G.qi;confetti(r.streak>=3?120:60)}v.className="verdict ok pop"}
   else if(!a){v.textContent=tl("No answer");v.className="verdict bad pop"}
   else {v.textContent=tl("verdict|Wrong");v.className="verdict bad pop"}
   setQText("rText",q.q);
@@ -847,20 +861,25 @@ function renderReveal(){
     if(k===cp)b.classList.add("right");else b.classList.add("dim");if(a&&a.c===k&&k!==cp)b.classList.add("mine");
     if(mode==="multi")b.appendChild(el("span","cnt",tl(counts[k]===1?"{n} player":"{n} players",{n:counts[k]})));
     box.appendChild(b)});
-  $("rExplBox").hidden=!q.e;$("rExpl").textContent=q.e;
+  $("rExplBox").hidden=!q.e;TipokiWhy.fill(q,$("rExplBox"),$("rExpl"),$("rExplMore"));
   const wn=$("rWhyNot"),mine=a&&!ok?(typed?a.txt:a.c!=null?q.o[item.o[a.c]]:""):"",why=mine?TipokiWhy.whyNot(BANK&&BANK.facts,mine):"";
   wn.hidden=!why;wn.textContent=why?tl("Your answer: ")+why:"";
-  renderBoard($("rBoard"),totals(G.qi).slice(0,mode==="solo"?1:6),true);
+  {const all=totals(G.qi),prev=mode==="multi"&&G.qi>0?totals(G.qi-1).map(r=>r.id):null;
+    all.forEach((r,i)=>{r.mv=prev&&prev.includes(r.id)?prev.indexOf(r.id)-i:0});
+    let rows=all.slice(0,mode==="solo"?1:8);const mi=all.findIndex(r=>r.id===me);
+    if(mode==="multi"&&mi>=8){rows=rows.slice(0,7);rows.push(all[mi]);rows[7].rk=mi+1}
+    renderBoard($("rBoard"),rows,true)}
   const last=!G.inf&&G.qi>=G.deck.length-1;
   $("rEnd").hidden=!(G.inf&&isHost());
   $("rNext").hidden=!isHost();$("rNext").textContent=last?tl("See the podium"):tl("Next question");
   $("rWait").hidden=isHost();
-  renderAuto(local.paused?local.autoLeft:local.autoAt-performance.now());
+  renderAuto();
 }
 function renderBoard(box,rows,gains){
   box.textContent="";
   rows.forEach((r,i)=>{const d=el("div","brow"+(r.id===me?" me":""));
-    d.append(el("span","rk",(i+1)+"."),avatar(r.id,nameOf(r.id)),el("span","nm",nameOf(r.id)+(r.id===me?" ("+tl("you")+")":"")),
+    const mv=r.mv?el("span","mv "+(r.mv>0?"up":"dn"),(r.mv>0?"▲":"▼")+Math.abs(r.mv)):null;if(mv)mv.setAttribute("aria-label",tl(r.mv>0?"Up {n}":"Down {n}",{n:Math.abs(r.mv)}));
+    d.append(el("span","rk",(r.rk||i+1)+"."),avatar(r.id,nameOf(r.id)),(()=>{const n=el("span","nm",nameOf(r.id)+(r.id===me?" ("+tl("you")+")":""));if(mv)n.append(" ",mv);return n})(),
       el("span","gain",gains&&r.gain?"+"+r.gain:""),el("span","pts",r.t+" pts"));box.appendChild(d);if(gains&&r.gain)countUp(d.lastChild,r.t-r.gain,r.t)});
 }
 $("rNext").onclick=()=>{if(!isHost()||local.autoFired)return;local.autoFired=true;goNext()};
@@ -879,7 +898,7 @@ setInterval(()=>{
   else return;
   if(G.pz&&Date.now()-G.pz<10*60000)return;
   const rank=succession().indexOf(me);if(rank<0)return;
-  const grace=(G.status==="q"?4000:7000)+rank*6000;
+  const grace=(G.status==="q"?4000:300000)+rank*6000;
   if(over>grace){writeGame({host:me,pz:0}).then(()=>{local.autoFired=false;local.revealing=false;joinToast(tl("The host left the game, you are now running it"))})}
 },1000);
 $("rEnd").onclick=()=>{if(isHost())writeGame({status:"end",deck:G.deck.slice(0,G.qi+1),inf:false})};
@@ -1189,7 +1208,7 @@ $("topicBack").onclick=()=>{show("home");renderMyQuizzes()};
 $("brandHome").onclick=e=>{
   if(e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;   // let "open in a new tab" work
   e.preventDefault();
-  if(window.examBusy&&examBusy()){if(!confirm(tl("Quit the exam? Your answers will be lost.")))return;EX.on=false}
+  if(window.examBusy&&examBusy()){if(!confirm(tl("Leave the exam? It stays paused and you can resume it from this quiz page.")))return;EX.on=false}
   else if(G&&mode==="multi"&&(G.status==="q"||G.status==="reveal")&&!confirm(tl("Leave the current game? The other players will carry on without you.")))return;   // a solo game is saved, it can be resumed
   if(mode){leaveGame(true);mode=null;code=null;G=null;P={}}
   try{history.replaceState(null,"",location.pathname)}catch(e){}
@@ -1263,7 +1282,7 @@ $("mkGo").onclick=async()=>{
     const e=mk("topic");
     if(now==="menu"&&stack[cur-1]&&stack[cur-1].k==="topic"&&stack[cur-1].q===e.q)back(-1);
     else if(prev==="menu")put(e,true);else put(e)};
-  function stopRun(){if(window.examBusy&&examBusy())EX.on=false;if(mode){leaveGame(true);mode=null;code=null;G=null;P={}}}
+  function stopRun(){if(window.examBusy&&examBusy()){if(window.exSnap)exSnap();window.exPaused=true;EX.on=false}if(mode){leaveGame(true);mode=null;code=null;G=null;P={}}}
   function running(){return (window.examBusy&&examBusy())||(mode==="multi"&&G&&(G.status==="q"||G.status==="reveal"))}
   addEventListener("popstate",async ev=>{
     const e=ev.state;
@@ -1271,7 +1290,7 @@ $("mkGo").onclick=async()=>{
     if(!e||e.i==null){history.go(cur-(history.length-1));return}
     const from=stack[cur];
     if(from&&from.k==="run"&&e.k!=="run"&&running()){
-      const q=window.examBusy&&examBusy()?tl("Quit the exam? Your answers will be lost."):tl("Leave the current game? The other players will carry on without you.");
+      const q=window.examBusy&&examBusy()?tl("Leave the exam? It stays paused and you can resume it from this quiz page."):tl("Leave the current game? The other players will carry on without you.");
       if(!confirm(q)){back(cur-e.i);return}}
     cur=e.i;stack[cur]=e;
     if(e.k==="run"){if(!from||from.k!=="run")back(-1);return}   // a game can't be re-opened from history
