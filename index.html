@@ -59,6 +59,11 @@
       <h1>Study by beating your friends.</h1>
       <p>Pick what you want to study, then play solo or with friends.</p>
       <p class="streak" id="homeStreak" hidden></p>
+      <div class="goal" id="homeGoal">
+        <div class="goal-top"><b id="goalTxt"></b><button type="button" class="goal-set" id="goalSet" aria-label="Change daily goal"></button></div>
+        <div class="goal-bar" aria-hidden="true"><div class="goal-fill" id="goalFill"></div></div>
+        <span class="goal-hint" id="goalHint"></span>
+      </div>
       <button type="button" class="leaguechip" id="leagueChip" hidden></button>
     </div>
     <div class="tour" id="tour">
@@ -343,6 +348,7 @@
       <div class="prog-bar" aria-hidden="true"><div class="prog-fill" id="endFill"></div><div class="prog-mark" id="endMark"><span>Best</span></div></div>
     </div>
     <p class="streak" id="endStreak" hidden></p>
+    <p class="goal-end" id="endGoal" hidden></p>
     <p class="muted" id="endSess"></p>
     <div class="podium" id="podium"></div>
     <div class="endchap" id="endChap" hidden></div>

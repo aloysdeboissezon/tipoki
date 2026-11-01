@@ -42,7 +42,8 @@ function mergeJ(a,b){   // a = this device, b = online
 const better=(a,b)=>!b||a.c*b.n>b.c*a.n||(a.c*b.n===b.c*a.n&&a.pts>b.pts);
 function special(k,a,b){
   if(k==="tpk-stats"){const best={...(b.best||{})};for(const id in a.best||{})if(better(a.best[id],best[id]))best[id]=a.best[id];
-    return {...b,...a,best,days:[...new Set([...(b.days||[]),...(a.days||[])])].sort().slice(-400)}}
+    const daily={...(b.daily||{})};for(const d in a.daily||{})daily[d]=Math.max(daily[d]||0,a.daily[d]);
+    return {...b,...a,best,daily,days:[...new Set([...(b.days||[]),...(a.days||[])])].sort().slice(-400)}}
   if(/-cards-sr$/.test(k)){const o={...b};for(const t in a)if(!o[t]||(a[t].t||0)>=(o[t].t||0))o[t]=a[t];return o}   // the most recent review of each card wins
   if(/-exam(-|$)/.test(k)&&Array.isArray(a)&&Array.isArray(b))return mergeJ(a,b).sort((x,y)=>(y.at||0)-(x.at||0)).slice(0,20);
   return mergeJ(a,b)}
