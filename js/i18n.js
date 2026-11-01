@@ -544,6 +544,8 @@ var FR={
 "time is up":"temps écoulé",
 "See my result":"Voir mon résultat",
 "By {unit}":"Par {unit}",
+"Notions to revise":"Notions à réviser",
+"Revise this ({n})":"Réviser ça ({n})",
 "Train {unit} {s} ({n})":"Retravailler {unit} {s} ({n})",
 "Bronze":"Bronze",
 "Silver":"Argent",
