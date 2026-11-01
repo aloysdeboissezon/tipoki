@@ -36,14 +36,19 @@ function fc(o){
   const cls=r=>r>0?"Goodwill of "+f(r):r<0?"A gain from a bargain purchase of "+f(-r):"No goodwill and no gain";
   const share=`${P} × ${eq0t?"("+eq0t+") = ":""}${f(eq0)} = ${f(p*eq0)}`;
   if(shares)ty(s,ask("What percentage of S's shares does P own?"),[String(p*100),P],`${shares} = ${P}.`,undefined,1);
+  if(shares)TQ[TQ.length-1].g={k:"grp",pct:p};
   M(s,nme,ask("What was S's total equity at the acquisition date (€ thousand)?"),eq0,[eqN,p*eq0,price],(eq0t?eq0t+" = ":"")+f(eq0)+" (all components: share capital and every reserve).",1);
   M(s,nme,ask("What is P's share of S's equity at the acquisition date (€ thousand)?"),p*eq0,[eq0,n0,price,p*eqN],"Group share = "+share+".",2);
   MT(s,nme,ask("Compare the price paid with P's share of S's equity at the acquisition date. What does the consolidation show (€ thousand)?"),cls(raw),
     [cls(-raw),cls(price-eq0),cls(price-n0),cls(price-p*eqN),"Goodwill of "+f(price),"No goodwill and no gain: the difference goes to NCI"],
     `${f(price)} − ${f(p*eq0)} = ${f(raw)}: ${raw>0?"the price is higher than the group share, so goodwill":"the price is lower than the group share, so a gain from a bargain purchase"}.`,2);
+  const gwFig={k:"gw",price,own:p*eq0,pct:p};
+  Q[Q.length-1].g=gwFig;
   TN(s,ask(`What is the ${word} (€ thousand)?`),amt,`${f(price)} − ${f(p*eq0)} = ${f(raw)}; the ${word} is ${f(amt)}.`,2);
+  TQ[TQ.length-1].g=gwFig;
   if(p<1){
     M(s,nme,ask("What is the NCI at the acquisition date (€ thousand)?"),n0,[p*eq0,(1-p)*price,nN,eq0],`NCI = ${N} × ${f(eq0)} = ${f(n0)}.`,2);
+    Q[Q.length-1].g={k:"nci",eq:eq0,pct:p};
     if(!same){
       M(s,nme,ask("What is the NCI at the consolidation date (€ thousand)?"),nN,[n0,p*eqN,(1-p)*(eqN-eq0),eqN],`NCI = ${N} × current equity of S = ${N} × ${eqNt?"("+eqNt+") = ":""}${f(eqN)} = ${f(nN)}. It uses the equity at the consolidation date, not at acquisition.`,2);
       TN(s,ask("What is the NCI at the consolidation date (€ thousand)?"),nN,`${N} × ${f(eqN)} = ${f(nN)}.`,2);

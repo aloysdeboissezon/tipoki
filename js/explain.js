@@ -28,6 +28,7 @@ window.TipokiWhy=(function(){
     if(k>0){const b=document.createElement("b");b.className="expl-t";b.textContent=e.slice(from,k);
       if(from)main.append(e.slice(0,from));main.append(b," — "+e.slice(k+3))}
     else main.textContent=e;
+    if(q.g&&window.TipokiFig){const fg=window.TipokiFig.make(q.g);if(fg)more.append(fg)}
     const S=window.SHEETS&&BANK&&window.SHEETS[BANK.id],sec=S&&S.sections[(q.s||0)-1];
     if(!sec)return;
     const ex=sec.blocks.find(b=>b.t==="ex");

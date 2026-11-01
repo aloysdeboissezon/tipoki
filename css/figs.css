@@ -1,0 +1,14 @@
+/* figures in the "Why?" card: follow the theme, scale to the card width */
+.expl-fig{margin:0;padding:10px;background:var(--card);border:1.5px solid var(--line);border-radius:14px}
+.expl-fig svg{display:block;width:100%;max-width:460px;height:auto;margin:0 auto}
+.expl-fig img{display:block;max-width:100%;height:auto;margin:0 auto;border-radius:8px}
+.expl-fig figcaption{margin-top:6px;font-size:13px;line-height:1.35;color:var(--muted)}
+.fg-t{font:700 15px var(--f-body,system-ui,sans-serif);fill:var(--ink)}
+.fg-t.fg-m{font-weight:600;fill:var(--muted)}
+.fg-t.fg-b2{font-size:16px;font-weight:800}
+.fg-t.fg-onhl{fill:var(--hl-ink,#fff)}
+.fg-hl{fill:var(--hl)}
+.fg-hot{fill:#FFC93C}
+.fg-box{fill:var(--soft);stroke:var(--line2);stroke-width:1.5}
+.fg-ln{stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.fg-nofill{fill:none}
