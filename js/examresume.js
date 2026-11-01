@@ -6,12 +6,16 @@
   let wasOn=false,last="";
   function load(){try{const s=JSON.parse(lsGet(KEY)||"null");if(s&&s.bank&&s.ex&&s.ex.deck&&Date.now()-s.ex.startAt<MAX_AGE)return s}catch(e){}return null}
   function drop(){try{localStorage.removeItem(KEY)}catch(e){}last=""}
+  function snap(){
+    if(!EX.on)return;wasOn=true;
+    const j=JSON.stringify({bank:BANK.id,ex:{deck:EX.deck,ans:EX.ans,i:EX.i,endAt:EX.endAt,startAt:EX.startAt,total:EX.total}});
+    if(j!==last){last=j;lsSet(KEY,j)}}
+  window.exSnap=snap;   // called right before a pause so the last answer is kept
   setInterval(()=>{
-    if(EX.on){wasOn=true;
-      const j=JSON.stringify({bank:BANK.id,ex:{deck:EX.deck,ans:EX.ans,i:EX.i,endAt:EX.endAt,startAt:EX.startAt,total:EX.total}});
-      if(j!==last){last=j;lsSet(KEY,j)}}
-    else if(wasOn){wasOn=false;drop()}
+    if(EX.on)snap();
+    else if(wasOn){wasOn=false;if(window.exPaused)window.exPaused=false;else drop()}   // paused = keep the save; handed in = drop it
   },1000);
+  document.addEventListener("visibilitychange",()=>{if(document.hidden)snap()});addEventListener("pagehide",snap);
   const box=document.createElement("div");box.className="ex-resume";box.hidden=true;
   box.innerHTML='<span id="exResumeTxt"></span><button class="btn dark" id="exResumeGo" type="button"></button><button class="btn ghost" id="exResumeDrop" type="button"></button>';
   const panel=$("examPanel");panel.insertBefore(box,panel.children[1]);
