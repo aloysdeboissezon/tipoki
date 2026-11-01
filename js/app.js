@@ -573,7 +573,8 @@ async function joinGame(c){
   let res=await save(avCol?{nick:myNick(),avatar:myAv()}:{nick:myNick()});
   if(res.error&&avCol){avCol=false;res=await save({nick:myNick()})}   // no avatar column yet: play without photos
   if(res.error){mode=null;code=null;show("home");showErr("joinErr",tl("Couldn't join, try again."));return}
-  chan=sb.channel("g-"+c)
+  chan=sb.channel("g-"+c,{config:{broadcast:{self:true}}})
+    .on("broadcast",{event:"react"},m=>{if(code===c&&window.tpkReact)tpkReact(m.payload)})
     .on("postgres_changes",{event:"*",schema:"public",table:"games",filter:"code=eq."+c},p=>{if(code===c&&p.new&&p.new.state)applyGame(p.new.state)})
     .on("postgres_changes",{event:"*",schema:"public",table:"players",filter:"code=eq."+c},p=>{if(code===c&&p.new&&p.new.pid){if(p.new.avatar&&p.new.pid!==me)avs[p.new.pid]=p.new.avatar;P={...P,[p.new.pid]:rowToPlayer(p.new)};onPlayers()}})
     .subscribe();
@@ -863,7 +864,11 @@ function renderReveal(){
   $("rExplBox").hidden=!q.e;TipokiWhy.fill(q,$("rExplBox"),$("rExpl"),$("rExplMore"));
   const wn=$("rWhyNot"),mine=a&&!ok?(typed?a.txt:a.c!=null?q.o[item.o[a.c]]:""):"",why=mine?TipokiWhy.whyNot(BANK&&BANK.facts,mine):"";
   wn.hidden=!why;wn.textContent=why?tl("Your answer: ")+why:"";
-  renderBoard($("rBoard"),totals(G.qi).slice(0,mode==="solo"?1:6),true);
+  {const all=totals(G.qi),prev=mode==="multi"&&G.qi>0?totals(G.qi-1).map(r=>r.id):null;
+    all.forEach((r,i)=>{r.mv=prev&&prev.includes(r.id)?prev.indexOf(r.id)-i:0});
+    let rows=all.slice(0,mode==="solo"?1:8);const mi=all.findIndex(r=>r.id===me);
+    if(mode==="multi"&&mi>=8){rows=rows.slice(0,7);rows.push(all[mi]);rows[7].rk=mi+1}
+    renderBoard($("rBoard"),rows,true)}
   const last=!G.inf&&G.qi>=G.deck.length-1;
   $("rEnd").hidden=!(G.inf&&isHost());
   $("rNext").hidden=!isHost();$("rNext").textContent=last?tl("See the podium"):tl("Next question");
@@ -873,7 +878,8 @@ function renderReveal(){
 function renderBoard(box,rows,gains){
   box.textContent="";
   rows.forEach((r,i)=>{const d=el("div","brow"+(r.id===me?" me":""));
-    d.append(el("span","rk",(i+1)+"."),avatar(r.id,nameOf(r.id)),el("span","nm",nameOf(r.id)+(r.id===me?" ("+tl("you")+")":"")),
+    const mv=r.mv?el("span","mv "+(r.mv>0?"up":"dn"),(r.mv>0?"▲":"▼")+Math.abs(r.mv)):null;if(mv)mv.setAttribute("aria-label",tl(r.mv>0?"Up {n}":"Down {n}",{n:Math.abs(r.mv)}));
+    d.append(el("span","rk",(r.rk||i+1)+"."),avatar(r.id,nameOf(r.id)),(()=>{const n=el("span","nm",nameOf(r.id)+(r.id===me?" ("+tl("you")+")":""));if(mv)n.append(" ",mv);return n})(),
       el("span","gain",gains&&r.gain?"+"+r.gain:""),el("span","pts",r.t+" pts"));box.appendChild(d);if(gains&&r.gain)countUp(d.lastChild,r.t-r.gain,r.t)});
 }
 $("rNext").onclick=()=>{if(!isHost()||local.autoFired)return;local.autoFired=true;goNext()};
