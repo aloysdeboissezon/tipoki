@@ -538,3 +538,15 @@ body.noscroll{overflow:hidden}
 .qtbl tr.sec td{background:var(--soft);color:var(--muted);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px}
 .qtbl tr.tot td{font-weight:800;border-top:2px solid var(--line2)}
 .ex-rq .qp{margin:0 0 6px}.ex-rq .qtw{margin-bottom:6px}
+
+/* ---------- daily goal ---------- */
+.goal{align-self:flex-start;width:min(100%,320px);display:flex;flex-direction:column;gap:6px;background:var(--card);color:var(--ink);border-radius:18px;padding:8px 14px 10px;box-shadow:0 4px 0 rgba(0,0,0,.15);font-size:13px;font-weight:700}
+.goal-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.goal-top b{font-family:var(--f-display);font-weight:800;font-size:14px}
+.goal-set{font:inherit;font-size:12px;font-weight:800;color:var(--muted);background:var(--soft);border:0;border-radius:999px;padding:3px 10px;cursor:pointer;min-height:28px}
+.goal-bar{height:8px;border-radius:999px;background:var(--line);overflow:hidden}
+.goal-fill{height:100%;width:0;border-radius:999px;background:var(--hl);transition:width .6s cubic-bezier(.2,.8,.3,1)}
+.goal.hit .goal-fill{background:var(--ok)}
+.goal-hint{color:var(--muted);font-size:12px;font-weight:600}
+.goal.hit .goal-hint{color:var(--ok)}
+.goal-end{margin:0;align-self:center;font-weight:800;font-size:14px;color:var(--muted)}
