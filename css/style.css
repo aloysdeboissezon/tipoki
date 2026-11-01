@@ -538,3 +538,9 @@ body.noscroll{overflow:hidden}
 .qtbl tr.sec td{background:var(--soft);color:var(--muted);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px}
 .qtbl tr.tot td{font-weight:800;border-top:2px solid var(--line2)}
 .ex-rq .qp{margin:0 0 6px}.ex-rq .qtw{margin-bottom:6px}
+/* challenge a friend by link */
+.chal-p{margin:0;font-weight:600}
+.chal .row{display:flex;gap:10px;flex-wrap:wrap}
+.chal-vs{display:flex;flex-direction:column;gap:4px;font-family:var(--f-display);font-weight:800;font-size:18px}
+.chal-vs div:empty{display:none}
+#topic>.chal{margin:0}
