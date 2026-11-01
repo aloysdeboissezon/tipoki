@@ -1,0 +1,15 @@
+/* flag a question to review later */
+.hud{flex-wrap:wrap}
+.flagbtn{flex:none;min-height:36px;padding:4px 12px;border-radius:999px;border:2px solid var(--hl-soft);background:transparent;color:var(--muted);font:800 13px var(--f-body);cursor:pointer}
+.flagbtn.on{background:var(--hl-soft);color:var(--hl);border-color:var(--hl)}
+.flagpanel{flex-direction:row;flex-wrap:wrap;align-items:center;gap:12px 14px;border:2px solid var(--hl-soft)}
+.flagpanel .fl-n{flex:none;width:52px;height:52px;border-radius:16px;background:var(--hl-soft);color:var(--hl);display:grid;place-items:center;font:800 22px var(--f-head)}
+.flagpanel .fl-main{flex:1 1 180px;min-width:0;display:flex;flex-direction:column;gap:4px}
+.flagpanel h2{font-size:19px;margin:0}
+.flagpanel .muted{font-size:14px}
+.flagpanel .btn{flex:none;min-height:44px}
+.flaglist{flex:1 1 100%;list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.flagitem{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--hl-soft)}
+.flagq{flex:1;min-width:0;font-size:14px;overflow-wrap:anywhere}
+@media (max-width:480px){.flagpanel .btn{flex:1 1 100%}}
+.flagpanel .linkbtn{align-self:flex-start;min-height:0;padding:2px 0;font-size:13px}

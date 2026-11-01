@@ -47,6 +47,7 @@
 <link rel="stylesheet" href="css/refine.css?v=20261101b">
 <link rel="stylesheet" href="css/finish.css?v=20261101b">
 <link rel="stylesheet" href="css/a11y.css?v=20261101b">
+<link rel="stylesheet" href="css/flag.css?v=20261101a">
 <!-- Vercel Web Analytics (page views, visitors) -->
 <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};</script>
 <script defer src="/_vercel/insights/script.js"></script>
@@ -141,6 +142,12 @@
       <div class="ms-n" id="missN" aria-hidden="true">0</div>
       <div class="ms-main"><h2 id="missTitle">Missed questions</h2><div class="muted">Get one right and it leaves the list.</div></div>
       <button class="btn dark" id="missBtn">Replay them</button>
+    </div>
+    <div class="panel flagpanel" id="flagPanel" hidden>
+      <div class="fl-n" id="flagN" aria-hidden="true">0</div>
+      <div class="fl-main"><h2>Flagged questions</h2><div class="muted">Questions you starred to review later.</div><button type="button" class="linkbtn" id="flagToggle" aria-expanded="false">Show the list</button></div>
+      <button class="btn dark" id="flagBtn">Review them</button>
+      <ul class="flaglist" id="flagList" hidden></ul>
     </div>
     <div class="panel todaypanel" id="todayPanel" hidden>
       <div class="wk-main"><h2>Today</h2><div class="muted" id="todaySub"></div></div>
@@ -441,6 +448,7 @@
 <script defer src="js/sheet.js?v=20261101a"></script>
 <script defer src="js/weak.js?v=20261101a"></script>
 <script defer src="js/report.js?v=20261101c"></script>
+<script defer src="js/flag.js?v=20261101a"></script>
 <script defer src="js/plan.js?v=20261101a"></script>
 <script defer src="js/league.js?v=20261101a"></script>
 <script defer src="js/today.js?v=20261101a"></script>
