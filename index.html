@@ -33,24 +33,24 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Nunito:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Nunito:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap"></noscript>
-<link rel="stylesheet" href="css/style.css?v=20261102a">
-<link rel="stylesheet" href="css/music.css?v=20261102a">
-<link rel="stylesheet" href="css/exam.css?v=20261102a">
-<link rel="stylesheet" href="css/weak.css?v=20261102a">
-<link rel="stylesheet" href="css/plan.css?v=20261102a">
-<link rel="stylesheet" href="css/sync.css?v=20261102a">
-<link rel="stylesheet" href="css/search.css?v=20261102a">
-<link rel="stylesheet" href="css/sheet.css?v=20261102a">
-<link rel="stylesheet" href="css/figs.css?v=20261102a">
-<link rel="stylesheet" href="css/tour.css?v=20261102a">
-<link rel="stylesheet" href="css/theme.css?v=20261102a">
-<link rel="stylesheet" href="css/compact.css?v=20261102a">
-<link rel="stylesheet" href="css/refine.css?v=20261102a">
-<link rel="stylesheet" href="css/finish.css?v=20261102a">
-<link rel="stylesheet" href="css/a11y.css?v=20261102a">
-<link rel="stylesheet" href="css/options.css?v=20261102a">
-<link rel="stylesheet" href="css/flag.css?v=20261102a">
-<link rel="stylesheet" href="css/reactions.css?v=20261102a">
+<link rel="stylesheet" href="css/style.css?v=20261102b">
+<link rel="stylesheet" href="css/music.css?v=20261102b">
+<link rel="stylesheet" href="css/exam.css?v=20261102b">
+<link rel="stylesheet" href="css/weak.css?v=20261102b">
+<link rel="stylesheet" href="css/plan.css?v=20261102b">
+<link rel="stylesheet" href="css/sync.css?v=20261102b">
+<link rel="stylesheet" href="css/search.css?v=20261102b">
+<link rel="stylesheet" href="css/sheet.css?v=20261102b">
+<link rel="stylesheet" href="css/figs.css?v=20261102b">
+<link rel="stylesheet" href="css/tour.css?v=20261102b">
+<link rel="stylesheet" href="css/theme.css?v=20261102b">
+<link rel="stylesheet" href="css/compact.css?v=20261102b">
+<link rel="stylesheet" href="css/refine.css?v=20261102b">
+<link rel="stylesheet" href="css/finish.css?v=20261102b">
+<link rel="stylesheet" href="css/a11y.css?v=20261102b">
+<link rel="stylesheet" href="css/options.css?v=20261102b">
+<link rel="stylesheet" href="css/flag.css?v=20261102b">
+<link rel="stylesheet" href="css/reactions.css?v=20261102b">
 <!-- Vercel Web Analytics (page views, visitors) -->
 <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};</script>
 <script defer src="/_vercel/insights/script.js"></script>
@@ -408,11 +408,13 @@
       <div class="st-tiles" id="stTiles"></div>
       <p class="muted" id="stModes"></p>
       <div id="stDaysWrap"><div class="label">Games, last 30 days</div><div class="st-days" id="stDays"></div></div>
+      <div id="stWeeksWrap"><div class="label">Active players per week</div><div class="st-days" id="stWeeks"></div></div>
+      <div id="stQuizWrap"><div class="label">By quiz</div><div class="st-sess" id="stQuizzes"></div></div>
       <div id="stSessWrap"><div class="label">Right answers by chapter</div><div class="st-sess" id="stSess"></div></div>
       <div id="stMissWrap"><div class="label">Most missed questions</div><div class="miss st-miss" id="stMiss"></div></div>
-      <p class="muted st-note">Anonymous: no names or photos are kept, only which questions were answered right.</p>
+      <p class="muted st-note">Anonymous: no names, photos, cookies or emails are kept, only which questions were answered right. Counts start the day this feature went live.</p>
     </div>
-    <div class="row"><button class="btn ghost" id="stRefresh">Refresh</button><button class="btn ghost" id="stHome">Home</button></div>
+    <div class="row"><button class="btn ghost" id="stRefresh">Refresh</button><button class="btn ghost" id="stPrint" hidden>Print / PDF</button><button class="btn ghost" id="stHome">Home</button></div>
   </section>
 
 </div>
@@ -430,46 +432,46 @@
 
 <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>try{window.TPK_CH=new URLSearchParams(location.search).get("ch")}catch(e){}</script>
-<script defer src="js/errlog.js?v=20261102a"></script>
-<script defer src="js/i18n.js?v=20261102a"></script>
-<script defer src="js/offline.js?v=20261102a"></script>
-<script defer src="js/banks/socio.js?v=20261102a"></script>
-<script defer src="js/banks/culture.js?v=20261102a"></script>
-<script defer src="js/banks/energie.js?v=20261102a"></script>
-<script defer src="js/banks/populism.js?v=20261102a"></script>
-<script defer src="js/banks/compta2.js?v=20261102a"></script>
-<script defer src="js/figs.js?v=20261102a"></script>
-<script defer src="js/figtags.js?v=20261102a"></script>
-<script defer src="js/explain.js?v=20261102a"></script>
-<script defer src="js/app.js?v=20261102a"></script>
-<script defer src="js/stats.js?v=20261102a"></script>
-<script defer src="js/exam.js?v=20261102a"></script>
-<script defer src="js/examresume.js?v=20261102a"></script>
-<script defer src="js/pause.js?v=20261102a"></script>
-<script defer src="js/search.js?v=20261102a"></script>
-<script defer src="js/sheets/socio.js?v=20261102a"></script>
-<script defer src="js/sheets/populism.js?v=20261102a"></script>
-<script defer src="js/sheets/energie.js?v=20261102a"></script>
-<script defer src="js/sheets/compta2.js?v=20261102a"></script>
-<script defer src="js/sheet.js?v=20261102a"></script>
-<script defer src="js/weak.js?v=20261102a"></script>
-<script defer src="js/report.js?v=20261102a"></script>
-<script defer src="js/flag.js?v=20261102a"></script>
-<script defer src="js/plan.js?v=20261102a"></script>
-<script defer src="js/league.js?v=20261102a"></script>
-<script defer src="js/today.js?v=20261102a"></script>
-<script defer src="js/a11y.js?v=20261102a"></script>
-<script defer src="js/endsum.js?v=20261102a"></script>
-<script defer src="js/challenge.js?v=20261102a"></script>
-<script defer src="js/reactions.js?v=20261102a"></script>
-<script defer src="js/music.js?v=20261102a"></script>
-<script defer src="js/tour.js?v=20261102a"></script>
-<script defer src="js/theme.js?v=20261102a"></script>
-<script defer src="js/sync.js?v=20261102a"></script>
-<script defer src="js/options.js?v=20261102a"></script>
-<script defer src="js/vendor/gsap.min.js?v=20261102a"></script>
-<script defer src="js/vendor/lenis.min.js?v=20261102a"></script>
-<script defer src="js/motion.js?v=20261102a"></script>
+<script defer src="js/errlog.js?v=20261102b"></script>
+<script defer src="js/i18n.js?v=20261102b"></script>
+<script defer src="js/offline.js?v=20261102b"></script>
+<script defer src="js/banks/socio.js?v=20261102b"></script>
+<script defer src="js/banks/culture.js?v=20261102b"></script>
+<script defer src="js/banks/energie.js?v=20261102b"></script>
+<script defer src="js/banks/populism.js?v=20261102b"></script>
+<script defer src="js/banks/compta2.js?v=20261102b"></script>
+<script defer src="js/figs.js?v=20261102b"></script>
+<script defer src="js/figtags.js?v=20261102b"></script>
+<script defer src="js/explain.js?v=20261102b"></script>
+<script defer src="js/app.js?v=20261102b"></script>
+<script defer src="js/stats.js?v=20261102b"></script>
+<script defer src="js/exam.js?v=20261102b"></script>
+<script defer src="js/examresume.js?v=20261102b"></script>
+<script defer src="js/pause.js?v=20261102b"></script>
+<script defer src="js/search.js?v=20261102b"></script>
+<script defer src="js/sheets/socio.js?v=20261102b"></script>
+<script defer src="js/sheets/populism.js?v=20261102b"></script>
+<script defer src="js/sheets/energie.js?v=20261102b"></script>
+<script defer src="js/sheets/compta2.js?v=20261102b"></script>
+<script defer src="js/sheet.js?v=20261102b"></script>
+<script defer src="js/weak.js?v=20261102b"></script>
+<script defer src="js/report.js?v=20261102b"></script>
+<script defer src="js/flag.js?v=20261102b"></script>
+<script defer src="js/plan.js?v=20261102b"></script>
+<script defer src="js/league.js?v=20261102b"></script>
+<script defer src="js/today.js?v=20261102b"></script>
+<script defer src="js/a11y.js?v=20261102b"></script>
+<script defer src="js/endsum.js?v=20261102b"></script>
+<script defer src="js/challenge.js?v=20261102b"></script>
+<script defer src="js/reactions.js?v=20261102b"></script>
+<script defer src="js/music.js?v=20261102b"></script>
+<script defer src="js/tour.js?v=20261102b"></script>
+<script defer src="js/theme.js?v=20261102b"></script>
+<script defer src="js/sync.js?v=20261102b"></script>
+<script defer src="js/options.js?v=20261102b"></script>
+<script defer src="js/vendor/gsap.min.js?v=20261102b"></script>
+<script defer src="js/vendor/lenis.min.js?v=20261102b"></script>
+<script defer src="js/motion.js?v=20261102b"></script>
 <script>if("serviceWorker"in navigator&&(location.protocol==="https:"||location.hostname==="localhost"))addEventListener("load",function(){navigator.serviceWorker.register("/sw.js").catch(function(){})})</script>
 
 </body>
