@@ -14,3 +14,10 @@ Envoie ton cours, Tipoki en fait un quiz. Joue seul ou en multi avec tes potes (
 
 ## Lancer en local
 `python3 -m http.server` dans ce dossier, puis http://localhost:8000
+
+## Tests automatiques
+Un navigateur sans écran (Playwright) joue les parcours clés : solo, indices, examen, signalement, pause/reprise, défi par lien, hors ligne, page Options. Supabase est simulé, aucun accès réseau n'est nécessaire.
+
+- `npm install` puis `npx playwright install chromium` (une seule fois)
+- `npm test` lance tout ; `npx playwright test tests/exam.spec.js` un seul fichier
+- La CI GitHub Actions (`.github/workflows/e2e.yml`) les lance sur chaque PR.
