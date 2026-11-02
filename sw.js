@@ -1,15 +1,15 @@
 // Tipoki service worker: installable app + offline revision.
 // Install: the whole app shell (page, scripts, styles, quiz banks, images, Supabase client, fonts) is stored, so the app opens and the built-in quizzes play with no network.
-// Fetch: network first with a short timeout (a new deploy shows up on the next visit; a weak connection falls back to the stored copy).
+// Fetch: the page is network first with a short timeout (a new deploy shows up on the next visit; a weak connection falls back to the stored copy).
 // Supabase API calls, analytics and the video are never touched (the page queues its own writes, see js/offline.js).
-const CACHE="tipoki-v8",SHELL_PAGE="/",NET_MS=4000;
+const CACHE="tipoki-v9",SHELL_PAGE="/",NET_MS=4000;
 const CDN=/^https:\/\/(cdn\.jsdelivr\.net|fonts\.googleapis\.com|fonts\.gstatic\.com)\//;
 self.addEventListener("install",e=>{e.waitUntil((async()=>{
   const c=await caches.open(CACHE);
   try{
     const res=await timeout(fetch(SHELL_PAGE,{cache:"reload"}),15000);await c.put(SHELL_PAGE,res.clone());
     const html=await res.text(),urls=new Set(["/manifest.webmanifest","/favicon.svg","/apple-touch-icon.png","/img/icon-192.png","/img/icon-512.png","/img/logo.svg","/img/logo-dark.svg","/img/mark.svg"]);
-    for(const m of html.matchAll(/(?:src|href)="([^"#]+)"/g)){
+    for(const m of html.matchAll(/(?:src|href|data-lazy)="([^"#]+)"/g)){
       const u=new URL(m[1],location.origin+SHELL_PAGE);
       if(u.origin===location.origin?!u.pathname.startsWith("/_vercel/"):CDN.test(u.href))urls.add(u.href)}
     // one failed file must not block the install: store what we can
@@ -34,5 +34,7 @@ self.addEventListener("fetch",e=>{
     // fonts and library files never change under the same URL: stored copy first
     if(!same){const hit=await c.match(r);if(hit)return hit;
       try{const res=await fetch(r);if(res.ok||res.type==="opaque")c.put(r,res.clone());return res}catch(err){return Response.error()}}
+    // files named with ?v=<release> (scripts, styles, quizzes) only change when the page links a new ?v=, so the stored copy is served at once and refreshed in the background: no round trip on a slow connection
+    if(!nav&&u.searchParams.has("v")){const hit=await c.match(r);if(hit){e.waitUntil(fetch(r,{cache:"no-cache"}).then(res=>{if(res.ok)return c.put(r,res)}).catch(()=>{}));return hit}}
     try{const res=await timeout(fetch(r,{cache:"no-cache"}),nav?NET_MS:NET_MS*2);if(res.ok)c.put(nav?new Request(u.origin+SHELL_PAGE):r,res.clone());return res}
     catch(err){return (await c.match(r,{ignoreSearch:nav}))||(nav?await c.match(SHELL_PAGE):null)||Response.error()}})())});

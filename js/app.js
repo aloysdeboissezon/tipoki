@@ -384,9 +384,20 @@ function sLabel(s){return BANK.tags?BANK.tags[s]:(BANK.id==="socio"?"S":"Ch.")+s
 function unit(k){return tl((BANK.unit||(BANK.id==="socio"?["session","sessions","a session"]:["chapter","chapters","a chapter"]))[k])}
 const BUILTIN={socio:()=>window.BANK_SOCIO,culture:()=>window.BANK_CULTURE,energie:()=>window.BANK_ENERGIE,populism:()=>window.BANK_POPULISM,compta2:()=>window.BANK_COMPTA2};
 const bankCache={};
+// the default quiz ships with the page; the other built-in quizzes (and their study sheets) are fetched the first time they are opened
+const scriptP={};
+function appVer(){try{return new URL(document.querySelector('script[src*="js/app.js"]').src).search}catch(e){return ""}}
+function loadScript(src){return scriptP[src]||(scriptP[src]=new Promise(res=>{const s=document.createElement("script");s.src=src+appVer();s.onload=()=>res(true);s.onerror=()=>{delete scriptP[src];res(false)};document.head.appendChild(s)}))}
+async function ensureBank(id){
+  if(BUILTIN[id]())return true;
+  const m=(window.BANK_META||{})[id];
+  const [ok]=await Promise.all([loadScript("js/banks/"+id+".js"),m&&m.sheet?loadScript("js/sheets/"+id+".js"):0]);
+  if(!ok||!BUILTIN[id]())return false;
+  if(window.TipokiFig&&TipokiFig.tagLate)TipokiFig.tagLate("BANK_"+id.toUpperCase());
+  return true}
 async function useBank(id){
   id=id||"socio";if(BANK&&BANK.id===id)return true;
-  if(BUILTIN[id]){loadBank(BUILTIN[id]());return true}
+  if(BUILTIN[id]){if(!await ensureBank(id))return false;loadBank(BUILTIN[id]());return true}
   let b=bankCache[id];
   if(!b){
     let data=null;
@@ -1143,7 +1154,7 @@ async function openQuiz(id,btn){
 // quizzes you opened most recently come first on the home screen
 function recentGet(){try{return JSON.parse(lsGet("tpk-recent")||"{}")}catch(e){return {}}}
 function recentMark(id){const r=recentGet();r[id]=Date.now();const ks=Object.keys(r);if(ks.length>40)ks.sort((a,b)=>r[a]-r[b]).slice(0,ks.length-40).forEach(k=>delete r[k]);lsSet("tpk-recent",JSON.stringify(r))}
-function quizList(extra){const seen=new Set();return Object.keys(BUILTIN).map(id=>{const b=BUILTIN[id]();return {id,title:b.title,subject:b.subject,kw:b.kw,sess:b.sess,tags:b.tags}}).concat(myQuizzes(),extra||[]).filter(q=>!seen.has(q.id)&&seen.add(q.id))}
+function quizList(extra){const seen=new Set();return Object.keys(BUILTIN).map(id=>{const b=BUILTIN[id]()||(window.BANK_META||{})[id]||{};return {id,title:b.title,subject:b.subject,kw:b.kw,sess:b.sess,tags:b.tags}}).concat(myQuizzes(),extra||[]).filter(q=>!seen.has(q.id)&&seen.add(q.id))}
 // search: lowercase, no accents, punctuation as spaces, so "energie" finds "Énergie électrique"
 function fold(s){return String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()}
 function quizHay(q){return fold([q.title,q.subject,q.kw].concat(Object.values(q.sess||(q.data&&q.data.sess)||{}),Object.values(q.tags||{})).join(" "))}
