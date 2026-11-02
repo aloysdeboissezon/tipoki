@@ -17,7 +17,7 @@ var LOCALE=LANG==="fr"?"fr-FR":"en-US";
 
 var FR={
 // page
-"Qwebbo · Study by challenging your friends":"Qwebbo · Révise en défiant tes potes",
+"Qwebbo · Learn, compete, master":"Qwebbo · Apprends, défie, maîtrise",
 // header
 "Back to home":"Retour à l'accueil",
 "Qwebbo, back to home":"Qwebbo, retour à l'accueil",
@@ -29,7 +29,7 @@ var FR={
 "Sound":"Son",
 "Muted":"Muet",
 // home
-"Study by beating your friends.":"Révise en battant tes potes.",
+"Learn,":"Apprends,","compete,":"défie,","master.":"maîtrise.",
 "Watch the tutorial video":"Regarder la vidéo tutoriel",
 "Pick what you want to study, then play solo or with friends.":"Choisis ce que tu veux réviser, puis joue seul ou en multi.",
 "Pick up where you left off":"Reprends ta partie en cours",
