@@ -26,7 +26,7 @@ Aucun secret n'est dans le dépôt. Les fichiers contiennent des données d'util
    ```
    (client PostgreSQL 17 recommandé). Les erreurs « already exists » sur un projet neuf sont sans gravité.
 5. Vérifier : `psql "$DEST_URL" -c "select count(*) from public.games; select count(*) from public.players;"`.
-6. Si c'est un nouveau projet : redéployer les Edge Functions (`supabase functions deploy generate-quiz`), remettre le secret `ANTHROPIC_API_KEY` si besoin, et mettre à jour `SB_URL` / `SB_KEY` dans `js/app.js` (clé publishable du nouveau projet).
+6. Si c'est un nouveau projet : redéployer les Edge Functions (`supabase functions deploy generate-quiz`), remettre le secret `ANTHROPIC_API_KEY` si besoin, et mettre à jour `SB_URL` / `SB_KEY` dans `js/app/01-core.js` (clé publishable du nouveau projet).
 7. Restaurer un seul quiz perdu : ouvrir `tipoki-<date>-quizzes.json`, retrouver l'objet par `id` et le réinsérer dans `public.quizzes` (SQL editor).
 
 ## Tester la sauvegarde

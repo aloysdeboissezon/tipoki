@@ -1,5 +1,5 @@
 // ---------- accessibility layer: screen reader announcements, labelled answers, A-D keys ----------
-// wraps the render functions of app.js, so the game code itself stays untouched
+// wraps the render functions of js/app/*.js, so the game code itself stays untouched
 (function(){
   const live=document.createElement("div");live.className="sr-only";live.id="srLive";live.setAttribute("role","status");live.setAttribute("aria-live","polite");document.body.appendChild(live);
   function say(t){live.textContent="";setTimeout(()=>{live.textContent=t},60)}

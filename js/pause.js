@@ -1,5 +1,5 @@
 // ---------- pause and pick up later, in every solo mode ----------
-// quiz / missed / weak points / challenge: "Pause" saves the game (tpk-resume, see app.js) and goes back to the quiz page, where the resume card waits
+// quiz / missed / weak points / challenge: "Pause" saves the game (tpk-resume, see js/app/*.js) and goes back to the quiz page, where the resume card waits
 // flashcards: the round is kept in tpk-cardrun (device only) and offered on the flashcards panel
 // exam: pausing keeps tpk-examrun (see examresume.js); the exam clock keeps running in real time
 (function(){
