@@ -631,6 +631,8 @@ var FR={
 "XP: +10 for a right answer, +2 for a wrong one, +3 for a flashcard you know. Every Monday the top players move up a league.":"XP : +10 par bonne réponse, +2 par mauvaise, +3 par carte connue. Chaque lundi, les meilleurs montent d'une ligue.",
 "Add a nickname on the home page so friends see your name.":"Ajoute un pseudo sur l'accueil pour que tes amis voient ton nom.",
 "← Home":"← Accueil",
+// site links (footer)
+"About":"À propos","Contact":"Contact","Privacy policy":"Politique de confidentialité","Terms of use":"Conditions d'utilisation","Legal notice":"Mentions légales","About qwebbo":"À propos de qwebbo",
 "Options":"Options",
 "On":"Activé",
 "Off":"Désactivé",

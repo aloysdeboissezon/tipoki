@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>About · qwebbo</title>
+<meta name="description" content="qwebbo turns your course notes into quizzes you can play solo or with friends.">
+<meta name="theme-color" content="#4B2FE0">
+<meta name="color-scheme" content="light dark">
+<script>
+// same theme and language choices as the app (saved on this device); pages.js switches the language blocks
+(function(){var d=document.documentElement,m=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)"),s=null,l=null;try{s=localStorage.getItem("tpk-theme");l=localStorage.getItem("tpk-lang")}catch(e){}
+  d.setAttribute("data-theme",s==="dark"||s==="light"?s:(m&&m.matches?"dark":"light"));
+  if(l!=="fr"&&l!=="es"&&l!=="en"){var n=(navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language||""]);l="en";for(var i=0;i<n.length;i++){var c=String(n[i]).slice(0,2).toLowerCase();if(c==="fr"||c==="es"||c==="en"){l=c;break}}}
+  d.setAttribute("data-l",l);d.lang=l})();
+</script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Nunito:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="css/pages.css?v=20261103a">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="./"><img class="logo-l" src="img/logo.svg" alt="qwebbo" width="528" height="116"><img class="logo-d" src="img/logo-dark.svg" alt="qwebbo" width="528" height="116"></a>
+    <div class="langs" role="group" aria-label="Language"><button type="button" data-set="en">EN</button><button type="button" data-set="fr">FR</button><button type="button" data-set="es">ES</button></div>
+  </header>
+  <main class="panel doc" id="main" data-page="about">
+<div class="lang" lang="en"><h1>Learn, compete, <span>master.</span></h1><p class="lead">qwebbo turns revision into a game. Pick a quiz, play solo or against your friends, and come back to the questions you missed until they stick.</p>
+<h2>What you can do</h2><ul><li>Play quizzes solo, in an exam-style mode, or live with friends using a short game code.</li><li>Replay the questions you got wrong, flag the tricky ones, and use flashcards and study sheets.</li><li>Turn your own notes (a PDF or pasted text) into a new quiz.</li><li>Climb the weekly leagues and challenge a friend with a link.</li><li>Install it on your phone and revise offline.</li></ul>
+<h2>Why it exists</h2><p>qwebbo started as a way to revise sociology exams with classmates: rereading notes does not work, replaying them as a game does. It is now an independent project built by Aloys de Boissezon, available in English, French and Spanish.</p>
+<h2>Get in touch</h2><p>Questions, feedback, a wrong answer to report, or interest in using qwebbo for your school? Write to <a href="mailto:contact@qwebbo.com">contact@qwebbo.com</a> or see the <a href="contact.html">contact page</a>.</p></div>
+<div class="lang" lang="fr"><h1>Apprends, défie, <span>maîtrise.</span></h1><p class="lead">qwebbo transforme les révisions en jeu. Choisis un quiz, joue seul ou contre tes amis, et reviens sur les questions ratées jusqu'à ce qu'elles restent.</p>
+<h2>Ce que tu peux faire</h2><ul><li>Jouer aux quiz en solo, en mode examen, ou en direct avec des amis grâce à un court code de partie.</li><li>Rejouer les questions ratées, marquer les plus piégeuses, utiliser les flashcards et les fiches de révision.</li><li>Transformer tes propres cours (un PDF ou du texte collé) en nouveau quiz.</li><li>Grimper dans les ligues hebdomadaires et défier un ami avec un lien.</li><li>L'installer sur ton téléphone et réviser hors ligne.</li></ul>
+<h2>Pourquoi ce site</h2><p>qwebbo est né pour réviser des examens de sociologie avec des camarades : relire ses cours ne marche pas, les rejouer comme un jeu, si. C'est aujourd'hui un projet indépendant créé par Aloys de Boissezon, disponible en français, anglais et espagnol.</p>
+<h2>Nous contacter</h2><p>Une question, un retour, une réponse fausse à signaler, ou l'envie d'utiliser qwebbo dans votre école ? Écris à <a href="mailto:contact@qwebbo.com">contact@qwebbo.com</a> ou va sur la <a href="contact.html">page contact</a>.</p></div>
+<div class="lang" lang="es"><h1>Aprende, compite, <span>domina.</span></h1><p class="lead">qwebbo convierte el repaso en un juego. Elige un cuestionario, juega solo o contra tus amigos y vuelve a las preguntas falladas hasta que se te queden.</p>
+<h2>Qué puedes hacer</h2><ul><li>Jugar cuestionarios en solitario, en modo examen o en directo con amigos con un código de partida corto.</li><li>Repetir las preguntas falladas, marcar las más difíciles y usar tarjetas de estudio y fichas.</li><li>Convertir tus propios apuntes (un PDF o texto pegado) en un cuestionario nuevo.</li><li>Subir en las ligas semanales y retar a un amigo con un enlace.</li><li>Instalarlo en el móvil y repasar sin conexión.</li></ul>
+<h2>Por qué existe</h2><p>qwebbo nació para repasar exámenes de sociología con compañeros: releer los apuntes no funciona, jugarlos sí. Hoy es un proyecto independiente creado por Aloys de Boissezon, disponible en español, francés e inglés.</p>
+<h2>Contacto</h2><p>¿Preguntas, comentarios, una respuesta incorrecta que avisar o interés en usar qwebbo en tu escuela? Escribe a <a href="mailto:contact@qwebbo.com">contact@qwebbo.com</a> o visita la <a href="contact.html">página de contacto</a>.</p></div>
+  </main>
+  <nav class="pnav" aria-label="qwebbo"><a href="about.html" aria-current="page"><span lang="en" class="lang">About</span><span lang="fr" class="lang">À propos</span><span lang="es" class="lang">Acerca de</span></a><a href="contact.html"><span lang="en" class="lang">Contact</span><span lang="fr" class="lang">Contact</span><span lang="es" class="lang">Contacto</span></a><a href="privacy.html"><span lang="en" class="lang">Privacy policy</span><span lang="fr" class="lang">Politique de confidentialité</span><span lang="es" class="lang">Política de privacidad</span></a><a href="terms.html"><span lang="en" class="lang">Terms of use</span><span lang="fr" class="lang">Conditions d'utilisation</span><span lang="es" class="lang">Condiciones de uso</span></a><a href="legal.html"><span lang="en" class="lang">Legal notice</span><span lang="fr" class="lang">Mentions légales</span><span lang="es" class="lang">Aviso legal</span></a><a href="./" class="home"><span class="lang" lang="en">Back to qwebbo</span><span class="lang" lang="fr">Retour à qwebbo</span><span class="lang" lang="es">Volver a qwebbo</span></a></nav>
+</div>
+<script>window.PAGE_TITLES={"en":"About · qwebbo","fr":"À propos · qwebbo","es":"Acerca de · qwebbo"};window.PAGE_DESC={"en":"qwebbo turns your course notes into quizzes you can play solo or with friends.","fr":"qwebbo transforme tes cours en quiz à jouer seul ou entre amis.","es":"qwebbo convierte tus apuntes en cuestionarios para jugar solo o con amigos."};</script>
+<script defer src="js/pages.js?v=20261103a"></script>
+</body>
+</html>
