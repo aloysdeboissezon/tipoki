@@ -32,7 +32,7 @@
     top.append(el("div","dc-tag",S.tag||tl("Study sheet")));
     const h=el("h1","dc-title");h.innerHTML=S.title;top.append(h);
     if(S.sub){const p=el("p","dc-sub");p.innerHTML=S.sub;top.append(p)}
-    top.append(el("div","dc-brand","Tipoki"));
+    top.append(el("div","dc-brand","Qwebbo"));
     const bot=el("div","dc-cbot");bot.append(el("div","dc-toch",lg.toc));
     const ol=el("ol","dc-toc");
     S.sections.forEach((s,i)=>{const li=el("li"),a=el("a");a.href="#dc-"+i;a.innerHTML="<b>"+String(i+1).padStart(2,"0")+"</b><span>"+s.title+"</span>";
@@ -51,7 +51,7 @@
       s.blocks.forEach(b=>{const e=block(b);if(e)sec.append(e)});
       body.append(sec);
     });
-    const ft=el("footer","dc-end");ft.innerHTML="<span>Tipoki</span> · "+lg.end;body.append(ft);
+    const ft=el("footer","dc-end");ft.innerHTML="<span>Qwebbo</span> · "+lg.end;body.append(ft);
     doc.append(body);return doc;
   }
 

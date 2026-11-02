@@ -17,10 +17,10 @@ var LOCALE=LANG==="fr"?"fr-FR":"en-US";
 
 var FR={
 // page
-"Tipoki · Study by challenging your friends":"Tipoki · Révise en défiant tes potes",
+"Qwebbo · Study by challenging your friends":"Qwebbo · Révise en défiant tes potes",
 // header
 "Back to home":"Retour à l'accueil",
-"Tipoki, back to home":"Tipoki, retour à l'accueil",
+"Qwebbo, back to home":"Qwebbo, retour à l'accueil",
 "Switch to dark mode":"Passer en mode sombre",
 "Text size":"Taille du texte","Text size {n}%":"Taille du texte {n} %","Skip to content":"Aller au contenu","Language":"Langue","Choose a file":"Choisir un fichier",
 "Switch to light mode":"Passer en mode clair",
@@ -60,7 +60,7 @@ var FR={
 "Exam planner":"Planning de révision",
 "Exam date":"Date de l'examen",
 "Clear":"Effacer",
-"Set the date of your exam and Tipoki tells you how many questions to do each day.":"Indique la date de ton examen et Tipoki te dit combien de questions faire chaque jour.",
+"Set the date of your exam and Qwebbo tells you how many questions to do each day.":"Indique la date de ton examen et Qwebbo te dit combien de questions faire chaque jour.",
 "This exam date has passed. Pick a new one or clear it.":"Cette date d'examen est passée. Choisis-en une autre ou efface-la.",
 "Exam today. Good luck!":"Examen aujourd'hui. Bon courage !",
 "Exam tomorrow":"Examen demain",
@@ -97,7 +97,7 @@ var FR={
 "Quiz not found":"Quiz introuvable",
 "Couldn't load this quiz, check your connection":"Impossible de charger ce quiz, vérifie ta connexion",
 // language switch
-"Send in your notes and Tipoki turns them into a quiz. Play solo or with your friends.":"Envoie ton cours, Tipoki en fait un quiz. Joue seul ou en multi avec tes potes.",
+"Send in your notes and Qwebbo turns them into a quiz. Play solo or with your friends.":"Envoie ton cours, Qwebbo en fait un quiz. Joue seul ou en multi avec tes potes.",
 "Podium":"Podium","Sessions":"Sessions","Question":"Question","Question {i} / {n}":"Question {i} / {n}","Pause":"Pause","question {n}":"question {n}","questions":"questions",
 "Switch to French":"Passer en français","Switch to English":"Switch to English",
 // quiz screen
@@ -464,7 +464,7 @@ var FR={
 "Right answers by chapter":"Bonnes réponses par chapitre",
 "Most missed questions":"Questions les plus ratées",
 "Anonymous: no names, photos, cookies or emails are kept, only which questions were answered right. Counts start the day this feature went live.":"Anonyme : ni nom, ni photo, ni cookie, ni e-mail ne sont conservés, seulement les questions réussies ou ratées. Les chiffres démarrent le jour de la mise en ligne de cette fonction.",
-"Tipoki: usage overview":"Tipoki : vue d'ensemble de l'usage",
+"Qwebbo: usage overview":"Qwebbo : vue d'ensemble de l'usage",
 "All quizzes together, anonymous.":"Tous les quiz ensemble, en anonyme.",
 "Games left unfinished":"Parties abandonnées",
 "Players who came back":"Joueurs revenus",
@@ -477,7 +477,7 @@ var FR={
 "Open this quiz's stats":"Ouvrir les stats de ce quiz",
 "Print / PDF":"Imprimer / PDF",
 "Anonymous usage stats":"Statistiques d'usage anonymes",
-"Counts finished and abandoned games without any name, cookie or email, to see how Tipoki is used.":"Compte les parties terminées et abandonnées sans nom, cookie ni e-mail, pour savoir comment Tipoki est utilisé.",
+"Counts finished and abandoned games without any name, cookie or email, to see how Qwebbo is used.":"Compte les parties terminées et abandonnées sans nom, cookie ni e-mail, pour savoir comment Qwebbo est utilisé.",
 "Refresh":"Actualiser",
 "Loading…":"Chargement…",
 "Can't reach the server, try again.":"Serveur injoignable, réessaie.",

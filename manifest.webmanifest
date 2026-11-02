@@ -1,7 +1,7 @@
 {
-  "name": "Tipoki",
-  "short_name": "Tipoki",
-  "description": "Send in your notes and Tipoki turns them into a quiz. Play solo or with your friends.",
+  "name": "Qwebbo",
+  "short_name": "Qwebbo",
+  "description": "Send in your notes and Qwebbo turns them into a quiz. Play solo or with your friends.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
