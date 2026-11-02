@@ -636,6 +636,7 @@ function onGame(g){
   if(g&&g.deck&&(!G||G.deck!==g.deck))preloadImgs(g.deck);
   const prevNext=G&&G.next;
   G=g;
+  if(typeof recordStart==="function")recordStart();
   if(g.next&&g.next!==code&&mode==="multi"&&!isHost()&&g.next!==prevNext){setTimeout(()=>joinGame(g.next),600);return}
   if(g.status==="q"&&g.qi!==local.qi){local.qi=g.qi;local.revealing=false;
     // arriving mid-question (late join or reload): the clock keeps running, so skip the intro and take off the time already gone (always leave 3 s)

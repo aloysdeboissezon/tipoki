@@ -564,3 +564,6 @@ body.noscroll{overflow:hidden}
 .expl-ex{margin:0;font-size:15px;color:var(--muted);line-height:1.45}
 .expl-xh{font-weight:800;color:var(--hl);text-transform:uppercase;letter-spacing:.06em;font-size:12px}
 .expl-link{align-self:flex-start;background:none;border:0;padding:4px 0;font:inherit;font-size:15px;font-weight:700;color:var(--hl);cursor:pointer;text-align:left;text-decoration:underline;text-underline-offset:3px}
+.st-qz{grid-template-columns:minmax(0,1.3fr) minmax(0,1.4fr) 48px}
+.st-qz a.nm{color:var(--hl);text-decoration:underline;text-underline-offset:3px}
+@media print{.top,#stRefresh,#stHome,#stPrint,.off-bar{display:none!important}body{background:#fff}}

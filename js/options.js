@@ -36,7 +36,9 @@ function build(){
   items.push(toggle(tl("Sound effects"),()=>soundOn,()=>{$("soundBtn").click()}));
   items.push(toggle(tl("Vibration"),hapticOn,()=>{set("tpk-haptic",hapticOn()?"off":"on");if(hapticOn()&&navigator.vibrate)navigator.vibrate(40)}));
   items.push(toggle(tl("Animations"),()=>!motionOff(),()=>{set("tpk-motion",motionOff()?"on":"off");applyMotion()}));
+  items.push(toggle(tl("Anonymous usage stats"),()=>get("tpk-nostats")!=="1",()=>{set("tpk-nostats",get("tpk-nostats")==="1"?"0":"1")}));
   items.forEach(i=>rows.appendChild(i.row));
+  const an=document.createElement("p");an.className="muted opt-note";an.textContent=tl("Counts finished and abandoned games without any name, cookie or email, to see how Tipoki is used.");rows.appendChild(an);
   // shortcuts to the settings that live elsewhere
   const sh=document.createElement("div");sh.className="opt-links";
   [["sizeBtn",tl("Text size")],["themeBtn",tl("Theme")],["langBtn",tl("Language")]].forEach(([id,t])=>{
