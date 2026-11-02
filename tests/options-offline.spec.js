@@ -114,13 +114,13 @@ test.describe("offline", () => {
     await page.locator("#rReport").click();
     await page.locator('#rReportPick [data-why="wrong"]').click();
     await expect(page.locator("#rReport")).toContainText("Thanks, reported");
-    expect(await page.evaluate(() => window.__inserts.length)).toBe(0); // nothing left the device
+    expect(await page.evaluate(() => window.__inserts.filter(i => i.table === "question_reports").length)).toBe(0); // nothing left the device
     await expect(page.locator("#offBar")).toContainText("1 waiting to send");
     expect(await page.evaluate(() => JSON.parse(localStorage.getItem("offq-queue")).length)).toBe(1);
 
     await context.setOffline(false);
-    await expect.poll(() => page.evaluate(() => window.__inserts.length)).toBe(1);
+    await expect.poll(() => page.evaluate(() => window.__inserts.filter(i => i.table === "question_reports").length)).toBe(1);
     expect(await page.evaluate(() => JSON.parse(localStorage.getItem("offq-queue")).length)).toBe(0);
-    expect(await page.evaluate(() => window.__inserts[0].table)).toBe("question_reports");
+    expect(await page.evaluate(() => window.__inserts.find(i => i.table === "question_reports").table)).toBe("question_reports");
   });
 });

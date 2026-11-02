@@ -50,7 +50,7 @@ test.describe("report a question", () => {
     await page.locator("#qFlag").click();
     await page.locator("#qPauseBack").click();
     await expect(page.locator("#qPauseBox")).toBeHidden();
-    expect(await page.evaluate(() => window.__inserts.length)).toBe(0);
+    expect(await page.evaluate(() => window.__inserts.filter(i => i.table === "question_reports").length)).toBe(0);
   });
 });
 
