@@ -474,6 +474,9 @@ body.qpaused #qTiles,body.qpaused #qType{opacity:.35;pointer-events:none}
 /* offline mode: a thin bar while there's no network */
 .off-bar{position:fixed;left:0;right:0;bottom:0;z-index:60;padding:8px 14px calc(8px + env(safe-area-inset-bottom));background:#17162B;color:#fff;font:600 13px/1.3 Nunito,system-ui,sans-serif;text-align:center}
 .off-bar[hidden]{display:none}
+body.is-offline{padding-bottom:var(--offbar-h,0px)}
+/* the pinned action bars (Play solo, Exam, Cards...) sit above the offline banner instead of under it */
+body.is-offline .panel .actions,body.is-offline #examPanel .actions,body.is-offline #cardsPanel .actions,body.is-offline #topic[data-mode=play] #createPanel .actions{bottom:var(--offbar-h,0px)!important}
 html[data-theme="dark"] .off-bar{background:#2B2A45}
 /* pause button on solo question / answer screens, resume bar on flashcards */
 .pausebtn{min-height:34px;padding:4px 12px;font-size:14px;flex:none}

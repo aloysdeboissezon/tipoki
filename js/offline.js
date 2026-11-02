@@ -15,7 +15,10 @@ const bar=document.createElement("div");bar.className="off-bar";bar.id="offBar";
 function paint(){
   const n=queue().length;
   bar.textContent=tl("You're offline. You can still revise; your progress syncs when you're back.")+(n?" · "+tl("{n} waiting to send",{n}):"");
-  bar.hidden=navigator.onLine;document.body.classList.toggle("is-offline",!navigator.onLine)}
+  bar.hidden=navigator.onLine;document.body.classList.toggle("is-offline",!navigator.onLine);pad()}
+// keep the page content (and its last buttons, e.g. "Play solo") clear of the fixed banner
+function pad(){document.documentElement.style.setProperty("--offbar-h",bar.hidden?"0px":bar.offsetHeight+"px")}
+addEventListener("resize",pad);
 document.body.appendChild(bar);
 
 // ----- queue of writes -----

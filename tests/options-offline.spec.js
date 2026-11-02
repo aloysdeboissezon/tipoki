@@ -88,8 +88,7 @@ test.describe("offline", () => {
     await expect(page.locator("#offBar")).toBeVisible();
   });
 
-  // Known problem found while writing the tests: on a phone the offline banner covers the "Play solo" button.
-  test.fixme("the offline banner does not cover the 'Play solo' button", async ({ page, context }) => {
+  test("the offline banner does not cover the 'Play solo' button", async ({ page, context }) => {
     await openSite(page);
     await openQuiz(page, "socio");
     await page.locator("#playTab").click();
