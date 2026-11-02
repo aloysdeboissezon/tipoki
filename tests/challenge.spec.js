@@ -5,6 +5,7 @@ test.use({ permissions: ["clipboard-read", "clipboard-write"] });
 
 test.describe("challenge a friend by link", () => {
   test("the sender gets a link, the friend plays the same questions and sees both scores", async ({ page, context }) => {
+    test.setTimeout(120_000); // two full rounds of 5 questions: ~30 s alone, more when other tests run in parallel
     await page.addInitScript(() => { Object.defineProperty(navigator, "share", { value: undefined }); }); // force "copy the link"
     await openSite(page, { storage: { "socio-nick": "Alice" } });
     await openQuiz(page, "socio");

@@ -54,6 +54,11 @@ test.describe("solo quiz", () => {
   });
 
   test("a hint hides two wrong answers and costs points", async ({ page }) => {
+    // fixed random numbers: the same questions, the same shuffles and the same hidden tiles on every run
+    await page.addInitScript(() => {
+      let s = 12345;
+      Math.random = () => ((s = (s * 1664525 + 1013904223) % 4294967296) / 4294967296);
+    });
     await openSite(page);
     await openQuiz(page, "culture");
     await page.locator("#playTab").click();
@@ -62,8 +67,11 @@ test.describe("solo quiz", () => {
     await page.locator("#soloBtn").click();
 
     await expect(page.locator("#qTiles .tile")).toHaveCount(4);
+    await expect(page.locator("#qIntro")).toBeHidden(); // the "Question 1" splash must be gone before tapping
     await expect(page.locator("#qHintRow")).toBeVisible();
+    const right = await page.evaluate(() => correctPos(G.qi));
     await page.locator("#qHint2").click();
+    await expect(page.locator(`#qTiles .tile[data-k="${right}"]`)).toBeVisible();
     await expect(page.locator("#qTiles .tile:not([hidden])")).toHaveCount(2);
     await expect(page.locator("#qHintRow")).toBeHidden(); // one hint per question
 
