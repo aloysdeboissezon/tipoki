@@ -1,6 +1,6 @@
 // Home presentation video: poster first, the mp4 is loaded only when the visitor presses play (sound allowed, they asked for it).
 (function(){
-  var fr=document.documentElement.lang==="fr",L=fr?"fr":"en";
+  var dl=document.documentElement.lang,L=dl==="fr"||dl==="es"?dl:"en";
   var btn=document.getElementById("tourBtn"),box=document.getElementById("tour");
   if(!btn||!box)return;
   document.getElementById("tourPoster").src="video/qwebbo-intro-"+L+"-poster.jpg";
