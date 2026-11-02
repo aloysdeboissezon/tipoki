@@ -202,7 +202,7 @@ addEventListener("resize",()=>{if(!$("topic").hidden)fitPreviews()});
 function cut(s,n){s=plainText(s);if(s.length<=n)return s;s=s.slice(0,n);return s.replace(/\s+\S*$/,"")+"…"}
 function renderBankUI(){
   $("bankTitle").textContent=BANK.title;
-  $("bankIco").textContent=(BANK.title||"?").trim().charAt(0).toUpperCase();$("bankIco").style.background="hsl("+hue(BANK.id||BANK.title||"")+" 90% 80%)";
+  $("bankIco").innerHTML=quizIcon(BANK);
   $("bankSub").textContent=BANK.subject||"";
   try{$("qCount").textContent=(Q.length+TQ.length).toLocaleString(LOCALE)}catch(e){}
   const w=BANK.ticker||(BANK.facts||[]).map(f=>f[3]).filter(t=>t&&t.length<=28);
