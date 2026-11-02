@@ -182,7 +182,7 @@ m(5,"Conductivité","La conductivité d'un semi-conducteur est…","Intermédiai
 m(5,"Longueur d'onde","Un gap d'environ 1 eV correspond à une radiation de longueur d'onde d'environ…","1 200 nm",["400 nm","6 000 nm","120 nm"],"D'après le spectre d'absorption : 1 eV ↔ λ ≈ 1 200 nm. Les semi-conducteurs absorbent les λ < 1 200 nm.");
 m(5,"Longueur d'onde","La plupart des semi-conducteurs absorbent les radiations de longueur d'onde…","Inférieure à 1 200 nm",["Supérieure à 1 200 nm","Uniquement égale à 1 200 nm","Supérieure à 6 000 nm"],"λ < 1 200 nm suffit pour passer le gap et faire circuler les électrons.");
 m(5,"Silicium","Le silicium peut absorber les longueurs d'onde…","Inférieures à 1 100 nm (visible et proche infrarouge)",["Supérieures à 1 100 nm","Uniquement l'ultraviolet","Uniquement les ondes radio"],"Toutes les λ < 1 100 nm (visible et proche IR) font passer les électrons du silicium dans la bande de conduction.");
-m(5,"Pourquoi le silicium","Pourquoi utilise-t-on le silicium plutôt que le germanium pour les panneaux solaires ?","Il est 4 fois moins cher et très abondant sur Terre",["Il absorbe beaucoup plus de longueurs d'onde que le germanium","Il est conducteur comme le cuivre","Il n'a pas de bande interdite"],"Les deux absorbent les λ < 1 100 nm. Arguments : le prix (4 fois moins cher) et l'abondance (2e élément le plus abondant de la croûte terrestre). En plus, le germanium est plus sensible à haute température.");
+m(5,"Pourquoi le silicium","Pourquoi utilise-t-on le silicium plutôt que le germanium pour les panneaux solaires ?","Il est 4 fois moins cher et très abondant sur Terre",["Il est radioactif, ce qui rend la cellule plus efficace","Il est conducteur comme le cuivre","Il n'a pas de bande interdite"],"D'après le cours, les deux absorbent les λ < 1 100 nm. Arguments : le prix (4 fois moins cher) et l'abondance (2e élément le plus abondant de la croûte terrestre). En plus, le germanium est plus sensible à haute température.");
 m(5,"Silicium","Le silicium est le ___ élément chimique le plus abondant de la croûte terrestre.","2e",["1er","10e","50e"],"Le silicium est le deuxième élément le plus abondant dans la croûte terrestre.");
 m(5,"Prix","Combien le silicium coûte-t-il par rapport au germanium ?","4 fois moins cher",["4 fois plus cher","2 fois moins cher","Le même prix"],"Silicium : environ 4 fois moins cher que le germanium.");
 m(5,"Germanium","Quel défaut du germanium est cité, en plus du prix ?","Il est plus sensible à haute température",["Il n'absorbe aucune lumière","Il est radioactif","Il est conducteur"],"Le germanium est plus sensible à haute température (gênant au soleil).");
@@ -248,9 +248,9 @@ vf(6,"La caractéristique d'un dipôle est la relation entre sa tension U et l'i
 ty(6,"Unité de l'éclairement ?",["W/m²","W·m⁻²","W/m2","watt par mètre carré","W m-2","Wm-2","watts par mètre carré"],"L'éclairement E s'exprime en W·m⁻².");
 ty(6,"Unité d'une résistance ?",["ohm","Ω","ohms"],"La résistance s'exprime en ohm (Ω).");
 ty(6,"Umax = 30 V, Imax = 8 A. Pmax en W ?",["240","240 W"],"Pmax = 30 × 8 = 240 W.");
-ty(6,"Umax = 0,5 V, Imax = 3 A. Pmax en W ?",["1,5","1,5 W","1.5"],"Pmax = 0,5 × 3 = 1,5 W.");
+ty(6,"Umax = 0,5 V, Imax = 3 A. Pmax en mW ?",["1500","1 500","1500 mW","1 500 mW"],"Pmax = 0,5 × 3 = 1,5 W = 1 500 mW.");
 ty(6,"Umax = 36 V, Imax = 9 A. Rmax en Ω ?",["4","4 Ω","4 ohms"],"Rmax = 36 / 9 = 4 Ω.");
-ty(6,"Umax = 30 V, Imax = 8 A. Rmax en Ω ?",["3,75","3,75 Ω","3.75"],"Rmax = 30 / 8 = 3,75 Ω.");
+ty(6,"Umax = 24 V, Imax = 8 A. Rmax en Ω ?",["3","3 Ω","3 ohms"],"Rmax = 24 / 8 = 3 Ω.");
 ty(6,"E = 1 000 W·m⁻², S = 1,6 m². Pf en W ?",["1600","1 600","1600 W","1 600 W"],"Pf = E × S = 1 000 × 1,6 = 1 600 W.");
 ty(6,"E = 1 000 W·m⁻², S = 100 cm². Pf en W ?",["10","10 W"],"100 cm² = 0,01 m² ; Pf = 1 000 × 0,01 = 10 W.");
 ty(6,"Combien font 100 cm² en m² ?",["0,01","0,01 m²","0.01"],"100 / 10 000 = 0,01 m².");
@@ -264,7 +264,7 @@ const lv=(d,f,...a)=>{f(...a);const L=f===ty?TQ:Q;L[L.length-1].d=d};
 // ---- 1. Induction
 lv(2,m,1,"Centrale hydraulique","Quelle est la chaîne de conversion d'énergie dans une centrale hydraulique ?","Énergie de l'eau qui s'écoule → énergie mécanique (turbine) → énergie électrique (alternateur)",["Énergie lumineuse → énergie électrique (cellules photovoltaïques)","Énergie thermique de la vapeur → énergie chimique → énergie électrique","Énergie électrique → énergie mécanique → énergie de l'eau"],"L'eau en mouvement fait tourner une turbine reliée à l'axe de l'alternateur, qui produit l'électricité par induction.");
 lv(2,m,1,"Éolienne","Dans une éolienne, quelle est la chaîne de conversion d'énergie ?","Énergie du vent → énergie mécanique (turbine, rotor) → énergie électrique (alternateur)",["Énergie lumineuse → énergie thermique → énergie électrique","Énergie électrique → énergie mécanique → énergie du vent","Énergie chimique → énergie du vent → énergie électrique"],"Le vent fait tourner la turbine, qui entraîne l'aimant de l'alternateur : c'est de l'induction électromagnétique.");
-lv(3,m,1,"Sens du courant","Un aimant est approché du pôle Nord devant une bobine, puis on l'éloigne. Que dire du courant induit ?","Il change de sens entre l'approche et l'éloignement",["Il garde le même sens, seule son intensité change","Il s'annule dès que l'aimant touche la bobine","Il ne dépend que de la longueur du fil de la bobine"],"Le sens du courant dépend du pôle présenté ET du sens de déplacement : approche puis éloignement donnent deux sens opposés.");
+lv(3,m,1,"Sens du courant","On approche le pôle Nord d'un aimant d'une bobine, puis on l'éloigne. Que dire du courant induit ?","Il change de sens entre l'approche et l'éloignement",["Il garde le même sens, seule son intensité change","Il s'annule dès que l'aimant touche la bobine","Il ne dépend que de la longueur du fil de la bobine"],"Le sens du courant dépend du pôle présenté ET du sens de déplacement : approche puis éloignement donnent deux sens opposés.");
 lv(3,m,1,"Condition","Dans quelle situation n'obtient-on PAS de courant induit dans une bobine ?","L'aimant et la bobine sont immobiles l'un par rapport à l'autre",["L'aimant s'approche de la bobine","L'aimant s'éloigne de la bobine","La bobine se déplace devant l'aimant fixe"],"L'induction demande un mouvement relatif entre le conducteur et le champ magnétique : sans mouvement relatif, pas de courant induit.");
 lv(1,vf,1,"Faraday a découvert l'induction électromagnétique en 1831.",true,"Faraday (1831), puis Maxwell la théorise en 1865.");
 lv(2,vf,1,"Il suffit de poser un aimant immobile contre une bobine pour y induire un courant.",false,"Il faut un mouvement relatif entre l'aimant et la bobine.");
@@ -336,7 +336,7 @@ lv(3,ty,6,"Pmax = 270 W, S = 1,5 m², E = 1 000 W·m⁻². Rendement en % ?",["1
 lv(1,ty,6,"Combien font 250 cm² en m² ?",["0,025","0.025"],"1 m² = 10 000 cm², donc 250 cm² = 0,025 m².");
 lv(2,ty,6,"E = 500 W·m⁻², S = 2 m². Puissance lumineuse en W ?",["1000","1 000","1000 W"],"Pf = 500 × 2 = 1 000 W.");
 lv(3,ty,6,"r = 18 %, Pf = 1 000 W. Puissance dissipée en W ?",["820","820 W"],"Pu = 180 W ; Pdissipée = 1 000 − 180 = 820 W.");
-lv(1,ty,6,"1 kWh vaut combien de MJ ?",["3,6","3.6","3,6 MJ"],"1 kWh = 1 000 W × 3 600 s = 3,6 MJ.");
+lv(1,ty,6,"1 kWh vaut combien de kJ ?",["3600","3 600","3600 kJ","3 600 kJ"],"1 kWh = 1 000 W × 3 600 s = 3 600 kJ = 3,6 MJ.");
 
 const FACTS=[
 [2,"mots","c","Alternateur","Convertit l'énergie mécanique en énergie électrique grâce à l'induction ; constitué d'un stator et d'un rotor"],
@@ -347,12 +347,12 @@ const FACTS=[
 [2,"mots","c","Rotor","Partie mobile d'un alternateur (aimant multipôles qui tourne)"],
 [4,"mots","c","Semi-conducteur","Matériau isolant qui conduit le courant sous l'effet d'une excitation extérieure suffisamment importante","semi conducteur;semiconducteur"],
 [2,"mots","c","Stator","Partie statique d'un alternateur (enroulements fixes)"],
-[5,"mots","c","Bande de valence","Dernière bande d'énergie complètement remplie d'électrons","valence"],
-[5,"mots","c","Bande de conduction","Bande d'énergie non remplie, située au-dessus de la bande de valence","conduction"],
-[5,"mots","c","Bande interdite","Zone entre bande de valence et bande de conduction qui fixe les propriétés électriques ; aussi appelée gap","gap"],
+[5,"mots","c","Bande de valence","Dernière bande d'énergie complètement remplie d'électrons"],
+[5,"mots","c","Bande de conduction","Bande d'énergie non remplie, située au-dessus de la bande de valence"],
+[5,"mots","c","Bande interdite","Zone entre bande de valence et bande de conduction qui fixe les propriétés électriques du matériau","gap"],
 [5,"mots","c","Dopage","Introduction d'atomes d'un autre élément chimique dans un semi-conducteur pour augmenter le nombre d'électrons libres","doper"],
 [5,"mots","c","Électrons de valence","Électrons des couches externes qui permettent aux atomes de se lier entre eux"],
-[5,"mots","c","Électrons libres","Électrons de conduction, responsables de la circulation du courant électrique","électrons de conduction"],
+[5,"mots","c","Électrons libres","Électrons responsables de la circulation du courant électrique dans un matériau","électrons de conduction"],
 [6,"mots","c","Caractéristique d'un dipôle","Courbe U = f(I) ou I = g(U) reliant la tension aux bornes et l'intensité qui le traverse","caractéristique"],
 [6,"mots","c","Éclairement","Puissance lumineuse reçue par mètre carré, en W·m⁻²"],
 [1,"mots","p","Michael Faraday","Découvre l'induction électromagnétique en 1831","Faraday"],

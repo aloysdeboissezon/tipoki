@@ -182,7 +182,7 @@ const TQ = [
 {s:5,q:"Bias: her success is credited to luck, his to talent.",a:["attribution bias","attribution"],e:"Others: likeability, performance, parenting, affinity."},
 {s:5,q:"Bias: taking time off means less commitment.",a:["parenting bias","parenting","motherhood bias"],e:"One of the five gender biases."},
 {s:5,q:"Online sites and forums promoting misogyny and anti-feminism?",a:["manosphere","the manosphere"],e:"Term coined around 2009."},
-{s:5,q:"What % of the population is intersex (figure from class)?",a:["1.7","1,7"],e:"About as common as red hair."},
+{s:5,q:"How many people out of 1,000 are intersex (figure from class)?",a:["17"],e:"About 1.7%, so roughly 17 in 1,000: as common as red hair."},
 {s:6,q:"Who wrote 'Essay on the Inequality of the Human Races'?",a:["Gobineau","Arthur de Gobineau","de Gobineau"],e:"Main source of 'Aryan' superiority myths."},
 {s:6,q:"Who argued the social contract is a 'Racial Contract'?",a:["Charles Mills","Charles W. Mills"],n:["C. Wright Mills","Wright Mills"],e:"Not C. Wright Mills from session 1!"},
 {s:6,q:"Who created the F scale of the authoritarian personality?",a:["Adorno","Theodor Adorno"],e:"Rigid conventional values, submission to authority, aggression to non-conformists."},
