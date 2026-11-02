@@ -17,12 +17,14 @@
       '<path d="M24 3 42 12v14c0 9-7 15-18 19C13 41 6 35 6 26V12z" fill="url(#'+id+')" stroke="'+c[1]+'" stroke-width="2" stroke-linejoin="round"/><path d="M24 11l10 5v9c0 5-4 9-10 11-6-2-10-6-10-11v-9z" fill="rgba(255,255,255,.28)"/><text x="24" y="29" text-anchor="middle" font-size="15" font-weight="800" fill="#fff" stroke="'+c[1]+'" stroke-width=".6" font-family="inherit">'+(i+1)+'</text></svg>';
   }
   function addXp(n){if(n<=0)return;lsSet(QUEUE,String(pend()+Math.round(n)));lid(true);clearTimeout(timer);timer=setTimeout(()=>sync(),15000);renderChip()}
+  let ctOk=true;
   async function sync(open){
     if(!sb||busy)return LG;
     const id=lid(!!open);if(!id)return LG;
     busy=true;const send=Math.min(pend(),600);
     try{
-      const {data,error}=await sb.rpc("tpk_league_sync",{p_pid:id,p_nick:($("nick").value.trim()||"").slice(0,18),p_xp:send});
+      const {data,error}=await sb.rpc("tpk_league_sync",{p_pid:id,p_nick:($("nick").value.trim()||"").slice(0,18),p_xp:send,...(ctOk&&myCountry()?{p_country:myCountry()}:{})});
+      if(error&&ctOk&&myCountry()){ctOk=false;busy=false;return sync(open)}   // league SQL without country not updated yet: retry without
       if(error)throw error;
       LG=data;lsSet(QUEUE,String(Math.max(0,pend()-send)));
       if(pend()>0){clearTimeout(timer);timer=setTimeout(()=>sync(),2000)}
@@ -71,7 +73,7 @@
       const zone=i<LG.up&&lg<6?" upz":(LG.down&&i>=LG.n-LG.down?" dnz":"");
       const row=el("div","lg-row"+(r.me?" me":"")+zone);
       const av=el("div","av",(r.nick||"?").charAt(0).toUpperCase());av.style.backgroundColor="hsl("+hue(r.nick)+" 55% 42%)";
-      row.append(el("span","lg-rk",String(i+1)),av,el("span","lg-nm",r.me?tl("You"):r.nick),el("span","lg-xp",r.xp+" XP"));
+      row.append(el("span","lg-rk",String(i+1)),av,el("span","lg-nm",((f=>f?f+"\u00a0":"")(window.tpkCountry?tpkCountry.flag(r.country||(r.me?myCountry():"")):""))+(r.me?tl("You"):r.nick)),el("span","lg-xp",r.xp+" XP"));
       box.appendChild(row)});
     if(!rows.length)box.appendChild(emptyState("M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3",tl("No one on the board yet"),tl("Nobody has earned XP in this league yet this week. Be the first!")));
     root.appendChild(box);

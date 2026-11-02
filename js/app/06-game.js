@@ -96,7 +96,7 @@ function renderAnswered(ids,done){
   const was=new Set(box.dataset.q===String(G.qi)?(box.dataset.done||"").split(","):[]);
   box.dataset.k=key;box.dataset.q=String(G.qi);box.dataset.done=order.filter(id=>at(id)!=null).join(",");box.textContent="";
   order.forEach(id=>{const ok=at(id)!=null,c=el("div","ach"+(ok?" done":"")+(ok&&!was.has(id)?" pop":"")+(id===me?" me":""));
-    c.append(avatar(id,nameOf(id)),el("span","nm",id===me?tl("You"):nameOf(id)));if(ok)c.appendChild(el("span","ck","✓"));
+    c.append(avatar(id,nameOf(id)),el("span","nm",id===me?tl("You"):dispName(id)));if(ok)c.appendChild(el("span","ck","✓"));
     c.title=tl(ok?"{name} has answered":"{name} is thinking…",{name:nameOf(id)});box.appendChild(c)});
 }
 function timeLeft(){return qT(G.qi)-((local.qPause||performance.now())-local.shownAt)}
@@ -146,7 +146,7 @@ function renderReveal(){
   const box=$("rTiles");box.textContent="";box.hidden=typed;$("rTyped").hidden=!typed;
   if(typed){$("rGood").textContent=q.a[0];const al=$("rAns");al.textContent="";
     Object.keys(P).forEach(id=>{const x=P[id].ans&&P[id].ans[G.qi];const r=el("div");
-      r.append(avatar(id,nameOf(id)),el("span","nm",nameOf(id)+(LANG==="fr"?"\u00a0:":":")),el("span","txt",x?x.txt:"—"),el("span",x&&x.ok?"okm":"bdm",x&&x.ok?"✓":"✗"));al.appendChild(r)})}
+      r.append(avatar(id,nameOf(id)),el("span","nm",dispName(id)+(LANG==="fr"?"\u00a0:":":")),el("span","txt",x?x.txt:"—"),el("span",x&&x.ok?"okm":"bdm",x&&x.ok?"✓":"✗"));al.appendChild(r)})}
   const counts=[0,0,0,0];if(!typed)Object.values(P).forEach(p=>{const x=p.ans&&p.ans[G.qi];if(x&&x.c!=null)counts[x.c]++});
   if(!typed)item.o.forEach((oi,k)=>{const b=el("button","tile t"+k);b.disabled=true;
     b.append(el("span","k",LETTERS[k]),el("span",null,q.o[oi]));
@@ -171,7 +171,7 @@ function renderBoard(box,rows,gains){
   box.textContent="";
   rows.forEach((r,i)=>{const d=el("div","brow"+(r.id===me?" me":""));
     const mv=r.mv?el("span","mv "+(r.mv>0?"up":"dn"),(r.mv>0?"▲":"▼")+Math.abs(r.mv)):null;if(mv)mv.setAttribute("aria-label",tl(r.mv>0?"Up {n}":"Down {n}",{n:Math.abs(r.mv)}));
-    d.append(el("span","rk",(r.rk||i+1)+"."),avatar(r.id,nameOf(r.id)),(()=>{const n=el("span","nm",nameOf(r.id)+(r.id===me?" ("+tl("you")+")":""));if(mv)n.append(" ",mv);return n})(),
+    d.append(el("span","rk",(r.rk||i+1)+"."),avatar(r.id,nameOf(r.id)),(()=>{const n=el("span","nm",dispName(r.id)+(r.id===me?" ("+tl("you")+")":""));if(mv)n.append(" ",mv);return n})(),
       el("span","gain",gains&&r.gain?"+"+r.gain:""),el("span","pts",r.t+" pts"));box.appendChild(d);if(gains&&r.gain)countUp(d.lastChild,r.t-r.gain,r.t)});
 }
 $("rNext").onclick=()=>{if(!isHost()||local.autoFired)return;local.autoFired=true;goNext()};

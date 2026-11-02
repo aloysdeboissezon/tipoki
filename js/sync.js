@@ -58,7 +58,7 @@ function same(a,b){const ka=Object.keys(a),kb=Object.keys(b);return ka.length===
 function refreshApp(){const t=f=>{try{f()}catch(e){}};
   t(()=>{if(document.activeElement!==$("nick"))$("nick").value=get("socio-nick")||""});
   t(()=>{const a=get("tpk-avatar");if(a)avs[me]=a;else delete avs[me]});
-  t(renderMe);t(renderMissBtn);t(renderCardsPanel);t(renderMyQuizzes);
+  t(()=>{if(window.tpkCountry)tpkCountry.paint()});t(renderMe);t(renderMissBtn);t(renderCardsPanel);t(renderMyQuizzes);
   t(()=>renderProgressUI());t(()=>{if(!$("exam")||$("exam").hidden)renderExamPanel()})}   // best scores / streak and exam history, from other features
 
 async function rpc(fn,args){const {data,error}=await sb.rpc(fn,args);
@@ -120,7 +120,7 @@ dlg.innerHTML=`<form class="sync-card" id="syncForm" novalidate>
   <h2 id="syncTitle">Save your progress</h2>
   <p class="muted sync-help">Find your scores, mistakes to review and flashcards on any device. No email needed.</p>
   <div class="chips sync-tabs" role="group" aria-label="Account"><button type="button" class="chip" data-m="new">New account</button><button type="button" class="chip" data-m="in">I have one</button></div>
-  <div class="sync-field"><label class="label" for="syncUser">Username</label><input type="text" id="syncUser" maxlength="20" autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="E.g. alex_martin"></div>
+  <div class="sync-field"><label class="label" for="syncUser">Username</label><input type="text" id="syncUser" maxlength="20" autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="e.g. alex_martin"></div>
   <div class="sync-field"><label class="label" for="syncPass">Password</label><input type="password" id="syncPass" maxlength="100" placeholder="At least 6 characters"></div>
   <p class="muted sync-foot" id="syncFoot">There's no email, so keep your password somewhere safe: it's the only way back to your progress.</p>
   <p class="err" id="syncErr" hidden></p>

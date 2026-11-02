@@ -28,7 +28,7 @@ function renderMissBtn(){const n=missLive().length;$("missPanel").hidden=!n;$("m
   $("missTitle").textContent=n===1?tl("1 missed question"):tl("{n} missed questions",{n});
   $("missBtn").textContent=n>MISS_RUN?tl("Replay {n}",{n:MISS_RUN}):tl(n===1?"Replay it":"Replay them")}
 function writeAnswer(qi,entry){trackMiss(qi,isRight(entry,qi));
-  P[me]={...(P[me]||{nick:myNick(),joined:Date.now()}),ans:{...((P[me]||{}).ans||{}),[qi]:entry}};onPlayers();
+  P[me]={...(P[me]||{nick:myNick(),country:myCountry(),joined:Date.now()}),ans:{...((P[me]||{}).ans||{}),[qi]:entry}};onPlayers();
   if(mode==="solo"){saveSolo();return}
   const ans=P[me].ans,c=code;
   queue(async()=>{const {error}=await sb.from("players").update({ans}).eq("code",c).eq("pid",me);if(error)throw error});
@@ -54,16 +54,17 @@ async function createGame(){
   finally{$("createBtn").disabled=false}
 }
 function applyGame(s){if(!s)return;if(G&&local.lastStatus!==null&&(s.seq||0)<=(G.seq||0))return;onGame(s)}
-function rowToPlayer(r){let ans=r.ans||{};const l=P[r.pid];if(r.pid===me&&l)ans={...ans,...(l.ans||{})};return {nick:r.nick,joined:Date.parse(r.created_at)||0,ans}}
+function rowToPlayer(r){let ans=r.ans||{};const l=P[r.pid];if(r.pid===me&&l)ans={...ans,...(l.ans||{})};return {nick:r.nick,country:r.country||"",joined:Date.parse(r.created_at)||0,ans}}
 async function loadPlayers(){
-  const {data,error}=await sb.from("players").select("pid,nick,ans,created_at").eq("code",code);
+  const {data,error}=await sb.from("players").select(ctCol?"pid,nick,ans,created_at,country":"pid,nick,ans,created_at").eq("code",code);
+  if(error&&ctCol){ctCol=false;return loadPlayers()}   // no country column yet (see supabase/migrations/add_player_country.sql)
   if(error||!data)return;
   const n={};data.forEach(r=>n[r.pid]=rowToPlayer(r));
   if(JSON.stringify(n)!==JSON.stringify(P)){P=n;onPlayers()}
   loadAvatars(Object.keys(n));
 }
 // photos are only fetched once per player (polling skips them to save bandwidth)
-let avAsked=new Set(),avCol=true;
+let avAsked=new Set(),avCol=true,ctCol=true;
 async function loadAvatars(ids){
   ids=ids.filter(id=>id!==me&&!avAsked.has(id));if(!avCol||!ids.length)return;
   ids.forEach(id=>avAsked.add(id));const c=code;
@@ -97,7 +98,8 @@ async function joinGame(c){
   if(G.status!=="lobby"&&!mine)local.joinQi=G.status==="q"?G.qi:G.qi+1;
   avAsked=new Set();
   const save=row=>mine?sb.from("players").update(row).eq("code",c).eq("pid",me):sb.from("players").insert({code:c,pid:me,...row});
-  let res=await save(avCol?{nick:myNick(),avatar:myAv()}:{nick:myNick()});
+  let res=await save({nick:myNick(),...(avCol?{avatar:myAv()}:{}),...(ctCol?{country:myCountry()||null}:{})});
+  if(res.error&&ctCol){ctCol=false;res=await save({nick:myNick(),...(avCol?{avatar:myAv()}:{})})}   // no country column yet: play without flags
   if(res.error&&avCol){avCol=false;res=await save({nick:myNick()})}   // no avatar column yet: play without photos
   if(res.error){mode=null;code=null;show("home");showErr("joinErr",tl("Couldn't join, try again."));return}
   chan=sb.channel("g-"+c,{config:{broadcast:{self:true}}})
@@ -115,7 +117,7 @@ function startSolo(customDeck,opt){
   mode="solo";code=null;
   G={host:me,status:"q",qi:0,deck:customDeck||buildDeck(null,0,null,{diff:settings.diff}),T:settings.T,created:Date.now(),seq:1,inf:!customDeck&&settings.len===LEN_INF,review:!!customDeck,sess:[...settings.sess],fmt:settings.fmt,diff:settings.diff};
   if(opt&&opt.miss)G.miss=opt.miss;   // replaying the missed questions: remembers how many there were
-  P={[me]:{nick:myNick(),joined:Date.now(),ans:{}}};local={qi:-1,shownAt:0,revealing:false,lastStatus:null};
+  P={[me]:{nick:myNick(),country:myCountry(),joined:Date.now(),ans:{}}};local={qi:-1,shownAt:0,revealing:false,lastStatus:null};
   onGame(G);
 }
 function leaveGame(silent){
@@ -152,7 +154,7 @@ async function resumeSolo(){
   mode="solo";code=null;
   // a question that was already answered (or timed out) reopens on its answer; an unanswered one starts again
   G={...s.G,host:me,status:s.ans[s.G.qi]||s.G.status==="reveal"?"reveal":"q",seq:(s.G.seq||0)+1};
-  P={[me]:{nick:myNick(),joined:Date.now(),ans:s.ans}};local={qi:-1,shownAt:0,revealing:false,lastStatus:null};
+  P={[me]:{nick:myNick(),country:myCountry(),joined:Date.now(),ans:s.ans}};local={qi:-1,shownAt:0,revealing:false,lastStatus:null};
   onGame(G);
 }
 $("resumeGo").onclick=resumeSolo;
@@ -199,7 +201,17 @@ function show(id){["home","topic","make","lobby","question","reveal","end","card
   if(id==="home"||id==="topic")renderProgressUI();
   const rslot=id==="home"?$("resumeHome"):id==="topic"?$("resumeTopic"):null;if(rslot){if($("resumeCard").parentNode!==rslot)rslot.appendChild($("resumeCard"));renderResume()}
   $("status").textContent=code?(tl("Game {code}",{code})):(mode==="solo"?"Solo":"");window.scrollTo(0,0)}
-function nameOf(id){const p=P[id];return (p&&p.nick)||(profiles[id]&&profiles[id].name)||tl("Player")}
+// two players of one room with the same name AND the same country get "(2)", "(3)"... in order of arrival (same result on every phone)
+let _nm={p:null,m:{}};
+function dupMap(){if(_nm.p===P)return _nm.m;const g={},m={};
+  Object.keys(P).forEach(id=>{const p=P[id],k=String(p.nick||"").trim().toLowerCase()+"|"+(p.country||"");(g[k]=g[k]||[]).push(id)});
+  for(const k in g)if(g[k].length>1)g[k].sort((a,b)=>((P[a].joined||0)-(P[b].joined||0))||(a<b?-1:1)).forEach((id,i)=>{if(i)m[id]=i+1});
+  _nm={p:P,m};return m}
+function baseName(id){const p=P[id];return (p&&p.nick)||(profiles[id]&&profiles[id].name)||tl("Player")}
+function nameOf(id){const n=dupMap()[id];return baseName(id)+(n?" ("+n+")":"")}
+function flagOf(id){const p=P[id];return p&&window.tpkCountry?tpkCountry.flag(p.country):""}
+// name with the player's flag in front, for lists on screen
+function dispName(id){const f=flagOf(id);return (f?f+"\u00a0":"")+nameOf(id)}
 
 // ---------- scoring ----------
 function correctPos(qi){return isT(qi)?-1:G.deck[qi].o.indexOf(0)}
@@ -221,7 +233,7 @@ function renderLobby(){
   const ids=Object.keys(P).sort((a,b)=>(P[a].joined||0)-(P[b].joined||0));
   $("lobbyCount").textContent=tl(ids.length>1?"{n} players":"{n} player",{n:ids.length});
   const box=$("lobbyPlayers");box.textContent="";
-  ids.forEach(id=>{const d=el("div","pl pop");d.append(avatar(id,nameOf(id)),el("span",null,nameOf(id)));if(id===me)d.appendChild(el("span","you",tl("you")));if(id===G.host)d.appendChild(el("span","you",tl("host")));box.appendChild(d)});
+  ids.forEach(id=>{const d=el("div","pl pop");d.append(avatar(id,nameOf(id)),el("span",null,dispName(id)));if(id===me)d.appendChild(el("span","you",tl("you")));if(id===G.host)d.appendChild(el("span","you",tl("host")));box.appendChild(d)});
   $("lobbyStart").hidden=!isHost();$("lobbyWait").hidden=isHost();
   $("inviteUrl").textContent=inviteUrl();
   if(local.lobbyN!=null&&ids.length>local.lobbyN)sfx("join");local.lobbyN=ids.length;
