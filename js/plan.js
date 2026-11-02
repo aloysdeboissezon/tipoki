@@ -11,7 +11,7 @@ function renderPlan(){
   const p=planGet(),box=$("planBody"),inp=$("planDate");box.textContent="";
   inp.value=p.date||"";inp.min=dayKey();
   $("planClear").hidden=!p.date;
-  if(!p.date){box.appendChild(el("p","muted",tl("Set the date of your exam and Tipoki tells you how many questions to do each day.")));return}
+  if(!p.date){box.appendChild(el("p","muted",tl("Set the date of your exam and Qwebbo tells you how many questions to do each day.")));return}
   const dl=planDaysLeft(p.date);
   if(dl<0){box.appendChild(el("p","muted",tl("This exam date has passed. Pick a new one or clear it.")));return}
   const goal=planGoal(dl),done=p.day===dayKey()?(p.n||0):0,pc=Math.min(100,Math.round(done/goal*100));

@@ -55,7 +55,7 @@
   }
   async function share(){
     const r=myResult(),u=linkFor(),text=tl("{name} challenges you: can you beat {c} / {n} on {title}?",{name:myNick(),c:r.c,n:r.n,title:BANK.title});
-    if(navigator.share){try{await navigator.share({title:"Tipoki",text,url:u});return}catch(e){if(e&&e.name==="AbortError")return}}
+    if(navigator.share){try{await navigator.share({title:"Qwebbo",text,url:u});return}catch(e){if(e&&e.name==="AbortError")return}}
     try{await navigator.clipboard.writeText(text+" "+u);toast(tl("Challenge link copied"))}catch(e){prompt(tl("Send a challenge link"),u)}
   }
 
