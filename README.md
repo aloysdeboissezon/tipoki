@@ -1,6 +1,6 @@
-# Qwebbo
+# qwebbo
 
-Envoie ton cours, Qwebbo en fait un quiz. Joue seul ou en multi avec tes potes (style Kahoot + Quizlet).
+Envoie ton cours, qwebbo en fait un quiz. Joue seul ou en multi avec tes potes (style Kahoot + Quizlet).
 
 ## Structure
 - `index.html`, `css/style.css`, `js/app/*.js` (le moteur, en 8 fichiers chargés dans l'ordre) : le site (statique, aucun build).

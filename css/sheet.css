@@ -92,7 +92,7 @@ ul.dc-l{list-style:square}
 .dc-end span{font-family:var(--f-display);font-style:normal;font-weight:800;color:var(--vio)}
 
 @media print{
-  @page{size:A4;margin:16mm 16mm 18mm;@bottom-center{content:counter(page);font:700 9pt "Bricolage Grotesque",sans-serif;color:#5A5F70}@bottom-left{content:"Qwebbo";font:600 8pt "Bricolage Grotesque",sans-serif;color:#8A8EA0}}
+  @page{size:A4;margin:16mm 16mm 18mm;@bottom-center{content:counter(page);font:700 9pt "Bricolage Grotesque",sans-serif;color:#5A5F70}@bottom-left{content:"qwebbo";font:600 8pt "Bricolage Grotesque",sans-serif;color:#8A8EA0}}
   @page :first{margin:0;@bottom-center{content:none}@bottom-left{content:none}}
   html,body{background:#fff!important}
   body.sheet-open>:not(#sheet){display:none!important}

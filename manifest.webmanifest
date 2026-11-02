@@ -1,7 +1,7 @@
 {
-  "name": "Qwebbo",
-  "short_name": "Qwebbo",
-  "description": "Send in your notes and Qwebbo turns them into a quiz. Play solo or with your friends.",
+  "name": "qwebbo",
+  "short_name": "qwebbo",
+  "description": "Send in your notes and qwebbo turns them into a quiz. Play solo or with your friends.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
