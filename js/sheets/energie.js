@@ -49,7 +49,7 @@ sections:[
  {t:"h3",x:"Dopage"},
  {t:"p",x:"À température ambiante, un semi-conducteur pur a peu d’électrons libres et conduit mal. Le <b>dopage</b> consiste à insérer des atomes d’un autre élément (phosphore dans du silicium, antimoine, fluor…) pour <b>augmenter le nombre d’électrons libres</b>."},
  {t:"h3",x:"Silicium ou germanium ?"},
- {t:"p",x:"Les deux absorbent les longueurs d’onde inférieures à environ <b>1 100 nm</b> (visible et proche infrarouge). On choisit le silicium : il est <b>environ 4 fois moins cher</b>, c’est le <b>2<sup>e</sup> élément le plus abondant</b> de la croûte terrestre et il supporte mieux la chaleur."}]},
+ {t:"p",x:"D’après le cours, les deux absorbent les longueurs d’onde inférieures à environ <b>1 100 nm</b> (visible et proche infrarouge). On choisit le silicium : il est <b>environ 4 fois moins cher</b>, c’est le <b>2<sup>e</sup> élément le plus abondant</b> de la croûte terrestre et il supporte mieux la chaleur."}]},
 {title:"Le capteur photovoltaïque",lead:"Convertir directement la lumière en électricité.",blocks:[
  {t:"dl",items:[
   ["Effet photoélectrique","Un rayonnement électromagnétique assez énergétique met en mouvement des électrons à la surface d’un matériau."],
