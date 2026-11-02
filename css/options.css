@@ -1,0 +1,11 @@
+#optBtn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.opt-card{max-height:calc(100dvh - 32px);overflow:auto}
+.opt-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--line2);font-weight:600}
+.opt-row:first-child{border-top:0}
+.opt-links{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}
+.opt-data{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line2);padding-top:12px}
+.opt-note{margin:0;font-size:13px}
+.opt-card .chip[aria-pressed=true]{background:var(--hl);color:#fff}
+.opt-card .danger{color:#C0392B}
+html[data-motion=off] *,html[data-motion=off] *::before,html[data-motion=off] *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+@media(max-width:560px){#sizeBtn,#langBtn,#themeBtn{display:none}}

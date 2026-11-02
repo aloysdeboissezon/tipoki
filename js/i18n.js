@@ -610,7 +610,22 @@ var FR={
 "Nobody has earned XP in this league yet this week. Be the first!":"Personne n'a encore gagné d'XP dans cette ligue cette semaine. Sois le premier !",
 "XP: +10 for a right answer, +2 for a wrong one, +3 for a flashcard you know. Every Monday the top players move up a league.":"XP : +10 par bonne réponse, +2 par mauvaise, +3 par carte connue. Chaque lundi, les meilleurs montent d'une ligue.",
 "Add a nickname on the home page so friends see your name.":"Ajoute un pseudo sur l'accueil pour que tes amis voient ton nom.",
-"← Home":"← Accueil"
+"← Home":"← Accueil",
+"Options":"Options",
+"On":"Activé",
+"Off":"Désactivé",
+"Sound effects":"Effets sonores",
+"Vibration":"Vibrations",
+"Animations":"Animations",
+"Display":"Affichage",
+"Theme":"Thème",
+"Daily goal":"Objectif quotidien",
+"Clear offline copies":"Vider les copies hors ligne",
+"Cleared":"Vidé",
+"Nothing to clear":"Rien à vider",
+"Erase my data on this device":"Effacer mes données sur cet appareil",
+"Tap again to erase everything":"Appuie encore pour tout effacer",
+"Erasing keeps your online account: sign in again to get your progress back.":"L'effacement garde ton compte en ligne : reconnecte-toi pour retrouver ta progression."
 };
 
 // French typography: a non-breaking space before ? ! : ; » and after «, so they never start a line
