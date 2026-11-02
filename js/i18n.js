@@ -1,5 +1,5 @@
 // ---------- interface language: English or French ----------
-// The site is written in English; this file holds the French version of every interface text.
+// The site is written in English; this file holds the French version of every interface text (js/i18n-es.js holds the Spanish one).
 // tl("English text",{n:3}) gives the text in the visitor's language, with {n} filled in.
 // The text already in index.html is translated once on load by tpkTranslate (text, title, placeholder, aria-label, alt):
 // when you change an English sentence there or in the JS, change its key below too, or French visitors see the English.
@@ -8,12 +8,14 @@
 // The choice is saved per device in "tpk-lang"; without one, the browser's language decides.
 var LANG=(function(){
   var s=null;try{s=localStorage.getItem("tpk-lang")}catch(e){}
-  if(s==="fr"||s==="en")return s;
+  if(s==="fr"||s==="en"||s==="es")return s;
   var l=(navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language||""]);
-  for(var i=0;i<l.length;i++){var c=String(l[i]).slice(0,2).toLowerCase();if(c==="fr"||c==="en")return c}
+  for(var i=0;i<l.length;i++){var c=String(l[i]).slice(0,2).toLowerCase();if(c==="fr"||c==="en"||c==="es")return c}
   return "en";
 })();
-var LOCALE=LANG==="fr"?"fr-FR":"en-US";
+var LOCALE={en:"en-US",fr:"fr-FR",es:"es-ES"}[LANG];
+var DLOCALE={en:"en-GB",fr:"fr-FR",es:"es-ES"}[LANG];   // for dates
+
 
 var FR={
 // page
@@ -639,36 +641,44 @@ var FR={
 "Nothing to clear":"Rien à vider",
 "Erase my data on this device":"Effacer mes données sur cet appareil",
 "Tap again to erase everything":"Appuie encore pour tout effacer",
-"Erasing keeps your online account: sign in again to get your progress back.":"L'effacement garde ton compte en ligne : reconnecte-toi pour retrouver ta progression."
+"Erasing keeps your online account: sign in again to get your progress back.":"L'effacement garde ton compte en ligne : reconnecte-toi pour retrouver ta progression.",
+"All quizzes":"Tous les quiz",
+"Quizzes":"Quiz",
+"Change daily goal":"Changer l'objectif du jour",
+"Pause the exam":"Mettre l'examen en pause",
+"Flip each card, then be honest: got it, or not yet. Cards you know come back later, the ones you miss come back soon. Uses the":"Retourne chaque carte, puis sois honnête : tu la sais, ou pas encore. Les cartes que tu connais reviennent plus tard, celles que tu rates reviennent vite. Utilise les"
+
 };
 
-// French typography: a non-breaking space before ? ! : ; » and after «, so they never start a line
-function frType(s){return s.replace(/ ([?!:;»])/g," $1").replace(/« /g,"« ")}
+// the dictionary of the chosen language (English is the source text, so it has none); Spanish lives in js/i18n-es.js (loaded before this file)
+var DICT=LANG==="fr"?FR:LANG==="es"&&typeof ES!=="undefined"?ES:null;
+// French typography: a non-breaking space before ? ! : ; » and after «, so they never start a line (Spanish needs none)
+function frType(s){return LANG==="fr"?s.replace(/ ([?!:;»])/g," $1").replace(/« /g,"« "):s}
 var tlMissing=new Set();   // English texts with no French yet (handy in the console: [...tlMissing])
 function tl(s,vars){
   var key=s,bar=s.indexOf("|");if(bar>0)s=s.slice(bar+1);
-  if(LANG==="fr"){if(Object.prototype.hasOwnProperty.call(FR,key))s=frType(FR[key]);else tlMissing.add(key)}
+  if(DICT){if(Object.prototype.hasOwnProperty.call(DICT,key))s=frType(DICT[key]);else tlMissing.add(key)}
   if(vars)s=s.replace(/\{(\w+)\}/g,function(m,k){return k in vars?String(vars[k]):m});
   return s;
 }
 function fmtN(n){try{return Number(n).toLocaleString(LOCALE)}catch(e){return String(n)}}
 // one decimal, "2.5" in English, "2,5" in French
-function fmtDec(x){var s=(Math.round(x*10)/10).toString();return LANG==="fr"?s.replace(".",","):s}
-function ordinal(n){if(LANG==="fr")return n===1?"1er":n+"e";const v=n%100;return n+(v>=11&&v<=13?"th":["th","st","nd","rd"][n%10]||"th")}
+function fmtDec(x){var s=(Math.round(x*10)/10).toString();return LANG==="en"?s:s.replace(".",",")}
+function ordinal(n){if(LANG==="fr")return n===1?"1er":n+"e";if(LANG==="es")return n+"º";const v=n%100;return n+(v>=11&&v<=13?"th":["th","st","nd","rd"][n%10]||"th")}
 
 // translates the text already written in the page (index.html, or a block built from HTML)
 function tpkTranslate(root){
-  if(LANG==="en"||!root)return;
+  if(!DICT||!root)return;
   var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),n,list=[];
   while((n=w.nextNode()))list.push(n);
   list.forEach(function(t){var p=t.parentNode;if(!p||p.nodeName==="SCRIPT"||p.nodeName==="STYLE")return;
     var raw=t.data,k=raw.replace(/\s+/g," ").trim();if(!k||!/[A-Za-z]/.test(k))return;
-    if(Object.prototype.hasOwnProperty.call(FR,k)){var lead=raw.match(/^\s*/)[0],tail=raw.match(/\s*$/)[0];t.data=lead+frType(FR[k])+tail}
+    if(Object.prototype.hasOwnProperty.call(DICT,k)){var lead=raw.match(/^\s*/)[0],tail=raw.match(/\s*$/)[0];t.data=lead+frType(DICT[k])+tail}
     else tlMissing.add(k)});
   var els=root.querySelectorAll?root.querySelectorAll("[title],[placeholder],[aria-label],[alt]"):[];
   Array.prototype.forEach.call(els,function(e){["title","placeholder","aria-label","alt"].forEach(function(a){
     var v=e.getAttribute(a);if(!v||!/[A-Za-z]{2}/.test(v))return;
-    if(Object.prototype.hasOwnProperty.call(FR,v))e.setAttribute(a,frType(FR[v]));else if(v!=="CODE")tlMissing.add(v)})});
+    if(Object.prototype.hasOwnProperty.call(DICT,v))e.setAttribute(a,frType(DICT[v]));else if(v!=="CODE")tlMissing.add(v)})});
 }
 
 // the switch reloads the page in the other language (only offered on the start screens, so no game is cut short)
@@ -678,16 +688,16 @@ function tpkSetLang(l){
 }
 
 document.documentElement.lang=LANG;
-if(LANG==="fr"){
+if(DICT){
   document.title=tl(document.title);
   ["description","og:title","og:description"].forEach(function(n){
     var m=document.querySelector('meta[name="'+n+'"],meta[property="'+n+'"]');if(m)m.content=tl(m.content)});
   tpkTranslate(document.body);
 }
-// header switch: shows the other language
+// header switch: English -> French -> Spanish -> English, the button shows the language it leads to
 (function(){
   var b=document.getElementById("langBtn");if(!b)return;
-  var other=LANG==="fr"?"en":"fr",t=other==="fr"?"Passer en français":"Switch to English";
-  b.querySelector(".bt").textContent=other.toUpperCase();b.title=t;b.setAttribute("aria-label",t);b.lang=other;
-  b.onclick=function(){tpkSetLang(other)};
+  var next={en:"fr",fr:"es",es:"en"}[LANG],T={en:"Switch to English",fr:"Passer en français",es:"Cambiar a español"}[next];
+  b.querySelector(".bt").textContent=next.toUpperCase();b.title=T;b.setAttribute("aria-label",T);b.lang=next;
+  b.onclick=function(){tpkSetLang(next)};
 })();
