@@ -76,7 +76,7 @@
   accept.onclick=()=>{const ch=pending;pending=null;banner.hidden=true;if(ch)start(ch)};
   later.onclick=()=>{pending=null;banner.hidden=true};
   (async()=>{
-    let qz=null,raw=window.TPK_CH;try{qz=new URLSearchParams(location.search).get("quiz")||"socio"}catch(e){}   // app.js rewrites the address bar on load, so ch is read before it (see index.html)
+    let qz=null,raw=window.TPK_CH;try{qz=new URLSearchParams(location.search).get("quiz")||"socio"}catch(e){}   // js/app/*.js rewrites the address bar on load, so ch is read before it (see index.html)
     if(!raw||!qz||!await useBank(qz))return;
     const ch=decode(raw);
     if(!ch){toast(tl("This challenge link is out of date"));return}

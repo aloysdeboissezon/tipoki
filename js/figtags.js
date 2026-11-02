@@ -3,7 +3,7 @@
 // The figures are drawn from the question's own numbers / the course's own terms, so they work offline and follow the dark theme.
 (function(){
 const F=window.TipokiFig;if(!F||!F.tag)return;
-// some banks load on demand (see ensureBank in app.js): their rules wait here and are applied right after the bank file arrives
+// some banks load on demand (see ensureBank in js/app/*.js): their rules wait here and are applied right after the bank file arrives
 const RULES={},DONE={};
 function reg(name,rules){RULES[name]=rules;F.tagLate(name)}
 F.tagLate=name=>{const b=window[name],r=RULES[name];if(b&&r&&!DONE[name]){DONE[name]=1;F.tag(b,r)}};

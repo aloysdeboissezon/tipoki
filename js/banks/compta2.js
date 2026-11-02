@@ -701,7 +701,7 @@ const FACTS=[
 
 // ---------- readable statements ----------
 // The exercise statements above are written as running text; this turns them into paragraphs, balance-sheet tables and equity tables
-// (syntax: blank line = paragraph, "|" = table row, "|#" = section row, "|^" = total row, "• " = bullet; see qRich in app.js).
+// (syntax: blank line = paragraph, "|" = table row, "|#" = section row, "|^" = total row, "• " = bullet; see qRich in js/app/*.js).
 const cap=x=>x[0].toUpperCase()+x.slice(1);
 function eqTable(sent){   // "At that date B's equity is: capital 2,000, reserves 3,000 and retained earnings 1,400; in addition, …"
   const m=sent.match(/^(.*?)(\b[A-Z]\w*)'s equity (?:is|was): ([^;]+?)(?:;\s*(.*?))?\.?$/);if(!m)return null;
