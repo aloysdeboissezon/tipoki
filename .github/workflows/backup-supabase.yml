@@ -1,0 +1,71 @@
+name: Sauvegarde Supabase
+
+on:
+  schedule:
+    - cron: "17 3 * * *"   # tous les jours à 03:17 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backup-supabase
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Vérifier le secret
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          if [ -z "$SUPABASE_DB_URL" ]; then
+            echo "::error::Secret SUPABASE_DB_URL manquant (voir docs/restauration.md)"; exit 1
+          fi
+
+      - name: Installer le client PostgreSQL 17
+        run: |
+          sudo install -d /usr/share/postgresql-common/pgdg
+          sudo curl -fsSL -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc https://www.postgresql.org/media/keys/ACCC4CF8.asc
+          echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq postgresql-client-17
+          /usr/lib/postgresql/17/bin/pg_dump --version
+
+      - name: Exporter la base
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          set -euo pipefail
+          PGBIN=/usr/lib/postgresql/17/bin
+          STAMP=$(date -u +%Y-%m-%d_%H%M)
+          mkdir -p out
+          # Dump complet du schéma public (structure + données + fonctions RPC), restaurable avec pg_restore
+          $PGBIN/pg_dump "$SUPABASE_DB_URL" --schema=public --no-owner --no-privileges -Fc -f "out/tipoki-$STAMP.dump"
+          # Copie lisible : structure seule (SQL) + quiz en JSON
+          $PGBIN/pg_dump "$SUPABASE_DB_URL" --schema=public --no-owner --no-privileges --schema-only -f "out/tipoki-$STAMP-schema.sql"
+          $PGBIN/psql "$SUPABASE_DB_URL" -At -c "select coalesce(json_agg(q), '[]') from public.quizzes q" > "out/tipoki-$STAMP-quizzes.json"
+          # Contrôles : dump lisible et non vide
+          $PGBIN/pg_restore --list "out/tipoki-$STAMP.dump" | grep -q "TABLE DATA public games" || { echo "::error::Dump incomplet"; exit 1; }
+          ls -l out
+
+      - name: Chiffrer (optionnel)
+        env:
+          BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+        run: |
+          # Si BACKUP_PASSPHRASE est défini, les fichiers sont chiffrés (AES-256) et les clairs supprimés.
+          if [ -n "$BACKUP_PASSPHRASE" ]; then
+            for f in out/*; do
+              gpg --batch --yes --pinentry-mode loopback --passphrase "$BACKUP_PASSPHRASE" --symmetric --cipher-algo AES256 -o "$f.gpg" "$f" && rm "$f"
+            done
+          fi
+
+      - name: Publier la sauvegarde (artefact, 30 jours)
+        uses: actions/upload-artifact@v4
+        with:
+          name: tipoki-backup-${{ github.run_id }}
+          path: out/
+          retention-days: 30
+          if-no-files-found: error
