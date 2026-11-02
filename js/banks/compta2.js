@@ -24,6 +24,8 @@ const nm=(s,t,q,ok,c,e,d)=>mt(s,t,q,f(ok),[...c,ok*2,ok/2,ok+10,ok-10,ok+1,ok-1]
 // typed number (accepts 1300 / 1,300)
 const vr=x=>{const r=Math.round(Math.abs(x)*100)/100;return[...new Set([String(r),f(r)])]};
 const tn=(s,q,x,e,d)=>ty(s,q,vr(x),e,undefined,d||2);
+// attach a figure (see js/figs.js) to every question added since the marks q0 / t0
+const figFrom=(q0,t0,g)=>{for(let i=q0;i<Q.length;i++)Q[i].g=g;for(let i=t0;i<TQ.length;i++)TQ[i].g=g};
 
 // ---------- full consolidation exercises (goodwill, NCI, group reserves, totals), computed from the data ----------
 function fc(o){
@@ -42,21 +44,24 @@ function fc(o){
   MT(s,nme,ask("Compare the price paid with P's share of S's equity at the acquisition date. What does the consolidation show (€ thousand)?"),cls(raw),
     [cls(-raw),cls(price-eq0),cls(price-n0),cls(price-p*eqN),"Goodwill of "+f(price),"No goodwill and no gain: the difference goes to NCI"],
     `${f(price)} − ${f(p*eq0)} = ${f(raw)}: ${raw>0?"the price is higher than the group share, so goodwill":"the price is lower than the group share, so a gain from a bargain purchase"}.`,2);
-  const gwFig={k:"gw",price,own:p*eq0,pct:p};
+  const sn=SN==='S'?undefined:SN,gwFig={k:"gw",price,own:p*eq0,pct:p,sn};
   Q[Q.length-1].g=gwFig;
   TN(s,ask(`What is the ${word} (€ thousand)?`),amt,`${f(price)} − ${f(p*eq0)} = ${f(raw)}; the ${word} is ${f(amt)}.`,2);
   TQ[TQ.length-1].g=gwFig;
   if(p<1){
     M(s,nme,ask("What is the NCI at the acquisition date (€ thousand)?"),n0,[p*eq0,(1-p)*price,nN,eq0],`NCI = ${N} × ${f(eq0)} = ${f(n0)}.`,2);
-    Q[Q.length-1].g={k:"nci",eq:eq0,pct:p};
+    Q[Q.length-1].g={k:"nci",eq:eq0,pct:p,sn};
     if(!same){
       M(s,nme,ask("What is the NCI at the consolidation date (€ thousand)?"),nN,[n0,p*eqN,(1-p)*(eqN-eq0),eqN],`NCI = ${N} × current equity of S = ${N} × ${eqNt?"("+eqNt+") = ":""}${f(eqN)} = ${f(nN)}. It uses the equity at the consolidation date, not at acquisition.`,2);
+      Q[Q.length-1].g={k:"nci",eq:eqN,pct:p,sn};
       TN(s,ask("What is the NCI at the consolidation date (€ thousand)?"),nN,`${N} × ${f(eqN)} = ${f(nN)}.`,2);
+      TQ[TQ.length-1].g={k:"nci",eq:eqN,pct:p,sn};
     }else TN(s,ask("What is the NCI (€ thousand)?"),nN,`${N} × ${f(eqN)} = ${f(nN)}.`,2);
   }else VF(s,ask("Does the consolidation show any non-controlling interests (NCI)?"),false,"P owns 100%, so NCI = 0% × equity = 0.",1);
   if(!same){
     M(s,nme,ask("What are the consolidated (group) reserves arising from S (€ thousand)?"),res,[(1-p)*(eqN-eq0),p*eqN,eqN-eq0,-res],`${P} × (${f(eqN)} − ${f(eq0)}) = ${P} × ${f(eqN-eq0)} = ${f(res)}. Only the change since acquisition belongs to the group reserves.`,3);
     TN(s,ask("What are the consolidated reserves arising from S (€ thousand)? Give the amount, ignoring the sign."),Math.abs(res),`${P} × (${f(eqN)} − ${f(eq0)}) = ${f(res)}${res<0?" (negative group reserves)":""}.`,3);
+    if(eqN>eq0){const rg={k:"flow",rec:eqN-eq0,use:res,l:["Change in "+SN+"'s equity since acquisition","Group share ("+P+") = reserves","NCI share ("+N+")"],f:P+" × "+f(eqN-eq0)+" = "+f(res),cap:"Only the change in S's equity since acquisition goes to reserves, split between the group and the NCI."};Q[Q.length-1].g=rg;TQ[TQ.length-1].g=rg}
   }
   if(agg!=null){
     const ta=agg-price+gw,att=peq+bp+res,te=att+nN;
@@ -87,15 +92,18 @@ function acq(o){
   mt(s,nme,ask("What does the Investment-Equity adjustment show?"),cls(raw),[cls(-raw),cls(price-eq),cls(price-n0),"Goodwill of "+f(price),"A gain from a bargain purchase of "+f(price),"No goodwill and no gain"],
     `Equity of B = ${eqt}. Group share = ${pc(p)} × ${f(eq)} = ${f(p*eq)}. ${f(price)} − ${f(p*eq)} = ${f(raw)}.`,2);
   tn(s,ask(`What is the ${raw>0?"goodwill":"gain from a bargain purchase"}?`),amt,`${f(price)} − ${pc(p)} × ${f(eq)} = ${f(raw)}.`,2);
+  figFrom(Q.length-1,TQ.length-1,{k:"gw",price,own:p*eq,pct:p,sn:"B"});
   if(p<1){
     nm(s,nme,ask("What is the NCI at the acquisition date?"),n0,[p*eq,(1-p)*price,(1-p)*(eq-(fv||0)),price-p*eq],`NCI = ${pc(1-p)} × ${f(eq)} = ${f(n0)}.`,2);
     tn(s,ask("What is the NCI at the acquisition date?"),n0,`${pc(1-p)} × ${f(eq)} = ${f(n0)}.`,2);
+    figFrom(Q.length-1,TQ.length-1,{k:"nci",eq,pct:p,sn:"B"});
   }
   nm(s,nme,ask("What is the total equity of B used in the calculation (including any fair value adjustment)?"),eq,[eq-(fv||0),p*eq,price,eq+(fv||0)],eqt+".",1);
 }
 
 // ---------- unrealised profit and internal transactions ----------
 function inventory(o){
+  const q0=Q.length,t0=TQ.length;
   const{s,nm:nme,price,profit,sold,cost,seller,buyer}=o;
   const se=seller||"A",bu=buyer||"B",left=1-sold,u=profit*left;
   const pr=cost!=null?`${se} sells to ${bu} inventories that cost ${se} €${f(cost)}, for €${f(price)}`:`${se} sells to ${bu} inventories for €${f(price)} with a profit of €${f(profit)}`;
@@ -105,15 +113,19 @@ function inventory(o){
   tn(s,stmt+"\n\nHow much unrealised profit must be eliminated (€)?",u,`${f(profit)} × ${pc(left)} = ${f(u)}.`,2);
   if(left>0&&left<1)nm(s,nme,stmt+"\n\nBy how much are the consolidated inventories reduced (€)?",u,[profit,price*left,price-profit,profit*sold],`Inventories are reduced by the unrealised profit: ${f(u)}.`,2);
   if(left>0)nm(s,nme,stmt+"\n\nWhich intragroup sales and purchases are eliminated against each other (€)?",price,[profit,price*left,price-profit,u],`The whole intragroup sale of ${f(price)} is cancelled against the buyer's purchases/COGS, whatever the % resold.`,2);
+  if(left>0)figFrom(q0,t0,{k:"flow",rec:profit,use:profit*sold,u:"€",l:["Profit made by "+se,"Realised (resold outside the group)","Unrealised (still in "+bu+"'s stock)"],f:f(profit)+" × "+pc(left)+" = "+f(u),cap:"The profit is only realised when the goods leave the group: the part still in stock is eliminated."});
 }
 function land(o){
+  const q0=Q.length,t0=TQ.length;
   const{s,nm:nme,n,price,profit,resold,seller,buyer}=o;
   const se=seller||"B",bu=buyer||"A",rem=n-resold,u=rem*profit;
   const stmt=`${se} sells ${n} pieces of land to ${bu} (same group) at €${f(price)} each, with a profit of €${f(profit)} per piece.${resold?` ${bu} has resold ${resold} of them to third parties.`:` All the pieces are still held by ${bu}.`}`;
   nm(s,nme,stmt+"\n\nWhat is the unrealised profit (€)?",u,[n*profit,rem*price,resold*profit,n*price],`${rem} piece(s) remain in the group × ${f(profit)} = ${f(u)}.`,2);
   tn(s,stmt+"\n\nWhat unrealised profit must be eliminated from the land and from "+se+"'s net income (€)?",u,`${rem} × ${f(profit)} = ${f(u)}.`,2);
+  if(rem>0)figFrom(q0,t0,{k:"flow",rec:n*profit,use:resold*profit,u:"€",l:["Total profit of "+se,"Realised (resold outside)","Unrealised (land still held)"],f:rem+" × "+f(profit)+" = "+f(u),cap:"Only the profit on land still held inside the group is unrealised."});
 }
 function machine(o){
+  const q0=Q.length,t0=TQ.length;
   const{s,nm:nme,price,profit,life,yrs,seller,buyer}=o;
   const se=seller||"B",bu=buyer||"A",ex=profit/life,net=profit-ex*yrs;
   const stmt=`On 1 January X1, ${se} sells a machine to ${bu} (same group) for €${f(price)}, making a profit of €${f(profit)}. The remaining useful life of the machine is ${life} years (straight line). Consolidate at 31 December X${yrs}.`;
@@ -121,6 +133,7 @@ function machine(o){
   nm(s,nme,stmt+"\n\nBy how much is the group's net income (that of "+se+") reduced at the consolidation date (€)?",net,[profit,ex*yrs,profit+ex*yrs,price],
     yrs===1?`Unrealised profit ${f(profit)} − excess depreciation ${f(ex)} = ${f(net)}.`:`Unrealised profit ${f(profit)} − excess depreciation ${f(ex)} × ${yrs} years = ${f(net)} (cumulative).`,3);
   tn(s,stmt+"\n\nWhat is the net adjustment to net income at the consolidation date (€)?",net,`${f(profit)} − ${f(ex)}${yrs>1?" × "+yrs:""} = ${f(net)}.`,3);
+  figFrom(q0,t0,{k:"flow",rec:profit,use:net,u:"€",l:["Unrealised profit on the sale","Net reduction of net income","Excess depreciation to add back"],f:f(profit)+" − "+f(ex*yrs)+" = "+f(net),cap:"The unrealised profit is cancelled, then the extra depreciation charged on the overstated cost is given back."});
 }
 function loanInt(o){
   const{s,nm:nme,pr,rate,mo}=o;
@@ -131,16 +144,19 @@ function loanInt(o){
 }
 // who sold? an unrealised profit made by a (partly owned) subsidiary also reduces NCI
 function upstream(o){
+  const q0=Q.length,t0=TQ.length;
   const{s,nm:nme,p,u}=o,k=1-p;
   const stmt=`P owns ${pc(p)} of S (full consolidation). During the year S sold goods to P with a profit of €${f(u)}, all still in P's inventory at year end.`;
   nm(s,nme,stmt+"\n\nBy how much does this reduce the NCI at the consolidation date (€)?",u*k,[u,u*p,0,u*k*2],`The profit belongs to S, so S's equity falls by ${f(u)}; NCI = ${pc(k)} of it = ${f(u*k)}.`,3);
   nm(s,nme,stmt+"\n\nBy how much does it reduce the consolidated reserves arising from S (€)?",u*p,[u,u*k,0,u*p*2],`The group bears ${pc(p)} of the fall in S's equity: ${f(u*p)}.`,3);
+  for(let i=q0;i<Q.length;i++)Q[i].g={k:"flow",rec:u,use:u*p,u:"€",l:["Unrealised profit of S (the seller)","Borne by the group ("+pc(p)+")","Borne by the NCI ("+pc(k)+")"],f:f(u)+" × "+pc(p)+" + "+f(u)+" × "+pc(k),cap:"S is the seller, so its equity falls: the group and the NCI bear the loss in proportion to their shares."};
   const stmt2=`P owns ${pc(p)} of S (full consolidation). During the year P sold goods to S with a profit of €${f(u)}, all still in S's inventory at year end.`;
   nm(s,nme,stmt2+"\n\nBy how much does this reduce the NCI at the consolidation date (€)?",0,[u*k,u,u*p,u*k*2],"The profit belongs to P, so it is taken out of P's retained earnings. S's equity is unchanged: NCI is not affected.",3);
 }
 
 // ---------- equity method ----------
 function eqm(o){
+  const q0=Q.length,t0=TQ.length;
   const{s,nm:nme,p,price,eq0,eqN,lead,eq0t,imp}=o;
   const stmt=(lead||"P buys "+pc(p)+" of the shares of A")+` for €${f(price)}. At that date A's equity is €${f(eq0)}${eq0t?" ("+eq0t+")":""}. At the consolidation date A's equity is €${f(eqN)}.`;
   const g=price-p*eq0,sh=p*(eqN-eq0),cv=price+sh,fin=imp!=null?cv-imp:cv;
@@ -151,6 +167,7 @@ function eqm(o){
     `${f(price)} (cost, goodwill included) ${sh<0?"−":"+"} ${f(Math.abs(sh))} (share of change in equity)${imp!=null?" − "+f(imp)+" (impairment)":""} = ${f(fin)}.`,3);
   tn(s,ask("What is the value of the equity investment in A in the consolidated balance sheet (€)?"),fin,`${f(price)} ${sh<0?"−":"+"} ${f(Math.abs(sh))}${imp!=null?" − "+f(imp):""} = ${f(fin)}.`,3);
   tn(s,ask("What amount is credited to the group's reserves for the associate (€)? Ignore the sign."),Math.abs(sh),`${pc(p)} × (${f(eqN)} − ${f(eq0)}) = ${f(sh)}.`,2);
+  figFrom(q0,t0,{k:"bridge",items:[{l:"Cost of the investment",v:price},{l:"Group share of the change in A's equity",v:sh},...(imp!=null?[{l:"Impairment",v:-imp}]:[]),{l:"Carrying amount in the group balance sheet",v:fin,tot:1}],cap:"Equity method: the investment starts at cost and is moved by the group's share of the associate's results."});
 }
 
 // ---------- classification drills ----------
