@@ -23,3 +23,10 @@ Sauvegarde quotidienne de la base via GitHub Actions, procédure de restauration
 
 ## Suivi des erreurs
 `js/errlog.js` envoie les erreurs JavaScript (et promesses rejetées) de la prod vers la table Supabase `error_log`, de façon anonyme (pas de cookie, pas de pseudo, pas de query string). Limites : 5 par chargement de page, 3 par minute, 30 par minute sur tout le site (côté base). Hors ligne, elles attendent dans la file de `js/offline.js`. Création : `supabase/migrations/add_error_log.sql`. Lecture (éditeur SQL Supabase) : `select * from public.error_summary;`
+
+## Tests automatiques
+Un navigateur sans écran (Playwright) joue les parcours clés : solo, indices, examen, signalement, pause/reprise, défi par lien, hors ligne, page Options. Supabase est simulé, aucun accès réseau n'est nécessaire.
+
+- `npm install` puis `npx playwright install chromium` (une seule fois)
+- `npm test` lance tout ; `npx playwright test tests/exam.spec.js` un seul fichier
+- La CI GitHub Actions (`.github/workflows/e2e.yml`) les lance sur chaque PR.
