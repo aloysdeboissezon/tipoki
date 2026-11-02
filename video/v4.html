@@ -14,7 +14,7 @@
 .txt h1{margin:0;font-weight:800;font-size:84px;line-height:.92;letter-spacing:-.05em}
 .txt .w{display:inline-block;margin-right:.2em;will-change:transform,opacity,filter}
 .txt .w.y{background:linear-gradient(95deg,#FFE36E,#FF3D8B);-webkit-background-clip:text;background-clip:text;color:transparent}
-.txt.s2 h1{font-size:62px}.txt.s2{width:700px}.txt.c{text-align:center;left:190px!important;width:900px!important}.txt.c h1{font-size:66px}.txt p{margin:18px 0 0;font:700 27px/1.25 Nunito,Inter,sans-serif;color:rgba(255,255,255,.74);max-width:520px}
+.txt.s2 h1{font-size:62px}.txt.s2{width:700px}.txt.c{text-align:center;left:190px!important;width:900px!important}.txt.c h1{font-size:66px}.txt.c p{margin:18px auto 0}.txt p{margin:18px 0 0;font:700 27px/1.25 Nunito,Inter,sans-serif;color:rgba(255,255,255,.74);max-width:520px}
 .pill{display:inline-flex;gap:10px;align-items:center;color:#fff;font-weight:800;font-size:19px;padding:9px 18px;border-radius:99px;letter-spacing:.14em;text-transform:uppercase;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(14px);margin-bottom:22px}
 .pill::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--y);box-shadow:0 0 14px var(--y)}
 .phone{position:absolute;left:0;top:0;width:330px;height:700px;border-radius:50px;background:linear-gradient(160deg,#3b3560,#0c0a1c 40%,#2a2550);padding:9px;box-shadow:0 40px 90px rgba(0,0,0,.6),0 0 90px rgba(107,77,255,.45),inset 0 0 0 1.5px rgba(255,255,255,.25);z-index:5;will-change:transform}
@@ -46,7 +46,7 @@ const TX={en:{
  t1:['01 · Pick','Pick a *quiz*','Your course, split in parts.'],
  t2:['02 · Study','Four ways to *study*',null],
  t3:['03 · Play','Challenge your *friends*','Share a code. Fastest brain wins.'],
- t4:['Free · No sign-up','Pick a quiz. Beat your friends. *Revise.*',null],
+ t4:['Free · No sign-up','Pick a quiz. Beat your friends. *Revise.*','qwebbo · Learn, compete, master'],
  modes:['Quiz: answer fast, score big','Flashcards that adapt to you','The whole course on one sheet','A real exam, with a grade out of 20'],
  chips:{pts:'<b>+955</b> pts',streak:'STREAK <b>×3</b>',got:'Got it ✓',join:'joined',fast:'⚡ <b>1.7 s</b>',nolim:'No time limit'}},
 fr:{
@@ -54,9 +54,17 @@ fr:{
  t1:['01 · Choisis','Choisis un *quiz*','Ton cours, découpé en parties.'],
  t2:['02 · Révise','Quatre façons de *réviser*',null],
  t3:['03 · Joue','Défie tes *potes*','Partage un code. Le plus rapide gagne.'],
- t4:['Gratuit · Sans inscription','Choisis un quiz. Bats tes potes. *Révise.*',null],
+ t4:['Gratuit · Sans inscription','Choisis un quiz. Bats tes potes. *Révise.*','qwebbo · Learn, compete, master'],
  modes:['Quiz : réponds vite, marque gros','Des flashcards qui s\'adaptent','Tout le cours sur une fiche','Un vrai examen, noté sur 20'],
- chips:{pts:'<b>+955</b> pts',streak:'SÉRIE <b>×3</b>',got:'Je sais ✓',join:'a rejoint',fast:'⚡ <b>1,7 s</b>',nolim:'Sans limite de temps'}}}[L];
+ chips:{pts:'<b>+955</b> pts',streak:'SÉRIE <b>×3</b>',got:'Je sais ✓',join:'a rejoint',fast:'⚡ <b>1,7 s</b>',nolim:'Sans limite de temps'}},
+es:{
+ t0:['','Estudia *ganando* a tus *amigos.*','qwebbo · Learn, compete, master'],
+ t1:['01 · Elige','Elige un *quiz*','Tu curso, dividido en partes.'],
+ t2:['02 · Estudia','Cuatro formas de *estudiar*',null],
+ t3:['03 · Juega','Reta a tus *amigos*','Comparte un código. El más rápido gana.'],
+ t4:['Gratis · Sin registro','Elige un quiz. Gana a tus amigos. *Estudia.*','qwebbo · Learn, compete, master'],
+ modes:['Quiz: responde rápido, puntúa alto','Flashcards que se adaptan a ti','Todo el curso en una ficha','Un examen real, con nota sobre 20'],
+ chips:{pts:'<b>+955</b> pts',streak:'RACHA <b>×3</b>',got:'Lo sé ✓',join:'se ha unido',fast:'⚡ <b>1,7 s</b>',nolim:'Sin límite de tiempo'}}}[L];
 const $=id=>document.getElementById(id);
 // ---------- easing + keyframes
 const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
@@ -120,7 +128,7 @@ function render(t){
   // glass tiles panel (scene 2): slides in from the left, a highlight hops between the four squares
   const tp=K(t,[[9.4,[-480,300,.9,0]],[10.8,[70,290,1,1],'out'],[18.8,[70,290,1,1],'io'],[20.0,[-520,300,.9,0],'in']]);
   $('tiles').style.transform=`translate(${tp[0]}px,${tp[1]}px) scale(${tp[2]})`;$('tiles').style.opacity=clamp(tp[3]+(t>10?0:0))*(t>9.3&&t<20.1?1:0);
-  const Q=[[.04,.04],[.51,.04],[.04,.5],[.51,.5]],sz=[.445,.43];
+  const Q=[[.034,.036],[.515,.036],[.034,.518],[.515,.518]],sz=[.452,.45];
   const seg=[11.2,13.6,15.7,17.5];let idx=0;seg.forEach((a,i)=>{if(t>=a-.4)idx=i});
   const prev=Math.max(0,idx-1),tt=clamp((t-(seg[idx]-.4))/.55),pos=idx===0?Q[0]:Q[prev].map((v,j)=>v+(Q[idx][j]-v)*E.io(tt));
   const hi=$('hi');hi.style.left=pos[0]*100+'%';hi.style.top=pos[1]*100+'%';hi.style.width=sz[0]*100+'%';hi.style.height=sz[1]*100+'%';hi.style.opacity=win(t,10.9,19,.4,.5);
