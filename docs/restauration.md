@@ -1,4 +1,4 @@
-# Sauvegarde et restauration de la base Qwebbo
+# Sauvegarde et restauration de la base qwebbo
 
 ## Ce qui est sauvegardé
 Le workflow `.github/workflows/backup-supabase.yml` tourne **tous les jours à 03:17 UTC** (et à la demande : onglet *Actions* → *Sauvegarde Supabase* → *Run workflow*). Il exporte le schéma `public` du projet Supabase `socio-trivia` : parties et joueurs, quiz générés (`quizzes`), questions communautaires, votes, signalements, statistiques, ligues et comptes de sauvegarde de progression (`tpk_*`), plus les fonctions SQL (RPC).

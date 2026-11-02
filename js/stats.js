@@ -46,7 +46,7 @@ const STATS_ALL="all";   // ?stats=all: overview of every quiz (code stored unde
 async function openStats(id,key){
   show("stats");
   $("stTitle").textContent=tl("Loading…");$("stBody").hidden=true;$("stRefresh").hidden=true;$("stGate").hidden=true;$("stErr").hidden=true;$("stPrint").hidden=true;
-  if(id===STATS_ALL){$("stTitle").textContent=tl("Qwebbo: usage overview");$("stSub").textContent=tl("All quizzes together, anonymous.")}
+  if(id===STATS_ALL){$("stTitle").textContent=tl("qwebbo: usage overview");$("stSub").textContent=tl("All quizzes together, anonymous.")}
   else{
     if(!await useBank(id)){$("stTitle").textContent=tl("Quiz not found");return}
     $("stTitle").textContent=BANK.title;$("stSub").textContent=BANK.subject||""}

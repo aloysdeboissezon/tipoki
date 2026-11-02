@@ -1,4 +1,4 @@
-<!doctype html><meta charset=utf-8><title>Qwebbo tutorial v4</title>
+<!doctype html><meta charset=utf-8><title>qwebbo tutorial v4</title>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
 <style>
 :root{--y:#FFE36E}
@@ -42,7 +42,7 @@
 <script>
 const L=new URLSearchParams(location.search).get('lang')||'en';
 const TX={en:{
- t0:['','Study by *beating* your *friends.*','Qwebbo · Learn, compete, master'],
+ t0:['','Study by *beating* your *friends.*','qwebbo · Learn, compete, master'],
  t1:['01 · Pick','Pick a *quiz*','Your course, split in parts.'],
  t2:['02 · Study','Four ways to *study*',null],
  t3:['03 · Play','Challenge your *friends*','Share a code. Fastest brain wins.'],
@@ -50,7 +50,7 @@ const TX={en:{
  modes:['Quiz: answer fast, score big','Flashcards that adapt to you','The whole course on one sheet','A real exam, with a grade out of 20'],
  chips:{pts:'<b>+955</b> pts',streak:'STREAK <b>×3</b>',got:'Got it ✓',join:'joined',fast:'⚡ <b>1.7 s</b>',nolim:'No time limit'}},
 fr:{
- t0:['','Révise en *battant* tes *potes.*','Qwebbo · Learn, compete, master'],
+ t0:['','Révise en *battant* tes *potes.*','qwebbo · Learn, compete, master'],
  t1:['01 · Choisis','Choisis un *quiz*','Ton cours, découpé en parties.'],
  t2:['02 · Révise','Quatre façons de *réviser*',null],
  t3:['03 · Joue','Défie tes *potes*','Partage un code. Le plus rapide gagne.'],
@@ -106,7 +106,7 @@ function render(t){
   $('bar').style.width=1280*t/DUR+'px';
   // logo: pops in centre, glides to corner then returns big at the end
   const lg=K(t,[[0,[640,360,.25,0],'out'],[.9,[640,360,1.05,1],'out'],[2.4,[640,360,1,1],'io'],[3.4,[150,58,.3,1],'io'],[30.6,[150,58,.3,1],'io'],[31.8,[640,250,1,1],'io'],[DUR,[640,250,1.05,1]]]);
-  const lw=560;$('logo').style.transform=`translate(${lg[0]-lw/2}px,${lg[1]-lw*.192/2}px) scale(${lg[2]})`;$('logo').style.opacity=lg[3]*clamp(t/.4);
+  const lw=560;$('logo').style.transform=`translate(${lg[0]-lw/2}px,${lg[1]-lw*.2101/2}px) scale(${lg[2]})`;$('logo').style.opacity=lg[3]*clamp(t/.4);
   // text blocks
   showBlock('t0',t,1.7,3.5,300);
   showBlock('t1',t,3.4,8.8,230);
