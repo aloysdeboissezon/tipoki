@@ -3,6 +3,10 @@
 // The figures are drawn from the question's own numbers / the course's own terms, so they work offline and follow the dark theme.
 (function(){
 const F=window.TipokiFig;if(!F||!F.tag)return;
+// some banks load on demand (see ensureBank in app.js): their rules wait here and are applied right after the bank file arrives
+const RULES={},DONE={};
+function reg(name,rules){RULES[name]=rules;F.tagLate(name)}
+F.tagLate=name=>{const b=window[name],r=RULES[name];if(b&&r&&!DONE[name]){DONE[name]=1;F.tag(b,r)}};
 const txt=q=>(q.q||"")+" "+(q.e||"");
 const right=q=>String(q.o?q.o[q.a]:[].concat(q.a)[0]||"").toLowerCase();
 const num=t=>parseFloat(String(t).replace(/[\s  ]/g,"").replace(",","."));
@@ -62,7 +66,7 @@ function ind(q){
   if(q.s!==1||!/aimant/.test(q.q)||!/bobine/.test(q.q))return;
   return {k:"ind",alt:/va-et-vient|alternatif/.test(txt(q)),l:["N","S","Mouvement","Bobine","Courant induit"],cap:"Un aimant en mouvement par rapport à une bobine met les électrons libres en mouvement : c'est l'induction (Faraday, 1831). Le sens du courant dépend du pôle et du sens du mouvement."};
 }
-F.tag(window.BANK_ENERGIE||{},[eff,pvEff,freq,pv,alt,gap,ind]);
+reg("BANK_ENERGIE",[eff,pvEff,freq,pv,alt,gap,ind]);
 
 // ===================== Culture générale (français) =====================
 function dates(q){
@@ -81,7 +85,7 @@ function sol(q){
   const name={"la terre":"Terre"},h=hl&&(name[hl[0]]||hl[0][0].toUpperCase()+hl[0].slice(1));
   return {k:"sol",hl:/Combien/.test(q.q)?undefined:h,cap:"Les huit planètes, de la plus proche du Soleil à la plus lointaine : Mercure, Vénus, la Terre, Mars, Jupiter, Saturne, Uranus, Neptune."};
 }
-F.tag(window.BANK_CULTURE||{},[dates,elem,sol]);
+reg("BANK_CULTURE",[dates,elem,sol]);
 
 // ===================== Socio (English) =====================
 const BOURD=[{t:"Economic",s:"money, property"},{t:"Cultural",s:"education, tastes, diplomas"},{t:"Social",s:"networks, relationships"},{t:"Symbolic",s:"prestige, recognition"}];
@@ -141,7 +145,7 @@ function caste(q){
   if(q.s!==4||!/caste/i.test(q.q))return;
   return {k:"vs",l:{t:"Caste system",p:["Status ascribed at birth","Closed: no social mobility"]},r:{t:"Class system",p:["Status partly achieved","Open: mobility is possible"]},cap:"Caste systems are closed; class systems allow some mobility."};
 }
-F.tag(window.BANK_SOCIO||{},[bourdieu,weberStrat,weberAction,mead,looking,merton,levels,bronf,culture6,durk,caste]);
+reg("BANK_SOCIO",[bourdieu,weberStrat,weberAction,mead,looking,merton,levels,bronf,culture6,durk,caste]);
 
 // ===================== Populism (English) =====================
 function pvenn(q){
@@ -161,5 +165,5 @@ function minip(q){
   if(q.s<5||!/have in common|mini-public|citizens' jur|citizen panels/i.test(q.q))return;
   return {k:"set",items:["Citizens' juries","Citizens' panels","Deliberative polls","Consensus conferences","Citizens' assemblies",{t:"In common",s:"diverse, facilitated"}],hl:/in common/i.test(q.q)?5:undefined,cap:"Mini-publics: different formats that share diverse participants, facilitated dialogue and civility norms."};
 }
-F.tag(window.BANK_POPULISM||{},[pvenn,ppars,polar,minip]);
+reg("BANK_POPULISM",[pvenn,ppars,polar,minip]);
 })();
