@@ -23,6 +23,26 @@
     "Challenge link copied":"Lien de défi copié",
     "This challenge link is out of date":"Ce lien de défi n'est plus valide"
   });
+  if(window.ES)Object.assign(ES,{
+    "Challenge a friend":"Reta a un amigo",
+    "Challenge back":"Devuélvele el reto",
+    "Send a challenge link":"Enviar un enlace de reto",
+    "Challenge":"Reto",
+    "{name} challenges you":"{name} te reta",
+    "{name} scored {c} / {n} on this quiz. Same {n} questions for you. Can you beat it?":"{name} ha sacado {c} / {n} en este quiz. Tienes las mismas {n} preguntas. ¿Puedes superarlo?",
+    "Accept the challenge":"Aceptar el reto",
+    "Not now":"Ahora no",
+    "A friend":"Un amigo",
+    "You win!":"¡Has ganado!",
+    "It's a tie":"Empate",
+    "{name} wins":"Gana {name}",
+    "You: {c} / {n} · {p} pts":"Tú: {c} / {n} · {p} pts",
+    "{name}: {c} / {n} · {p} pts":"{name}: {c} / {n} · {p} pts",
+    "Send this link to a friend: they play the same {n} questions, whenever they want, and you both see who scored more.":"Envía este enlace a un amigo: jugará las mismas {n} preguntas cuando quiera y los dos veréis quién ha puntuado más.",
+    "{name} challenges you: can you beat {c} / {n} on {title}?":"{name} te reta: ¿puedes superar {c} / {n} en {title}?",
+    "Challenge link copied":"Enlace de reto copiado",
+    "This challenge link is out of date":"Este enlace de reto ya no es válido"
+  });
   const b64e=s=>btoa(unescape(encodeURIComponent(s))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
   const b64d=s=>{s=s.replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";return decodeURIComponent(escape(atob(s)))};
 

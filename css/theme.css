@@ -65,6 +65,14 @@ input[type=text],textarea,.qsearch input{background:var(--field,#FAFAFD)}
 [data-theme="dark"] .ex-tiles .tile.sel::after{background:var(--card)}
 
 /* French interface: the tags drawn in CSS (the English ones are in style.css / exam.css) */
+html[lang="es"] .tile.right::after{content:"Respuesta correcta"}
+html[lang="es"] .tile.mine::after,html[lang="es"] .ex-tiles .tile.sel::after{content:"Tu respuesta"}
 html[lang="fr"] .tile.right::after{content:"Bonne réponse"}
 html[lang="fr"] .tile.mine::after,html[lang="fr"] .ex-tiles .tile.sel::after{content:"Ta réponse"}
 
+
+/* language menu under the EN/FR/ES button */
+.topr{position:relative}
+.lang-menu{position:absolute;top:calc(100% + 6px);right:0;z-index:30;display:flex;flex-direction:column;gap:4px;padding:6px;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.14)}
+.lang-menu[hidden]{display:none}
+.lang-opt[aria-pressed="true"]{background:var(--ink);color:var(--card);border-color:var(--ink)}
