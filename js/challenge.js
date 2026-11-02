@@ -85,7 +85,7 @@
     mode="solo";code=null;
     const sess=[...new Set(ch.deck.map(d=>(d.t!=null?TQ[d.t]:Q[d.id]).s))];
     G={host:me,status:"q",qi:0,deck:ch.deck,T:ch.T,created:Date.now(),seq:1,inf:false,review:false,sess,fmt:"mix",diff:0,ch:{name:ch.name,c:ch.c,n:ch.n,p:ch.p}};
-    P={[me]:{nick:myNick(),joined:Date.now(),ans:{}}};local={qi:-1,shownAt:0,revealing:false,lastStatus:null};
+    P={[me]:{nick:myNick(),country:myCountry(),joined:Date.now(),ans:{}}};local={qi:-1,shownAt:0,revealing:false,lastStatus:null};
     onGame(G);
   }
   const banner=el("div","prog chal");banner.hidden=true;

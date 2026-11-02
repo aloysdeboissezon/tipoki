@@ -40,6 +40,7 @@ function setMultiNote(ok){
 
 $("nick").value=lsGet("socio-nick")||"";
 $("nick").addEventListener("input",()=>{lsSet("socio-nick",$("nick").value.trim());showErr("nickErr","");renderMe()});
+function myCountry(){return window.tpkCountry?tpkCountry.mine():""}
 function myNick(){return ($("nick").value.trim()||tl("Player")).slice(0,18)}
 // multiplayer needs a real name, so friends know who is who
 function needNick(){if($("nick").value.trim())return false;showErr("nickErr",tl("Enter your first name so your friends know who you are."));$("nick").focus();$("nick").scrollIntoView({block:"center"});return true}
