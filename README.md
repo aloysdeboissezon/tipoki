@@ -12,7 +12,7 @@ Envoie ton cours, Tipoki en fait un quiz. Joue seul ou en multi avec tes potes (
 Sauvegarde quotidienne de la base via GitHub Actions, procédure de restauration : `docs/restauration.md`.
 
 ## Config
-- Secret Supabase `ANTHROPIC_API_KEY` (Edge Functions → Secrets).
+- Secret Supabase `ANTHROPIC_API_KEY` (Edge Functions → Secrets). The function stays off until the secret `GENERATE_ENABLED` is `true`.
 - Un quiz se partage avec `?quiz=<id>`, une partie avec `?code=ABCD`.
 
 ## Lancer en local

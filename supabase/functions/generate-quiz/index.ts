@@ -8,10 +8,12 @@ const MODEL = "claude-opus-5-5";
 const MAX_PDF_B64 = 28_000_000; // ~20 MB file
 const MAX_TEXT = 200_000;
 const PER_IP_PER_HOUR = 6;
-const GLOBAL_PER_DAY = 300;
+const GLOBAL_PER_DAY = 60; // each quiz costs real money: this is the hard ceiling per day
 
+// Kill switch: the function does nothing (and costs nothing) until the secret GENERATE_ENABLED is set to "true".
+// ALLOWED_ORIGIN (optional secret, e.g. https://tipoki.vercel.app) limits which website may call it from a browser.
 const cors = {
-  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Origin": Deno.env.get("ALLOWED_ORIGIN") || "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
@@ -77,6 +79,8 @@ function clean(d: any) {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
   if (req.method !== "POST") return jsonOut({ error: "Méthode non autorisée" }, 405);
+  if (Deno.env.get("GENERATE_ENABLED") !== "true") return jsonOut({ error: "La génération de quiz est désactivée pour le moment." }, 503);
+  if (Number(req.headers.get("content-length") || 0) > MAX_PDF_B64 + 400_000) return jsonOut({ error: "Fichier trop lourd (20 Mo max)." }, 413);
 
   let body: { title?: string; text?: string; pdf?: string };
   try { body = await req.json(); } catch { return jsonOut({ error: "Requête invalide." }, 400); }
@@ -87,7 +91,8 @@ Deno.serve(async (req) => {
   if (pdf.length > MAX_PDF_B64) return jsonOut({ error: "Fichier trop lourd (20 Mo max)." }, 413);
 
   const db = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
-  const ip = (req.headers.get("x-forwarded-for") || "").split(",")[0].trim() || "unknown";
+  // x-forwarded-for can be written by the caller (its first value is not reliable); Cloudflare's header cannot
+  const ip = (req.headers.get("cf-connecting-ip") || req.headers.get("x-real-ip") || (req.headers.get("x-forwarded-for") || "").split(",").pop()!.trim() || "unknown").trim();
   const hourAgo = new Date(Date.now() - 3600e3).toISOString(), dayAgo = new Date(Date.now() - 86400e3).toISOString();
   const [{ count: mine }, { count: all }] = await Promise.all([
     db.from("gen_log").select("id", { count: "exact", head: true }).eq("ip", ip).gt("created_at", hourAgo),
