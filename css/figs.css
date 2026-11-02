@@ -12,3 +12,6 @@
 .fg-box{fill:var(--soft);stroke:var(--line2);stroke-width:1.5}
 .fg-ln{stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .fg-nofill{fill:none}
+.fg-t.fg-big{font-size:44px;font-weight:800}
+.fg-v1{fill:var(--hl);fill-opacity:.28;stroke:var(--hl);stroke-width:2}
+.fg-v2{fill:#FFC93C;fill-opacity:.38;stroke:#E0A400;stroke-width:2}
