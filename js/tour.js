@@ -3,11 +3,11 @@
   var fr=document.documentElement.lang==="fr",L=fr?"fr":"en";
   var btn=document.getElementById("tourBtn"),box=document.getElementById("tour");
   if(!btn||!box)return;
-  document.getElementById("tourPoster").src="video/tipoki-intro-"+L+"-poster.jpg";
+  document.getElementById("tourPoster").src="video/qwebbo-intro-"+L+"-poster.jpg";
   btn.onclick=function(){
     var m=document.createElement("div"),v=document.createElement("video"),x=document.createElement("button");
     m.className="tour-modal";m.setAttribute("data-lenis-prevent","");
-    v.src="video/tipoki-intro-"+L+".mp4";v.poster="video/tipoki-intro-"+L+"-poster.jpg";
+    v.src="video/qwebbo-intro-"+L+".mp4";v.poster="video/qwebbo-intro-"+L+"-poster.jpg";
     v.controls=true;v.autoplay=true;v.playsInline=true;v.preload="auto";
     v.setAttribute("aria-label",btn.getAttribute("aria-label"));
     x.type="button";x.textContent="×";x.setAttribute("aria-label",typeof tl==="function"?tl("Close"):"Close");

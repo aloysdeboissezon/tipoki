@@ -13,8 +13,8 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
  const p=await ctx.newPage();p.on('pageerror',e=>console.log('ERR',e.message));
  const shot=async n=>{await sleep(500);await p.screenshot({path:path.join(OUT,n+'.png')});console.log('shot',n)};
  const js=id=>p.evaluate(i=>document.getElementById(i).click(),id);
- await p.goto('http://localhost:8765/');await sleep(1500);await shot('home');
- await p.locator('#quizGrid > *').first().click();await sleep(1000);await shot('menu');
+ await p.goto('http://localhost:8765/');await sleep(4000);await shot('home');
+ await p.locator('#quizGrid > *').first().click();await sleep(2500);await shot('menu');
  await p.locator('#modeTabs').screenshot({path:path.join(OUT,'tiles.png')});
  // quiz: question + reveal
  await js('playTab');await sleep(900);await shot('settings');
@@ -35,8 +35,9 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
  await p.locator('#exPaceChips .chip').nth(0).click();await sleep(300);await js('exGo');await sleep(1500);await shot('exam');
  // multiplayer
  await p.evaluate(()=>{const l=localStorage.getItem('tpk-lang');localStorage.clear();localStorage.setItem('tpk-lang',l)});
- await p.goto('http://localhost:8765/?quiz=socio');await sleep(1200);
- await p.fill('#nick','Alex');await p.locator('#lenChips .chip').nth(0).click();await js('createBtn');await sleep(1200);
+ await p.goto('http://localhost:8765/');await sleep(3500);await p.fill('#nick','Alex');await p.keyboard.press('Tab');await sleep(400);
+ await p.goto('http://localhost:8765/?quiz=socio');await sleep(2500);
+ await js('playTab');await sleep(900);await p.locator('#lenChips .chip').nth(0).click();await js('createBtn');await sleep(1200);
  const code=(await p.textContent('#lobbyCode')).trim();
  for(const [i,n] of ['Lea','Noah','Inès','Max'].entries()){await p.evaluate(([c,i,n])=>__addPlayer(c,'f'+i,n),[code,i,n]);await sleep(300)}
  await shot('lobby');
