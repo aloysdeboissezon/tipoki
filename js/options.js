@@ -41,8 +41,9 @@ function build(){
   const an=document.createElement("p");an.className="muted opt-note";an.textContent=tl("Counts finished and abandoned games without any name, cookie or email, to see how Qwebbo is used.");rows.appendChild(an);
   // shortcuts to the settings that live elsewhere
   const sh=document.createElement("div");sh.className="opt-links";
-  [["sizeBtn",tl("Text size")],["themeBtn",tl("Theme")],["langBtn",tl("Language")]].forEach(([id,t])=>{
+  [["sizeBtn",tl("Text size")],["themeBtn",tl("Theme")]].forEach(([id,t])=>{
     const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=t;b.onclick=()=>{const e=$(id);e&&e.click()};sh.appendChild(b)});
+  tpkLangPick().forEach(b=>sh.appendChild(b));   // EN / FR / ES chips
   rows.appendChild(row(tl("Display"),sh));
   const g=$("goalSet");
   if(g){const b=document.createElement("button");b.type="button";b.className="chip";const p=()=>{b.textContent=g.textContent||tl("Goal")};p();b.onclick=()=>{g.click();setTimeout(p,0)};rows.appendChild(row(tl("Daily goal"),b))}

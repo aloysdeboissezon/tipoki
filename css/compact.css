@@ -333,3 +333,7 @@
   .quizgrid .qcard:hover{transform:translateY(-4px) scale(1.02)}
   .cdots,.qall{display:none}
 }
+/* slogan: one line on desktop, one word per line on phones */
+.hero h1.slogan span{white-space:nowrap}
+@media (max-width:640px){.hero h1.slogan span{display:block}}
+@media (min-width:641px){.hero h1.slogan{white-space:nowrap;font-size:clamp(30px,3.6vw,40px)}}

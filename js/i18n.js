@@ -5,19 +5,22 @@
 // when you change an English sentence there or in the JS, change its key below too, or French visitors see the English.
 // A key can start with "context|" when the same English word needs two French ones (e.g. "verdict|Wrong").
 // Quizzes are never translated: their questions stay in the quiz's own language.
+// Spanish lives in js/i18n-es.js (same keys, loaded first). Same rules: a new English text needs a key in both FR and ES.
 // The choice is saved per device in "tpk-lang"; without one, the browser's language decides.
+var LANGS=["en","fr","es"];
 var LANG=(function(){
   var s=null;try{s=localStorage.getItem("tpk-lang")}catch(e){}
-  if(s==="fr"||s==="en")return s;
+  if(LANGS.indexOf(s)>=0)return s;
   var l=(navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language||""]);
-  for(var i=0;i<l.length;i++){var c=String(l[i]).slice(0,2).toLowerCase();if(c==="fr"||c==="en")return c}
+  for(var i=0;i<l.length;i++){var c=String(l[i]).slice(0,2).toLowerCase();if(LANGS.indexOf(c)>=0)return c}
   return "en";
 })();
-var LOCALE=LANG==="fr"?"fr-FR":"en-US";
+var LOCALE={en:"en-US",fr:"fr-FR",es:"es-ES"}[LANG];
+var DATELOC={en:"en-GB",fr:"fr-FR",es:"es-ES"}[LANG];
 
 var FR={
 // page
-"Qwebbo · Study by challenging your friends":"Qwebbo · Révise en défiant tes potes",
+"Qwebbo · Learn, compete, master":"Qwebbo · Apprends, défie, maîtrise",
 // header
 "Back to home":"Retour à l'accueil",
 "Qwebbo, back to home":"Qwebbo, retour à l'accueil",
@@ -29,7 +32,7 @@ var FR={
 "Sound":"Son",
 "Muted":"Muet",
 // home
-"Study by beating your friends.":"Révise en battant tes potes.",
+"Learn,":"Apprends,","compete,":"défie,","master.":"maîtrise.",
 "Watch the tutorial video":"Regarder la vidéo tutoriel",
 "Pick what you want to study, then play solo or with friends.":"Choisis ce que tu veux réviser, puis joue seul ou en multi.",
 "Pick up where you left off":"Reprends ta partie en cours",
@@ -99,7 +102,7 @@ var FR={
 // language switch
 "Send in your notes and Qwebbo turns them into a quiz. Play solo or with your friends.":"Envoie ton cours, Qwebbo en fait un quiz. Joue seul ou en multi avec tes potes.",
 "Podium":"Podium","Sessions":"Sessions","Question":"Question","Question {i} / {n}":"Question {i} / {n}","Pause":"Pause","question {n}":"question {n}","questions":"questions",
-"Switch to French":"Passer en français","Switch to English":"Switch to English",
+"Switch to French":"Passer en français","Switch to English":"Passer en anglais",
 // quiz screen
 "← Other quizzes":"← Autres quiz",
 "You're studying":"Tu révises",
@@ -637,38 +640,41 @@ var FR={
 "Clear offline copies":"Vider les copies hors ligne",
 "Cleared":"Vidé",
 "Nothing to clear":"Rien à vider",
+"All quizzes":"Tous les quiz","Quizzes":"Quiz","Change daily goal":"Changer l'objectif quotidien",
+"Flip each card, then be honest: got it, or not yet. Cards you know come back later, the ones you miss come back soon. Uses the":"Retourne chaque carte, puis sois honnête : je sais, ou pas encore. Celles que tu connais reviennent plus tard, celles que tu rates reviennent vite. Porte sur ta sélection de",
 "Erase my data on this device":"Effacer mes données sur cet appareil",
 "Tap again to erase everything":"Appuie encore pour tout effacer",
 "Erasing keeps your online account: sign in again to get your progress back.":"L'effacement garde ton compte en ligne : reconnecte-toi pour retrouver ta progression."
 };
 
 // French typography: a non-breaking space before ? ! : ; » and after «, so they never start a line
-function frType(s){return s.replace(/ ([?!:;»])/g," $1").replace(/« /g,"« ")}
+function frType(s){if(LANG!=="fr")return s;return s.replace(/ ([?!:;»])/g," $1").replace(/« /g,"« ")}
+var DICT=LANG==="fr"?FR:(LANG==="es"&&typeof ES!=="undefined"?ES:null);   // null = English
 var tlMissing=new Set();   // English texts with no French yet (handy in the console: [...tlMissing])
 function tl(s,vars){
   var key=s,bar=s.indexOf("|");if(bar>0)s=s.slice(bar+1);
-  if(LANG==="fr"){if(Object.prototype.hasOwnProperty.call(FR,key))s=frType(FR[key]);else tlMissing.add(key)}
+  if(DICT){if(Object.prototype.hasOwnProperty.call(DICT,key))s=frType(DICT[key]);else tlMissing.add(key)}
   if(vars)s=s.replace(/\{(\w+)\}/g,function(m,k){return k in vars?String(vars[k]):m});
   return s;
 }
 function fmtN(n){try{return Number(n).toLocaleString(LOCALE)}catch(e){return String(n)}}
 // one decimal, "2.5" in English, "2,5" in French
-function fmtDec(x){var s=(Math.round(x*10)/10).toString();return LANG==="fr"?s.replace(".",","):s}
-function ordinal(n){if(LANG==="fr")return n===1?"1er":n+"e";const v=n%100;return n+(v>=11&&v<=13?"th":["th","st","nd","rd"][n%10]||"th")}
+function fmtDec(x){var s=(Math.round(x*10)/10).toString();return LANG==="en"?s:s.replace(".",",")}
+function ordinal(n){if(LANG==="es")return String(n);if(LANG==="fr")return n===1?"1er":n+"e";const v=n%100;return n+(v>=11&&v<=13?"th":["th","st","nd","rd"][n%10]||"th")}
 
 // translates the text already written in the page (index.html, or a block built from HTML)
 function tpkTranslate(root){
-  if(LANG==="en"||!root)return;
+  if(!DICT||!root)return;
   var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),n,list=[];
   while((n=w.nextNode()))list.push(n);
   list.forEach(function(t){var p=t.parentNode;if(!p||p.nodeName==="SCRIPT"||p.nodeName==="STYLE")return;
     var raw=t.data,k=raw.replace(/\s+/g," ").trim();if(!k||!/[A-Za-z]/.test(k))return;
-    if(Object.prototype.hasOwnProperty.call(FR,k)){var lead=raw.match(/^\s*/)[0],tail=raw.match(/\s*$/)[0];t.data=lead+frType(FR[k])+tail}
+    if(Object.prototype.hasOwnProperty.call(DICT,k)){var lead=raw.match(/^\s*/)[0],tail=raw.match(/\s*$/)[0];t.data=lead+frType(DICT[k])+tail}
     else tlMissing.add(k)});
   var els=root.querySelectorAll?root.querySelectorAll("[title],[placeholder],[aria-label],[alt]"):[];
   Array.prototype.forEach.call(els,function(e){["title","placeholder","aria-label","alt"].forEach(function(a){
     var v=e.getAttribute(a);if(!v||!/[A-Za-z]{2}/.test(v))return;
-    if(Object.prototype.hasOwnProperty.call(FR,v))e.setAttribute(a,frType(FR[v]));else if(v!=="CODE")tlMissing.add(v)})});
+    if(Object.prototype.hasOwnProperty.call(DICT,v))e.setAttribute(a,frType(DICT[v]));else if(v!=="CODE")tlMissing.add(v)})});
 }
 
 // the switch reloads the page in the other language (only offered on the start screens, so no game is cut short)
@@ -678,16 +684,27 @@ function tpkSetLang(l){
 }
 
 document.documentElement.lang=LANG;
-if(LANG==="fr"){
+if(DICT){
   document.title=tl(document.title);
   ["description","og:title","og:description"].forEach(function(n){
     var m=document.querySelector('meta[name="'+n+'"],meta[property="'+n+'"]');if(m)m.content=tl(m.content)});
   tpkTranslate(document.body);
 }
-// header switch: shows the other language
+// header switch: a small menu with the three languages (the button shows the current one)
+var LANG_NAMES={en:"English",fr:"Français",es:"Español"};
+function tpkLangPick(){   // the language menu, built on demand (also used by the Options page)
+  return LANGS.map(function(c){var b=document.createElement("button");b.type="button";b.className="chip lang-opt";b.textContent=LANG_NAMES[c];b.lang=c;
+    b.setAttribute("aria-pressed",c===LANG?"true":"false");b.onclick=function(){if(c!==LANG)tpkSetLang(c)};return b});
+}
 (function(){
   var b=document.getElementById("langBtn");if(!b)return;
-  var other=LANG==="fr"?"en":"fr",t=other==="fr"?"Passer en français":"Switch to English";
-  b.querySelector(".bt").textContent=other.toUpperCase();b.title=t;b.setAttribute("aria-label",t);b.lang=other;
-  b.onclick=function(){tpkSetLang(other)};
+  b.querySelector(".bt").textContent=LANG.toUpperCase();b.title=tl("Language");b.setAttribute("aria-label",tl("Language"));
+  b.setAttribute("aria-haspopup","true");b.setAttribute("aria-expanded","false");
+  var menu=document.createElement("div");menu.className="lang-menu";menu.id="langMenu";menu.hidden=true;
+  tpkLangPick().forEach(function(x){menu.appendChild(x)});
+  b.parentNode.insertBefore(menu,b.nextSibling);
+  function set(open){menu.hidden=!open;b.setAttribute("aria-expanded",open?"true":"false")}
+  b.onclick=function(e){e.stopPropagation();set(menu.hidden)};
+  document.addEventListener("click",function(e){if(!menu.hidden&&!menu.contains(e.target))set(false)});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!menu.hidden){set(false);b.focus()}});
 })();
