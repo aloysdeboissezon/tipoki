@@ -4,7 +4,7 @@ const {chromium}=require('playwright');const fs=require('fs');const path=require
 const LANG=process.argv[2]||'en',OUT=path.resolve(process.argv[3]||'out');fs.mkdirSync(OUT,{recursive:true});
 const MOCK=fs.readFileSync(path.join(__dirname,'mock-sb.js'),'utf8');
 const T={en:{
- intro:['Study by *beating* your *friends.*','Qwebbo · the quiz game that makes you revise'],
+ intro:['Study by *beating* your *friends.*','qwebbo · the quiz game that makes you revise'],
  pick:['Pick *what* to *revise*','One quiz, split in parts. Tap the ones you need.','01 · PICK'],
  modes:['Four ways to *study*','Quiz, flashcards, study sheet, exam.',null],
  lvl:['Choose your *level*','Easy, medium, hard, or climbing.','02 · QUIZ'],
@@ -17,7 +17,7 @@ const T={en:{
  board:['Fastest *brain* wins','Live leaderboard after every question.',null],
  end:['','Pick a quiz. Beat your friends. Revise.','FREE · NO SIGN-UP']},
 fr:{
- intro:['Révise en *battant* tes *potes.*','Qwebbo · le jeu de quiz qui fait réviser'],
+ intro:['Révise en *battant* tes *potes.*','qwebbo · le jeu de quiz qui fait réviser'],
  pick:['Choisis *quoi* réviser','Un quiz découpé en parties. Touche celles qu\'il te faut.','01 · CHOISIS'],
  modes:['Quatre façons de *réviser*','Quiz, flashcards, fiche de synthèse, examen.',null],
  lvl:['Choisis ton *niveau*','Facile, moyen, difficile ou progressif.','02 · QUIZ'],

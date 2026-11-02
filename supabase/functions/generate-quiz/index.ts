@@ -1,4 +1,4 @@
-// Turns a course (PDF or text) into a Qwebbo quiz with Claude, stores it in public.quizzes and returns its id.
+// Turns a course (PDF or text) into a qwebbo quiz with Claude, stores it in public.quizzes and returns its id.
 // The response body is streamed: whitespace heartbeats while Claude works, then one JSON object ({id} or {error}).
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import Anthropic from "npm:@anthropic-ai/sdk";
@@ -39,7 +39,7 @@ const SCHEMA = obj({
   typed: arr(obj({ s: int, q: str, a: arr(str), e: str })),
 });
 
-const SYSTEM = `You turn a student's course material into a revision quiz for Qwebbo, a multiplayer quiz game students play with friends before exams.
+const SYSTEM = `You turn a student's course material into a revision quiz for qwebbo, a multiplayer quiz game students play with friends before exams.
 
 Write everything in the language of the course itself. Only use what the course says: never invent facts, dates or names that are not in the material.
 

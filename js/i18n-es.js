@@ -3,10 +3,10 @@
 // Loaded before i18n.js. A missing key just shows the English text (and lands in tlMissing, see i18n.js).
 var ES={
 // page
-"Qwebbo · Learn, compete, master":"Qwebbo · Aprende, compite, domina",
+"qwebbo · Learn, compete, master":"qwebbo · Aprende, compite, domina",
 // header
 "Back to home":"Volver al inicio",
-"Qwebbo, back to home":"Qwebbo, volver al inicio",
+"qwebbo, back to home":"qwebbo, volver al inicio",
 "Switch to dark mode":"Cambiar al modo oscuro",
 "Text size":"Tamaño del texto","Text size {n}%":"Tamaño del texto {n} %","Skip to content":"Saltar al contenido","Language":"Idioma","Choose a file":"Elegir un archivo",
 "Switch to light mode":"Cambiar al modo claro",
@@ -46,7 +46,7 @@ var ES={
 "Exam planner":"Planificador de examen",
 "Exam date":"Fecha del examen",
 "Clear":"Borrar",
-"Set the date of your exam and Qwebbo tells you how many questions to do each day.":"Indica la fecha de tu examen y Qwebbo te dice cuántas preguntas hacer cada día.",
+"Set the date of your exam and qwebbo tells you how many questions to do each day.":"Indica la fecha de tu examen y qwebbo te dice cuántas preguntas hacer cada día.",
 "This exam date has passed. Pick a new one or clear it.":"La fecha del examen ya ha pasado. Elige otra o bórrala.",
 "Exam today. Good luck!":"Examen hoy. ¡Mucha suerte!",
 "Exam tomorrow":"Examen mañana",
@@ -83,7 +83,7 @@ var ES={
 "Quiz not found":"Quiz no encontrado",
 "Couldn't load this quiz, check your connection":"No se ha podido cargar este quiz, revisa tu conexión",
 // language switch
-"Send in your notes and Qwebbo turns them into a quiz. Play solo or with your friends.":"Envía tus apuntes y Qwebbo los convierte en un quiz. Juega solo o con tus amigos.",
+"Send in your notes and qwebbo turns them into a quiz. Play solo or with your friends.":"Envía tus apuntes y qwebbo los convierte en un quiz. Juega solo o con tus amigos.",
 "Podium":"Podio","Sessions":"Sesiones","Question":"Pregunta","Question {i} / {n}":"Pregunta {i} / {n}","Pause":"Pausa","question {n}":"pregunta {n}","questions":"preguntas",
 "Switch to French":"Cambiar a francés","Switch to English":"Cambiar a inglés",
 // quiz screen
@@ -449,7 +449,7 @@ var ES={
 "Right answers by chapter":"Aciertos por capítulo",
 "Most missed questions":"Preguntas más falladas",
 "Anonymous: no names, photos, cookies or emails are kept, only which questions were answered right. Counts start the day this feature went live.":"Anónimo: no se guarda ningún nombre, foto, cookie ni correo, solo qué preguntas se han acertado. Los datos empiezan el día en que se activó esta función.",
-"Qwebbo: usage overview":"Qwebbo: resumen de uso",
+"qwebbo: usage overview":"qwebbo: resumen de uso",
 "All quizzes together, anonymous.":"Todos los quizzes juntos, de forma anónima.",
 "Games left unfinished":"Partidas abandonadas",
 "Players who came back":"Jugadores que han vuelto",
@@ -462,7 +462,7 @@ var ES={
 "Open this quiz's stats":"Abrir las estadísticas de este quiz",
 "Print / PDF":"Imprimir / PDF",
 "Anonymous usage stats":"Estadísticas de uso anónimas",
-"Counts finished and abandoned games without any name, cookie or email, to see how Qwebbo is used.":"Cuenta las partidas terminadas y abandonadas sin ningún nombre, cookie ni correo, para saber cómo se usa Qwebbo.",
+"Counts finished and abandoned games without any name, cookie or email, to see how qwebbo is used.":"Cuenta las partidas terminadas y abandonadas sin ningún nombre, cookie ni correo, para saber cómo se usa qwebbo.",
 "Refresh":"Actualizar",
 "Loading…":"Cargando…",
 "Can't reach the server, try again.":"No se puede conectar con el servidor, inténtalo de nuevo.",

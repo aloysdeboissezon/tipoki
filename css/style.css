@@ -238,7 +238,7 @@ label.label{display:block;margin-bottom:6px}
   .bankpanel h2{font-size:19px}
   .bankpanel #bankBtn,.bankpanel #shareQuizBtn,.bankpanel #cardsJump,.bankpanel #sheetBtn{padding:10px 14px;min-height:44px;font-size:15px}
 }
-/* Qwebbo: quiz maker */
+/* qwebbo: quiz maker */
 textarea{font:inherit;font-size:16px;padding:13px 16px;border-radius:16px;border:2px solid var(--line);background:#FAFAFD;color:var(--ink);width:100%;min-width:0;resize:vertical;margin-top:6px}
 textarea:focus{border-color:var(--hl);box-shadow:0 0 0 4px var(--hl-soft);outline:none}
 #mkTitle{margin-top:6px}
