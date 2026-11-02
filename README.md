@@ -8,6 +8,9 @@ Envoie ton cours, Tipoki en fait un quiz. Joue seul ou en multi avec tes potes (
 - `supabase/functions/generate-quiz/` : fonction serveur qui transforme un PDF ou un texte en quiz avec Claude.
 - Base Supabase `socio-trivia` : tables `games`, `players` (multi), `quizzes` (quiz générés), `gen_log` (limites d'usage).
 
+## Sauvegardes
+Sauvegarde quotidienne de la base via GitHub Actions, procédure de restauration : `docs/restauration.md`.
+
 ## Config
 - Secret Supabase `ANTHROPIC_API_KEY` (Edge Functions → Secrets).
 - Un quiz se partage avec `?quiz=<id>`, une partie avec `?code=ABCD`.
