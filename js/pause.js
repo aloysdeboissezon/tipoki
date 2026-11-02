@@ -11,6 +11,14 @@
     "Pause the exam":"Mettre l'examen en pause",
     "Round paused. Resume it from the flashcards panel.":"Série en pause. Reprends-la depuis le panneau des cartes."
   });
+  if(window.ES)Object.assign(ES,{
+    "Game paused. Resume it from this quiz page.":"Partida en pausa. Reanúdala desde la página de este quiz.",
+    "Cards in progress: {i} / {n}":"Tarjetas en curso: {i} / {n}",
+    "Pause the exam? Your answers are kept and you can resume it from this quiz page.":"¿Poner el examen en pausa? Se guardan tus respuestas y podrás reanudarlo desde la página de este quiz.",
+    "Leave the exam? It stays paused and you can resume it from this quiz page.":"¿Salir del examen? Queda en pausa y podrás reanudarlo desde la página de este quiz.",
+    "Pause the exam":"Poner el examen en pausa",
+    "Round paused. Resume it from the flashcards panel.":"Ronda en pausa. Reanúdala desde el panel de tarjetas."
+  });
   $("exQuit").textContent=tl("Pause the exam");
   // ----- solo quiz games -----
   function pauseGame(){

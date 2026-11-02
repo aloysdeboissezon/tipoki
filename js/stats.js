@@ -71,7 +71,7 @@ function renderStats(s,all){
   if(s.starts)tiles.push([tl("Games left unfinished"),pct(s.abandoned,s.starts)+" %"]);
   if(s.players)tiles.push([tl("Players who came back"),pct(s.returning,s.players)+" %"]);
   const wk=s.weeks||[];if(wk.length)tiles.push([tl("Active players this week"),wk[wk.length-1][1]]);
-  if(s.since)tiles.push([tl("Data since"),new Date(s.since+"T12:00:00").toLocaleDateString(LANG==="fr"?"fr-FR":"en-GB",{day:"numeric",month:"short",year:"numeric"})]);
+  if(s.since)tiles.push([tl("Data since"),new Date(s.since+"T12:00:00").toLocaleDateString(DATELOC,{day:"numeric",month:"short",year:"numeric"})]);
   const tb=$("stTiles");tb.textContent="";
   tiles.forEach(([l,v])=>{const d=el("div","st-tile");d.append(el("b",null,typeof v==="number"?v.toLocaleString(LOCALE):v),el("span",null,l));tb.appendChild(d)});
   const m=s.modes||{},parts=[["multi",tl("multiplayer")],["solo",tl("solo")],["exam",tl("exams")],["review",tl("mistake reviews")]].filter(([k])=>m[k]).map(([k,l])=>m[k]+" "+l);
@@ -81,14 +81,14 @@ function renderStats(s,all){
   const list=[];for(let i=29;i>=0;i--){const d=new Date(Date.now()-i*864e5);list.push(d.toLocaleDateString("en-CA",{timeZone:"Europe/Paris"}))}
   const max=Math.max(1,...list.map(d=>(days.get(d)||[0,0])[1]));
   list.forEach(d=>{const x=days.get(d),g=x?x[1]:0,b=el("div","st-bar"+(g?"":" zero"));b.style.setProperty("--h",(g/max).toFixed(3));
-    b.title=new Date(d+"T12:00:00").toLocaleDateString(LANG==="fr"?"fr-FR":"en-GB",{day:"numeric",month:"short"})+": "+tl(g===1?"{n} game":"{n} games",{n:g})+(x?", "+tl(x[2]===1?"{n} player":"{n} players",{n:x[2]}):"");bars.appendChild(b)});
+    b.title=new Date(d+"T12:00:00").toLocaleDateString(DATELOC,{day:"numeric",month:"short"})+": "+tl(g===1?"{n} game":"{n} games",{n:g})+(x?", "+tl(x[2]===1?"{n} player":"{n} players",{n:x[2]}):"");bars.appendChild(b)});
   $("stDaysWrap").hidden=!s.games;
   const old=$("stBody").querySelector(".empty");if(old)old.remove();
   if(!s.games)$("stTiles").after(emptyState("M4 20V10M10 20V4M16 20v-8M22 20H2",tl("No games yet"),tl("Share the quiz link with your class: stats show up here after the first finished game.")));
   // weekly active players, last 8 weeks
   const wb=$("stWeeks");wb.textContent="";const wmax=Math.max(1,...wk.map(x=>x[1]));
   wk.forEach(([d,p])=>{const b=el("div","st-bar");b.style.setProperty("--h",(p/wmax).toFixed(3));
-    b.title=tl("Week of {d}",{d:new Date(d+"T12:00:00").toLocaleDateString(LANG==="fr"?"fr-FR":"en-GB",{day:"numeric",month:"short"})})+": "+tl(p===1?"{n} player":"{n} players",{n:p});wb.appendChild(b)});
+    b.title=tl("Week of {d}",{d:new Date(d+"T12:00:00").toLocaleDateString(DATELOC,{day:"numeric",month:"short"})})+": "+tl(p===1?"{n} player":"{n} players",{n:p});wb.appendChild(b)});
   $("stWeeksWrap").hidden=!wk.length;
   // overview: one row per quiz, with a link to its own page (most missed questions need the quiz loaded)
   const qz=$("stQuizzes");qz.textContent="";
