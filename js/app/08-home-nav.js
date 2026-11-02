@@ -30,12 +30,12 @@ function renderQuizGrid(list){
   const box=$("quizGrid");box.textContent="";
   const rc=recentGet();list=list.map((q,i)=>[q,i]).sort((a,b)=>(rc[b[0].id]||0)-(rc[a[0].id]||0)||a[1]-b[1]).map(x=>x[0]);
   list.forEach(q=>{const c=el("button","qcard");c.type="button";c.dataset.hay=quizHay(q);c.dataset.id=q.id;
-    const ico=el("span","qico",(q.title||"?").trim().charAt(0).toUpperCase());ico.style.background="hsl("+hue(q.id||q.title||"")+" 90% 80%)";
+    const ico=el("span","qico");ico.innerHTML=quizIcon(q);
     const t=el("span","qtxt");t.append(el("b",null,q.title));if(q.subject)t.append(el("small",null,q.subject));const qb=el("span","qbest");qb.hidden=true;t.append(qb);
     c.append(ico,t,el("span","qgo","›"));c.onclick=()=>openQuiz(q.id,c);box.appendChild(c)});
   const L=$("qList");L.textContent="";
   list.forEach((q,i)=>{const b=el("button","qchip");b.type="button";b.dataset.hay=quizHay(q);b.dataset.id=q.id;b.dataset.i=i%8;
-    b.append(el("span","qchip-l",(q.title||"?").trim().charAt(0).toUpperCase()),el("b",null,q.title),el("span","qgo","›"));b.onclick=()=>openQuiz(q.id,b);L.appendChild(b)});
+    const li=el("span","qchip-l");li.innerHTML=quizIcon(q);b.append(li,el("b",null,q.title),el("span","qgo","›"));b.onclick=()=>openQuiz(q.id,b);L.appendChild(b)});
   $("qAllT").textContent=tl("All quizzes ({n})",{n:list.length});
   filterQuizzes();renderProgressUI();carouselUpdate();
 }

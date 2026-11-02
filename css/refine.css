@@ -484,3 +484,10 @@ html[data-theme="dark"] .off-bar{background:#2B2A45}
 .fc-resume{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;border-radius:14px;background:var(--hl-soft);font-weight:700;font-size:14.5px;margin-bottom:12px}
 .fc-resume span{flex:1 1 180px}
 .fc-resume[hidden]{display:none}
+
+/* ---------- quiz icons: an illustration per quiz instead of a letter (js/qicons.js) ---------- */
+.qico,.qchip-l,.bankpanel .bk-ico{padding:0;line-height:0;overflow:hidden;background:linear-gradient(160deg,#fff 0%,#F1ECFF 100%)!important}
+.qico .qsvg,.qchip-l .qsvg,.bk-ico .qsvg{display:block;width:78%;height:78%;margin:auto;filter:drop-shadow(0 2px 0 rgba(23,22,43,.12))}
+.qico,.qchip-l,.bankpanel .bk-ico{display:grid;place-items:center}
+.quizgrid .qico{box-shadow:0 8px 14px -8px rgba(0,0,0,.35),inset 0 0 0 1.5px rgba(255,255,255,.9)}
+.bankpanel .bk-ico{width:52px;height:52px;border-radius:16px}
