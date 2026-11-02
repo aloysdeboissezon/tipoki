@@ -40,6 +40,7 @@ function startExam(){
   $("exBar").parentNode.hidden=!exOpt.pace;$("exClock").setAttribute("aria-label",exOpt.pace?tl("Time left"):tl("Time elapsed"));
   show("exam");$("exPlay").hidden=false;$("exDone").hidden=true;$("exConfirm").hidden=true;
   sfx("go");renderExQ();exTick();
+  if(typeof recordExamStart==="function")recordExamStart(EX);
 }
 function exAnswered(a){return !!a&&(a.c!=null||!!(a.txt&&a.txt.trim()))}
 function renderExQ(){
@@ -101,6 +102,7 @@ function handInExam(timeUp){
   lsSet(lsKey("miss"),JSON.stringify(mb.slice(-300)));renderMissBtn();
   const h=exHist();h.unshift({g:EX.grade,n,ok,at:Date.now()});lsSet(lsKey("exam"),JSON.stringify(h.slice(0,20)));markStudyDay();addDaily(n);
   renderExDone();
+  if(typeof recordExam==="function")recordExam(EX);
 }
 function exVerdict(g){return g>=16?tl("Outstanding, top marks."):g>=14?tl("Very good, well done."):g>=12?tl("Good, a solid pass."):g>=10?tl("Passed. A few gaps to fill."):tl("Not passed yet. Go over your mistakes and try again.")}
 function renderExDone(){
