@@ -536,6 +536,7 @@ var ES={
 "Create account":"Crear cuenta",
 "Sign in to keep your scores, mistakes and flashcards on every device.":"Inicia sesión para tener tus puntuaciones, errores y flashcards en todos tus dispositivos.",
 "Not now":"Ahora no",
+"Keep your scores on every device.":"Tus puntuaciones en todos tus dispositivos.",
 "Sign in":"Iniciar sesión",
 "Creating…":"Creando…",
 "Signing in…":"Iniciando sesión…",

@@ -554,6 +554,7 @@ var FR={
 "Create account":"Créer le compte",
 "Sign in to keep your scores, mistakes and flashcards on every device.":"Connecte-toi pour retrouver tes scores, erreurs et flashcards sur tous tes appareils.",
 "Not now":"Plus tard",
+"Keep your scores on every device.":"Garde tes scores sur tous tes appareils.",
 "Sign in":"Se connecter",
 "Creating…":"Création…",
 "Signing in…":"Connexion…",
