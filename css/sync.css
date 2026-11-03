@@ -47,3 +47,12 @@
 .acc-act .btn{margin:0;padding:8px 16px;min-height:0;font-size:15px}
 .acc-act .linkbtn{font-size:20px;line-height:1;padding:6px 8px;text-decoration:none}
 @media(max-width:420px){.accbtn.off .bt{display:none}}
+.acc-av{overflow:hidden;flex:none}
+.acc-av img{width:100%;height:100%;object-fit:cover;display:block}
+.accbtn.on{padding-left:8px;gap:8px}
+.accbtn.on .acc-nm{max-width:78px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.crop{z-index:110}
+.onb-top{display:flex;align-items:flex-end;gap:14px}
+.onb-nm{flex:1;min-width:0}
+.onb-av{flex:none;border:0;cursor:pointer;padding:0;color:#fff;font-weight:900}
+.onb-ph{align-self:flex-start;margin-top:-6px}

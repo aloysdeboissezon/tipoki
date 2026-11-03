@@ -26,10 +26,10 @@ function saveAcct(){put(ACCT,acct?JSON.stringify(acct):null)}
 // every write to a progress key marks the copy online as out of date
 let applying=false,edits=0;
 S.setItem=function(k,v){const watch=this===store&&!applying&&synced(k),old=watch?oGet.call(this,k):null;
-  oSet.call(this,k,v);if(watch&&old!==String(v))changed()};
+  oSet.call(this,k,v);if(watch&&old!==String(v))changed(k)};
 S.removeItem=function(k){const watch=this===store&&!applying&&synced(k)&&oGet.call(this,k)!=null;
-  oDel.call(this,k);if(watch)changed()};
-function changed(){edits++;put(DIRTY,"1");if(acct)later(2500)}
+  oDel.call(this,k);if(watch)changed(k)};
+function changed(k){if(k==="tpk-avatar")setTimeout(()=>{t0(renderEntry);if(!dlg.hidden&&!q("onbNick").closest("[hidden]"))t0(onbPaint)},0);edits++;put(DIRTY,"1");if(acct)later(2500)}
 
 function snap(){const o={};try{for(let i=0;i<store.length;i++){const k=store.key(i);if(synced(k))o[k]=get(k)}}catch(e){}return o}
 function apply(o,replace){applying=true;
@@ -67,7 +67,7 @@ function refreshApp(){const t=f=>{try{f()}catch(e){}};
   t(()=>{if(document.activeElement!==$("nick"))$("nick").value=get("socio-nick")||""});
   t(()=>{const a=get("tpk-avatar");if(a)avs[me]=a;else delete avs[me]});
   t(()=>{if(window.tpkCountry)tpkCountry.paint()});t(renderMe);t(renderMissBtn);t(renderCardsPanel);t(renderMyQuizzes);
-  t(()=>renderProgressUI());t(()=>{if(!$("exam")||$("exam").hidden)renderExamPanel()})}   // best scores / streak and exam history, from other features
+  t(renderEntry);t(()=>renderProgressUI());t(()=>{if(!$("exam")||$("exam").hidden)renderExamPanel()})}   // best scores / streak and exam history, from other features
 
 async function rpc(fn,args,c){const {data,error}=await (c||sb).rpc(fn,args);
   if(error)throw new Error(/^[a-z_]+$/.test(error.message||"")?error.message:"network");
@@ -124,9 +124,9 @@ function nudgeOff(){const t=+get(NUDGE)||0;return Date.now()-t<3*864e5}
 function renderEntry(){
   const PERSON='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.500 20.500c.8-4 4-6 7.500-6s6.700 2 7.500 6"/></svg>';
   if(acct){
-    const u=String(acct.u||"?");
+    const u=String(acct.u||"?"),nm=(get("socio-nick")||"").trim()||u.split("@")[0],ph=get("tpk-avatar");
     acc.className="iconbtn accbtn on";acc.title=acc.ariaLabel=tl("Saved online as {u}",{u});
-    acc.innerHTML='<span class="acc-av" aria-hidden="true">'+esc2(u.charAt(0).toUpperCase())+'</span>';
+    acc.innerHTML='<span class="acc-av" aria-hidden="true">'+(ph&&/^data:image\//.test(ph)?'<img alt="" src="'+esc2(ph)+'">':esc2(nm.charAt(0).toUpperCase()))+'</span><span class="bt acc-nm">'+esc2(nm)+'</span>';
     card.hidden=true;
   }else{
     acc.className="iconbtn accbtn off";acc.title=acc.ariaLabel=tl("Sign in");
@@ -163,6 +163,14 @@ dlg.innerHTML=`<div class="sync-card" id="syncCard">
   <p class="err" id="pvErr" hidden></p>
   <button type="button" class="linkbtn" id="pvLegacy">Use a username and password instead</button>
   <div class="row sync-actions"><button type="button" class="btn ghost" id="pvCancel">Cancel</button></div>
+</div>
+<div class="sync-view" data-v="onb">
+  <h2>Set up your profile</h2>
+  <p class="muted sync-help">Your name and photo show next to your scores when you play with friends. You can change them any time.</p>
+  <div class="onb-top"><button type="button" class="onb-av av big" id="onbAv" aria-label="Add a photo"></button><div class="sync-field onb-nm"><label class="label" for="onbNick">Your first name or nickname</label><input type="text" id="onbNick" maxlength="18" autocomplete="given-name" placeholder="e.g. Alex"></div></div>
+  <button type="button" class="linkbtn onb-ph" id="onbPh">Add a photo</button>
+  <div class="sync-field"><label class="label" for="onbCountry">Your country (optional)</label><select id="onbCountry" class="country-sel"></select></div>
+  <div class="row sync-actions"><button type="button" class="btn ghost" id="onbSkip">Skip</button><button type="button" class="btn" id="onbDone">Done</button></div>
 </div>
 <div class="sync-view" data-v="account">
   <h2>Account</h2>
@@ -210,6 +218,20 @@ function err(m){q("syncErr").textContent=m;q("syncErr").hidden=!m}
 let lastFocus=null,linking=false,sentTo=null;
 function show(v){dlg.querySelectorAll(".sync-view").forEach(x=>x.hidden=x.dataset.v!==v)}
 function perr(id,m){const e=q(id);e.textContent=m;e.hidden=!m}
+function onbPaint(){const a=q("onbAv");a.removeAttribute("style");a.className="onb-av av big";
+  const nm=q("onbNick").value.trim()||"?",ph=get("tpk-avatar");a.style.backgroundColor="hsl("+(nm.charCodeAt(0)*37%360)+" 55% 42%)";a.textContent=nm.charAt(0).toUpperCase();
+  if(ph){a.textContent="";a.classList.add("photo");a.style.backgroundImage="url("+JSON.stringify(ph)+")";a.style.backgroundSize="cover";a.style.backgroundPosition="center"}
+  q("onbPh").textContent=ph?tl("Change photo"):tl("Add a photo")}
+function openOnb(name){
+  const sel=q("onbCountry");if(window.tpkCountry){tpkCountry.paint();sel.innerHTML=($("country")||{}).innerHTML||"";sel.value=tpkCountry.mine()}
+  q("onbNick").value=((get("socio-nick")||"").trim()||(name?name.charAt(0).toUpperCase()+name.slice(1):"")).slice(0,18);onbPaint();
+  lastFocus=null;show("onb");dlg.hidden=false;document.body.classList.add("noscroll")}
+function onbEnd(save){
+  if(save){const n=q("onbNick").value.trim();
+    try{if(n){store.setItem("socio-nick",n);$("nick").value=n}if(window.tpkCountry){tpkCountry.set(q("onbCountry").value);tpkCountry.paint()}}catch(e){}
+    t0(renderMe);t0(renderEntry)}
+  put("tpk-onboarded","1");closeDlg()}
+const t0=f=>{try{f()}catch(e){}};
 function openDlg(m){lastFocus=document.activeElement;
   if(m==="account"){q("acInfo").innerHTML=tl("Saved online as {u}",{u:"<b>"+esc2(acct?acct.u:"")+"</b>"});show("account");dlg.hidden=false;document.body.classList.add("noscroll");return}linking=m==="link";perr("pvErr","");sentTo=null;
   q("pvEmail").hidden=!AUTH.email;q("pvPhone").hidden=!AUTH.phone;q("pvGoogle").hidden=!AUTH.google;q("pvApple").hidden=!AUTH.apple;
@@ -226,7 +248,9 @@ function closeDlg(){dlg.hidden=true;document.body.classList.remove("noscroll");q
 q("syncCancel").onclick=closeDlg;
 dlg.addEventListener("keydown",e=>{if(e.key==="Escape")closeDlg()});
 dlg.addEventListener("click",e=>{if(e.target===dlg)closeDlg()});
-q("pvCancel").onclick=closeDlg;q("acClose").onclick=closeDlg;q("acOut").onclick=()=>{closeDlg();signOut()};
+q("pvCancel").onclick=closeDlg;
+q("onbSkip").onclick=()=>onbEnd(false);q("onbDone").onclick=()=>onbEnd(true);q("onbNick").addEventListener("input",onbPaint);
+q("onbAv").onclick=q("onbPh").onclick=()=>{const f=$("pfpIn");if(f)f.click()};q("acClose").onclick=closeDlg;q("acOut").onclick=()=>{closeDlg();signOut()};
 q("pvLegacy").onclick=()=>{show("legacy");setMode("in");q("syncUser").focus()};
 q("syncBack").onclick=()=>show("choose");
 q("emBack").onclick=q("phBack").onclick=()=>{show("choose");sentTo=null};
@@ -277,21 +301,28 @@ q("phoneForm").onsubmit=async e=>{e.preventDefault();perr("phErr","");
 
 // Supabase Auth says "signed in" (link opened, Google came back, code accepted): trade that for the usual save token
 let finishing=false;
-async function finishAuth(){
+async function finishAuth(ses){
   if(finishing)return;finishing=true;
   const link=get(LINK),e0=edits;
   try{
     const r=await rpc("tpk_auth_login",{p_link:link||null,p_data:snap()},sbA);
     acct={u:r.username,tok:r.token,rev:r.rev,au:1};saveAcct();put(LINK,null);
+    try{const md=(ses&&ses.user&&ses.user.user_metadata)||{},nm=String(md.full_name||md.name||"").trim().slice(0,18);   // Google gives a name: use it as the nickname if there is none yet
+      if(nm&&!(get("socio-nick")||"").trim())store.setItem("socio-nick",nm)}catch(x){}
     if(r.created){if(edits===e0)put(DIRTY,null);else later(500)}
     else{const m=merge(snap(),r.data||{});apply(m);
       if(same(m,r.data||{}))put(DIRTY,null);else{put(DIRTY,"1");push()}}
-    setState("ok");closeDlg();if(typeof toast==="function")toast(r.created?tl("Progress saved online"):tl("Progress restored"))
+    setState("ok");closeDlg();if(typeof toast==="function")toast(r.created?tl("Progress saved online"):tl("Progress restored"));
+    if(!get("tpk-onboarded")&&(r.created||!(get("socio-nick")||"").trim())){const md=(ses&&ses.user&&ses.user.user_metadata)||{};
+      openOnb(String(md.full_name||md.name||String(r.username||"").split("@")[0]).replace(/[^\p{L}\p{N} ._-]/gu,"").trim())}
   }catch(x){put(LINK,null);openDlg("new");perr("pvErr",AMSG[x.message]||AMSG.fail)}
   finally{finishing=false;try{await sbA.auth.signOut({scope:"local"})}catch(x){}}
 }
 if(AUTH_ON){
-  sbA.auth.onAuthStateChange((ev,ses)=>{if(ev==="SIGNED_IN"&&ses)setTimeout(finishAuth,0)});
+  sbA.auth.onAuthStateChange((ev,ses)=>{if((ev==="SIGNED_IN"||ev==="INITIAL_SESSION")&&ses&&(!acct||get(LINK)))setTimeout(()=>finishAuth(ses),0)});   // INITIAL_SESSION: a sign-in that was not finished before the page reloaded
+  try{if(!acct&&/[?&]code=/.test(location.search)){const c=new URLSearchParams(location.search);c.delete("code");   // back from Google: if nothing happened after a while, say so instead of staying silent
+    history.replaceState(null,"",location.pathname+(c.toString()?"?"+c:""));
+    setTimeout(()=>{if(!acct&&!finishing){openDlg("new");perr("pvErr",AMSG.fail)}},8000)}}catch(x){}
   // a link that expired, or a Google sign-in that was refused, comes back with the reason in the address
   try{const h=location.hash.includes("error_description=")?location.hash.slice(1):"",qs=new URLSearchParams(h||location.search);
     if(qs.get("error_description")){history.replaceState(null,"",location.pathname);

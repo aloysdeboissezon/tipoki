@@ -10,6 +10,7 @@ for (const id of ["uspop", "gastro", "ukculture"]) {
     await page.locator("#fmtChips button", { hasText: /Multiple choice/i }).click();
     await page.locator("#lenChips button", { hasText: /^5$/ }).click();
     await page.locator("#soloBtn").click();
-    await expect(page.locator("#qTiles .tile")).toHaveCount(4);
+    // a question offers answer tiles: 4 for multiple choice, 2 when the draw gives a true/false one
+    await expect.poll(async () => [2, 4].includes(await page.locator("#qTiles .tile").count())).toBe(true);
   });
 }
