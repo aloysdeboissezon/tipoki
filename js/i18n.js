@@ -100,7 +100,7 @@ var FR={
 "Quiz not found":"Quiz introuvable",
 "Couldn't load this quiz, check your connection":"Impossible de charger ce quiz, vérifie ta connexion",
 // language switch
-"Send in your notes and qwebbo turns them into a quiz. Play solo or with your friends.":"Envoie ton cours, qwebbo en fait un quiz. Joue seul ou en multi avec tes potes.",
+"Quizzes, flashcards and exams for your courses. Play solo or with your friends.":"Quiz, flashcards et examens pour tes cours. Joue seul ou en multi avec tes potes.",
 "Podium":"Podium","Sessions":"Sessions","Question":"Question","Question {i} / {n}":"Question {i} / {n}","Pause":"Pause","question {n}":"question {n}","questions":"questions",
 "Switch to French":"Passer en français","Switch to English":"Passer en anglais",
 // quiz screen

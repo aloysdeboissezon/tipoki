@@ -11,7 +11,7 @@ const PER_IP_PER_HOUR = 6;
 const GLOBAL_PER_DAY = 60; // each quiz costs real money: this is the hard ceiling per day
 
 // Kill switch: the function does nothing (and costs nothing) until the secret GENERATE_ENABLED is set to "true".
-// ALLOWED_ORIGIN (optional secret, e.g. https://tipoki.vercel.app) limits which website may call it from a browser.
+// ALLOWED_ORIGIN (optional secret, e.g. https://qwebbo.com) limits which website may call it from a browser.
 const cors = {
   "Access-Control-Allow-Origin": Deno.env.get("ALLOWED_ORIGIN") || "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",

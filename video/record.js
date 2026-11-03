@@ -1,4 +1,4 @@
-// Records the Tipoki presentation video (v3): node video/record.js <en|fr> <outdir>
+// Records the qwebbo presentation video (v3): node video/record.js <en|fr> <outdir>
 // Needs the repo served on http://localhost:8765 and Playwright. Stage = video/stage.html, phones = the real site in iframes.
 const {chromium}=require('playwright');const fs=require('fs');const path=require('path');
 const LANG=process.argv[2]||'en',OUT=path.resolve(process.argv[3]||'out');fs.mkdirSync(OUT,{recursive:true});
