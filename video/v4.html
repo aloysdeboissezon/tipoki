@@ -42,27 +42,27 @@
 <script>
 const L=new URLSearchParams(location.search).get('lang')||'en';
 const TX={en:{
- t0:['','Study by *beating* your *friends.*','qwebbo · Learn, compete, master'],
+ t0:['','Learn, *compete,* *master.*',null],
  t1:['01 · Pick','Pick a *quiz*','Your course, split in parts.'],
  t2:['02 · Study','Four ways to *study*',null],
  t3:['03 · Play','Challenge your *friends*','Share a code. Fastest brain wins.'],
- t4:['Free · No sign-up','Pick a quiz. Beat your friends. *Revise.*','qwebbo · Learn, compete, master'],
+ t4:['Free · No sign-up','Learn, *compete,* *master.*',null],
  modes:['Quiz: answer fast, score big','Flashcards that adapt to you','The whole course on one sheet','A real exam, with a grade out of 20'],
  chips:{pts:'<b>+955</b> pts',streak:'STREAK <b>×3</b>',got:'Got it ✓',join:'joined',fast:'⚡ <b>1.7 s</b>',nolim:'No time limit'}},
 fr:{
- t0:['','Révise en *battant* tes *potes.*','qwebbo · Learn, compete, master'],
+ t0:['','Apprends, *défie,* *maîtrise.*',null],
  t1:['01 · Choisis','Choisis un *quiz*','Ton cours, découpé en parties.'],
  t2:['02 · Révise','Quatre façons de *réviser*',null],
  t3:['03 · Joue','Défie tes *potes*','Partage un code. Le plus rapide gagne.'],
- t4:['Gratuit · Sans inscription','Choisis un quiz. Bats tes potes. *Révise.*','qwebbo · Learn, compete, master'],
+ t4:['Gratuit · Sans inscription','Apprends, *défie,* *maîtrise.*',null],
  modes:['Quiz : réponds vite, marque gros','Des flashcards qui s\'adaptent','Tout le cours sur une fiche','Un vrai examen, noté sur 20'],
  chips:{pts:'<b>+955</b> pts',streak:'SÉRIE <b>×3</b>',got:'Je sais ✓',join:'a rejoint',fast:'⚡ <b>1,7 s</b>',nolim:'Sans limite de temps'}},
 es:{
- t0:['','Estudia *ganando* a tus *amigos.*','qwebbo · Learn, compete, master'],
+ t0:['','Aprende, *compite,* *domina.*',null],
  t1:['01 · Elige','Elige un *quiz*','Tu curso, dividido en partes.'],
  t2:['02 · Estudia','Cuatro formas de *estudiar*',null],
  t3:['03 · Juega','Reta a tus *amigos*','Comparte un código. El más rápido gana.'],
- t4:['Gratis · Sin registro','Elige un quiz. Gana a tus amigos. *Estudia.*','qwebbo · Learn, compete, master'],
+ t4:['Gratis · Sin registro','Aprende, *compite,* *domina.*',null],
  modes:['Quiz: responde rápido, puntúa alto','Flashcards que se adaptan a ti','Todo el curso en una ficha','Un examen real, con nota sobre 20'],
  chips:{pts:'<b>+955</b> pts',streak:'RACHA <b>×3</b>',got:'Lo sé ✓',join:'se ha unido',fast:'⚡ <b>1,7 s</b>',nolim:'Sin límite de tiempo'}}}[L];
 const $=id=>document.getElementById(id);

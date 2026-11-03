@@ -83,7 +83,7 @@ var ES={
 "Quiz not found":"Quiz no encontrado",
 "Couldn't load this quiz, check your connection":"No se ha podido cargar este quiz, revisa tu conexión",
 // language switch
-"Send in your notes and qwebbo turns them into a quiz. Play solo or with your friends.":"Envía tus apuntes y qwebbo los convierte en un quiz. Juega solo o con tus amigos.",
+"Quizzes, flashcards and exams for your courses. Play solo or with your friends.":"Quizzes, flashcards y exámenes para tus cursos. Juega solo o con tus amigos.",
 "Podium":"Podio","Sessions":"Sesiones","Question":"Pregunta","Question {i} / {n}":"Pregunta {i} / {n}","Pause":"Pausa","question {n}":"pregunta {n}","questions":"preguntas",
 "Switch to French":"Cambiar a francés","Switch to English":"Cambiar a inglés",
 // quiz screen
