@@ -10,7 +10,7 @@ const AUTH={email:true,google:true,apple:false,phone:false};
 // Supabase Auth only proves who the person is (email link, Google...). The progress itself stays in the same online copy as before:
 // right after signing in, tpk_auth_login hands the browser the usual save token. Nothing of the auth session is kept afterwards.
 let sbA=null;
-try{sbA=window.supabase.createClient(SB_URL,SB_KEY,{auth:{flowType:"pkce",persistSession:true,autoRefreshToken:false,detectSessionInUrl:true,storageKey:"qwebbo-auth"}})}catch(e){sbA=null}
+try{sbA=window.supabase.createClient(SB_URL,SB_KEY,{auth:{flowType:"implicit",persistSession:true,autoRefreshToken:false,detectSessionInUrl:true,storageKey:"qwebbo-auth"}})}catch(e){sbA=null}
 if(sbA&&!(sbA.auth&&typeof sbA.auth.onAuthStateChange==="function"))sbA=null;
 const ACCT="tpk-sync",DIRTY="tpk-sync-dirty",LINK="qwebbo-link";   // LINK: a username account waiting to get an email (the page may reload for Google)
 const NOSYNC=new Set(["socio-pid","socio-sound","tpk-theme","tpk-lang","tpk-resume","tpk-examrun","tpk-cardrun","tpk-sid","tpk-lgq","tpk-lgseen"]);   // per device (a paused solo game stays on its device)
@@ -137,7 +137,7 @@ function renderEntry(){
       card.querySelector("#accGo").onclick=()=>openDlg(state==="expired"?"in":"new");
       card.querySelector("#accNo").onclick=()=>{put(NUDGE,String(Date.now()));card.hidden=true}}}
 }
-acc.onclick=()=>{if(acct)openDlg("account");else openDlg(state==="expired"?"in":"new")};
+acc.onclick=()=>{if(acct)openOnb(null,true);else openDlg(state==="expired"?"in":"new")};
 function renderLine(){
   if(acct){
     const st={saving:tl("Saving…"),offline:tl("Offline, will retry")}[state]||"";
@@ -165,12 +165,13 @@ dlg.innerHTML=`<div class="sync-card" id="syncCard">
   <div class="row sync-actions"><button type="button" class="btn ghost" id="pvCancel">Cancel</button></div>
 </div>
 <div class="sync-view" data-v="onb">
-  <h2>Set up your profile</h2>
+  <h2 id="onbTitle">Set up your profile</h2>
   <p class="muted sync-help">Your name and photo show next to your scores when you play with friends. You can change them any time.</p>
   <div class="onb-top"><button type="button" class="onb-av av big" id="onbAv" aria-label="Add a photo"></button><div class="sync-field onb-nm"><label class="label" for="onbNick">Your first name or nickname</label><input type="text" id="onbNick" maxlength="18" autocomplete="given-name" placeholder="e.g. Alex"></div></div>
   <button type="button" class="linkbtn onb-ph" id="onbPh">Add a photo</button>
   <div class="sync-field"><label class="label" for="onbCountry">Your country (optional)</label><select id="onbCountry" class="country-sel"></select></div>
   <div class="row sync-actions"><button type="button" class="btn ghost" id="onbSkip">Skip</button><button type="button" class="btn" id="onbDone">Done</button></div>
+  <div class="onb-acct" id="onbAcctBox" hidden><p class="muted" id="onbAcct"></p><button type="button" class="linkbtn" id="onbOut">Sign out</button></div>
 </div>
 <div class="sync-view" data-v="account">
   <h2>Account</h2>
@@ -222,7 +223,11 @@ function onbPaint(){const a=q("onbAv");a.removeAttribute("style");a.className="o
   const nm=q("onbNick").value.trim()||"?",ph=get("tpk-avatar");a.style.backgroundColor="hsl("+(nm.charCodeAt(0)*37%360)+" 55% 42%)";a.textContent=nm.charAt(0).toUpperCase();
   if(ph){a.textContent="";a.classList.add("photo");a.style.backgroundImage="url("+JSON.stringify(ph)+")";a.style.backgroundSize="cover";a.style.backgroundPosition="center"}
   q("onbPh").textContent=ph?tl("Change photo"):tl("Add a photo")}
-function openOnb(name){
+function openOnb(name,edit){
+  dlg.classList.add("page");q("onbAcctBox").hidden=!edit;
+  q("onbSkip").textContent=edit?tl("Close"):tl("Skip");
+  q("onbTitle").textContent=edit?tl("Your profile"):tl("Set up your profile");
+  if(edit)q("onbAcct").innerHTML=tl("Saved online as {u}",{u:"<b>"+esc2(acct?acct.u:"")+"</b>"});
   const sel=q("onbCountry");if(window.tpkCountry){tpkCountry.paint();sel.innerHTML=($("country")||{}).innerHTML||"";sel.value=tpkCountry.mine()}
   q("onbNick").value=((get("socio-nick")||"").trim()||(name?name.charAt(0).toUpperCase()+name.slice(1):"")).slice(0,18);onbPaint();
   lastFocus=null;show("onb");dlg.hidden=false;document.body.classList.add("noscroll")}
@@ -244,12 +249,12 @@ function openDlg(m){lastFocus=document.activeElement;
   if(!q("syncUser").value)q("syncUser").value=(get("socio-nick")||"").replace(/[^A-Za-z0-9_.-]/g,"").slice(0,20);
   dlg.hidden=false;document.body.classList.add("noscroll");
   setTimeout(()=>{if(!AUTH_ON)(q("syncUser").value?q("syncPass"):q("syncUser")).focus()},0)}
-function closeDlg(){dlg.hidden=true;document.body.classList.remove("noscroll");q("syncGo").disabled=false;if(lastFocus&&lastFocus.focus)lastFocus.focus()}
+function closeDlg(){dlg.hidden=true;dlg.classList.remove("page");document.body.classList.remove("noscroll");q("syncGo").disabled=false;if(lastFocus&&lastFocus.focus)lastFocus.focus()}
 q("syncCancel").onclick=closeDlg;
 dlg.addEventListener("keydown",e=>{if(e.key==="Escape")closeDlg()});
 dlg.addEventListener("click",e=>{if(e.target===dlg)closeDlg()});
 q("pvCancel").onclick=closeDlg;
-q("onbSkip").onclick=()=>onbEnd(false);q("onbDone").onclick=()=>onbEnd(true);q("onbNick").addEventListener("input",onbPaint);
+q("onbSkip").onclick=()=>onbEnd(false);q("onbOut").onclick=()=>{closeDlg();signOut()};q("onbDone").onclick=()=>onbEnd(true);q("onbNick").addEventListener("input",onbPaint);
 q("onbAv").onclick=q("onbPh").onclick=()=>{const f=$("pfpIn");if(f)f.click()};q("acClose").onclick=closeDlg;q("acOut").onclick=()=>{closeDlg();signOut()};
 q("pvLegacy").onclick=()=>{show("legacy");setMode("in");q("syncUser").focus()};
 q("syncBack").onclick=()=>show("choose");
@@ -301,15 +306,8 @@ q("phoneForm").onsubmit=async e=>{e.preventDefault();perr("phErr","");
 
 // Supabase Auth says "signed in" (link opened, Google came back, code accepted): trade that for the usual save token
 let finishing=false;
-// sign-in trace: when the page is opened by a sign-in return (Google/email link) a small panel shows what happened, so a failure can be reported with a screenshot
-const RET=(()=>{try{const h=location.hash||"",q2=location.search||"";return /[?&]code=/.test(q2)||/access_token=|error=|error_description=/.test(h+q2)}catch(e){return false}})();
-const trace=[];let tpanel=null;
-function dbg(m){trace.push(((performance.now()/1000)|0)+"s "+m);if(!RET&&!/fail|error|no session/i.test(m))return;
-  if(!tpanel){tpanel=document.createElement("div");tpanel.id="authDbg";tpanel.setAttribute("role","status");
-    tpanel.innerHTML='<b>Sign-in check</b><pre></pre><button type="button" class="linkbtn" id="authDbgX">Close</button>';document.body.appendChild(tpanel);
-    tpanel.querySelector("#authDbgX").onclick=()=>{tpanel.hidden=true}}
-  tpanel.hidden=false;tpanel.querySelector("pre").textContent=trace.join("\n")}
-if(RET)dbg("back on "+location.origin+" "+(/[?&]code=/.test(location.search)?"with code":/access_token=/.test(location.hash)?"with token in #":/error/.test(location.hash+location.search)?"with error":"?")+(acct?", already signed in":""));
+const RET=(()=>{try{return /[?&]code=|access_token=|error=|error_description=/.test((location.hash||"")+(location.search||""))}catch(e){return false}})();   // the page was opened by a sign-in return
+function dbg(){}
 async function finishAuth(ses){
   if(finishing)return;finishing=true;
   const link=get(LINK),e0=edits;dbg("session found, saving your account…");
@@ -322,7 +320,7 @@ async function finishAuth(ses){
     else{const m=merge(snap(),r.data||{});apply(m);
       if(same(m,r.data||{}))put(DIRTY,null);else{put(DIRTY,"1");push()}}
     try{const c=new URLSearchParams(location.search);if(c.has("code")){c.delete("code");history.replaceState(null,"",location.pathname+(c.toString()?"?"+c:"")+location.hash)}}catch(x){}
-    dbg("signed in as "+(r.username||"?")+(r.created?" (new account)":""));if(tpanel)setTimeout(()=>{if(tpanel)tpanel.hidden=true},7000);
+    dbg("signed in as "+(r.username||"?")+(r.created?" (new account)":""));
     setState("ok");closeDlg();if(typeof toast==="function")toast(r.created?tl("Progress saved online"):tl("Progress restored"));
     if(!get("tpk-onboarded")&&(r.created||!(get("socio-nick")||"").trim())){const md=(ses&&ses.user&&ses.user.user_metadata)||{};
       openOnb(String(md.full_name||md.name||String(r.username||"").split("@")[0]).replace(/[^\p{L}\p{N} ._-]/gu,"").trim())}

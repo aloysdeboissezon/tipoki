@@ -540,6 +540,7 @@ var ES={
 "Skip":"Omitir",
 "Set up your profile":"Configura tu perfil",
 "Your name and photo show next to your scores when you play with friends. You can change them any time.":"Tu nombre y tu foto aparecen junto a tus puntuaciones cuando juegas con amigos. Puedes cambiarlos cuando quieras.",
+"Your profile":"Tu perfil",
 "Sign in":"Iniciar sesión",
 "Creating…":"Creando…",
 "Signing in…":"Iniciando sesión…",

@@ -135,7 +135,7 @@ $("mkGo").onclick=async()=>{
 // ---------- back button: one level up (game -> mode -> quiz page -> home) ----------
 // every level the visitor reaches is a browser-history entry, so the phone's back gesture and the arrow behave like the in-app buttons
 (function(){
-  const KEEP=history.replaceState.bind(history);
+  const PAGE=location.href.split("#")[0],KEEP=history.replaceState.bind(history);
   history.replaceState=(s,t,u)=>KEEP(s||history.state,t,u);   // other code rewrites the address with no state: keep ours
   const stack=[],kindOf=id=>id==="topic"?"topic":(id==="home"||id==="make"||id==="stats")?"home":"run";
   let cur=0,skip=0,rawShow=show,rawMode=setMode;
@@ -167,7 +167,8 @@ $("mkGo").onclick=async()=>{
   addEventListener("popstate",async ev=>{
     const e=ev.state;
     if(skip){skip--;if(e&&e.i!=null){cur=e.i;stack[cur]=e}return}
-    if(!e||e.i==null){history.go(cur-(history.length-1));return}
+    if(!e||e.i==null){if(!e&&location.href.split("#")[0]===PAGE)return;   // only the #fragment changed (the sign-in library clears it after a sign-in link): not a way out of the app
+      history.go(cur-(history.length-1));return}
     const from=stack[cur];
     if(from&&from.k==="run"&&e.k!=="run"&&running()){
       const q=window.examBusy&&examBusy()?tl("Leave the exam? It stays paused and you can resume it from this quiz page."):tl("Leave the current game? The other players will carry on without you.");
