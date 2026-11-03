@@ -50,7 +50,7 @@ test.describe("About, contact and legal pages", () => {
         expect(await page.locator("main").innerText()).not.toMatch(/TO COMPLETE|À COMPLÉTER|POR COMPLETAR/);
       }
       await page.goto("/legal.html");
-      await expect(page.locator("main .lang:visible")).toContainText("Aloys de Boissezon");
+      await expect(page.locator("main .lang:visible")).toContainText("qwebbo");
       await expect(page.locator("main .lang:visible")).toContainText("Vercel");
       await expect(page.locator("main .lang:visible")).toContainText("Supabase");
     }
