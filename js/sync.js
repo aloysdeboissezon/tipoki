@@ -112,7 +112,32 @@ const AUTH_ON=!!sbA&&(AUTH.email||AUTH.google||AUTH.apple||AUTH.phone);
 const esc2=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const line=document.createElement("div");line.className="sync-line";line.id="syncLine";
 const main=document.querySelector(".me-panel .me-main");if(!main)return;main.appendChild(line);
-function setState(s){state=s;renderLine()}
+function setState(s){state=s;renderLine();renderEntry()}
+// top bar: account button (always visible) + a gentle card on the home screen for signed-out players
+const topr=document.querySelector(".topr"),acc=document.createElement("button");acc.type="button";acc.className="iconbtn accbtn";acc.id="accBtn";
+if(topr)topr.insertBefore(acc,topr.firstChild);
+const card=document.createElement("div");card.className="panel accard";card.id="accCard";card.hidden=true;
+const home=document.getElementById("home"),heroEl=home&&home.querySelector(".hero");
+if(home)home.insertBefore(card,heroEl?heroEl.nextSibling:home.firstChild);
+const NUDGE="qwebbo-nudge";
+function nudgeOff(){const t=+get(NUDGE)||0;return Date.now()-t<3*864e5}
+function renderEntry(){
+  const PERSON='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.500 20.500c.8-4 4-6 7.500-6s6.700 2 7.500 6"/></svg>';
+  if(acct){
+    const u=String(acct.u||"?");
+    acc.className="iconbtn accbtn on";acc.title=acc.ariaLabel=tl("Saved online as {u}",{u});
+    acc.innerHTML='<span class="acc-av" aria-hidden="true">'+esc2(u.charAt(0).toUpperCase())+'</span>';
+    card.hidden=true;
+  }else{
+    acc.className="iconbtn accbtn off";acc.title=acc.ariaLabel=tl("Sign in");
+    acc.innerHTML=PERSON+'<span class="bt">'+tl("Sign in")+'</span>';
+    if(nudgeOff())card.hidden=true;
+    else{card.hidden=false;
+      card.innerHTML='<div class="acc-ico" aria-hidden="true">'+PERSON+'</div><div class="acc-main"><b>'+tl("Save your progress")+'</b><span>'+tl("Keep your scores on every device.")+'</span></div><div class="acc-act"><button type="button" class="btn" id="accGo">'+tl("Sign in")+'</button><button type="button" class="linkbtn" id="accNo" aria-label="'+tl("Not now")+'" title="'+tl("Not now")+'">×</button></div>';
+      card.querySelector("#accGo").onclick=()=>openDlg(state==="expired"?"in":"new");
+      card.querySelector("#accNo").onclick=()=>{put(NUDGE,String(Date.now()));card.hidden=true}}}
+}
+acc.onclick=()=>{if(acct)openDlg("account");else openDlg(state==="expired"?"in":"new")};
 function renderLine(){
   if(acct){
     const st={saving:tl("Saving…"),offline:tl("Offline, will retry")}[state]||"";
@@ -138,6 +163,11 @@ dlg.innerHTML=`<div class="sync-card" id="syncCard">
   <p class="err" id="pvErr" hidden></p>
   <button type="button" class="linkbtn" id="pvLegacy">Use a username and password instead</button>
   <div class="row sync-actions"><button type="button" class="btn ghost" id="pvCancel">Cancel</button></div>
+</div>
+<div class="sync-view" data-v="account">
+  <h2>Account</h2>
+  <p class="muted sync-help" id="acInfo"></p>
+  <div class="row sync-actions"><button type="button" class="btn ghost" id="acClose">Close</button><button type="button" class="btn" id="acOut">Sign out</button></div>
 </div>
 <form class="sync-view" id="emailForm" data-v="email" novalidate hidden>
   <h2>Continue with Email</h2>
@@ -180,7 +210,8 @@ function err(m){q("syncErr").textContent=m;q("syncErr").hidden=!m}
 let lastFocus=null,linking=false,sentTo=null;
 function show(v){dlg.querySelectorAll(".sync-view").forEach(x=>x.hidden=x.dataset.v!==v)}
 function perr(id,m){const e=q(id);e.textContent=m;e.hidden=!m}
-function openDlg(m){lastFocus=document.activeElement;linking=m==="link";perr("pvErr","");sentTo=null;
+function openDlg(m){lastFocus=document.activeElement;
+  if(m==="account"){q("acInfo").innerHTML=tl("Saved online as {u}",{u:"<b>"+esc2(acct?acct.u:"")+"</b>"});show("account");dlg.hidden=false;document.body.classList.add("noscroll");return}linking=m==="link";perr("pvErr","");sentTo=null;
   q("pvEmail").hidden=!AUTH.email;q("pvPhone").hidden=!AUTH.phone;q("pvGoogle").hidden=!AUTH.google;q("pvApple").hidden=!AUTH.apple;
   q("pvOr").hidden=!AUTH.email||!(AUTH.phone||AUTH.google||AUTH.apple);
   q("pvLegacy").hidden=linking;   // adding an email to a username account: no new username
@@ -195,7 +226,7 @@ function closeDlg(){dlg.hidden=true;document.body.classList.remove("noscroll");q
 q("syncCancel").onclick=closeDlg;
 dlg.addEventListener("keydown",e=>{if(e.key==="Escape")closeDlg()});
 dlg.addEventListener("click",e=>{if(e.target===dlg)closeDlg()});
-q("pvCancel").onclick=closeDlg;
+q("pvCancel").onclick=closeDlg;q("acClose").onclick=closeDlg;q("acOut").onclick=()=>{closeDlg();signOut()};
 q("pvLegacy").onclick=()=>{show("legacy");setMode("in");q("syncUser").focus()};
 q("syncBack").onclick=()=>show("choose");
 q("emBack").onclick=q("phBack").onclick=()=>{show("choose");sentTo=null};
@@ -290,6 +321,6 @@ async function signOut(){const t=acct&&acct.tok;
   dropAcct();setState("ok");if(t)rpc("tpk_logout",{p_token:t}).catch(()=>{});
   if(typeof toast==="function")toast(tl("Signed out. Your progress stays on this device."))}
 
-renderLine();
+renderLine();renderEntry();
 if(acct){setState("saving");pull()}
 })();
