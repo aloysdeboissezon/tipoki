@@ -312,21 +312,21 @@ async function finishAuth(ses){
     if(r.created){if(edits===e0)put(DIRTY,null);else later(500)}
     else{const m=merge(snap(),r.data||{});apply(m);
       if(same(m,r.data||{}))put(DIRTY,null);else{put(DIRTY,"1");push()}}
+    try{const c=new URLSearchParams(location.search);if(c.has("code")){c.delete("code");history.replaceState(null,"",location.pathname+(c.toString()?"?"+c:"")+location.hash)}}catch(x){}
     setState("ok");closeDlg();if(typeof toast==="function")toast(r.created?tl("Progress saved online"):tl("Progress restored"));
     if(!get("tpk-onboarded")&&(r.created||!(get("socio-nick")||"").trim())){const md=(ses&&ses.user&&ses.user.user_metadata)||{};
       openOnb(String(md.full_name||md.name||String(r.username||"").split("@")[0]).replace(/[^\p{L}\p{N} ._-]/gu,"").trim())}
-  }catch(x){put(LINK,null);openDlg("new");perr("pvErr",AMSG[x.message]||AMSG.fail)}
+  }catch(x){put(LINK,null);openDlg("new");perr("pvErr",AMSG[x.message]||AMSG.fail+" ("+String(x&&x.message||x).slice(0,80)+")")}
   finally{finishing=false;try{await sbA.auth.signOut({scope:"local"})}catch(x){}}
 }
 if(AUTH_ON){
   sbA.auth.onAuthStateChange((ev,ses)=>{if((ev==="SIGNED_IN"||ev==="INITIAL_SESSION")&&ses&&(!acct||get(LINK)))setTimeout(()=>finishAuth(ses),0)});   // INITIAL_SESSION: a sign-in that was not finished before the page reloaded
-  try{if(!acct&&/[?&]code=/.test(location.search)){const c=new URLSearchParams(location.search);c.delete("code");   // back from Google: if nothing happened after a while, say so instead of staying silent
-    history.replaceState(null,"",location.pathname+(c.toString()?"?"+c:""));
-    setTimeout(()=>{if(!acct&&!finishing){openDlg("new");perr("pvErr",AMSG.fail)}},8000)}}catch(x){}
+  // back from Google with a ?code=: supabase-js must read it first, so the address is only cleaned after the sign-in; if nothing happens after a while, say so
+  try{if(!acct&&/[?&]code=/.test(location.search))setTimeout(()=>{if(!acct&&!finishing){openDlg("new");perr("pvErr",AMSG.fail+" (no session after Google)")}},9000)}catch(x){}
   // a link that expired, or a Google sign-in that was refused, comes back with the reason in the address
   try{const h=location.hash.includes("error_description=")?location.hash.slice(1):"",qs=new URLSearchParams(h||location.search);
     if(qs.get("error_description")){history.replaceState(null,"",location.pathname);
-      setTimeout(()=>{openDlg("new");perr("pvErr",/expired|invalid/i.test(qs.get("error_description"))?AMSG.bad_code:AMSG.fail)},800)}}catch(x){}}
+      setTimeout(()=>{openDlg("new");perr("pvErr",/expired|invalid/i.test(qs.get("error_description"))?AMSG.bad_code:AMSG.fail+" ("+qs.get("error_description").slice(0,80)+")")},800)}}catch(x){}}
 
 const MSG={bad_username:tl("Username: 3 to 20 letters, numbers, dots, dashes or underscores (no spaces)."),
   bad_password:tl("Password: at least 6 characters."),name_taken:tl("This username is taken. Pick another one, or tap “I have one” if it's yours."),
