@@ -45,7 +45,7 @@
     code:'<rect x="5" y="9" width="54" height="46" rx="9"'+f(K)+'/><circle cx="14" cy="17" r="2.2" fill="'+P+'"/><circle cx="21" cy="17" r="2.2" fill="'+Y+'"/><circle cx="28" cy="17" r="2.2" fill="'+G+'"/>'+
       '<path d="M24 31l-8 8 8 8M40 31l8 8-8 8M35 28l-6 22" fill="none" stroke="'+C+'" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>'
   };
-  var BY_ID={socio:"pillars",culture:"globe",energie:"bolt",populism:"megaphone",compta2:"chart"};
+  var BY_ID={socio:"pillars",culture:"globe",energie:"bolt",populism:"megaphone",compta2:"chart",uspop:"megaphone",gastro:"heart",ukculture:"book"};
   var KEYS=[
     ["code",/\b(code|coding|program|informatique|computer|algorithm|javascript|python|sql|web)/],
     ["heart",/(m[ée]decin|medic|sant[ée]|health|anatom|biolog|nurs|infirm|pharma)/],
