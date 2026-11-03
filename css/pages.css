@@ -43,3 +43,8 @@ html:not([data-l]) .pnav .lang[lang="en"],html[data-l="en"] .pnav .lang[lang="en
 .pnav a[aria-current="page"]{text-decoration:underline}
 .pnav .home{margin-left:auto}
 @media (max-width:520px){.panel{padding:20px 18px}.pnav .home{margin-left:0;width:100%}}
+
+.founder{display:flex;gap:16px;align-items:center;margin:28px 0 8px;padding:16px;border:2px solid var(--line);border-radius:18px}
+.founder img{width:96px;height:96px;border-radius:50%;object-fit:cover;flex:none}
+.founder h2{margin:0 0 6px}.founder p{margin:0}
+@media (max-width:520px){.founder{flex-direction:column;text-align:center}}
