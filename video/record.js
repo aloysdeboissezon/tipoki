@@ -4,7 +4,7 @@ const {chromium}=require('playwright');const fs=require('fs');const path=require
 const LANG=process.argv[2]||'en',OUT=path.resolve(process.argv[3]||'out');fs.mkdirSync(OUT,{recursive:true});
 const MOCK=fs.readFileSync(path.join(__dirname,'mock-sb.js'),'utf8');
 const T={en:{
- intro:['Study by *beating* your *friends.*','qwebbo · the quiz game that makes you revise'],
+ intro:['Learn, *compete,* *master.*',''],
  pick:['Pick *what* to *revise*','One quiz, split in parts. Tap the ones you need.','01 · PICK'],
  modes:['Four ways to *study*','Quiz, flashcards, study sheet, exam.',null],
  lvl:['Choose your *level*','Easy, medium, hard, or climbing.','02 · QUIZ'],
@@ -15,9 +15,9 @@ const T={en:{
  nolim:['Or *no time limit*','Prefer to take your time? Counts up instead.',null],
  multi:['Challenge your *friends*','Share a code. Everyone plays on their phone.','05 · MULTIPLAYER'],
  board:['Fastest *brain* wins','Live leaderboard after every question.',null],
- end:['','Pick a quiz. Beat your friends. Revise.','FREE · NO SIGN-UP']},
+ end:['','Learn, compete, master.','FREE · NO SIGN-UP']},
 fr:{
- intro:['Révise en *battant* tes *potes.*','qwebbo · le jeu de quiz qui fait réviser'],
+ intro:['Learn, *compete,* *master.*',''],
  pick:['Choisis *quoi* réviser','Un quiz découpé en parties. Touche celles qu\'il te faut.','01 · CHOISIS'],
  modes:['Quatre façons de *réviser*','Quiz, flashcards, fiche de synthèse, examen.',null],
  lvl:['Choisis ton *niveau*','Facile, moyen, difficile ou progressif.','02 · QUIZ'],
@@ -28,7 +28,7 @@ fr:{
  nolim:['Ou *sans limite* de temps','Tu préfères prendre ton temps ? Le chrono compte en croissant.',null],
  multi:['Défie tes *potes*','Partage un code. Chacun joue sur son téléphone.','05 · MULTIJOUEUR'],
  board:['Le plus *rapide* gagne','Classement en direct après chaque question.',null],
- end:['','Choisis un quiz. Bats tes potes. Révise.','GRATUIT · SANS INSCRIPTION']}}[LANG];
+ end:['','Learn, compete, master.','GRATUIT · SANS INSCRIPTION']}}[LANG];
 const K=0.45,rs=ms=>new Promise(r=>setTimeout(r,ms)),sleep=ms=>rs(ms*K); // K tightens every pause; rs() is a real-time pause
 (async()=>{
  const b=await chromium.launch();
