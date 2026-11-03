@@ -301,9 +301,18 @@ q("phoneForm").onsubmit=async e=>{e.preventDefault();perr("phErr","");
 
 // Supabase Auth says "signed in" (link opened, Google came back, code accepted): trade that for the usual save token
 let finishing=false;
+// sign-in trace: when the page is opened by a sign-in return (Google/email link) a small panel shows what happened, so a failure can be reported with a screenshot
+const RET=(()=>{try{const h=location.hash||"",q2=location.search||"";return /[?&]code=/.test(q2)||/access_token=|error=|error_description=/.test(h+q2)}catch(e){return false}})();
+const trace=[];let tpanel=null;
+function dbg(m){trace.push(((performance.now()/1000)|0)+"s "+m);if(!RET&&!/fail|error|no session/i.test(m))return;
+  if(!tpanel){tpanel=document.createElement("div");tpanel.id="authDbg";tpanel.setAttribute("role","status");
+    tpanel.innerHTML='<b>Sign-in check</b><pre></pre><button type="button" class="linkbtn" id="authDbgX">Close</button>';document.body.appendChild(tpanel);
+    tpanel.querySelector("#authDbgX").onclick=()=>{tpanel.hidden=true}}
+  tpanel.hidden=false;tpanel.querySelector("pre").textContent=trace.join("\n")}
+if(RET)dbg("back on "+location.origin+" "+(/[?&]code=/.test(location.search)?"with code":/access_token=/.test(location.hash)?"with token in #":/error/.test(location.hash+location.search)?"with error":"?")+(acct?", already signed in":""));
 async function finishAuth(ses){
   if(finishing)return;finishing=true;
-  const link=get(LINK),e0=edits;
+  const link=get(LINK),e0=edits;dbg("session found, saving your account…");
   try{
     const r=await rpc("tpk_auth_login",{p_link:link||null,p_data:snap()},sbA);
     acct={u:r.username,tok:r.token,rev:r.rev,au:1};saveAcct();put(LINK,null);
@@ -313,19 +322,21 @@ async function finishAuth(ses){
     else{const m=merge(snap(),r.data||{});apply(m);
       if(same(m,r.data||{}))put(DIRTY,null);else{put(DIRTY,"1");push()}}
     try{const c=new URLSearchParams(location.search);if(c.has("code")){c.delete("code");history.replaceState(null,"",location.pathname+(c.toString()?"?"+c:"")+location.hash)}}catch(x){}
+    dbg("signed in as "+(r.username||"?")+(r.created?" (new account)":""));if(tpanel)setTimeout(()=>{if(tpanel)tpanel.hidden=true},7000);
     setState("ok");closeDlg();if(typeof toast==="function")toast(r.created?tl("Progress saved online"):tl("Progress restored"));
     if(!get("tpk-onboarded")&&(r.created||!(get("socio-nick")||"").trim())){const md=(ses&&ses.user&&ses.user.user_metadata)||{};
       openOnb(String(md.full_name||md.name||String(r.username||"").split("@")[0]).replace(/[^\p{L}\p{N} ._-]/gu,"").trim())}
-  }catch(x){put(LINK,null);openDlg("new");perr("pvErr",AMSG[x.message]||AMSG.fail+" ("+String(x&&x.message||x).slice(0,80)+")")}
+  }catch(x){dbg("error: "+String(x&&x.message||x).slice(0,120));put(LINK,null);openDlg("new");perr("pvErr",AMSG[x.message]||AMSG.fail+" ("+String(x&&x.message||x).slice(0,80)+")")}
   finally{finishing=false;try{await sbA.auth.signOut({scope:"local"})}catch(x){}}
 }
 if(AUTH_ON){
-  sbA.auth.onAuthStateChange((ev,ses)=>{if((ev==="SIGNED_IN"||ev==="INITIAL_SESSION")&&ses&&(!acct||get(LINK)))setTimeout(()=>finishAuth(ses),0)});   // INITIAL_SESSION: a sign-in that was not finished before the page reloaded
+  sbA.auth.onAuthStateChange((ev,ses)=>{dbg("auth event "+ev+(ses?" (session)":" (no session)"));if((ev==="SIGNED_IN"||ev==="INITIAL_SESSION")&&ses&&(!acct||get(LINK)))setTimeout(()=>finishAuth(ses),0)});   // INITIAL_SESSION: a sign-in that was not finished before the page reloaded
+  if(RET)try{sbA.auth.getSession().then(r=>{if(r&&r.error)dbg("error: "+String(r.error.message||r.error).slice(0,120))}).catch(()=>{})}catch(x){}
   // back from Google with a ?code=: supabase-js must read it first, so the address is only cleaned after the sign-in; if nothing happens after a while, say so
-  try{if(!acct&&/[?&]code=/.test(location.search))setTimeout(()=>{if(!acct&&!finishing){openDlg("new");perr("pvErr",AMSG.fail+" (no session after Google)")}},9000)}catch(x){}
+  try{if(!acct&&/[?&]code=/.test(location.search))setTimeout(()=>{if(!acct&&!finishing){openDlg("new");dbg("no session after 9s: the sign-in code was not accepted");perr("pvErr",AMSG.fail+" (no session after Google)")}},9000)}catch(x){}
   // a link that expired, or a Google sign-in that was refused, comes back with the reason in the address
   try{const h=location.hash.includes("error_description=")?location.hash.slice(1):"",qs=new URLSearchParams(h||location.search);
-    if(qs.get("error_description")){history.replaceState(null,"",location.pathname);
+    if(qs.get("error_description")){dbg("error: "+qs.get("error_description").slice(0,120));history.replaceState(null,"",location.pathname);
       setTimeout(()=>{openDlg("new");perr("pvErr",/expired|invalid/i.test(qs.get("error_description"))?AMSG.bad_code:AMSG.fail+" ("+qs.get("error_description").slice(0,80)+")")},800)}}catch(x){}}
 
 const MSG={bad_username:tl("Username: 3 to 20 letters, numbers, dots, dashes or underscores (no spaces)."),
