@@ -39,6 +39,13 @@ function makeStore() {
       const tok = "t" + Object.keys(tokens).length; tokens[tok] = a.p_username;
       return ok({ username: a.p_username, token: tok, rev: acc.rev, data: clone(acc.data) });
     }
+    if (fn === "tpk_auth_login") {   // Supabase Auth user (email) -> the usual account + token
+      const key = "auth:" + a.__email;
+      let created = false;
+      if (!accounts[key]) { accounts[key] = { password: null, rev: 1, data: clone(a.p_data || {}) }; created = true; }
+      const tok = "t" + Object.keys(tokens).length; tokens[tok] = key;
+      return ok(created ? { username: a.__email, token: tok, rev: 1, created: true } : { username: a.__email, token: tok, rev: accounts[key].rev, data: clone(accounts[key].data) });
+    }
     if (fn === "tpk_push" || fn === "tpk_pull") {
       const u = tokens[a.p_token]; if (!u) return ok({ error: "bad_token" });
       const acc = accounts[u];
@@ -67,9 +74,9 @@ const REMOTE_SUPABASE = `
   var chan = { on: function () { return chan; }, subscribe: function () { return chan; } };
   window.supabase = { createClient: function () { return {
     from: function (t) { return new Q(t); },
-    rpc: function (fn, args) { return window.__sbRpc(fn, args || {}); },
+    rpc: function (fn, args) { return window.__sbRpc(fn, Object.assign({ __email: window.__authEmail }, args || {})); },
     channel: function () { return chan; }, removeChannel: function () {},
-    auth: { getSession: async function () { return { data: { session: null } }; } } }; } };
+    auth: window.__fakeAuth ? window.__fakeAuth() : { getSession: async function () { return { data: { session: null } }; } } }; } };
 })();
 `;
 

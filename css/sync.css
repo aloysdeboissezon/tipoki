@@ -10,7 +10,7 @@
 .sync-line .linkbtn{flex:none}
 .sync-dlg{position:fixed;inset:0;z-index:100;background:rgba(23,22,43,.62);display:grid;place-items:center;padding:16px;overflow:auto}
 .sync-dlg[hidden]{display:none}
-.sync-card{background:var(--card);border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:12px;width:min(100%,400px);margin:0}
+.sync-card{background:var(--card);border-radius:24px;padding:20px;width:min(100%,400px);margin:0}
 .sync-card h2{margin:0}
 .sync-help,.sync-foot{margin:0;font-size:14px}
 .sync-tabs{flex-wrap:nowrap}
@@ -22,3 +22,14 @@
 .sync-card .err{margin:0}
 .sync-actions{flex-wrap:nowrap;margin-top:4px}
 .sync-actions .btn{flex:1;padding-left:12px;padding-right:12px}
+/* sign-in dialog: one card, several views (choose, email, phone, username) */
+.sync-view{display:flex;flex-direction:column;gap:12px;margin:0}
+.sync-view[hidden]{display:none}
+.sync-view h2{margin:0}
+.sync-prov{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;padding-top:14px;padding-bottom:14px}
+.sync-prov svg{flex:none}
+.sync-or{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.sync-or::before,.sync-or::after{content:"";flex:1;height:1px;background:var(--line)}
+.sync-back{align-self:flex-start}
+.sync-card input[type=email],.sync-card input[type=tel],.sync-card input[inputmode=numeric]{font:inherit;font-size:18px;font-weight:600;padding:13px 16px;border-radius:16px;border:2px solid var(--line);background:var(--field,#FAFAFD);color:var(--ink);width:100%;min-width:0}
+.sync-card input[type=email]:focus,.sync-card input[type=tel]:focus,.sync-card input[inputmode=numeric]:focus{border-color:var(--hl);box-shadow:0 0 0 4px var(--hl-soft);outline:none}
