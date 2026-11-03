@@ -56,6 +56,8 @@
 .onb-nm{flex:1;min-width:0}
 .onb-av{flex:none;border:0;cursor:pointer;padding:0;color:#fff;font-weight:900}
 .onb-ph{align-self:flex-start;margin-top:-6px}
-#authDbg{position:fixed;left:12px;right:12px;bottom:12px;z-index:120;background:var(--card);color:var(--ink);border:2px solid var(--hl);border-radius:16px;padding:10px 14px;box-shadow:0 8px 30px rgba(0,0,0,.25);font-size:13px;max-width:460px;margin:0 auto}
-#authDbg[hidden]{display:none}
-#authDbg pre{margin:6px 0;white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;font-family:ui-monospace,monospace;font-size:12px}
+/* profile page: the dialog becomes a full page */
+.sync-dlg.page{background:var(--card);place-items:start center;padding:0}
+.sync-dlg.page .sync-card{width:min(100%,520px);min-height:100%;border-radius:0;background:transparent;padding:24px 20px 40px}
+.onb-acct{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line2);padding-top:12px;margin-top:6px}
+.onb-acct p{margin:0;font-size:14px}

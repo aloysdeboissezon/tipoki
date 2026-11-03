@@ -29,7 +29,7 @@ let writeChain=Promise.resolve();
 const SB_URL="https://eowcxqqkewijzgemqbhi.supabase.co",SB_KEY="sb_publishable_WYtzPauL3s0sPu_Vvj0iOQ_uUTg1uW7";
 let sb=null,chan=null,pollT=null;
 me=lsGet("socio-pid");if(!me){me="p"+Math.random().toString(36).slice(2,12)+Date.now().toString(36);lsSet("socio-pid",me)}
-try{sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:false,autoRefreshToken:false}})}catch(e){sb=null}
+try{sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}})}catch(e){sb=null}
 function setMultiNote(ok){
   const n=$("multiNote");n.hidden=ok;
   $("createBtn").disabled=!ok;$("joinBtn").disabled=!ok;$("codeIn").disabled=!ok;

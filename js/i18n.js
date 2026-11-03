@@ -558,6 +558,7 @@ var FR={
 "Skip":"Passer",
 "Set up your profile":"Configure ton profil",
 "Your name and photo show next to your scores when you play with friends. You can change them any time.":"Ton nom et ta photo apparaissent à côté de tes scores quand tu joues avec tes amis. Tu peux les changer à tout moment.",
+"Your profile":"Ton profil",
 "Sign in":"Se connecter",
 "Creating…":"Création…",
 "Signing in…":"Connexion…",
