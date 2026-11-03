@@ -1,0 +1,228 @@
+// Built-in bank: American pop culture (English). Movies, TV, music, sports, food & brands, landmarks.
+// Hand-written and static, so every device builds the exact same Q/TQ arrays for multiplayer.
+// Difficulty d: 1 = easy (most people know it), 2 = medium, 3 = hard (for fans).
+window.BANK_USPOP=(function(){
+const SESS={1:"Movies",2:"TV shows",3:"Music",4:"Sports",5:"Food & brands",6:"Places & landmarks"};
+const TAGS={1:"Movies",2:"TV",3:"Music",4:"Sports",5:"Food & brands",6:"Landmarks"};
+const Q=[],TQ=[];
+// MCQ: first option is the right one (shuffled on screen)
+const m=(s,t,q,ok,wr,e,d)=>Q.push({s,t,q,o:[ok,...wr],a:0,e,d:d||1});
+const vf=(s,q,v,e,d)=>Q.push({s,t:"True or false",q,o:v?["True","False"]:["False","True"],a:0,e,tf:true,d:d||1});
+const ty=(s,q,a,e,d)=>TQ.push({s,q,a,e,d:d||2});
+
+// ===================== 1. Movies =====================
+m(1,"Director","Who directed the 1975 blockbuster Jaws?","Steven Spielberg",["George Lucas","Francis Ford Coppola","Martin Scorsese"],"Steven Spielberg directed Jaws (1975), often called the first summer blockbuster.",1);
+m(1,"Quote","In which film does the line “Life is like a box of chocolates” appear?","Forrest Gump",["Rain Man","Big","Cast Away"],"Forrest Gump (1994), played by Tom Hanks: “Life was like a box of chocolates. You never know what you’re gonna get.”",1);
+m(1,"Opening","Which 1977 film opens with “A long time ago in a galaxy far, far away…”?","Star Wars",["Close Encounters of the Third Kind","Alien","Superman"],"Star Wars (1977), written and directed by George Lucas, opens with that line followed by the scrolling yellow text.",1);
+m(1,"Cast","Who played Jack Dawson in Titanic (1997)?","Leonardo DiCaprio",["Brad Pitt","Matt Damon","Johnny Depp"],"Leonardo DiCaprio played Jack Dawson opposite Kate Winslet’s Rose.",1);
+m(1,"Quote","Which film features the line “I’ll be back”?","The Terminator",["Predator","Die Hard","Rambo: First Blood"],"Arnold Schwarzenegger says “I’ll be back” in The Terminator (1984).",1);
+m(1,"Animation","Which studio made Toy Story (1995), the first fully computer-animated feature film?","Pixar",["DreamWorks","Blue Sky Studios","Illumination"],"Toy Story (1995) was produced by Pixar Animation Studios, in partnership with Disney.",2);
+m(1,"Cast","Who played Don Vito Corleone in The Godfather (1972)?","Marlon Brando",["Al Pacino","James Caan","Robert Duvall"],"Marlon Brando played the Godfather and won the Best Actor Oscar for it. Al Pacino played his son Michael.",2);
+m(1,"Setting","In which city is the boxing film Rocky set?","Philadelphia",["New York","Boston","Chicago"],"Rocky Balboa is a boxer from Philadelphia, and the film’s famous run ends on the steps of the Philadelphia Museum of Art.",2);
+m(1,"Director","Who directed Pulp Fiction (1994)?","Quentin Tarantino",["Steven Soderbergh","David Fincher","Oliver Stone"],"Quentin Tarantino directed Pulp Fiction, which won the Palme d’Or at Cannes in 1994.",2);
+m(1,"Franchise","Which film started the Marvel Cinematic Universe in 2008?","Iron Man",["The Incredible Hulk","Thor","Captain America: The First Avenger"],"Iron Man (2008), with Robert Downey Jr. as Tony Stark, was the first MCU film.",2);
+vf(1,"Hollywood is a district of Los Angeles, California.",true,"Hollywood is a neighbourhood of Los Angeles, and the name is also used for the American film industry.",1);
+vf(1,"Walt Disney’s Mickey Mouse first appeared in 1928.",true,"Mickey Mouse debuted in Steamboat Willie in November 1928.",3);
+ty(1,"Which company produced Toy Story and Finding Nemo?",["Pixar","Pixar Animation Studios"],"Pixar, founded in 1986 and bought by Disney in 2006.",2);
+
+// ===================== 2. TV shows =====================
+m(2,"Sitcom","Which sitcom follows six pals in Manhattan who hang out at the coffee shop Central Perk?","Friends",["Seinfeld","How I Met Your Mother","Cheers"],"Friends ran from 1994 to 2004 and is set in Manhattan.",1);
+m(2,"Animation","At what address does the Simpson family live?","742 Evergreen Terrace",["221B Baker Street","1600 Pennsylvania Avenue","31 Spooner Street"],"The Simpsons live at 742 Evergreen Terrace in Springfield. 31 Spooner Street is the Griffins’ house in Family Guy.",2);
+m(2,"Drama","What is Walter White’s job at the start of Breaking Bad?","High school chemistry teacher",["Pharmacist","Police officer","Car mechanic"],"He teaches chemistry in Albuquerque before turning to making methamphetamine after a cancer diagnosis.",1);
+m(2,"Streaming","Which streaming service released Stranger Things?","Netflix",["Hulu","Disney+","HBO Max"],"Stranger Things premiered on Netflix in 2016.",1);
+m(2,"Setting","In which fictional Indiana town is Stranger Things set?","Hawkins",["Derry","Castle Rock","Haddonfield"],"Hawkins, Indiana. Derry and Castle Rock are Stephen King towns, and Haddonfield is from Halloween.",2);
+m(2,"Sitcom","At which paper company do the characters of the US version of The Office work?","Dunder Mifflin",["Wernham Hogg","Vance Refrigeration","Sabre"],"Dunder Mifflin, Scranton branch. Wernham Hogg is the company in the original British version.",2);
+m(2,"Setting","In which city is the sitcom Cheers set?","Boston",["Chicago","New York","Philadelphia"],"Cheers (1982–1993) takes place in a Boston bar where “everybody knows your name”.",2);
+m(2,"Late night","Who hosted The Tonight Show from 1962 to 1992?","Johnny Carson",["David Letterman","Jay Leno","Conan O’Brien"],"Johnny Carson hosted for 30 years. Jay Leno took over in 1992.",3);
+m(2,"Drama","Which HBO series is set on the fictional continents of Westeros and Essos?","Game of Thrones",["The Sopranos","Succession","True Detective"],"Game of Thrones (2011–2019) is based on George R. R. Martin’s novels A Song of Ice and Fire.",1);
+vf(2,"Breaking Bad is set in Albuquerque, New Mexico.",true,"Albuquerque is the main setting of Breaking Bad and of its spin-off Better Call Saul.",2);
+vf(2,"The Simpsons is the longest-running American animated series.",true,"The Simpsons premiered as a series in December 1989 and has run for over three decades.",2);
+ty(2,"What is the name of the coffee shop in Friends?",["Central Perk"],"Central Perk, with its famous orange couch.",2);
+ty(2,"In which city is the sitcom Cheers set?",["Boston"],"Boston, Massachusetts.",2);
+
+// ===================== 3. Music =====================
+m(3,"Nicknames","Who is known as the “King of Rock and Roll”?","Elvis Presley",["Chuck Berry","Johnny Cash","Jerry Lee Lewis"],"Elvis Presley (1935–1977) lived at Graceland in Memphis, Tennessee.",1);
+m(3,"Nicknames","Which singer is nicknamed the “Queen of Pop”?","Madonna",["Cher","Whitney Houston","Lady Gaga"],"Madonna has carried the nickname since the 1980s.",1);
+m(3,"Albums","Which 1982 Michael Jackson album is widely cited as the best-selling album of all time?","Thriller",["Bad","Off the Wall","Dangerous"],"Thriller (1982) is credited with tens of millions of copies sold worldwide.",1);
+m(3,"Origins","Which city is considered the birthplace of jazz?","New Orleans",["Chicago","New York","Memphis"],"Jazz emerged in New Orleans, Louisiana, in the early 20th century.",1);
+m(3,"Cities","Which Tennessee city is nicknamed “Music City” and is home to the Grand Ole Opry?","Nashville",["Memphis","Austin","Atlanta"],"Nashville is the capital of country music.",1);
+m(3,"Songs","Who sang “Born in the U.S.A.” (1984)?","Bruce Springsteen",["Bob Dylan","Billy Joel","Tom Petty"],"Bruce Springsteen, nicknamed “The Boss”, from New Jersey.",2);
+m(3,"Albums","Which rapper released the album To Pimp a Butterfly in 2015?","Kendrick Lamar",["Drake","Kanye West","J. Cole"],"Kendrick Lamar, from Compton, California. His album DAMN. won the Pulitzer Prize for Music in 2018.",2);
+m(3,"Tours","Whose Eras Tour became the highest-grossing concert tour in history?","Taylor Swift",["Beyoncé","Bruce Springsteen","Madonna"],"Taylor Swift’s Eras Tour (2023–2024) was the first tour to gross over one billion dollars.",1);
+m(3,"Festivals","In which US state was the 1969 Woodstock festival held?","New York",["California","Pennsylvania","Vermont"],"Woodstock took place on a farm in Bethel, New York.",2);
+m(3,"Labels","Which Detroit label launched The Supremes and Stevie Wonder?","Motown",["Stax","Atlantic","Def Jam"],"Berry Gordy founded Motown in 1959.",2);
+vf(3,"Hip-hop is generally said to have started in the Bronx, New York, in the 1970s.",true,"DJ Kool Herc’s 1973 party in the Bronx is often cited as the birth of hip-hop.",2);
+vf(3,"Johnny Cash was born in Hollywood.",false,"Johnny Cash was born in Arkansas in 1932.",3);
+ty(3,"In which Tennessee city is Elvis’s home Graceland?",["Memphis"],"Graceland is in Memphis, Tennessee.",2);
+ty(3,"Which Michael Jackson album from 1982 sold more than any other album?",["Thriller"],"Thriller (1982).",1);
+
+// ===================== 4. Sports =====================
+m(4,"Basketball","How many players per team are on the court at once in basketball?","5",["6","7","4"],"Five players per team.",1);
+m(4,"Football","Which league’s championship game is the Super Bowl?","NFL",["MLB","NBA","NHL"],"The Super Bowl is the NFL’s championship game, played in early February.",1);
+m(4,"Basketball","Which Chicago Bulls star wore number 23 and won six NBA titles?","Michael Jordan",["Scottie Pippen","Dennis Rodman","Kobe Bryant"],"Michael Jordan won six championships with the Bulls (1991–93 and 1996–98).",1);
+m(4,"Baseball","How many strikes make a strikeout in baseball?","3",["2","4","5"],"Three strikes and the batter is out.",1);
+m(4,"Baseball","The World Series is the championship of which sport?","Baseball",["Basketball","American football","Ice hockey"],"The World Series decides the Major League Baseball champion.",1);
+m(4,"Football","How many points is a touchdown worth in American football (before the extra point)?","6",["3","7","5"],"A touchdown is 6 points, then 1 or 2 extra points can be added.",1);
+m(4,"Olympics","Which American swimmer holds the record of 23 Olympic gold medals?","Michael Phelps",["Mark Spitz","Ryan Lochte","Ian Thorpe"],"Michael Phelps won 23 golds across five Olympic Games (2004–2016).",2);
+m(4,"Olympics","Which US city hosted the 1996 Summer Olympics?","Atlanta",["Los Angeles","Chicago","Dallas"],"Atlanta, Georgia, hosted the Centennial Games in 1996. Los Angeles hosted in 1932 and 1984.",2);
+m(4,"Football","Tom Brady won six of his seven Super Bowls with which team?","New England Patriots",["Tampa Bay Buccaneers","Dallas Cowboys","Green Bay Packers"],"Six with the Patriots, and a seventh with the Tampa Bay Buccaneers in 2021.",2);
+m(4,"Tennis","Which American tennis player won 23 Grand Slam singles titles?","Serena Williams",["Venus Williams","Billie Jean King","Martina Navratilova"],"Serena Williams won 23 Grand Slam singles titles, a record of the Open Era.",2);
+vf(4,"The Los Angeles Lakers started out in Minneapolis.",true,"The team was founded in Minneapolis and moved to Los Angeles in 1960; the name comes from Minnesota’s “Land of 10,000 Lakes”.",3);
+vf(4,"In baseball, a game is divided into four quarters.",false,"Baseball is divided into innings, usually nine. Quarters are used in American football and basketball.",1);
+ty(4,"What is the name of the NFL’s championship game?",["Super Bowl","The Super Bowl"],"The Super Bowl.",1);
+ty(4,"Which sport is the World Series played in?",["Baseball"],"Baseball.",1);
+
+// ===================== 5. Food & brands =====================
+m(5,"Food","Which city is famous for its deep-dish pizza?","Chicago",["New York","Detroit","Boston"],"Chicago-style deep-dish pizza has a thick crust and a lot of cheese and sauce.",1);
+m(5,"Holidays","Which American holiday, on the fourth Thursday of November, traditionally features turkey?","Thanksgiving",["Independence Day","Labor Day","Memorial Day"],"Thanksgiving is celebrated on the fourth Thursday of November.",1);
+m(5,"Brands","Which drink was invented in Atlanta in 1886 by pharmacist John Pemberton?","Coca-Cola",["Pepsi","Dr Pepper","Sprite"],"Coca-Cola was created in 1886 and sold first at a pharmacy soda fountain.",2);
+m(5,"Brands","Which coffee chain opened its first store in Seattle in 1971?","Starbucks",["Dunkin’","Peet’s Coffee","Tim Hortons"],"Starbucks opened at Pike Place Market in 1971.",2);
+m(5,"Brands","Which company, founded by Jeff Bezos in 1994, started as an online bookstore?","Amazon",["eBay","Walmart","Netflix"],"Amazon was founded in Bellevue, Washington, and sold its first books online in 1995.",1);
+m(5,"Brands","Which company launched the iPhone in 2007?","Apple",["Microsoft","Google","Motorola"],"Steve Jobs presented the first iPhone in January 2007.",1);
+m(5,"Food","Which US state is most associated with lobster rolls?","Maine",["Texas","Oregon","Georgia"],"Maine is famous for its lobster.",2);
+m(5,"Food","In which state is the city of Buffalo, birthplace of Buffalo wings?","New York",["Ohio","Pennsylvania","Illinois"],"Buffalo wings were created in Buffalo, New York, reportedly at the Anchor Bar.",2);
+m(5,"Food","What is the main ingredient of the American classic “PB&J” sandwich besides bread?","Peanut butter and jelly",["Ham and cheese","Tuna and mayo","Cream cheese and bacon"],"PB&J is peanut butter and jelly, a lunchbox classic.",1);
+vf(5,"Trick-or-treating is traditionally done on October 31.",true,"Children go door to door in costume on Halloween, October 31.",1);
+vf(5,"McDonald’s was founded by Ray Kroc in 1940.",false,"The McDonald brothers opened their restaurant in 1940. Ray Kroc joined in 1954 and built the franchise.",3);
+ty(5,"In which city did Starbucks open its first store?",["Seattle"],"Seattle, Washington, in 1971.",2);
+ty(5,"Which city is nicknamed “The Big Apple”?",["New York","New York City","NYC"],"New York City.",1);
+
+// ===================== 6. Places & landmarks =====================
+m(6,"Monuments","Which of these presidents is NOT carved on Mount Rushmore?","John F. Kennedy",["George Washington","Abraham Lincoln","Thomas Jefferson"],"Mount Rushmore shows Washington, Jefferson, Theodore Roosevelt and Lincoln.",2);
+m(6,"Cities","In which city is the Hollywood Sign?","Los Angeles",["San Francisco","San Diego","Las Vegas"],"The Hollywood Sign stands on Mount Lee, in the Hollywood Hills of Los Angeles.",1);
+m(6,"Monuments","Which statue, a gift from France, stands on Liberty Island in New York Harbor?","Statue of Liberty",["Lincoln Memorial","Washington Monument","Alamo"],"The Statue of Liberty was given by France and inaugurated in 1886.",1);
+m(6,"States","In which state is Las Vegas?","Nevada",["California","Arizona","Utah"],"Las Vegas is in southern Nevada.",1);
+m(6,"Cities","Which city is nicknamed “Motor City”?","Detroit",["Houston","Pittsburgh","Cleveland"],"Detroit is the historic centre of the American car industry.",2);
+m(6,"Parks","In which state is Walt Disney World?","Florida",["California","Texas","Georgia"],"Walt Disney World Resort is near Orlando, Florida. Disneyland is in California.",1);
+m(6,"Bridges","Which bridge connects San Francisco to Marin County?","Golden Gate Bridge",["Brooklyn Bridge","Bay Bridge","Verrazzano Bridge"],"The Golden Gate Bridge opened in 1937.",1);
+m(6,"Nature","In which state is the Grand Canyon?","Arizona",["Colorado","Utah","Nevada"],"The Grand Canyon National Park is in northern Arizona.",1);
+m(6,"Capitals","What is the capital of the United States?","Washington, D.C.",["New York","Philadelphia","Los Angeles"],"Washington, D.C. (District of Columbia) is not in any state.",1);
+vf(6,"The Statue of Liberty was a gift from France.",true,"It was designed by Frédéric Auguste Bartholdi and inaugurated in 1886.",1);
+vf(6,"The White House is in New York City.",false,"The White House is at 1600 Pennsylvania Avenue in Washington, D.C.",1);
+ty(6,"Which city is nicknamed “Sin City”?",["Las Vegas","Vegas"],"Las Vegas, Nevada.",2);
+ty(6,"In which state is Disney World?",["Florida"],"Florida.",1);
+// ===================== More questions =====================
+// ---- Movies
+m(1,"Cast","Who played Indiana Jones in the original trilogy?","Harrison Ford",["Tom Selleck","Kurt Russell","Mel Gibson"],"Harrison Ford played the archaeologist in Raiders of the Lost Ark (1981).",1);
+m(1,"Animation","Which Disney film (1994) features a lion cub named Simba?","The Lion King",["Bambi","Tarzan","Aladdin"],"The Lion King (1994) features “Circle of Life” by Elton John and Tim Rice.",1);
+m(1,"Quote","In which film does a character say “Here’s looking at you, kid”?","Casablanca",["Gone with the Wind","Citizen Kane","Roman Holiday"],"Humphrey Bogart says it in Casablanca (1942).",3);
+m(1,"Awards","Which 1997 film won 11 Oscars, including Best Picture?","Titanic",["Saving Private Ryan","Good Will Hunting","As Good as It Gets"],"Titanic won 11 Oscars at the 1998 ceremony, tying the record with Ben-Hur.",2);
+m(1,"Franchise","Which film contains the line “You’re gonna need a bigger boat”?","Jaws",["Alien","The Abyss","Titanic"],"Roy Scheider says it in Jaws (1975) when he first sees the shark.",2);
+m(1,"Cast","Which actor played the Joker in The Dark Knight (2008)?","Heath Ledger",["Joaquin Phoenix","Jack Nicholson","Jared Leto"],"Heath Ledger won a posthumous Oscar for the role.",2);
+m(1,"Director","Who directed Jurassic Park (1993)?","Steven Spielberg",["James Cameron","Ridley Scott","Tim Burton"],"Spielberg directed it, based on Michael Crichton’s novel.",1);
+m(1,"Director","Who directed Titanic and Avatar?","James Cameron",["Peter Jackson","Christopher Nolan","Michael Bay"],"James Cameron directed both, plus Terminator 2 and Aliens.",1);
+m(1,"Sci-fi","In The Matrix (1999), which colour pill does Neo take to see reality?","Red",["Blue","Green","Yellow"],"Morpheus offers a blue pill (stay in the dream) or a red pill (see the truth).",1);
+m(1,"Animation","What kind of toy is Woody in Toy Story?","A cowboy doll",["An astronaut action figure","A teddy bear","A dinosaur"],"Sheriff Woody is a cowboy; Buzz Lightyear is the space ranger.",1);
+m(1,"Franchise","What is the name of Han Solo’s ship in Star Wars?","Millennium Falcon",["Death Star","X-wing","Enterprise"],"The Millennium Falcon “made the Kessel Run in less than twelve parsecs”.",1);
+m(1,"Cast","Which actress played Katniss Everdeen in The Hunger Games?","Jennifer Lawrence",["Emma Stone","Scarlett Johansson","Shailene Woodley"],"Jennifer Lawrence starred in the four-film series (2012–2015).",2);
+m(1,"Cartoon","Which Pixar film is set in the mind of a girl named Riley?","Inside Out",["Up","Coco","Soul"],"Joy, Sadness, Anger, Fear and Disgust live in Riley’s head in Inside Out (2015).",2);
+m(1,"Awards","What is the nickname of the Academy Award statuette?","Oscar",["Emmy","Tony","Grammy"],"Emmys are for TV, Tonys for theatre and Grammys for music.",1);
+m(1,"Genre","Which 1960 Alfred Hitchcock film has a famous shower scene?","Psycho",["Vertigo","The Birds","Rear Window"],"Psycho (1960), with Anthony Perkins as Norman Bates.",2);
+m(1,"Cast","Who played Tony Stark / Iron Man?","Robert Downey Jr.",["Chris Evans","Chris Hemsworth","Mark Ruffalo"],"Chris Evans is Captain America, Chris Hemsworth is Thor.",1);
+m(1,"Cast","Which actor stars as Forrest Gump and also as Woody in Toy Story?","Tom Hanks",["Tom Cruise","Kevin Costner","Bill Murray"],"Tom Hanks voices Woody and played Forrest Gump.",1);
+m(1,"Franchise","Which fictional African nation is the home of Black Panther?","Wakanda",["Genovia","Zamunda","Latveria"],"Black Panther (2018) is set in Wakanda.",2);
+vf(1,"Walt Disney won more Academy Awards than any other individual.",true,"Walt Disney won 22 competitive Oscars, a record.",3);
+vf(1,"Titanic (1997) was directed by Steven Spielberg.",false,"It was directed by James Cameron.",1);
+vf(1,"The Wizard of Oz (1939) starts in black and white and turns to colour.",true,"Dorothy’s Kansas is sepia/black and white; Oz is in Technicolor.",1);
+ty(1,"Who directed Jaws, E.T. and Jurassic Park? (last name)",["Spielberg","Steven Spielberg"],"Steven Spielberg.",2);
+ty(1,"What colour pill does Neo take in The Matrix to wake up?",["Red","The red pill","Red pill"],"The red pill.",2);
+// ---- TV
+m(2,"Sitcom","Which sitcom features the characters Sheldon, Leonard, Penny, Howard and Raj?","The Big Bang Theory",["Modern Family","Two and a Half Men","Brooklyn Nine-Nine"],"The Big Bang Theory (2007–2019), set in Pasadena, California.",1);
+m(2,"Animation","Which adult cartoon by Trey Parker and Matt Stone is set in a small Colorado town?","South Park",["Family Guy","King of the Hill","American Dad!"],"South Park was created by Trey Parker and Matt Stone.",1);
+m(2,"Drama","Which Fox medical drama (2004–2012) starred British actor Hugh Laurie as a cane-walking, genius doctor?","House",["Grey’s Anatomy","ER","Scrubs"],"House, M.D. followed Dr. Gregory House in Princeton-Plainsboro hospital.",2);
+m(2,"Sitcom","In The Office (US), who is the regional manager of Dunder Mifflin Scranton?","Michael Scott",["Dwight Schrute","Jim Halpert","Andy Bernard"],"Steve Carell plays Michael Scott.",1);
+m(2,"Reality","On which show do contestants vie to be the last on an island, with the phrase “The tribe has spoken”?","Survivor",["Big Brother","The Amazing Race","Love Island"],"Survivor has run on CBS since 2000, hosted by Jeff Probst.",2);
+m(2,"Sci-fi","In Star Trek, what is the name of the starship captained by James T. Kirk?","USS Enterprise",["USS Voyager","Serenity","Nostromo"],"The USS Enterprise (NCC-1701) in the original series.",1);
+m(2,"Streaming","Which 2021 South Korean Netflix series features deadly children’s games and pink-suited guards?","Squid Game",["Money Heist","Dark","Narcos"],"Squid Game is a South Korean series released on Netflix in 2021.",1);
+m(2,"Sitcom","In Gilmore Girls, what is the name of Rory’s coffee-loving mother?","Lorelai",["Emily","Paris","Sookie"],"Lorelai Gilmore is played by Lauren Graham.",3);
+m(2,"Drama","Which crime drama follows mobster Tony Soprano in New Jersey?","The Sopranos",["The Wire","Boardwalk Empire","Goodfellas"],"The Sopranos aired on HBO from 1999 to 2007.",2);
+m(2,"Sitcom","Which sitcom features the Bluth family?","Arrested Development",["Parks and Recreation","Community","30 Rock"],"Arrested Development premiered in 2003.",3);
+m(2,"Kids","What is the name of the purple dinosaur in the children’s show?","Barney",["Dino","Yoshi","Rex"],"Barney & Friends aired on PBS from 1992 to 2010.",1);
+m(2,"Animation","In SpongeBob SquarePants, what is the name of SpongeBob’s best friend, a starfish?","Patrick Star",["Squidward","Sandy Cheeks","Mr. Krabs"],"Patrick Star lives under a rock in Bikini Bottom.",1);
+m(2,"Drama","In which series do survivors of Oceanic Flight 815 end up on a mysterious island?","Lost",["Survivor","Gilligan’s Island","Prison Break"],"Lost (2004–2010) follows survivors of Oceanic Flight 815 on a mysterious island.",2);
+vf(2,"Seinfeld is often called “a show about nothing”.",true,"The characters joke about this in an episode of the series.",1);
+vf(2,"Saturday Night Live is broadcast on NBC.",true,"SNL has aired on NBC since 1975.",2);
+vf(2,"Friends was set in Los Angeles.",false,"It is set in New York City.",1);
+ty(2,"Which cartoon family lives in Quahog, Rhode Island?",["Griffin","The Griffins","Griffins","Family Guy"],"The Griffins, in Family Guy.",3);
+ty(2,"Which show features Michael Scott and Dunder Mifflin?",["The Office","Office","The Office US"],"The Office (US version).",1);
+// ---- Music
+m(3,"Pop","Who sang “Like a Prayer” and “Material Girl”?","Madonna",["Cyndi Lauper","Janet Jackson","Pat Benatar"],"Both are Madonna hits from the 1980s.",1);
+m(3,"Pop","Who released the album Lemonade in 2016?","Beyoncé",["Rihanna","Alicia Keys","Mary J. Blige"],"Lemonade was Beyoncé’s visual album.",2);
+m(3,"Rock","Which grunge band, led by Kurt Cobain, released Nevermind in 1991?","Nirvana",["Pearl Jam","Soundgarden","Alice in Chains"],"“Smells Like Teen Spirit” is from Nevermind.",1);
+m(3,"Rap","What is Eminem’s real first name?","Marshall",["Mitchell","Michael","Marcus"],"Marshall Mathers, from Detroit.",3);
+m(3,"Country","Which country singer is known as “The Man in Black”?","Johnny Cash",["Willie Nelson","Hank Williams","Merle Haggard"],"Johnny Cash always wore black on stage.",1);
+m(3,"Pop","Which singer, nicknamed the “King of Pop”, performed the moonwalk?","Michael Jackson",["Prince","Justin Timberlake","Usher"],"He debuted the moonwalk in 1983 on Motown 25.",1);
+m(3,"Pop","Which singer is known for the albums Folklore and 1989 (Taylor’s Version)?","Taylor Swift",["Katy Perry","Selena Gomez","Olivia Rodrigo"],"Both are Taylor Swift albums.",1);
+m(3,"Rap","Which rapper’s real name is Shawn Carter?","Jay-Z",["Nas","50 Cent","Snoop Dogg"],"Jay-Z is from Brooklyn.",2);
+m(3,"Rock","Which rock band is Dave Grohl, formerly of Nirvana, the frontman of?","Foo Fighters",["Green Day","Red Hot Chili Peppers","Linkin Park"],"Foo Fighters formed in 1994 in Seattle.",2);
+m(3,"Awards","What trophy is given for achievements in music in the US?","Grammy",["Oscar","Emmy","Tony"],"The Grammy Awards are given by the Recording Academy.",1);
+m(3,"Songs","Which song begins with the lines “O say can you see, by the dawn’s early light”?","The Star-Spangled Banner",["America the Beautiful","God Bless America","My Country, ’Tis of Thee"],"It’s the US national anthem, from a poem by Francis Scott Key.",1);
+m(3,"Pop","Which singer born in Reading, Pennsylvania, released the 2008 album Fearless?","Taylor Swift",["Miley Cyrus","Carrie Underwood","Katy Perry"],"Taylor Swift started in country music in Nashville.",3);
+m(3,"Funk","Who is the ‘Godfather of Soul’?","James Brown",["Ray Charles","Otis Redding","Marvin Gaye"],"James Brown, famous for “I Got You (I Feel Good)”.",2);
+m(3,"Rock","Which singer from Seattle played a left-handed guitar and famously set it on fire at Monterey?","Jimi Hendrix",["Eric Clapton","Chuck Berry","Carlos Santana"],"Jimi Hendrix burned his guitar at Monterey Pop 1967.",2);
+vf(3,"Bob Dylan won the Nobel Prize in Literature.",true,"Bob Dylan won it in 2016.",2);
+vf(3,"Lady Gaga performed at the Super Bowl halftime show in 2017.",true,"She performed at Super Bowl LI in Houston.",2);
+vf(3,"Elvis Presley was born in Nashville.",false,"Elvis was born in Tupelo, Mississippi.",3);
+ty(3,"Which pop star is nicknamed “Queen B”?",["Beyoncé","Beyonce"],"Beyoncé.",2);
+ty(3,"What is the name of the award given for music achievement, a golden gramophone?",["Grammy","Grammys","Grammy Award"],"The Grammy.",1);
+// ---- Sports
+m(4,"Basketball","Which NBA player, nicknamed “King James”, plays for the Lakers?","LeBron James",["Stephen Curry","Kevin Durant","Kobe Bryant"],"LeBron James, born in Akron, Ohio, joined the Lakers in 2018.",1);
+m(4,"Basketball","Which team did Stephen Curry help lead to multiple championships?","Golden State Warriors",["Boston Celtics","Miami Heat","Chicago Bulls"],"Curry won titles with the Warriors in 2015, 2017, 2018 and 2022.",2);
+m(4,"Baseball","Which New York team is famous for its pinstripes and 27 World Series titles?","New York Yankees",["New York Mets","Boston Red Sox","Brooklyn Dodgers"],"The Yankees hold the record for World Series titles (27).",2);
+m(4,"Football","Which NFL team plays in Dallas?","Dallas Cowboys",["Houston Texans","Dallas Mavericks","Austin Eagles"],"The Cowboys are known as “America’s Team”.",1);
+m(4,"Hockey","Which league is the top professional ice hockey league in North America?","NHL",["NFL","MLS","MLB"],"The National Hockey League. Its trophy is the Stanley Cup.",1);
+m(4,"Football","What is the trophy of the Super Bowl winner called?","Vince Lombardi Trophy",["Stanley Cup","Larry O’Brien Trophy","Commissioner’s Trophy"],"Named after the Green Bay Packers coach.",2);
+m(4,"Basketball","Which trophy goes to the NBA champion?","Larry O’Brien Trophy",["Vince Lombardi Trophy","Stanley Cup","Commissioner’s Trophy"],"The Larry O’Brien Championship Trophy.",3);
+m(4,"Baseball","Which Boston ballpark is famous for its ‘Green Monster’ wall?","Fenway Park",["Wrigley Field","Yankee Stadium","Dodger Stadium"],"Fenway Park is the Red Sox’s home since 1912.",2);
+m(4,"Golf","Which golfer won 15 major championships and 5 Masters?","Tiger Woods",["Jack Nicklaus","Phil Mickelson","Arnold Palmer"],"Tiger Woods has 15 majors and 5 Masters; Nicklaus holds the record of 18 majors.",2);
+m(4,"Soccer","Which American women’s national team has won multiple Women’s World Cups?","USWNT",["Canada","Mexico","Brazil"],"The US won in 1991, 1999, 2015 and 2019.",2);
+m(4,"Football","How many yards long is the field in American football (between goal lines)?","100",["90","110","120"],"100 yards, plus two 10-yard end zones.",2);
+m(4,"Basketball","How many points is a shot from beyond the three-point line worth in the NBA?","3",["2","4","5"],"Three points, for any basket made from beyond the arc.",1);
+m(4,"Baseball","How many innings are in a standard professional baseball game?","9",["7","10","12"],"Nine innings, unless extra innings are needed.",1);
+m(4,"Olympics","Which US gymnast won four gold medals at the 2016 Rio Olympics?","Simone Biles",["Gabby Douglas","Aly Raisman","Nastia Liukin"],"Simone Biles won four golds in Rio.",2);
+vf(4,"The Super Bowl is played in early February.",true,"It is traditionally played on a Sunday in early February.",2);
+vf(4,"The Boston Celtics have won more NBA titles than any other team.",true,"The Celtics have 18 titles, the most in NBA history (after 2024).",3);
+vf(4,"A soccer game in the US is called football by most Americans.",false,"Americans call it soccer and use “football” for the NFL game.",1);
+ty(4,"Which baseball team plays at Fenway Park?",["Red Sox","Boston Red Sox"],"The Boston Red Sox.",2);
+ty(4,"Which trophy is awarded to the NHL champion?",["Stanley Cup","The Stanley Cup"],"The Stanley Cup.",2);
+// ---- Food & brands
+m(5,"Brands","Which fast-food chain is known for the Big Mac?","McDonald’s",["Burger King","Wendy’s","Five Guys"],"The Big Mac was introduced in 1967 in Pennsylvania.",1);
+m(5,"Brands","Which company makes the Model S, Model 3 and Cybertruck?","Tesla",["Ford","General Motors","Rivian"],"Tesla, led by Elon Musk.",1);
+m(5,"Food","What is the main ingredient of guacamole?","Avocado",["Tomato","Pea","Pepper"],"Guacamole is an avocado dip from Mexico, hugely popular in the US.",1);
+m(5,"Food","Which dessert is a classic American treat made from sweet dough rings fried and glazed?","Doughnut",["Brownie","Cupcake","Pancake"],"Doughnuts (donuts) are a staple of US breakfast culture.",1);
+m(5,"Brands","Which sportswear brand has the slogan “Just Do It”?","Nike",["Adidas","Reebok","Under Armour"],"Nike, founded in Oregon in 1964 as Blue Ribbon Sports.",1);
+m(5,"Brands","Which company is known for the golden arches logo?","McDonald’s",["KFC","Taco Bell","Subway"],"McDonald’s golden arches.",1);
+m(5,"Food","Complete the saying: “as American as …”","apple pie",["pumpkin pie","pecan pie","key lime pie"],"“As American as apple pie” is a common expression.",1);
+m(5,"Brands","Which technology company is headquartered in Cupertino, California?","Apple",["Google","Meta","Microsoft"],"Apple Park is in Cupertino.",1);
+m(5,"Brands","Which streaming company started by mailing DVDs?","Netflix",["Hulu","Spotify","Disney+"],"Netflix began as a DVD-by-mail service in 1997.",1);
+m(5,"Food","What cut of beef is used to make a classic Philly cheesesteak?","Thinly sliced ribeye",["Ground chuck","Brisket","Tenderloin"],"A Philly cheesesteak is thin-sliced beef with melted cheese on a long roll.",2);
+m(5,"Holidays","What do Americans traditionally eat on July 4th?","Barbecue and hot dogs",["Roast turkey","Pumpkin pie","Eggs and ham"],"Independence Day picnics feature burgers and hot dogs.",1);
+m(5,"Food","Which spicy sauce is a classic for chicken wings?","Buffalo sauce",["Tartar sauce","Hollandaise","Béarnaise"],"Buffalo sauce = hot sauce + butter.",1);
+m(5,"Brands","Which retail giant, founded by Sam Walton in Arkansas, is the biggest by revenue?","Walmart",["Target","Costco","Kroger"],"Walmart began in Rogers, Arkansas, in 1962.",2);
+vf(5,"Pumpkin pie is a traditional Thanksgiving dessert.",true,"Pumpkin pie is a Thanksgiving staple.",1);
+vf(5,"Google was founded in a garage in Oregon.",false,"It was founded in a garage in Menlo Park, California, in 1998.",3);
+vf(5,"Coca-Cola is headquartered in Atlanta, Georgia.",true,"Coca-Cola’s HQ is in Atlanta.",2);
+ty(5,"Which fast-food chain is known for the Whopper?",["Burger King"],"Burger King.",1);
+ty(5,"Which company makes the iPhone?",["Apple","Apple Inc"],"Apple.",1);
+// ---- Places
+m(6,"Cities","Which city is known as the “Windy City”?","Chicago",["Boston","Seattle","Denver"],"Chicago, Illinois.",1);
+m(6,"Cities","Which city is the home of jazz and Mardi Gras?","New Orleans",["Miami","Atlanta","Houston"],"New Orleans, Louisiana.",1);
+m(6,"Nature","Which national park is famous for the geyser Old Faithful?","Yellowstone",["Yosemite","Zion","Glacier"],"Yellowstone, mainly in Wyoming, was the first national park (1872).",2);
+m(6,"Monuments","In which city is the Space Needle?","Seattle",["Portland","San Francisco","San Diego"],"The Space Needle was built for the 1962 World’s Fair.",1);
+m(6,"Monuments","In which city is the Alamo?","San Antonio",["Houston","Dallas","Austin"],"The Alamo is in San Antonio, Texas.",2);
+m(6,"Nature","Which waterfall lies on the border between New York State and Canada?","Niagara Falls",["Yosemite Falls","Multnomah Falls","Havasu Falls"],"Niagara Falls lies between Ontario (Canada) and New York State.",1);
+m(6,"Cities","What is the largest city in the US by population?","New York City",["Los Angeles","Chicago","Houston"],"About 8 million people live in NYC.",1);
+m(6,"States","Which is the largest US state by area?","Alaska",["Texas","California","Montana"],"Alaska is more than twice the size of Texas.",2);
+m(6,"States","Which state is known as the “Sunshine State”?","Florida",["California","Arizona","Hawaii"],"Florida’s nickname is the Sunshine State.",2);
+m(6,"Monuments","Which monument in Washington, D.C. is an obelisk?","The Washington Monument",["Lincoln Memorial","Jefferson Memorial","The Capitol"],"The Washington Monument.",1);
+m(6,"Nature","In which state is Yosemite National Park?","California",["Oregon","Nevada","Colorado"],"Yosemite is in the Sierra Nevada of California.",2);
+m(6,"Cities","Which city hosts the Hollywood Walk of Fame?","Los Angeles",["New York","Miami","Las Vegas"],"The Walk of Fame is on Hollywood Boulevard.",1);
+m(6,"Cities","Which city is nicknamed the “City of Brotherly Love”?","Philadelphia",["Baltimore","Boston","Pittsburgh"],"Philadelphia, where the Liberty Bell is.",2);
+vf(6,"Hawaii is the 50th US state.",true,"Hawaii joined in 1959.",2);
+vf(6,"The Mississippi River flows into the Pacific Ocean.",false,"It flows into the Gulf of Mexico.",2);
+vf(6,"Times Square is in New York City.",true,"Times Square is in Midtown Manhattan.",1);
+ty(6,"Which city is nicknamed the “Windy City”?",["Chicago"],"Chicago.",1);
+ty(6,"In which state is the Grand Canyon?",["Arizona"],"Arizona.",1);
+
+return {id:"uspop",title:"American Pop Culture",kw:"usa us america american pop culture movies film tv series music sports nfl nba food brands landmarks trivia fun quiz",subject:"Movies, TV, music, sports, food and landmarks: how well do you know the USA?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
+})();
