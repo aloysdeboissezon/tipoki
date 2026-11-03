@@ -41,11 +41,15 @@ test.describe("About, contact and legal pages", () => {
     });
   }
 
-  test("legal notice: the details only the publisher can give are clearly marked in every language", async ({ page }) => {
+  test("no unfinished placeholder is visible on any page, and the legal notice names the publisher and hosts", async ({ page }) => {
     for (const l of ["en", "fr", "es"]) {
       await page.addInitScript(l => localStorage.setItem("tpk-lang", l), l);
+      for (const p of PAGES) {
+        await page.goto(`/${p}.html`);
+        await expect(page.locator("[data-todo]")).toHaveCount(0);
+        expect(await page.locator("main").innerText()).not.toMatch(/TO COMPLETE|À COMPLÉTER|POR COMPLETAR/);
+      }
       await page.goto("/legal.html");
-      await expect(page.locator("main .lang:visible [data-todo]")).toHaveCount(2);
       await expect(page.locator("main .lang:visible")).toContainText("Aloys de Boissezon");
       await expect(page.locator("main .lang:visible")).toContainText("Vercel");
       await expect(page.locator("main .lang:visible")).toContainText("Supabase");
