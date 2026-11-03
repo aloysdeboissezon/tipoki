@@ -552,6 +552,8 @@ var FR={
 "Your password":"Ton mot de passe",
 "There's no email, so keep your password somewhere safe: it's the only way back to your progress.":"Il n'y a pas d'e-mail : garde ton mot de passe en lieu sûr, c'est le seul moyen de retrouver ta progression.",
 "Create account":"Créer le compte",
+"Sign in to keep your scores, mistakes and flashcards on every device.":"Connecte-toi pour retrouver tes scores, erreurs et flashcards sur tous tes appareils.",
+"Not now":"Plus tard",
 "Sign in":"Se connecter",
 "Creating…":"Création…",
 "Signing in…":"Connexion…",

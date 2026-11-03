@@ -33,3 +33,16 @@
 .sync-back{align-self:flex-start}
 .sync-card input[type=email],.sync-card input[type=tel],.sync-card input[inputmode=numeric]{font:inherit;font-size:18px;font-weight:600;padding:13px 16px;border-radius:16px;border:2px solid var(--line);background:var(--field,#FAFAFD);color:var(--ink);width:100%;min-width:0}
 .sync-card input[type=email]:focus,.sync-card input[type=tel]:focus,.sync-card input[inputmode=numeric]:focus{border-color:var(--hl);box-shadow:0 0 0 4px var(--hl-soft);outline:none}
+/* account entry: top-bar button + home prompt card */
+.accbtn.off{background:var(--hl);border-color:var(--hl);color:#fff}
+.accbtn.off .bt{font-weight:800}
+.acc-av{display:grid;place-items:center;width:26px;height:26px;margin:-2px -6px;border-radius:50%;background:var(--hl);color:#fff;font-size:14px;font-weight:900}
+#home .accard{display:grid;grid-template-columns:44px 1fr;align-items:center;gap:6px 14px;padding:14px 16px;border:2px solid var(--hl);background:var(--hl-soft);min-height:0;height:auto}
+#home .accard[hidden]{display:none}
+.acc-ico{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--hl);color:#fff}
+.acc-ico svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+.acc-main{display:flex;flex-direction:column;gap:2px;min-width:0}
+.acc-main span{font-size:14px;color:var(--muted);line-height:1.35}
+.acc-act{grid-column:1/-1;display:flex;align-items:center;gap:14px}
+.acc-act .btn{flex:1;margin:0}
+@media(max-width:420px){.accbtn.off .bt{display:none}}

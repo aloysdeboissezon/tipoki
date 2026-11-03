@@ -534,6 +534,8 @@ var ES={
 "Your password":"Tu contraseña",
 "There's no email, so keep your password somewhere safe: it's the only way back to your progress.":"No hay correo electrónico, así que guarda tu contraseña en un lugar seguro: es la única forma de recuperar tu progreso.",
 "Create account":"Crear cuenta",
+"Sign in to keep your scores, mistakes and flashcards on every device.":"Inicia sesión para tener tus puntuaciones, errores y flashcards en todos tus dispositivos.",
+"Not now":"Ahora no",
 "Sign in":"Iniciar sesión",
 "Creating…":"Creando…",
 "Signing in…":"Iniciando sesión…",
