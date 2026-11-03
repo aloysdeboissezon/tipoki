@@ -4,7 +4,15 @@
 // for a signed-in player, and brings them back on another device. Without an account nothing changes.
 (()=>{
 if(typeof sb==="undefined"||!sb)return;   // no backend: the app stays local-only
-const ACCT="tpk-sync",DIRTY="tpk-sync-dirty";
+// Which sign-in buttons are shown. Email and Google need only Supabase settings (free). Apple needs a paid Apple Developer account
+// (about 99 USD/year) and Phone needs a paid SMS provider (Twilio...): switch them to true once they are set up in Supabase.
+const AUTH={email:true,google:true,apple:false,phone:false};
+// Supabase Auth only proves who the person is (email link, Google...). The progress itself stays in the same online copy as before:
+// right after signing in, tpk_auth_login hands the browser the usual save token. Nothing of the auth session is kept afterwards.
+let sbA=null;
+try{sbA=window.supabase.createClient(SB_URL,SB_KEY,{auth:{flowType:"pkce",persistSession:true,autoRefreshToken:false,detectSessionInUrl:true,storageKey:"qwebbo-auth"}})}catch(e){sbA=null}
+if(sbA&&!(sbA.auth&&typeof sbA.auth.onAuthStateChange==="function"))sbA=null;
+const ACCT="tpk-sync",DIRTY="tpk-sync-dirty",LINK="qwebbo-link";   // LINK: a username account waiting to get an email (the page may reload for Google)
 const NOSYNC=new Set(["socio-pid","socio-sound","tpk-theme","tpk-lang","tpk-resume","tpk-examrun","tpk-cardrun","tpk-sid","tpk-lgq","tpk-lgseen"]);   // per device (a paused solo game stays on its device)
 function synced(k){return /^(socio-|tpk-)/.test(k)&&!NOSYNC.has(k)&&!k.startsWith(ACCT)}
 const S=Storage.prototype,oGet=S.getItem,oSet=S.setItem,oDel=S.removeItem;
@@ -61,7 +69,7 @@ function refreshApp(){const t=f=>{try{f()}catch(e){}};
   t(()=>{if(window.tpkCountry)tpkCountry.paint()});t(renderMe);t(renderMissBtn);t(renderCardsPanel);t(renderMyQuizzes);
   t(()=>renderProgressUI());t(()=>{if(!$("exam")||$("exam").hidden)renderExamPanel()})}   // best scores / streak and exam history, from other features
 
-async function rpc(fn,args){const {data,error}=await sb.rpc(fn,args);
+async function rpc(fn,args,c){const {data,error}=await (c||sb).rpc(fn,args);
   if(error)throw new Error(/^[a-z_]+$/.test(error.message||"")?error.message:"network");
   if(data&&data.error)throw new Error(data.error);return data}
 
@@ -100,6 +108,7 @@ document.addEventListener("visibilitychange",()=>{if(!acct)return;
   else if(document.visibilityState==="visible"&&!busy)pull()});
 
 // ---------- UI: a line under the nickname + a small sign-in dialog ----------
+const AUTH_ON=!!sbA&&(AUTH.email||AUTH.google||AUTH.apple||AUTH.phone);
 const esc2=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const line=document.createElement("div");line.className="sync-line";line.id="syncLine";
 const main=document.querySelector(".me-panel .me-main");if(!main)return;main.appendChild(line);
@@ -107,8 +116,9 @@ function setState(s){state=s;renderLine()}
 function renderLine(){
   if(acct){
     const st={saving:tl("Saving…"),offline:tl("Offline, will retry")}[state]||"";
-    line.innerHTML='<span class="sync-txt"><span class="sync-ico" aria-hidden="true"></span>'+tl("Saved online as {u}",{u:"<b>"+esc2(acct.u)+"</b>"})+(st?'<span class="sync-st'+(state==="offline"?" off":"")+'"> · '+st+'</span>':'')+'</span><button type="button" class="linkbtn" id="syncOut">'+tl("Sign out")+'</button>';
-    line.querySelector("#syncOut").onclick=signOut}
+    line.innerHTML='<span class="sync-txt"><span class="sync-ico" aria-hidden="true"></span>'+tl("Saved online as {u}",{u:"<b>"+esc2(acct.u)+"</b>"})+(st?'<span class="sync-st'+(state==="offline"?" off":"")+'"> · '+st+'</span>':'')+'</span>'+(AUTH_ON&&!acct.au?'<button type="button" class="linkbtn" id="syncAdd">'+tl("Add an email")+'</button>':'')+'<button type="button" class="linkbtn" id="syncOut">'+tl("Sign out")+'</button>';
+    line.querySelector("#syncOut").onclick=signOut;
+    const ad=line.querySelector("#syncAdd");if(ad)ad.onclick=()=>openDlg("link")}
   else{
     line.innerHTML='<span class="sync-txt"><span class="sync-ico off" aria-hidden="true"></span>'+(state==="expired"?tl("Signed out. Sign in again to keep saving."):tl("Your progress is only on this device."))+'</span><button type="button" class="linkbtn" id="syncIn">'+tl("Save it online")+'</button>';
     line.querySelector("#syncIn").onclick=()=>openDlg(state==="expired"?"in":"new")}
@@ -116,7 +126,37 @@ function renderLine(){
 
 const dlg=document.createElement("div");dlg.className="sync-dlg";dlg.id="syncDlg";dlg.hidden=true;
 dlg.setAttribute("role","dialog");dlg.setAttribute("aria-modal","true");dlg.setAttribute("aria-labelledby","syncTitle");
-dlg.innerHTML=`<form class="sync-card" id="syncForm" novalidate>
+dlg.innerHTML=`<div class="sync-card" id="syncCard">
+<div class="sync-view" data-v="choose">
+  <h2>Save your progress</h2>
+  <p class="muted sync-help" id="pvHelp">Pick how you want to sign in. Your scores, mistakes to review and flashcards will follow you on any device.</p>
+  <button type="button" class="btn sync-prov" id="pvEmail" hidden><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 8 8 6 8-6"/></svg><span>Continue with Email</span></button>
+  <div class="sync-or" id="pvOr" hidden><span>or</span></div>
+  <button type="button" class="btn ghost sync-prov" id="pvPhone" hidden><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg><span>Continue with Phone</span></button>
+  <button type="button" class="btn ghost sync-prov" id="pvGoogle" hidden><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="#4285F4" d="M22.5 12.2c0-.8-.1-1.5-.2-2.2H12v4.2h5.9a5 5 0 0 1-2.2 3.3v2.7h3.5c2.1-1.9 3.3-4.7 3.3-8z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.3-2.7l-3.5-2.7c-1 .7-2.3 1.100-3.8 1.100-2.900 0-5.400-2-6.300-4.600H2.100v2.800A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.700 14.100a6.600 6.600 0 0 1 0-4.200V7.100H2.100a11 11 0 0 0 0 9.800z"/><path fill="#EA4335" d="M12 5.400c1.600 0 3.100.6 4.200 1.700l3.100-3.100A11 11 0 0 0 2.100 7.100l3.600 2.800C6.600 7.400 9.100 5.400 12 5.400z"/></svg><span>Continue with Google</span></button>
+  <button type="button" class="btn ghost sync-prov" id="pvApple" hidden><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M16.400 12.600c0-2.300 1.900-3.400 2-3.500-1.100-1.600-2.800-1.800-3.400-1.800-1.400-.1-2.800.9-3.500.9s-1.800-.8-3-.8c-1.500 0-3 .9-3.800 2.300-1.600 2.800-.4 7 1.200 9.300.8 1.100 1.700 2.400 2.900 2.300 1.200 0 1.600-.7 3-.7s1.800.7 3 .7c1.300 0 2.100-1.100 2.800-2.200.9-1.300 1.300-2.500 1.300-2.600-.1 0-2.500-1-2.500-3.900zM14.200 5.800c.6-.8 1.100-1.900.9-3-.9 0-2.100.6-2.700 1.400-.6.700-1.100 1.800-1 2.900 1.100.1 2.200-.5 2.800-1.300z"/></svg><span>Continue with Apple</span></button>
+  <p class="err" id="pvErr" hidden></p>
+  <button type="button" class="linkbtn" id="pvLegacy">Use a username and password instead</button>
+  <div class="row sync-actions"><button type="button" class="btn ghost" id="pvCancel">Cancel</button></div>
+</div>
+<form class="sync-view" id="emailForm" data-v="email" novalidate hidden>
+  <h2>Continue with Email</h2>
+  <p class="muted sync-help" id="emHelp">We'll email you a link: no password to remember.</p>
+  <div class="sync-field"><label class="label" for="emAddr">Email</label><input type="email" id="emAddr" maxlength="120" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="you@example.com"></div>
+  <div class="sync-field" id="emCodeBox" hidden><label class="label" for="emCode">Code from the email (if there is one)</label><input type="text" id="emCode" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="123456"></div>
+  <p class="err" id="emErr" hidden></p>
+  <div class="row sync-actions"><button type="button" class="btn ghost" id="emBack">Back</button><button type="submit" class="btn" id="emGo">Send me a sign-in link</button></div>
+</form>
+<form class="sync-view" id="phoneForm" data-v="phone" novalidate hidden>
+  <h2>Continue with Phone</h2>
+  <p class="muted sync-help" id="phHelp">We'll text you a code.</p>
+  <div class="sync-field"><label class="label" for="phNum">Phone number</label><input type="tel" id="phNum" maxlength="20" autocomplete="tel" placeholder="+33 6 12 34 56 78"></div>
+  <div class="sync-field" id="phCodeBox" hidden><label class="label" for="phCode">Code</label><input type="text" id="phCode" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="123456"></div>
+  <p class="err" id="phErr" hidden></p>
+  <div class="row sync-actions"><button type="button" class="btn ghost" id="phBack">Back</button><button type="submit" class="btn" id="phGo">Send me a code</button></div>
+</form>
+<form class="sync-view" id="syncForm" data-v="legacy" novalidate>
+  <button type="button" class="linkbtn sync-back" id="syncBack" hidden>← Other ways to sign in</button>
   <h2 id="syncTitle">Save your progress</h2>
   <p class="muted sync-help">Find your scores, mistakes to review and flashcards on any device. No email needed.</p>
   <div class="chips sync-tabs" role="group" aria-label="Account"><button type="button" class="chip" data-m="new">New account</button><button type="button" class="chip" data-m="in">I have one</button></div>
@@ -125,25 +165,107 @@ dlg.innerHTML=`<form class="sync-card" id="syncForm" novalidate>
   <p class="muted sync-foot" id="syncFoot">There's no email, so keep your password somewhere safe: it's the only way back to your progress.</p>
   <p class="err" id="syncErr" hidden></p>
   <div class="row sync-actions"><button type="button" class="btn ghost" id="syncCancel">Cancel</button><button type="submit" class="btn" id="syncGo">Create account</button></div>
-</form>`;
+</form>
+</div>`;
 tpkTranslate(dlg);document.body.appendChild(dlg);
 const q=id=>dlg.querySelector("#"+id);
 let dmode="new";
-function setMode(m){dmode=m;dlg.querySelectorAll(".sync-tabs .chip").forEach(b=>b.setAttribute("aria-pressed",b.dataset.m===m));
+function setMode(m){m=m==="link"?"new":m;dmode=m;dlg.querySelectorAll(".sync-tabs .chip").forEach(b=>b.setAttribute("aria-pressed",b.dataset.m===m));
   q("syncGo").textContent=m==="new"?tl("Create account"):tl("Sign in");
   q("syncPass").autocomplete=m==="new"?"new-password":"current-password";
   q("syncPass").placeholder=m==="new"?tl("At least 6 characters"):tl("Your password");
   q("syncFoot").hidden=m!=="new";err("")}
 dlg.querySelectorAll(".sync-tabs .chip").forEach(b=>b.onclick=()=>setMode(b.dataset.m));
 function err(m){q("syncErr").textContent=m;q("syncErr").hidden=!m}
-let lastFocus=null;
-function openDlg(m){lastFocus=document.activeElement;setMode(m);q("syncPass").value="";
+let lastFocus=null,linking=false,sentTo=null;
+function show(v){dlg.querySelectorAll(".sync-view").forEach(x=>x.hidden=x.dataset.v!==v)}
+function perr(id,m){const e=q(id);e.textContent=m;e.hidden=!m}
+function openDlg(m){lastFocus=document.activeElement;linking=m==="link";perr("pvErr","");sentTo=null;
+  q("pvEmail").hidden=!AUTH.email;q("pvPhone").hidden=!AUTH.phone;q("pvGoogle").hidden=!AUTH.google;q("pvApple").hidden=!AUTH.apple;
+  q("pvOr").hidden=!AUTH.email||!(AUTH.phone||AUTH.google||AUTH.apple);
+  q("pvLegacy").hidden=linking;   // adding an email to a username account: no new username
+  q("pvHelp").textContent=linking?tl("Add an email or Google account to this account. Your username and password keep working."):tl("Pick how you want to sign in. Your scores, mistakes to review and flashcards will follow you on any device.");
+  q("syncBack").hidden=!AUTH_ON;
+  if(AUTH_ON)show("choose");else{show("legacy");setMode(m)}
+  q("syncPass").value="";
   if(!q("syncUser").value)q("syncUser").value=(get("socio-nick")||"").replace(/[^A-Za-z0-9_.-]/g,"").slice(0,20);
-  dlg.hidden=false;document.body.classList.add("noscroll");setTimeout(()=>(q("syncUser").value?q("syncPass"):q("syncUser")).focus(),0)}
+  dlg.hidden=false;document.body.classList.add("noscroll");
+  setTimeout(()=>{if(!AUTH_ON)(q("syncUser").value?q("syncPass"):q("syncUser")).focus()},0)}
 function closeDlg(){dlg.hidden=true;document.body.classList.remove("noscroll");q("syncGo").disabled=false;if(lastFocus&&lastFocus.focus)lastFocus.focus()}
 q("syncCancel").onclick=closeDlg;
 dlg.addEventListener("keydown",e=>{if(e.key==="Escape")closeDlg()});
 dlg.addEventListener("click",e=>{if(e.target===dlg)closeDlg()});
+q("pvCancel").onclick=closeDlg;
+q("pvLegacy").onclick=()=>{show("legacy");setMode("in");q("syncUser").focus()};
+q("syncBack").onclick=()=>show("choose");
+q("emBack").onclick=q("phBack").onclick=()=>{show("choose");sentTo=null};
+
+// ---------- sign in with Email / Phone / Google / Apple (Supabase Auth) ----------
+const AMSG={already_linked:tl("This email is already linked to another qwebbo account."),
+  rate:tl("Too many messages sent. Wait a few minutes, then try again."),bad_code:tl("This code is wrong or has expired."),
+  bad_email:tl("Enter a valid email address."),bad_phone:tl("Enter your number with the country code, like +33 6 12 34 56 78."),
+  fail:tl("Sign-in didn't work. Try again."),net:tl("Can't reach the server. Check your connection and try again.")};
+function aerr(e){const m=String(e&&(e.code||e.message)||"");
+  if(e&&(e.status===429||/rate|too_many|over_/i.test(m)))return AMSG.rate;
+  if(/otp_expired|invalid.*(token|otp)|expired/i.test(m))return AMSG.bad_code;
+  if(/email.*(invalid|valid)|validation_failed/i.test(m))return AMSG.bad_email;
+  if(/phone/i.test(m))return AMSG.bad_phone;
+  return /fetch|network/i.test(m)?AMSG.net:AMSG.fail}
+const redirectUrl=()=>location.origin+location.pathname;
+function rememberLink(){put(LINK,linking&&acct?acct.tok:null)}   // survives the trip to Google and back
+q("pvEmail").onclick=()=>{show("email");q("emCodeBox").hidden=true;q("emGo").textContent=tl("Send me a sign-in link");perr("emErr","");sentTo=null;q("emAddr").focus()};
+q("pvPhone").onclick=()=>{show("phone");q("phCodeBox").hidden=true;q("phGo").textContent=tl("Send me a code");perr("phErr","");sentTo=null;q("phNum").focus()};
+async function oauth(provider){perr("pvErr","");rememberLink();
+  try{const {error}=await sbA.auth.signInWithOAuth({provider,options:{redirectTo:redirectUrl()}});if(error)throw error}
+  catch(e){perr("pvErr",aerr(e))}}
+q("pvGoogle").onclick=()=>oauth("google");
+q("pvApple").onclick=()=>oauth("apple");
+q("emailForm").onsubmit=async e=>{e.preventDefault();perr("emErr","");
+  const go=q("emGo"),em=q("emAddr").value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){perr("emErr",AMSG.bad_email);q("emAddr").focus();return}
+  go.disabled=true;
+  try{
+    if(sentTo===em&&q("emCode").value.trim()){
+      const {error}=await sbA.auth.verifyOtp({email:em,token:q("emCode").value.trim(),type:"email"});if(error)throw error}   // signed in: onAuthStateChange takes over
+    else{rememberLink();
+      const {error}=await sbA.auth.signInWithOtp({email:em,options:{emailRedirectTo:redirectUrl(),shouldCreateUser:true}});if(error)throw error;
+      sentTo=em;q("emCodeBox").hidden=false;go.textContent=tl("Confirm the code");
+      q("emHelp").textContent=tl("We sent a link to {e}. Open it on this device to sign in. If the email shows a code instead, type it below.",{e:em})}
+  }catch(x){perr("emErr",aerr(x))}finally{go.disabled=false}};
+q("phoneForm").onsubmit=async e=>{e.preventDefault();perr("phErr","");
+  const go=q("phGo"),ph=q("phNum").value.replace(/[\s().-]/g,"");
+  if(!/^\+[1-9]\d{7,14}$/.test(ph)){perr("phErr",AMSG.bad_phone);q("phNum").focus();return}
+  go.disabled=true;
+  try{
+    if(sentTo===ph&&q("phCode").value.trim()){
+      const {error}=await sbA.auth.verifyOtp({phone:ph,token:q("phCode").value.trim(),type:"sms"});if(error)throw error}
+    else{rememberLink();
+      const {error}=await sbA.auth.signInWithOtp({phone:ph});if(error)throw error;
+      sentTo=ph;q("phCodeBox").hidden=false;go.textContent=tl("Confirm the code");q("phHelp").textContent=tl("We texted a code to {p}.",{p:ph});q("phCode").focus()}
+  }catch(x){perr("phErr",aerr(x))}finally{go.disabled=false}};
+
+// Supabase Auth says "signed in" (link opened, Google came back, code accepted): trade that for the usual save token
+let finishing=false;
+async function finishAuth(){
+  if(finishing)return;finishing=true;
+  const link=get(LINK),e0=edits;
+  try{
+    const r=await rpc("tpk_auth_login",{p_link:link||null,p_data:snap()},sbA);
+    acct={u:r.username,tok:r.token,rev:r.rev,au:1};saveAcct();put(LINK,null);
+    if(r.created){if(edits===e0)put(DIRTY,null);else later(500)}
+    else{const m=merge(snap(),r.data||{});apply(m);
+      if(same(m,r.data||{}))put(DIRTY,null);else{put(DIRTY,"1");push()}}
+    setState("ok");closeDlg();if(typeof toast==="function")toast(r.created?tl("Progress saved online"):tl("Progress restored"))
+  }catch(x){put(LINK,null);openDlg("new");perr("pvErr",AMSG[x.message]||AMSG.fail)}
+  finally{finishing=false;try{await sbA.auth.signOut({scope:"local"})}catch(x){}}
+}
+if(AUTH_ON){
+  sbA.auth.onAuthStateChange((ev,ses)=>{if(ev==="SIGNED_IN"&&ses)setTimeout(finishAuth,0)});
+  // a link that expired, or a Google sign-in that was refused, comes back with the reason in the address
+  try{const h=location.hash.includes("error_description=")?location.hash.slice(1):"",qs=new URLSearchParams(h||location.search);
+    if(qs.get("error_description")){history.replaceState(null,"",location.pathname);
+      setTimeout(()=>{openDlg("new");perr("pvErr",/expired|invalid/i.test(qs.get("error_description"))?AMSG.bad_code:AMSG.fail)},800)}}catch(x){}}
+
 const MSG={bad_username:tl("Username: 3 to 20 letters, numbers, dots, dashes or underscores (no spaces)."),
   bad_password:tl("Password: at least 6 characters."),name_taken:tl("This username is taken. Pick another one, or tap “I have one” if it's yours."),
   bad_login:tl("Wrong username or password."),locked:tl("Too many wrong passwords. Wait 15 minutes, then try again."),
