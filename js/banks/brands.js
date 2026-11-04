@@ -90,5 +90,5 @@ ty(1,"Which tech company’s slogan is “Connecting people”? (a Finnish phone
 ty(3,"What does “ROI” stand for? (three words)",["return on investment"],"ROI = gain from investment ÷ cost of the investment.",1);
 ty(2,"What is the name of the Swedish furniture giant known for flat-pack products and Billy bookcases?",["IKEA","Ikea"],"IKEA was founded in 1943 by Ingvar Kamprad.",1);
 
-return {id:"brands",group:"esade",title:"Brands & Marketing Genius",kw:"brands marketing logos slogans advertising campaigns nike apple coca-cola zara inditex luxury lvmh 4ps kotler branding fashion business esade",subject:"Slogans, logos, 4Ps and the campaigns that changed advertising",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
+return {id:"brands",title:"Brands & Marketing Genius",kw:"brands marketing logos slogans advertising campaigns nike apple coca-cola zara inditex luxury lvmh 4ps kotler branding fashion business",subject:"Slogans, logos, 4Ps and the campaigns that changed advertising",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

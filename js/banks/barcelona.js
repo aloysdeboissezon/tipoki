@@ -90,5 +90,5 @@ ty(4,"What does “SME” stand for in business English? (four words, the type o
 ty(1,"Which Spanish football club from Madrid is FC Barcelona’s greatest rival?",["Real Madrid"],"Matches between Barça and Real Madrid are known as El Clásico.",1);
 ty(5,"ESADE stands for “Escuela Superior de Administración y Dirección de …” what? (one word, Spanish or English)",["Empresas","Business","Companies","Enterprises"],"ESADE = Escuela Superior de Administración y Dirección de Empresas.",3);
 
-return {id:"barcelona",group:"esade",title:"Barcelona & Spain",kw:"barcelona spain españa catalonia catalunya catalan gaudi sagrada familia barça fc barcelona traditions tapas paella business ibex mercadona esade madrid campus student life",subject:"Gaudí, tapas, IBEX 35 and survival Catalan: are you ready for life at ESADE?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
+return {id:"barcelona",title:"Barcelona & Spain",kw:"barcelona spain españa catalonia catalunya catalan gaudi sagrada familia barça fc barcelona traditions tapas paella business ibex mercadona esade madrid campus student life",subject:"Gaudí, tapas, IBEX 35 and survival Catalan: are you ready for life at ESADE?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

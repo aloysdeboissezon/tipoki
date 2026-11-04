@@ -89,5 +89,5 @@ ty(5,"Which German car maker was caught in the 2015 “Dieselgate” emissions s
 ty(2,"What is the name of the pyramid of human needs created by Abraham …?",["Maslow"],"Abraham Maslow published his hierarchy of needs in 1943.",1);
 ty(1,"Which management consulting firm created the “Growth-Share Matrix” in 1970? (initials)",["BCG","Boston Consulting Group"],"Bruce Henderson of the Boston Consulting Group created it.",2);
 
-return {id:"strategy",group:"esade",title:"Strategy, Management & Negotiation",kw:"strategy management leadership negotiation porter swot bcg five forces blue ocean batna lean agile okr business models case studies dieselgate toyota mba esade business school",subject:"Porter, BATNA, lean and legendary case studies, the MBA warm-up",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
+return {id:"strategy",title:"Strategy, Management & Negotiation",kw:"strategy management leadership negotiation porter swot bcg five forces blue ocean batna lean agile okr business models case studies dieselgate toyota mba business school",subject:"Porter, BATNA, lean and legendary case studies, the MBA warm-up",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

@@ -90,5 +90,5 @@ ty(4,"In Spanish, “librería” is a bookshop. What is the English word for th
 ty(5,"Who wrote “The Intelligent Investor”? (surname)",["Graham","Benjamin Graham"],"Benjamin Graham was Warren Buffett’s teacher and mentor.",2);
 ty(3,"What does MVP stand for in startups? (three words)",["minimum viable product"],"An MVP is the simplest version of a product to test an idea.",2);
 
-return {id:"jargon",group:"esade",title:"Business Jargon Challenge",kw:"business english jargon acronyms vocabulary corporate speak buzzwords startup marketing false friends spanish french books quotes ceo cfo kpi roi esade",subject:"Acronyms, buzzwords and false friends: can you survive a meeting in English?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
+return {id:"jargon",title:"Business Jargon Challenge",kw:"business english jargon acronyms vocabulary corporate speak buzzwords startup marketing false friends spanish french books quotes ceo cfo kpi roi",subject:"Acronyms, buzzwords and false friends: can you survive a meeting in English?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

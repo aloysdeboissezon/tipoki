@@ -89,5 +89,5 @@ ty(4,"What is the name of the global body that sets international trade rules, a
 ty(5,"Which city hosts the European Central Bank? (German financial capital)",["Frankfurt","Frankfurt am Main"],"Frankfurt is the financial capital of Germany.",1);
 ty(2,"What is the term for a general fall in prices over time? (one word)",["deflation"],"Deflation is the opposite of inflation.",2);
 
-return {id:"econ",group:"esade",title:"Economics & Big Ideas",kw:"economics economy economists adam smith keynes friedman gdp inflation recession central bank ecb fed behavioural kahneman nudge euro european union trade tariffs macro micro business esade",subject:"From Adam Smith to the euro: ideas every business student should know",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
+return {id:"econ",title:"Economics & Big Ideas",kw:"economics economy economists adam smith keynes friedman gdp inflation recession central bank ecb fed behavioural kahneman nudge euro european union trade tariffs macro micro business",subject:"From Adam Smith to the euro: ideas every business student should know",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

@@ -91,5 +91,5 @@ ty(5,"What is the term for a company’s total market value, calculated as share
 ty(2,"Which online retailer launched “Fire Phone” in 2014, which was discontinued the following year? (one word)",["Amazon"],"The Fire Phone flopped and Amazon wrote off about $170 million.",3);
 ty(1,"Which social network, founded in 2006 by Jack Dorsey and others, was renamed X in 2023?",["Twitter"],"Twitter, founded in 2006, was rebranded to X in July 2023.",1);
 
-return {id:"startups",group:"esade",title:"Startup Legends & Flops",kw:"startup start-up entrepreneurship entrepreneur founders unicorn venture capital vc failures flops theranos wework ftx airbnb uber spotify glovo wallapop funding pitch business esade",subject:"From garage origins to epic flops: how well do you know the startup world?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
+return {id:"startups",title:"Startup Legends & Flops",kw:"startup start-up entrepreneurship entrepreneur founders unicorn venture capital vc failures flops theranos wework ftx airbnb uber spotify glovo wallapop funding pitch business",subject:"From garage origins to epic flops: how well do you know the startup world?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

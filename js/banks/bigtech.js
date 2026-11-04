@@ -90,5 +90,5 @@ ty(5,"Which streaming service made “Stranger Things”? (one word)",["Netflix"
 ty(1,"What is the Chinese company that owns TikTok? (one word)",["ByteDance","Bytedance"],"ByteDance was founded in 2012 by Zhang Yiming.",2);
 ty(2,"Which American company launched Windows? (one word)",["Microsoft"],"Windows 1.0 launched in 1985.",1);
 
-return {id:"bigtech",group:"esade",title:"Big Tech, AI & Entertainment",kw:"big tech apple google microsoft amazon meta nvidia ai chatgpt openai anthropic gaming disney netflix spotify technology business entertainment sports esade",subject:"Tech giants, AI, gaming and entertainment: who built the modern world?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
+return {id:"bigtech",title:"Big Tech, AI & Entertainment",kw:"big tech apple google microsoft amazon meta nvidia ai chatgpt openai anthropic gaming disney netflix spotify technology business entertainment sports",subject:"Tech giants, AI, gaming and entertainment: who built the modern world?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

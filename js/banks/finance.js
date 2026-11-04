@@ -89,5 +89,5 @@ ty(5,"What does ROE stand for? (three words)",["return on equity"],"ROE = net in
 ty(5,"Which financial statement shows a company’s revenues and expenses over a period? (two words, starting with “income”)",["income statement","income statement."],"Also called the profit and loss account (P&L).",2);
 ty(2,"Which US central bank sets interest rates in the USA? (the Federal ...)",["Reserve","Federal Reserve","Fed"],"The Federal Reserve, or Fed, is the US central bank.",2);
 
-return {id:"finance",group:"esade",title:"Finance & Markets",kw:"finance markets stocks bonds investing investors buffett wall street crash lehman crypto bitcoin fintech revolut ebitda npv corporate finance bourse bolsa business esade",subject:"Crashes, legends, crypto and the maths of money",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
+return {id:"finance",title:"Finance & Markets",kw:"finance markets stocks bonds investing investors buffett wall street crash lehman crypto bitcoin fintech revolut ebitda npv corporate finance bourse bolsa business",subject:"Crashes, legends, crypto and the maths of money",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();
