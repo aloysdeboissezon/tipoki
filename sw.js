@@ -8,7 +8,7 @@ self.addEventListener("install",e=>{e.waitUntil((async()=>{
   const c=await caches.open(CACHE);
   try{
     const res=await timeout(fetch(SHELL_PAGE,{cache:"reload"}),15000);await c.put(SHELL_PAGE,res.clone());
-    const html=await res.text(),urls=new Set(["/manifest.webmanifest","/favicon.svg","/apple-touch-icon.png","/img/icon-192.png","/img/icon-512.png","/img/logo.svg","/img/logo-dark.svg","/img/mark.svg","/about.html","/contact.html","/privacy.html","/terms.html","/legal.html"]);
+    const html=await res.text(),urls=new Set(["/manifest.webmanifest","/favicon.svg","/apple-touch-icon.png","/img/icon-192.png","/img/icon-512.png","/img/logo.svg","/img/logo-dark.svg","/img/mark.svg","/img/esade.png","/about.html","/contact.html","/privacy.html","/terms.html","/legal.html"]);
     for(const m of html.matchAll(/(?:src|href|data-lazy)="([^"#]+)"/g)){
       const u=new URL(m[1],location.origin+SHELL_PAGE);
       if(u.origin===location.origin?!u.pathname.startsWith("/_vercel/"):CDN.test(u.href))urls.add(u.href)}
