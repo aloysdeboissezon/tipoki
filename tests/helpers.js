@@ -48,7 +48,10 @@ async function openSite(page, { path = "/", storage = {} } = {}) {
 
 // Pick a built-in quiz from the home grid, e.g. "socio".
 async function openQuiz(page, id) {
-  await page.locator(`#quizGrid .qcard[data-id="${id}"]`).click();
+  const card = page.locator(`#quizGrid .qcard[data-id="${id}"]`);
+  // ESADE quizzes live behind the ESADE button on the home
+  if (!(await card.count())) await page.locator("#esadeBtn").click();
+  await card.click();
   await expect(page.locator("#topic")).toBeVisible();
 }
 

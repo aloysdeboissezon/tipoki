@@ -214,7 +214,7 @@ function renderBankUI(){
 }
 function sLabel(s){return BANK.tags?BANK.tags[s]:(BANK.id==="socio"?"S":"Ch.")+s}
 function unit(k){return tl((BANK.unit||(BANK.id==="socio"?["session","sessions","a session"]:["chapter","chapters","a chapter"]))[k])}
-const BUILTIN={socio:()=>window.BANK_SOCIO,culture:()=>window.BANK_CULTURE,energie:()=>window.BANK_ENERGIE,populism:()=>window.BANK_POPULISM,compta2:()=>window.BANK_COMPTA2,uspop:()=>window.BANK_USPOP,gastro:()=>window.BANK_GASTRO,ukculture:()=>window.BANK_UKCULTURE};
+const BUILTIN={socio:()=>window.BANK_SOCIO,culture:()=>window.BANK_CULTURE,energie:()=>window.BANK_ENERGIE,populism:()=>window.BANK_POPULISM,compta2:()=>window.BANK_COMPTA2,uspop:()=>window.BANK_USPOP,gastro:()=>window.BANK_GASTRO,ukculture:()=>window.BANK_UKCULTURE,startups:()=>window.BANK_STARTUPS,brands:()=>window.BANK_BRANDS,barcelona:()=>window.BANK_BARCELONA,finance:()=>window.BANK_FINANCE,econ:()=>window.BANK_ECON,strategy:()=>window.BANK_STRATEGY,jargon:()=>window.BANK_JARGON,bigtech:()=>window.BANK_BIGTECH};
 const bankCache={};
 // the default quiz ships with the page; the other built-in quizzes (and their study sheets) are fetched the first time they are opened
 const scriptP={};

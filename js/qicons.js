@@ -41,11 +41,21 @@
       '<path d="M46 3l2.6 6 6 2.6-6 2.6L46 20l-2.6-5.8-6-2.6 6-2.6z"'+f(Y)+'/>',
     // heart + pulse
     heart:'<path d="M32 56S6 40 6 22a13 13 0 0 1 26-4 13 13 0 0 1 26 4c0 18-26 34-26 34z"'+f(P)+'/><path d="M13 32h11l4-9 6 17 4-8h11" fill="none" stroke="'+W+'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>',
+    // rocket taking off
+    rocket:'<path d="M32 5c9 7 13 17 11 31H21C19 22 23 12 32 5z"'+f(W)+'/><circle cx="32" cy="23" r="5"'+f(C)+'/><path d="M21 28l-9 13 11-3zM43 28l9 13-11-3z"'+f(P)+'/><path d="M25 36h14l-2 7h-10z"'+f(V)+'/><path d="M28 46q4 13 8 0z"'+f(Y)+'/>',
+    // target with an arrow
+    target:'<circle cx="29" cy="35" r="22"'+f(W)+'/><circle cx="29" cy="35" r="15"'+f(P)+'/><circle cx="29" cy="35" r="8"'+f(W)+'/><circle cx="29" cy="35" r="3.5"'+f(V)+'/><path d="M29 35 53 11M47 6l1 9 9 1" fill="none" stroke="'+K+'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>',
+    // sun with rays
+    sun:'<circle cx="32" cy="32" r="13"'+f(Y)+'/><path d="M32 6v8M32 50v8M6 32h8M50 32h8M13.6 13.6l5.7 5.7M44.7 44.7l5.7 5.7M13.6 50.4l5.7-5.7M44.7 19.3l5.7-5.7" fill="none" stroke="'+K+'" stroke-width="3" stroke-linecap="round"/><path d="M26 31q3 4 6 0t6 0" fill="none" stroke="'+K+'" stroke-width="2.2" stroke-linecap="round"/>',
+    // stacked coins
+    coin:'<ellipse cx="24" cy="46" rx="18" ry="8"'+f(Y)+'/><path d="M6 38v8a18 8 0 0 0 36 0v-8"'+f(Y)+'/><ellipse cx="24" cy="38" rx="18" ry="8"'+f(Y)+'/><ellipse cx="40" cy="22" rx="16" ry="7"'+f(P)+'/><path d="M24 22v8a16 7 0 0 0 32 0v-8"'+f(P)+'/><ellipse cx="40" cy="22" rx="16" ry="7"'+f(P)+'/><path d="M36 22h8M40 19v6" stroke="'+W+'" stroke-width="2.4" stroke-linecap="round"/>',
+    // price tag
+    tag:'<path d="M5 10h26l27 27-21 21L10 31z"'+f(P)+'/><circle cx="18" cy="21" r="4"'+f(W)+'/><path d="M38 28l8 8M33 34l8 8" stroke="'+W+'" stroke-width="3" stroke-linecap="round"/><path d="M48 6l2 4.6 4.6 2-4.6 2L48 19l-2-4.4-4.6-2 4.6-2z"'+f(Y)+'/>',
     // code brackets
     code:'<rect x="5" y="9" width="54" height="46" rx="9"'+f(K)+'/><circle cx="14" cy="17" r="2.2" fill="'+P+'"/><circle cx="21" cy="17" r="2.2" fill="'+Y+'"/><circle cx="28" cy="17" r="2.2" fill="'+G+'"/>'+
       '<path d="M24 31l-8 8 8 8M40 31l8 8-8 8M35 28l-6 22" fill="none" stroke="'+C+'" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>'
   };
-  var BY_ID={socio:"pillars",culture:"globe",energie:"bolt",populism:"megaphone",compta2:"chart",uspop:"megaphone",gastro:"heart",ukculture:"book"};
+  var BY_ID={socio:"pillars",culture:"globe",energie:"bolt",populism:"megaphone",compta2:"chart",uspop:"megaphone",gastro:"heart",ukculture:"book",startups:"rocket",brands:"tag",barcelona:"sun",finance:"coin",econ:"globe",strategy:"target",jargon:"chat",bigtech:"code"};
   var KEYS=[
     ["code",/\b(code|coding|program|informatique|computer|algorithm|javascript|python|sql|web)/],
     ["heart",/(m[ée]decin|medic|sant[ée]|health|anatom|biolog|nurs|infirm|pharma)/],
