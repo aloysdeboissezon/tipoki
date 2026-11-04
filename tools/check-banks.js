@@ -2,7 +2,7 @@
 // Fails on: wrong option count, duplicate options, duplicate questions, answer given away in the question,
 // missing explanation or difficulty, typed answers that are empty, unknown session numbers.
 const path=require("path");
-const ids=process.argv.slice(2).length?process.argv.slice(2):["uspop","gastro","ukculture","startups","brands","barcelona","finance","econ","strategy","jargon","bigtech"];
+const ids=process.argv.slice(2).length?process.argv.slice(2):["uspop","gastro","ukculture","startups","brands","barcelona","finance","econ","strategy","jargon","bigtech","worldtour","emoji","internet","hits","screen","sports","gamer","kids","myths","foodtravel"];
 const norm=s=>String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g," ").trim();
 let bad=0;const err=(id,msg)=>{bad++;console.error(id+": "+msg)};
 for(const id of ids){
@@ -11,7 +11,7 @@ for(const id of ids){
   for(const q of b.Q){
     const w=q.q.slice(0,50);per[q.s]=(per[q.s]||0)+1;
     if(!b.sess[q.s])err(id,"unknown session "+q.s+" in "+w);
-    if(seen.has(norm(q.q)))err(id,"duplicate question "+w);seen.add(norm(q.q));
+    const dk=norm(q.q)+"|"+(q.q.match(/\p{Extended_Pictographic}/gu)||[]).join("");if(seen.has(dk))err(id,"duplicate question "+w);seen.add(dk);
     if(q.tf){if(q.o.length!==2)err(id,"TF needs 2 options: "+w)}
     else{if(q.o.length!==4)err(id,"needs 4 options: "+w);
       if(new Set(q.o.map(norm)).size!==q.o.length)err(id,"duplicate options: "+w);

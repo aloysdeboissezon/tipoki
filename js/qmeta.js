@@ -52,7 +52,37 @@ jargon:{
  es:["Reto de la jerga empresarial","Siglas, palabras de moda y falsos amigos: ¿sobrevivirás a una reunión en inglés?",["Siglas","Jerga corporativa","Palabras de moda de startups y marketing","Falsos amigos e inglés de negocios","Libros y citas famosas"],["Siglas","Jerga corporativa","Palabras de moda","Falsos amigos","Libros y citas"]]},
 bigtech:{
  fr:["Big Tech, IA et divertissement","Géants de la tech, IA, jeux vidéo et divertissement : qui a construit le monde moderne ?",["Les géants de la tech","Les produits qui ont tout changé","La révolution de l'IA","Les dirigeants de la tech","Business du divertissement et du jeu vidéo"],["Géants","Produits","IA","Dirigeants","Divertissement"]],
- es:["Big Tech, IA y entretenimiento","Gigantes tecnológicos, IA, videojuegos y entretenimiento: ¿quién construyó el mundo moderno?",["Los gigantes tecnológicos","Productos que lo cambiaron todo","La revolución de la IA","Líderes tecnológicos","Negocio del entretenimiento y los videojuegos"],["Gigantes","Productos","IA","Líderes","Entretenimiento"]]}
+ es:["Big Tech, IA y entretenimiento","Gigantes tecnológicos, IA, videojuegos y entretenimiento: ¿quién construyó el mundo moderno?",["Los gigantes tecnológicos","Productos que lo cambiaron todo","La revolución de la IA","Líderes tecnológicos","Negocio del entretenimiento y los videojuegos"],["Gigantes","Productos","IA","Líderes","Entretenimiento"]]},
+worldtour:{
+ fr:["Tour du monde : drapeaux, capitales et records","Drapeaux, capitales qui piègent tout le monde, records mondiaux et monuments : connaissez-vous vraiment la planète ?",["Capitales qui piègent tout le monde","Drapeaux : les anecdotes","Records du monde","Dans quel pays ?"],["Capitales","Drapeaux","Records","Quel pays ?"]],
+ es:["Vuelta al mundo: banderas, capitales y récords","Banderas, capitales que engañan a todos, récords mundiales y monumentos: ¿conoces de verdad el planeta?",["Capitales que engañan a todos","Curiosidades de banderas","Récords mundiales","¿En qué país está?"],["Capitales","Banderas","Récords","¿Qué país?"]]},
+emoji:{
+ fr:["Devinettes en émojis","Devinez le film, la chanson, le pays ou l'expression à partir de quelques émojis",["Films en émojis","Chansons et artistes","Lieux et plats","Expressions et vie quotidienne"],["Films","Chansons","Lieux et plats","Expressions"]],
+ es:["Acertijos con emojis","Adivina la película, la canción, el país o el refrán con unos pocos emojis",["Películas en emojis","Canciones y artistas","Lugares y comidas","Refranes y vida cotidiana"],["Películas","Canciones","Lugares y comidas","Refranes"]]},
+internet:{
+ fr:["Culture internet et TikTok","Applis, mèmes, moments viraux et argot : êtes-vous accro à internet ?",["Applis et plateformes","Mèmes et moments viraux","Créateurs et records","L'argot décodé"],["Applis","Mèmes","Créateurs","Argot"]],
+ es:["Cultura de internet y TikTok","Apps, memes, momentos virales y jerga: ¿vives conectado a internet?",["Apps y plataformas","Memes y momentos virales","Creadores y récords","La jerga descifrada"],["Apps","Memes","Creadores","Jerga"]]},
+hits:{
+ fr:["Tubes pop et stars de la musique","La royauté de la pop, qui chante quoi, records et tubes de chaque décennie",["La royauté de la pop","Qui chante ça ?","Records et anecdotes","Les tubes des décennies"],["Royauté","Qui chante ?","Records","Décennies"]],
+ es:["Éxitos pop y estrellas de la música","La realeza del pop, quién canta qué, récords y éxitos de cada década",["La realeza del pop","¿Quién lo canta?","Récords y curiosidades","Éxitos por décadas"],["Realeza","¿Quién canta?","Récords","Décadas"]]},
+screen:{
+ fr:["Écrans : séries, Disney et super-héros","Séries Netflix, Disney, Marvel, Harry Potter et cultes : combien en avez-vous vu ?",["Netflix et binge-watching","Disney et Pixar","Marvel et DC","Sorciers, galaxies et cultes"],["Binge","Disney","Super-héros","Cultes"]],
+ es:["Pantallas: series, Disney y superhéroes","Series de Netflix, Disney, Marvel, Harry Potter y clásicos de culto: ¿cuántas has visto?",["Netflix y maratones de series","Disney y Pixar","Marvel y DC","Magos, galaxias y series de culto"],["Maratón","Disney","Superhéroes","Culto"]]},
+sports:{
+ fr:["Légendes du sport et grands moments","Football, Coupe du monde, JO, NBA, tennis et F1 : quel fan êtes-vous ?",["Les stars du football","Coupe du monde et JO","Basket, tennis et F1","Records et rivalités"],["Football","Grands événements","Autres sports","Records"]],
+ es:["Leyendas del deporte y grandes momentos","Fútbol, Mundial, Juegos Olímpicos, NBA, tenis y F1: ¿qué tan fan eres?",["Estrellas del fútbol","Mundial y Juegos Olímpicos","Baloncesto, tenis y F1","Récords y rivalidades"],["Fútbol","Grandes eventos","Otros deportes","Récords"]]},
+gamer:{
+ fr:["Défi gamer et anime","Mario, Pokémon, Minecraft, Fortnite et légendes de l'anime : êtes-vous un vrai gamer ?",["Nintendo et Pokémon","Les hits du jeu vidéo moderne","Légendes de l'anime","Consoles et histoire du jeu vidéo"],["Nintendo","Jeux modernes","Anime","Histoire"]],
+ es:["Reto gamer y anime","Mario, Pokémon, Minecraft, Fortnite y leyendas del anime: ¿eres un gamer de verdad?",["Nintendo y Pokémon","Éxitos de los videojuegos actuales","Leyendas del anime","Consolas e historia de los videojuegos"],["Nintendo","Juegos actuales","Anime","Historia"]]},
+kids:{
+ fr:["Êtes-vous plus malin qu'un CM2 ?","Les bases de l'école que les adultes ratent souvent : battrez-vous un élève de 10 ans ?",["Sciences et espace","Nature et corps humain","Maths et mots","Histoire et monde"],["Sciences","Nature","Maths et mots","Histoire"]],
+ es:["¿Eres más listo que un niño de 10 años?","Lo básico del colegio que los adultos suelen fallar: ¿superarás a un niño de quinto de primaria?",["Ciencia y espacio","Naturaleza y cuerpo humano","Matemáticas y palabras","Historia y mundo"],["Ciencia","Naturaleza","Mates y palabras","Historia"]]},
+myths:{
+ fr:["Idées reçues et faits incroyables","Ce que tout le monde croit à tort, et des faits vrais qui semblent faux",["Mythes sur le corps et le cerveau","Mythes sur les animaux","Mythes d'histoire et de cinéma","Des faits vrais qui semblent faux"],["Corps et cerveau","Animaux","Histoire et cinéma","Ça paraît faux"]],
+ es:["Mitos y datos alucinantes","Lo que todo el mundo cree y es falso, y datos ciertos que parecen mentira",["Mitos del cuerpo y el cerebro","Mitos de animales","Mitos de historia y cine","Datos ciertos que parecen falsos"],["Cuerpo y cerebro","Animales","Historia y cine","Parece falso"]]},
+foodtravel:{
+ fr:["Défi cuisine et voyages","D'où viennent les plats, les spécialités du monde, les monuments et les bons réflexes de voyageur",["D'où ça vient ?","Manger autour du monde","Monuments et merveilles","Le b.a.-ba du voyageur"],["Origines","Plats","Monuments","Voyage"]],
+ es:["Reto de comida y viajes","De dónde vienen los platos, especialidades del mundo, monumentos y trucos de viajero",["¿De dónde viene?","Comer por el mundo","Monumentos y maravillas","Lo básico del viajero"],["Orígenes","Platos","Monumentos","Viajes"]]}
 };
 function keyed(a){if(!a)return null;var o={};a.forEach(function(v,i){o[i+1]=v});return o}
 window.QMETA=M;
