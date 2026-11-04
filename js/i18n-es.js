@@ -46,7 +46,7 @@ var ES={
 "Exam planner":"Planificador de examen",
 "Exam date":"Fecha del examen",
 "Clear":"Borrar",
-"Set the date of your exam and qwebbo tells you how many questions to do each day.":"Indica la fecha de tu examen y qwebbo te dice cuántas preguntas hacer cada día.",
+"Set the date of your exam and qwebbo tells you how many questions to do each day, based on your track record.":"Indica la fecha de tu examen y qwebbo te dice cuántas preguntas hacer cada día, según tu historial.",
 "This exam date has passed. Pick a new one or clear it.":"La fecha del examen ya ha pasado. Elige otra o bórrala.",
 "Exam today. Good luck!":"Examen hoy. ¡Mucha suerte!",
 "Exam tomorrow":"Examen mañana",

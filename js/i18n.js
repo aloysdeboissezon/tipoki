@@ -63,7 +63,7 @@ var FR={
 "Exam planner":"Planning de révision",
 "Exam date":"Date de l'examen",
 "Clear":"Effacer",
-"Set the date of your exam and qwebbo tells you how many questions to do each day.":"Indique la date de ton examen et qwebbo te dit combien de questions faire chaque jour.",
+"Set the date of your exam and qwebbo tells you how many questions to do each day, based on your track record.":"Indique la date de ton examen et qwebbo te dit combien de questions faire chaque jour, en fonction de ton historique.",
 "This exam date has passed. Pick a new one or clear it.":"Cette date d'examen est passée. Choisis-en une autre ou efface-la.",
 "Exam today. Good luck!":"Examen aujourd'hui. Bon courage !",
 "Exam tomorrow":"Examen demain",
