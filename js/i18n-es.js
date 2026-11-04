@@ -53,7 +53,7 @@ var ES={
 "Exam in {n} days":"Examen en {n} días",
 "Today's goal is done: {d} questions. Nice.":"Objetivo de hoy cumplido: {d} preguntas. ¡Bien hecho!",
 "Today: {d} / {g} questions":"Hoy: {d} / {g} preguntas",
-"The goal spreads the whole quiz ({t} questions) over the days left.":"El objetivo reparte todo el quiz ({t} preguntas) entre los días que quedan.",
+"The goal spreads the {t} questions you have not mastered yet over the days left.":"El objetivo reparte las {t} preguntas que aún no dominas entre los días que quedan.",
 "Pick at least one.":"Elige al menos uno.",
 "{n} selected":"{n} seleccionados",
 "No code? Ask your friend, or open the link they sent you.":"¿No tienes código? Pídeselo a tu amigo o abre el enlace que te envió.",

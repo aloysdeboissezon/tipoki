@@ -5,7 +5,9 @@ function planSave(p){lsSet(lsKey("plan"),JSON.stringify(p))}
 function planCount(k){const p=planGet(),d=dayKey();if(p.day!==d){p.day=d;p.n=0}p.n=(p.n||0)+(k||1);planSave(p);renderPlan()}
 function planDaysLeft(date){const [y,m,d]=date.split("-").map(Number),t=new Date();
   return Math.round((new Date(y,m-1,d)-new Date(t.getFullYear(),t.getMonth(),t.getDate()))/864e5)}
-function planGoal(daysLeft){const total=Q.length+TQ.length;return Math.max(10,Math.min(150,Math.ceil(total/Math.max(1,daysLeft+1))))}
+// questions still to work on = whole quiz minus the ones already mastered (answered right 3 times in a row, see weak.js)
+function planRemaining(){const st=wkStore();let m=0;for(const k in st){if(st[k][2]>=3&&wkQ(k))m++}return Math.max(0,Q.length+TQ.length-m)}
+function planGoal(daysLeft){return Math.max(10,Math.min(150,Math.ceil(planRemaining()/Math.max(1,daysLeft+1))))}
 function renderPlan(){
   if(!BANK)return;
   const p=planGet(),box=$("planBody"),inp=$("planDate");box.textContent="";
@@ -19,7 +21,7 @@ function renderPlan(){
   box.appendChild(el("div","pl-sum",done>=goal?tl("Today's goal is done: {d} questions. Nice.",{d:done}):tl("Today: {d} / {g} questions",{d:done,g:goal})));
   const bar=el("div","tbar pl-bar");bar.setAttribute("role","progressbar");bar.setAttribute("aria-valuemin","0");bar.setAttribute("aria-valuemax",goal);bar.setAttribute("aria-valuenow",Math.min(done,goal));
   const i=el("i");i.style.width=pc+"%";bar.appendChild(i);box.appendChild(bar);
-  box.appendChild(el("p","muted pl-note",tl("The goal spreads the whole quiz ({t} questions) over the days left.",{t:Q.length+TQ.length})))}
+  box.appendChild(el("p","muted pl-note",tl("The goal spreads the {t} questions you have not mastered yet over the days left.",{t:planRemaining()})))}
 $("planDate").onchange=e=>{const p=planGet();p.date=e.target.value||"";planSave(p);renderPlan()};
 $("planClear").onclick=()=>{const p=planGet();p.date="";planSave(p);renderPlan()};
 // every answered question counts (solo, multiplayer, replays), and every question of a handed-in exam
