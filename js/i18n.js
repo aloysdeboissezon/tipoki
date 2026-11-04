@@ -70,7 +70,7 @@ var FR={
 "Exam in {n} days":"Examen dans {n} jours",
 "Today's goal is done: {d} questions. Nice.":"Objectif du jour atteint : {d} questions. Bravo.",
 "Today: {d} / {g} questions":"Aujourd'hui : {d} / {g} questions",
-"The goal spreads the whole quiz ({t} questions) over the days left.":"L'objectif répartit tout le quiz ({t} questions) sur les jours restants.",
+"The goal spreads the {t} questions you have not mastered yet over the days left.":"L'objectif répartit les {t} questions pas encore maîtrisées sur les jours restants.",
 "Pick at least one.":"Choisis-en au moins un.",
 "{n} selected":"{n} sélectionnés",
 "No code? Ask your friend, or open the link they sent you.":"Pas de code ? Demande-le à ton pote, ou ouvre le lien qu'il t'a envoyé.",
