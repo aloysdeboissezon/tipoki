@@ -1,0 +1,170 @@
+// Built-in bank: Korea 101, Korean food, Hangul and language, traditions, places and history, Seoul life (English).
+// Hand-written and static, so every device builds the exact same Q/TQ arrays for multiplayer.
+// Difficulty d: 1 = easy (most people know it), 2 = medium, 3 = hard (for Korea fans).
+window.BANK_KOREA=(function(){
+const SESS={1:"Korean food",2:"Hangul & language",3:"Traditions & etiquette",4:"Places & history",5:"Seoul life & trends"};
+const TAGS={1:"Food",2:"Hangul",3:"Traditions",4:"History",5:"Seoul"};
+const Q=[],TQ=[];
+// MCQ: first option is the right one (shuffled on screen)
+const m=(s,t,q,ok,wr,e,d)=>Q.push({s,t,q,o:[ok,...wr],a:0,e,d:d||1});
+const vf=(s,q,v,e,d)=>Q.push({s,t:"True or false",q,o:v?["True","False"]:["False","True"],a:0,e,tf:true,d:d||1});
+const ty=(s,q,a,e,d)=>TQ.push({s,q,a,e,d:d||2});
+
+// ===================== 1. Korean food =====================
+m(1,"Classics","What is the main ingredient of traditional kimchi?","Fermented cabbage",["Pickled cucumber","Rice noodles","Seaweed"],"Kimchi is most often made with napa cabbage, salted and fermented with chili, garlic and ginger.",1);
+m(1,"Classics","What does “bibimbap” mean?","Mixed rice",["Fire meat","Spicy soup","Rolled seaweed"],"Bibimbap means “mixed rice”: rice with vegetables, meat, egg and gochujang.",1);
+m(1,"Classics","What is “bulgogi”?","Thinly sliced marinated beef",["A cold noodle dish","A spicy rice cake","A fermented bean paste"],"Bulgogi means “fire meat” and is usually marinated in soy sauce, sugar and sesame oil.",1);
+m(1,"Classics","Which Korean dish is made of chewy rice cakes in a spicy red sauce?","Tteokbokki",["Japchae","Galbi","Sundubu-jjigae"],"Tteokbokki is a hugely popular street food.",1);
+m(1,"Classics","What is “gochujang”?","A fermented red chili paste",["A rice wine","A kind of kimchi","A seaweed soup"],"Gochujang combines chili, glutinous rice, fermented soybeans and salt.",1);
+m(1,"Classics","What is “japchae”?","Stir-fried glass noodles with vegetables",["Pork belly","Sweet pancakes","Cold buckwheat noodles"],"Japchae is made with sweet potato starch noodles and is often served at celebrations.",2);
+m(1,"Classics","Which dish is thin slices of grilled pork belly eaten wrapped in lettuce?","Samgyeopsal",["Galbi-tang","Bossam","Jjajangmyeon"],"Samgyeopsal is grilled at the table and wrapped in lettuce with garlic and ssamjang.",2);
+m(1,"Classics","What are “banchan”?","Small side dishes served with a meal",["Spoons","Types of rice","Soups only"],"Banchan, like kimchi and pickles, come in many small plates shared at the table.",1);
+m(1,"Classics","Which noodles are served in black bean sauce?","Jajangmyeon",["Naengmyeon","Kalguksu","Ramyeon"],"Jajangmyeon is a Korean-Chinese dish loved across Korea.",2);
+m(1,"Classics","Which cold noodle dish is made with buckwheat and served in icy broth?","Naengmyeon",["Jjamppong","Udon","Tteokguk"],"Naengmyeon is especially popular in summer.",2);
+m(1,"Classics","Which hot soup made of a whole young chicken stuffed with ginseng is eaten in summer to beat the heat?","Samgyetang",["Kimchi-jjigae","Seolleongtang","Doenjang-jjigae"],"Koreans eat hot soup on hot days, a belief known as “fight heat with heat”.",3);
+m(1,"Classics","Which sweet stuffed pancake is a winter street-food favourite?","Hotteok",["Bungeoppang","Pajeon","Gyeran-ppang"],"Hotteok is filled with brown sugar, cinnamon and nuts.",2);
+m(1,"Classics","Which fish-shaped street food is filled with sweet red bean paste?","Bungeoppang",["Hotteok","Odeng","Dalgona"],"Bungeoppang means “carp bread” and is sold in the winter.",2);
+m(1,"Classics","What is Korea's rolled dish, often compared to sushi, called?","Gimbap",["Onigiri","Maki","Banh mi"],"Gimbap uses seasoned rice and cooked fillings, often brushed with sesame oil.",1);
+m(1,"Drinks","What is makgeolli?","A milky rice wine",["A green tea","A barley tea","A distilled whisky"],"Makgeolli is a lightly sparkling, slightly sweet rice wine.",2);
+m(1,"Drinks","Which clear spirit is Korea's best-selling alcoholic drink?","Soju",["Sake","Baijiu","Raki"],"Soju is a clear spirit that is usually around 16-20% alcohol and is drunk in shots.",1);
+m(1,"Drinks","What does “chimaek” combine?","Fried chicken and beer",["Rice and tea","Pizza and cola","Kimchi and soju"],"“Chimaek” comes from “chikin” (chicken) and “maekju” (beer).",2);
+m(1,"Culture","Which of these is traditionally used for Korean cutlery?","Metal chopsticks",["Wooden chopsticks only","Bamboo chopsticks only","Forks"],"Korean chopsticks are traditionally metal, and a spoon is used for rice and soup.",2);
+m(1,"Culture","Which instant noodle is popular worldwide and made by Nongshim, famous for its very spicy flavour?","Shin Ramyun",["Maruchan","Indomie","Cup Noodles"],"Shin Ramyun, launched in 1986, is one of Korea's best-selling instant noodles.",2);
+m(1,"Culture","On what day do single Koreans eat jajangmyeon (black bean noodles) together, called “Black Day”?","14 April",["14 February","14 March","11 November"],"On Black Day (14 April), singles who got nothing on Valentine's Day or White Day eat black noodles.",3);
+m(1,"Culture","On which date do Koreans share Pepero sticks on “Pepero Day”?","11 November",["14 February","1 January","15 August"],"11/11 looks like four sticks of Pepero, a chocolate-covered biscuit stick.",2);
+m(1,"Culture","What is “kimjang”, which UNESCO recognised in 2013?","Making and sharing kimchi for winter",["A tea ceremony","A harvest dance","A New Year ritual"],"Kimjang is the communal making of kimchi before winter.",3);
+m(1,"Culture","What is “mukbang”?","A video of someone eating food on camera",["A type of kimchi","A Korean sauna","A cooking contest"],"Mukbang means “eating broadcast” and started in Korea.",1);
+m(1,"Facts","Which country has one of the highest instant-noodle consumption per person in the world?","South Korea",["Japan","Italy","Brazil"],"Koreans eat well over 70 packs of ramyeon per person each year, among the highest worldwide.",3);
+vf(1,"Kimchi can be made with vegetables other than cabbage, like radish and cucumber.",true,"Kkakdugi uses radish and oi-sobagi uses cucumber. There are hundreds of kinds of kimchi.",1);
+vf(1,"Bibimbap is traditionally eaten without any sauce.",false,"Bibimbap is usually mixed with gochujang, a spicy red pepper paste.",1);
+vf(1,"Koreans traditionally eat seaweed soup (miyeokguk) on their birthday.",true,"Miyeokguk is eaten on birthdays, in honour of mothers who ate it after giving birth.",2);
+vf(1,"Tteokguk, a rice cake soup, is traditionally eaten at the Lunar New Year.",true,"Eating tteokguk on Seollal is said to make you a year older.",2);
+ty(1,"What is the Korean fermented cabbage dish known worldwide called? (one word)",["kimchi","Kimchi","gimchi"],"Kimchi is considered Korea's national dish.",1);
+ty(1,"What Korean dish means “mixed rice”? (one word)",["bibimbap","Bibimbap"],"Bibimbap often comes in a hot stone pot called dolsot.",1);
+ty(1,"What is the word for the small side dishes served with a Korean meal? (one word)",["banchan","Banchan"],"A typical meal can have 3 to 12 banchan.",2);
+
+// ===================== 2. Hangul & language =====================
+m(2,"Hangul","Who created the Korean alphabet, Hangul?","King Sejong the Great",["Admiral Yi Sun-sin","King Gojong","Jeong Do-jeon"],"King Sejong the Great (r. 1418-1450) and his scholars created Hangul, published in 1446.",1);
+m(2,"Hangul","In which year was Hangul officially announced?","1446",["1392","1592","1910"],"The Hunminjeongeum (“correct sounds for the instruction of the people”) was published in 1446.",2);
+m(2,"Hangul","On which date is Hangeul Day celebrated in South Korea?","9 October",["1 March","15 August","3 October"],"Hangeul Day on 9 October is a national holiday again since 2013.",3);
+m(2,"Hangul","How many basic letters does modern Hangul have?","24",["14","26","40"],"Hangul has 14 consonants and 10 vowels, combined into syllable blocks.",2);
+m(2,"Hangul","What makes Hangul special as a writing system?","Consonant shapes imitate the mouth and tongue",["It is written in pictures","It was copied from Chinese","It uses no vowels"],"The shape of letters like ㄱ and ㅁ were designed to imitate the speech organs.",2);
+m(2,"Hangul","Which writing system did Koreans mostly use before Hangul?","Chinese characters (Hanja)",["Latin letters","Hiragana","Sanskrit"],"Hanja was used by educated elites, which Hangul was designed to simplify for all people.",2);
+m(2,"Words","What does “annyeonghaseyo” (안녕하세요) mean?","Hello",["Thank you","Goodbye only","I'm sorry"],"It is the polite way to say hello at any time of the day.",1);
+m(2,"Words","What does “gamsahamnida” (감사합니다) mean?","Thank you",["Sorry","Please","Welcome"],"It is the formal way to say thank you.",1);
+m(2,"Words","What does “saranghae” (사랑해) mean?","I love you",["I miss you","Good luck","See you later"],"“Saranghae” is the informal way to say “I love you”, and K-pop fans use it a lot.",1);
+m(2,"Words","What does “mianhae” (미안해) mean?","I'm sorry",["Excuse me","Congratulations","Nice to meet you"],"“Mianhae” is the informal form. “Joesonghamnida” is more formal.",2);
+m(2,"Words","What does “daebak” (대박) mean?","Awesome / jackpot",["Boring","Tired","Delicious"],"“Daebak” is a slang word to express something is amazing.",1);
+m(2,"Words","What does “masisseoyo” (맛있어요) mean?","It's delicious",["It's cold","It's expensive","It's late"],"“Masit-da” means to be tasty.",2);
+m(2,"Words","What do “ne” (네) and “aniyo” (아니요) mean?","Yes and no",["Hello and bye","Please and thanks","Here and there"],"Ne = yes, aniyo = no.",1);
+m(2,"Words","What does “appa” (아빠) mean?","Dad",["Mom","Brother","Teacher"],"“Eomma” is mom and “appa” is dad.",1);
+m(2,"Words","What does “eomma” (엄마) mean?","Mom",["Dad","Sister","Grandma"],"“Eomma” is the informal word for mother.",1);
+m(2,"Words","What does “unnie” (언니) mean?","Older sister (said by a woman)",["Younger brother","Teacher","Friend (any)"],"A woman calls an older woman unnie; a man says “noona”.",2);
+m(2,"Words","What does “oppa” (오빠) mean?","Older brother (said by a woman)",["Father","Younger sister","Boss"],"Women use oppa for an older brother or older male friend or boyfriend.",1);
+m(2,"Words","What does “hwaiting” (화이팅) mean?","Come on! You can do it!",["Hello","Wait","Welcome"],"It comes from the English word “fighting” and is used to cheer people on.",1);
+m(2,"Words","What does “jjang” (짱) mean in slang?","The best",["The worst","Tiny","Lazy"],"“Jjang!” is slang for “awesome” or “the best”.",3);
+m(2,"Words","What does “aigoo” (아이고) express?","Surprise, tiredness or frustration",["Joy only","Anger only","A greeting"],"“Aigoo” is a versatile exclamation, much used by older people.",3);
+m(2,"Grammar","How many number systems does Korean use?","2 (native Korean and Sino-Korean)",["1","3","5"],"Korean uses native numbers (hana, dul, set...) and Sino-Korean ones (il, i, sam...).",2);
+m(2,"Grammar","What is the basic word order in a Korean sentence?","Subject - Object - Verb",["Subject - Verb - Object","Verb - Subject - Object","Object - Subject - Verb"],"In Korean, the verb comes at the end of the sentence.",2);
+m(2,"Grammar","What is the purpose of the honorific system in Korean?","To show respect depending on age and status",["To count objects","To mark past tense","To ask questions"],"Korean has speech levels, from casual (banmal) to very formal.",2);
+m(2,"Grammar","What do you call casual speech between close friends in Korean?","Banmal",["Jondaetmal","Sasturi","Hanja"],"Banmal is half-speech. Jondaetmal is polite speech.",3);
+m(2,"Words","In “Konglish”, what is a “handeupon” (핸드폰)?","A mobile phone",["A hand fan","A glove","A hand towel"],"Konglish mixes English words in Korean, and handphone means mobile phone.",2);
+m(2,"Words","What is a “sunbae”?","A senior at school or work",["A new student","A teacher's pet","A customer"],"Sunbae are seniors, hoobae are juniors.",2);
+vf(2,"Korean is spoken by more than 75 million people worldwide.",true,"Korean is spoken by about 80 million people in South Korea, North Korea and abroad.",2);
+vf(2,"Hangul is written using Chinese characters.",false,"Hangul is its own alphabet, though Korean also contains many words of Chinese origin.",1);
+vf(2,"In Korean, “Kamsahamnida” and “Gamsahamnida” are the same word written two ways.",true,"They are two romanizations of 감사합니다.",1);
+ty(2,"Which king created the Korean alphabet? (one word will do)",["Sejong","King Sejong","Sejong the Great"],"King Sejong the Great is on the 10,000 won banknote.",1);
+ty(2,"What is the Korean alphabet called? (one word)",["Hangul","Hangeul","Han'gul"],"Hangul is also spelled Hangeul.",1);
+ty(2,"What does 사랑해 (saranghae) mean in English? (three words)",["I love you","love you"],"Saranghae is used between family, friends, couples and fans.",1);
+
+// ===================== 3. Traditions & etiquette =====================
+m(3,"Holidays","What is Seollal?","Lunar New Year",["The harvest festival","Children's Day","Liberation Day"],"Seollal is the Korean New Year, celebrated with family, tteokguk and traditional bows.",1);
+m(3,"Holidays","What is Chuseok?","The autumn harvest festival",["A winter solstice festival","A spring flower festival","A New Year festival"],"Chuseok is held on the 15th day of the 8th lunar month and is often compared to Thanksgiving.",1);
+m(3,"Holidays","Which half-moon-shaped rice cakes are traditional at Chuseok?","Songpyeon",["Tteokbokki","Yakgwa","Bungeoppang"],"Songpyeon are steamed on pine needles and stuffed with sesame, chestnut or red bean.",2);
+m(3,"Holidays","What is “sebae”?","A New Year's bow to elders",["A traditional dance","A type of tea","A wedding gift"],"Children bow deeply to elders and often receive “sebaetdon” (money).",2);
+m(3,"Clothing","What is the traditional Korean clothing called?","Hanbok",["Kimono","Cheongsam","Ao dai"],"The hanbok has a short jacket (jeogori) and a wide skirt (chima) or trousers (baji).",1);
+m(3,"Clothing","What is the short jacket of the hanbok called?","Jeogori",["Chima","Baji","Durumagi"],"The jeogori is the upper garment. The chima is the skirt.",3);
+m(3,"Etiquette","Where should you NOT stick your chopsticks or spoon at a Korean meal?","Upright in a bowl of rice",["On the table","Across the plate","In soup"],"It resembles incense sticks used in funeral rituals and is considered rude.",2);
+m(3,"Etiquette","Who typically starts eating first at a Korean meal?","The oldest person",["The youngest person","The host","The guest of honour"],"Respect for elders is key: you wait for the eldest to lift their spoon.",1);
+m(3,"Etiquette","What do you do with your hands when receiving something from an elder?","Use both hands (or support one with the other)",["Use only the left hand","Hide them","Clap"],"Giving and receiving with two hands shows respect.",1);
+m(3,"Etiquette","What should you do when drinking with an older person?","Turn your head slightly away while drinking",["Clink glasses over their head","Drink first","Refuse the first glass"],"It's polite to turn away a little and cover your glass with one hand when drinking in front of elders.",2);
+m(3,"Etiquette","What should you do when entering a Korean home?","Take off your shoes",["Bring wine","Knock three times","Bow to the door"],"Shoes are always removed because people sit and sleep on the floor.",1);
+m(3,"Beliefs","Which number is considered unlucky in Korea because it sounds like “death”?","4",["7","8","13"],"4 (sa) sounds like the Sino-Korean word for death, so some buildings skip the 4th floor or label it “F”.",2);
+m(3,"Beliefs","What is “nunchi”?","The art of reading the room",["A lucky charm","A fan chant","A kind of kimchi"],"Nunchi means quickly sensing others' mood and thoughts.",3);
+m(3,"Beliefs","What does the Korean concept “jeong” (정) mean?","A deep bond of affection",["A strict rule","A type of food","A holiday"],"Jeong is the warm attachment that builds up between people over time.",3);
+m(3,"Life","What happens at a baby's “dol” (돌)?","A first birthday party",["A naming ceremony at birth","A school opening","A wedding"],"At the dol, the baby picks an object in the doljabi ritual, which hints at their future.",2);
+m(3,"Life","What is “ondol”?","Traditional underfloor heating",["A bowl for rice","A type of mask","A hot spring"],"Ondol heats the floor with hot air or water pipes.",2);
+m(3,"Life","What is a “jjimjilbang”?","A Korean bathhouse and sauna",["A karaoke room","A tea shop","A board game cafe"],"Jjimjilbang are open 24 hours and many people nap there.",2);
+m(3,"Life","What is a “hanok”?","A traditional Korean house",["A Korean temple","A market","A school uniform"],"Hanok are wooden houses with tiled roofs and ondol floors.",2);
+m(3,"Sports","What martial art originated in Korea and is an Olympic sport?","Taekwondo",["Judo","Karate","Kung fu"],"Taekwondo became an official Olympic sport at Sydney 2000.",1);
+m(3,"Sports","What is “ssireum”?","Traditional Korean wrestling",["A board game","A kind of archery","A dance"],"Ssireum is a folk wrestling match held on sand.",3);
+m(3,"Games","Which traditional game is played with four wooden sticks that are thrown?","Yutnori",["Go","Janggi","Jegichagi"],"Yutnori is a popular board game played at Seollal.",3);
+m(3,"Games","Which traditional game involves kicking a shuttlecock-like object?","Jegichagi",["Yutnori","Ssireum","Tuho"],"Jegichagi is like hacky sack, with a weighted paper or cloth object.",3);
+vf(3,"In June 2023, South Korea officially switched to the international way of counting age for most legal purposes.",true,"This ended the “Korean age” system for most laws, where babies were born as 1 and gained a year each 1 January.",2);
+vf(3,"In traditional Korean etiquette, you should pour your own drink first at a group meal.",false,"You pour for others, and they pour for you, never your own.",2);
+vf(3,"Gyeongbokgung Palace guards perform a changing ceremony every day in Seoul.",true,"The Royal Guard Changing Ceremony takes place several times a day, except Tuesdays.",2);
+ty(3,"What is the traditional Korean dress called? (one word)",["hanbok","Hanbok"],"Hanbok literally means “Korean clothing”.",1);
+ty(3,"What is Korea's traditional underfloor heating system called? (one word)",["ondol","Ondol"],"Ondol has been used for over a thousand years.",3);
+
+// ===================== 4. Places & history =====================
+m(4,"Geography","What is the capital of South Korea?","Seoul",["Busan","Incheon","Daegu"],"Seoul is the capital and largest city, with about 9 million people.",1);
+m(4,"Geography","Which river flows through Seoul?","Han River",["Yangtze","Nakdong","Mekong"],"The Han River splits Seoul into a north and south part.",1);
+m(4,"Geography","What is South Korea's second-largest city, known for its beaches and a big film festival?","Busan",["Incheon","Daejeon","Gwangju"],"Busan is a port city with Haeundae Beach and the Busan International Film Festival.",1);
+m(4,"Geography","Which volcanic island, famous for tangerines and haenyeo divers, is South Korea's largest island?","Jeju",["Ulleungdo","Ganghwa","Geoje"],"Jeju is a popular holiday island.",1);
+m(4,"Geography","What is the highest mountain in South Korea?","Hallasan",["Seoraksan","Jirisan","Bukhansan"],"Hallasan, on Jeju Island, is 1,947 m high.",3);
+m(4,"Geography","What are the haenyeo of Jeju?","Women free-divers",["Fishermen","Farmers","Monks"],"The haenyeo dive without oxygen tanks to collect seafood, and UNESCO recognised their culture in 2016.",3);
+m(4,"Geography","What is the ancient capital of the Silla kingdom, nicknamed the “museum without walls”?","Gyeongju",["Jeonju","Suwon","Andong"],"Gyeongju was the Silla capital for nearly 1,000 years.",3);
+m(4,"Places","Which is the main royal palace of the Joseon dynasty in Seoul, built in 1395?","Gyeongbokgung",["Changdeokgung","Deoksugung","Gyeonghuigung"],"Gyeongbokgung is the largest of Seoul's “Five Grand Palaces”.",2);
+m(4,"Places","Which tower on Namsan mountain is a landmark of Seoul?","N Seoul Tower",["Lotte World Tower","63 Building","Busan Tower"],"The N Seoul Tower is famous for its love-lock fences.",2);
+m(4,"Places","What is the tallest building in South Korea, at 555 metres?","Lotte World Tower",["N Seoul Tower","63 Building","Incheon Tower"],"Lotte World Tower opened in Seoul in 2017.",3);
+m(4,"History","Which dynasty ruled Korea from 1392 for over 500 years?","Joseon",["Silla","Goryeo","Baekje"],"Joseon (1392-1910) was founded by Yi Seong-gye, and Hangul was created under it.",2);
+m(4,"History","Which admiral is famous for his “turtle ships” against Japanese invaders in the 1590s?","Yi Sun-sin",["Kim Yu-sin","Eulji Mundeok","Gang Gam-chan"],"Admiral Yi Sun-sin never lost a naval battle and is a national hero.",2);
+m(4,"History","Between which years did the Korean War take place?","1950-1953",["1939-1945","1945-1948","1960-1965"],"An armistice was signed on 27 July 1953, but no peace treaty followed.",2);
+m(4,"History","Which period of Japanese rule ended with Korea's liberation in 1945?","1910-1945",["1850-1880","1890-1900","1930-1960"],"Korea was a Japanese colony from 1910 until the end of World War II.",2);
+m(4,"History","Along roughly which parallel was the Korean peninsula first divided in 1945?","The 38th parallel",["The 28th parallel","The 45th parallel","The 52nd parallel"],"The division was made by the US and the USSR after World War II.",2);
+m(4,"History","What is the DMZ in Korea?","A buffer zone between North and South Korea",["A famous park","A business district","A mountain range"],"The Korean Demilitarized Zone is about 4 km wide and runs across the peninsula.",1);
+m(4,"History","What is the “Miracle on the Han River”?","South Korea's rapid economic growth",["A natural wonder","A famous battle","A film festival"],"South Korea went from one of the world's poorest countries in the 1950s to a major economy.",2);
+m(4,"History","Which company, founded in 1938 in Daegu, began as a trading company?","Samsung",["Hyundai","LG","Naver"],"Samsung was founded by Lee Byung-chul and is now a global electronics giant.",3);
+m(4,"History","Which international event did South Korea host in 1988?","The Summer Olympics",["The World Cup","The Winter Olympics","The Asian Games only"],"The Seoul 1988 Olympics presented modern Korea to the world.",2);
+m(4,"History","Which 2002 tournament did South Korea co-host with Japan, reaching the semi-finals?","FIFA World Cup",["Asian Games","Rugby World Cup","Olympics"],"South Korea finished fourth in 2002, its best-ever result.",2);
+m(4,"History","Which city hosted the 2018 Winter Olympics?","PyeongChang",["Seoul","Busan","Sapporo"],"The 2018 Winter Games were held in PyeongChang, South Korea.",2);
+m(4,"Symbols","What is the currency of South Korea?","Won",["Yen","Yuan","Baht"],"The South Korean won is written ₩.",1);
+m(4,"Symbols","What is on the white South Korean flag, called Taegukgi?","A red and blue circle with black trigrams",["A red sun","A yellow star","A green tree"],"The flag shows the yin-yang taeguk surrounded by four black trigrams.",2);
+m(4,"Symbols","What is the national flower of South Korea?","Mugunghwa (rose of Sharon)",["Cherry blossom","Lotus","Camellia"],"Mugunghwa means “eternal flower that never withers”.",3);
+vf(4,"About half of South Korea's population lives in the Seoul metropolitan area.",true,"Roughly 26 of 51 million people live in the greater Seoul area.",2);
+vf(4,"South Korea and North Korea signed a peace treaty to end the Korean War.",false,"Only an armistice was signed in 1953. Technically the war has never formally ended.",2);
+vf(4,"Jeju Island is volcanic.",true,"Jeju was formed by volcanic activity, and Hallasan is a dormant volcano.",2);
+ty(4,"What is the capital of South Korea? (one word)",["Seoul"],"Seoul has been the capital for over 600 years.",1);
+ty(4,"What is the currency of South Korea? (one word)",["won","Won","South Korean won"],"The won is divided in theory into 100 jeon, though they are no longer used.",2);
+
+// ===================== 5. Seoul life & trends =====================
+m(5,"Daily life","What is a “PC bang”?","A gaming internet café",["A phone shop","A computer school","A pizza restaurant"],"PC bangs offer fast computers, snacks and games at a low hourly price.",2);
+m(5,"Daily life","What is a “noraebang”?","A private karaoke room",["A night market","A dance club","A concert hall"],"Noraebang means “song room”: you rent a room with friends.",1);
+m(5,"Daily life","What does “palli-palli” (빨리빨리) mean?","Hurry, hurry",["Slowly, slowly","Wait, wait","Please, please"],"It describes Korea's fast-paced culture.",2);
+m(5,"Daily life","What is “hagwon”?","A private cram school",["A hotel","A hospital","A temple"],"Many students attend hagwon after school, until late at night.",2);
+m(5,"Daily life","What is the “Suneung”?","The national university entrance exam",["A music exam","A school uniform","A driving test"],"On exam day, offices open later and planes are kept from flying during the English listening test.",3);
+m(5,"Daily life","How long is mandatory military service for most South Korean men?","About 18 months",["3 months","6 months","3 years"],"The exact length depends on the branch: roughly 18 to 21 months.",3);
+m(5,"Tech","Which Korean company makes the Galaxy smartphones?","Samsung",["LG","Hyundai","Kia"],"Samsung's Galaxy line competes with Apple's iPhone worldwide.",1);
+m(5,"Tech","What is Korea's most-used search portal, which rivals Google at home?","Naver",["Baidu","Yandex","Bing"],"Naver is Korea's leading search engine and also runs Webtoon.",2);
+m(5,"Tech","What is the most popular messaging app in South Korea?","KakaoTalk",["WhatsApp","Line","Telegram"],"KakaoTalk is used by most Koreans.",1);
+m(5,"Tech","In esports, which South Korean player is nicknamed “Faker”?","Lee Sang-hyeok",["Park Jin-young","Kim Min-jae","Son Heung-min"],"Faker plays League of Legends for the team T1 and is widely seen as the greatest player.",2);
+m(5,"Tech","Which South Korean game from the 1990s helped create professional esports there?","StarCraft",["Minecraft","Tetris","Super Mario"],"StarCraft: Brood War turned professional gamers into celebrities in South Korea.",3);
+m(5,"Places","Which Seoul neighbourhood is known for youth culture, indie music and street performance near a university?","Hongdae",["Gangnam","Insadong","Itaewon"],"Hongdae is short for Hongik University and is full of cafes and clubs.",2);
+m(5,"Places","Which Seoul district is famous for its cosmetic shops and street food?","Myeongdong",["Insadong","Jamsil","Gangnam"],"Myeongdong is a major K-beauty and shopping area.",1);
+m(5,"Places","Which Seoul landmark designed by Zaha Hadid is famous for its futuristic curves?","Dongdaemun Design Plaza",["Lotte Tower","Coex Mall","City Hall"],"The DDP opened in 2014 and is surrounded by 24-hour fashion markets.",3);
+m(5,"Places","Which stream in downtown Seoul was restored in 2005?","Cheonggyecheon",["Han River","Hongje","Anyang"],"The stream was uncovered by removing an elevated highway.",3);
+m(5,"Places","Which Seoul street is known for tea houses, traditional crafts and galleries?","Insadong",["Gangnam","Sinchon","Jamsil"],"Insadong is famous for traditional tea shops and souvenirs.",3);
+m(5,"Trends","What is “Life Four Cuts” (인생네컷)?","Photo booth with four frames",["A cooking show","A K-drama","A hair salon"],"The booths print four photos in a strip, and are very popular with friends and couples.",2);
+m(5,"Trends","What is the transport card used in Seoul's subway and buses called?","T-money",["Octopus","Suica","Oyster"],"T-money is a rechargeable card used across Korea.",2);
+m(5,"Trends","Which convenience stores are on almost every street corner in Korea?","GS25 and CU",["7-Eleven only","Walmart","Tesco"],"Convenience stores sell hot meals, ramyeon cookers and more.",2);
+m(5,"Trends","Which snack can you cook in self-service machines at Han River parks and many convenience stores?","Instant ramyeon",["Gimbap","Tteokbokki","Hot dogs"],"“Hangang ramyeon” is cooked in machines at the riverside and is a Seoul classic.",2);
+m(5,"Trends","What is the Seoul subway line that forms a loop around the city?","Line 2",["Line 1","Line 3","Line 9"],"Line 2 (green) is a circular line.",3);
+vf(5,"Many Koreans drink iced Americanos all year round, even in the middle of winter.",true,"Iced Americano is so popular that it has the nickname “ah-ah” (아아, short for “iced americano”).",2);
+vf(5,"Seoul's subway system is one of the world's largest.",true,"Seoul's metro is among the busiest and longest in the world.",1);
+vf(5,"PC bangs are only used by children.",false,"People of all ages go to PC bangs to play and chill.",1);
+ty(5,"What is a Korean karaoke room called? (one word)",["noraebang","Noraebang","norebang"],"Noraebang means “song room”.",2);
+ty(5,"What is the most popular messaging app in South Korea? (one word)",["KakaoTalk","Kakao Talk","Kakao","Katalk"],"KakaoTalk was launched in 2010.",2);
+ty(5,"What is the name of the gaming internet café in Korea? (two words)",["PC bang","PC-bang","pcbang","PC room"],"PC bang literally means “PC room”.",2);
+
+return {id:"korea",title:"Korea 101: Food, Language & Culture",kw:"korea korean seoul kimchi hangul k-culture k-pop kdrama food language traditions history chuseok hanbok",subject:"From kimchi to Hangul, Chuseok and Seoul: how well do you know Korea?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
+})();
