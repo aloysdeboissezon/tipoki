@@ -22,6 +22,15 @@ async function openQuiz(id,btn){
 // quizzes you opened most recently come first on the home screen
 function recentGet(){try{return JSON.parse(lsGet("tpk-recent")||"{}")}catch(e){return {}}}
 function recentMark(id){const r=recentGet();r[id]=Date.now();const ks=Object.keys(r);if(ks.length>40)ks.sort((a,b)=>r[a]-r[b]).slice(0,ks.length-40).forEach(k=>delete r[k]);lsSet("tpk-recent",JSON.stringify(r))}
+// Two collections on the home screen: the ESADE switch shows the business-school quizzes, the other one everything else.
+// A new ESADE quiz needs its id here. Typing in the search box looks through both collections.
+const ESADE_IDS=new Set(["socio","compta2","populism","bizenglish","finance","brands","founders","barcelona"]);
+let GRP=lsGet("tpk-grp")==="esade"?"esade":"general";
+function setGrp(g,keepScroll){
+  GRP=g==="esade"?"esade":"general";lsSet("tpk-grp",GRP);
+  if(!keepScroll)$("quizGrid").scrollLeft=0;
+  filterQuizzes()}
+document.querySelectorAll(".grp-b").forEach(b=>b.onclick=()=>setGrp(b.dataset.grp));
 function quizList(extra){const seen=new Set();return Object.keys(BUILTIN).map(id=>{const b=BUILTIN[id]()||(window.BANK_META||{})[id]||{};return {id,title:b.title,subject:b.subject,kw:b.kw,sess:b.sess,tags:b.tags}}).concat(myQuizzes(),extra||[]).filter(q=>!seen.has(q.id)&&seen.add(q.id))}
 // search: lowercase, no accents, punctuation as spaces, so "energie" finds "Énergie électrique"
 function fold(s){return String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()}
@@ -36,7 +45,6 @@ function renderQuizGrid(list){
   const L=$("qList");L.textContent="";
   list.forEach((q,i)=>{const b=el("button","qchip");b.type="button";b.dataset.hay=quizHay(q);b.dataset.id=q.id;b.dataset.i=i%8;
     const li=el("span","qchip-l");li.innerHTML=quizIcon(q);b.append(li,el("b",null,q.title),el("span","qgo","›"));b.onclick=()=>openQuiz(q.id,b);L.appendChild(b)});
-  $("qAllT").textContent=tl("All quizzes ({n})",{n:list.length});
   filterQuizzes();renderProgressUI();carouselUpdate();
 }
 // every typed word must appear somewhere in the quiz's title, subject, keywords or chapter names
@@ -62,9 +70,12 @@ addEventListener("resize",carouselUpdate);
   box.addEventListener("click",e=>{if(moved){e.stopPropagation();e.preventDefault();moved=false}},true)})();
 function filterQuizzes(){
   const raw=$("quizSearch").value,words=fold(raw).split(" ").filter(Boolean);let n=0;
-  $("quizGrid").querySelectorAll(".qcard").forEach(c=>{const ok=words.every(w=>c.dataset.hay.includes(w));c.hidden=!ok;if(ok)n++});
+  const pick=c=>words.every(w=>c.dataset.hay.includes(w))&&(words.length>0||ESADE_IDS.has(c.dataset.id)===(GRP==="esade"));
+  $("quizGrid").querySelectorAll(".qcard").forEach(c=>{const ok=pick(c);c.hidden=!ok;if(ok)n++});
   $("quizSearchClear").hidden=!raw;
-  $("qList").querySelectorAll(".qchip").forEach(c=>{c.hidden=!words.every(w=>c.dataset.hay.includes(w))});$("quizEmpty").hidden=n>0||!words.length;carouselUpdate();$("quizEmptyQ").textContent=raw.trim();
+  $("grpsw").classList.toggle("off",words.length>0);document.querySelectorAll(".grp-b").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.grp===GRP)));
+  let m=0;$("qList").querySelectorAll(".qchip").forEach(c=>{const ok=pick(c);c.hidden=!ok;if(ok)m++});
+  $("qAllT").textContent=tl(!words.length&&GRP==="esade"?"ESADE quizzes ({n})":"All quizzes ({n})",{n:m});$("quizEmpty").hidden=n>0||!words.length;carouselUpdate();$("quizEmptyQ").textContent=raw.trim();
 }
 function clearQuizSearch(focus){$("quizSearch").value="";filterQuizzes();if(focus)$("quizSearch").focus()}
 $("quizSearch").addEventListener("input",filterQuizzes);

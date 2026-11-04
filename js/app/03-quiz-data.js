@@ -214,7 +214,7 @@ function renderBankUI(){
 }
 function sLabel(s){return BANK.tags?BANK.tags[s]:(BANK.id==="socio"?"S":"Ch.")+s}
 function unit(k){return tl((BANK.unit||(BANK.id==="socio"?["session","sessions","a session"]:["chapter","chapters","a chapter"]))[k])}
-const BUILTIN={socio:()=>window.BANK_SOCIO,culture:()=>window.BANK_CULTURE,energie:()=>window.BANK_ENERGIE,populism:()=>window.BANK_POPULISM,compta2:()=>window.BANK_COMPTA2,uspop:()=>window.BANK_USPOP,gastro:()=>window.BANK_GASTRO,ukculture:()=>window.BANK_UKCULTURE};
+const BUILTIN={socio:()=>window.BANK_SOCIO,culture:()=>window.BANK_CULTURE,energie:()=>window.BANK_ENERGIE,populism:()=>window.BANK_POPULISM,compta2:()=>window.BANK_COMPTA2,uspop:()=>window.BANK_USPOP,gastro:()=>window.BANK_GASTRO,ukculture:()=>window.BANK_UKCULTURE,bizenglish:()=>window.BANK_BIZENGLISH,finance:()=>window.BANK_FINANCE,brands:()=>window.BANK_BRANDS,founders:()=>window.BANK_FOUNDERS,barcelona:()=>window.BANK_BARCELONA};
 const bankCache={};
 // the default quiz ships with the page; the other built-in quizzes (and their study sheets) are fetched the first time they are opened
 const scriptP={};

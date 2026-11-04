@@ -2,6 +2,10 @@
 // Same keys as FR in i18n.js: the English text on the left, the Spanish on the right. Informal "tú", natural Spanish, not word for word.
 // Loaded before i18n.js. A missing key just shows the English text (and lands in tlMissing, see i18n.js).
 var ES={
+"Quiz collection":"Colección de quizzes",
+"Business school quizzes":"Quizzes de la escuela de negocios",
+"Culture & fun quizzes":"Quizzes de cultura y diversión",
+"ESADE quizzes ({n})":"Quizzes ESADE ({n})",
 // page
 "qwebbo · Learn, compete, master":"qwebbo · Aprende, compite, domina",
 // header

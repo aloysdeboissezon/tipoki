@@ -55,6 +55,7 @@
 <link rel="stylesheet" href="css/flag.css?v=20261103c">
 <link rel="stylesheet" href="css/country.css?v=20261103c">
 <link rel="stylesheet" href="css/reactions.css?v=20261103c">
+<link rel="stylesheet" href="css/groups.css?v=20261104a">
 <!-- Vercel Web Analytics (page views, visitors) -->
 <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};</script>
 <script defer src="/_vercel/insights/script.js"></script>
@@ -93,6 +94,10 @@
     </div></div>
     <div class="panel" id="pickPanel">
       <div class="steph"><span class="stepn">1</span><h2>What do you want to study?</h2></div>
+      <div class="grpsw" id="grpsw" role="group" aria-label="Quiz collection">
+        <button type="button" class="grp-b grp-esade" id="grpEsade" data-grp="esade" aria-pressed="false"><span class="esade-logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 4 1.5 9 12 14l8.5-4v6h1.8V9z"/><path d="M6 13v3.6c0 1.5 2.7 2.9 6 2.9s6-1.4 6-2.9V13l-6 2.9z"/></svg>ESADE</span><span class="grp-t">Business school quizzes</span></button>
+        <button type="button" class="grp-b grp-gen" id="grpGen" data-grp="general" aria-pressed="true"><span class="grp-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span><span class="grp-t">Culture &amp; fun quizzes</span></button>
+      </div>
       <div class="qsearch" role="search">
         <svg class="qs-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
         <input type="search" id="quizSearch" placeholder="Search quizzes…" title="Title, subject, chapter or keyword" aria-label="Search quizzes" aria-controls="quizGrid" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
@@ -446,14 +451,19 @@
 <meta name="tpk-lazy" data-lazy="js/banks/uspop.js?v=20261103c">
 <meta name="tpk-lazy" data-lazy="js/banks/gastro.js?v=20261103c">
 <meta name="tpk-lazy" data-lazy="js/banks/ukculture.js?v=20261103c">
+<meta name="tpk-lazy" data-lazy="js/banks/bizenglish.js?v=20261104a">
+<meta name="tpk-lazy" data-lazy="js/banks/finance.js?v=20261104a">
+<meta name="tpk-lazy" data-lazy="js/banks/brands.js?v=20261104a">
+<meta name="tpk-lazy" data-lazy="js/banks/founders.js?v=20261104a">
+<meta name="tpk-lazy" data-lazy="js/banks/barcelona.js?v=20261104a">
 <meta name="tpk-lazy" data-lazy="js/sheets/populism.js?v=20261103c">
 <meta name="tpk-lazy" data-lazy="js/sheets/energie.js?v=20261103c">
 <meta name="tpk-lazy" data-lazy="js/sheets/compta2.js?v=20261103c">
 <script defer src="js/errlog.js?v=20261103c"></script>
-<script defer src="js/i18n-es.js?v=20261103c"></script>
-<script defer src="js/i18n.js?v=20261103c"></script>
-<script defer src="js/qicons.js?v=20261103c"></script>
-<script defer src="js/catalog.js?v=20261103c"></script>
+<script defer src="js/i18n-es.js?v=20261104a"></script>
+<script defer src="js/i18n.js?v=20261104a"></script>
+<script defer src="js/qicons.js?v=20261104a"></script>
+<script defer src="js/catalog.js?v=20261104a"></script>
 <script defer src="js/offline.js?v=20261103c"></script>
 <script defer src="js/banks/socio.js?v=20261103c"></script>
 <script defer src="js/figs.js?v=20261103c"></script>
@@ -462,12 +472,12 @@
 <script defer src="js/country.js?v=20261103c"></script>
 <script defer src="js/app/01-core.js?v=20261103j"></script>
 <script defer src="js/app/02-profile.js?v=20261103c"></script>
-<script defer src="js/app/03-quiz-data.js?v=20261103c"></script>
+<script defer src="js/app/03-quiz-data.js?v=20261104a"></script>
 <script defer src="js/app/04-media.js?v=20261103c"></script>
 <script defer src="js/app/05-engine.js?v=20261103c"></script>
 <script defer src="js/app/06-game.js?v=20261103c"></script>
 <script defer src="js/app/07-end-flashcards.js?v=20261103c"></script>
-<script defer src="js/app/08-home-nav.js?v=20261103j"></script>
+<script defer src="js/app/08-home-nav.js?v=20261104a"></script>
 <script defer src="js/stats.js?v=20261103c"></script>
 <script defer src="js/exam.js?v=20261103c"></script>
 <script defer src="js/examresume.js?v=20261103c"></script>

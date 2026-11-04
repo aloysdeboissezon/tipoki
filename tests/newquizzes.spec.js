@@ -2,7 +2,7 @@
 const { test, expect } = require("@playwright/test");
 const { openSite, openQuiz } = require("./helpers");
 
-for (const id of ["uspop", "gastro", "ukculture"]) {
+for (const id of ["uspop", "gastro", "ukculture", "bizenglish", "finance", "brands", "founders", "barcelona"]) {
   test(`quiz ${id} opens and offers questions`, async ({ page }) => {
     await openSite(page);
     await openQuiz(page, id);

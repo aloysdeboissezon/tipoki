@@ -47,8 +47,12 @@ async function openSite(page, { path = "/", storage = {} } = {}) {
 }
 
 // Pick a built-in quiz from the home grid, e.g. "socio".
+const ESADE_IDS = ["socio", "compta2", "populism", "bizenglish", "finance", "brands", "founders", "barcelona"];
 async function openQuiz(page, id) {
-  await page.locator(`#quizGrid .qcard[data-id="${id}"]`).click();
+  const card = page.locator(`#quizGrid .qcard[data-id="${id}"]`);
+  // the home screen shows one collection at a time: switch to the other one when the quiz is not in view
+  if (!(await card.isVisible())) await page.locator(ESADE_IDS.includes(id) ? "#grpEsade" : "#grpGen").click();
+  await card.click();
   await expect(page.locator("#topic")).toBeVisible();
 }
 

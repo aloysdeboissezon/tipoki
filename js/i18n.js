@@ -19,6 +19,10 @@ var LOCALE={en:"en-US",fr:"fr-FR",es:"es-ES"}[LANG];
 var DATELOC={en:"en-GB",fr:"fr-FR",es:"es-ES"}[LANG];
 
 var FR={
+"Quiz collection":"Collection de quiz",
+"Business school quizzes":"Quiz école de commerce",
+"Culture & fun quizzes":"Quiz culture & fun",
+"ESADE quizzes ({n})":"Quiz ESADE ({n})",
 // page
 "qwebbo · Learn, compete, master":"qwebbo · Apprends, défie, maîtrise",
 // header

@@ -2,7 +2,7 @@
 // Usage: node tools/build-catalog.js          rewrites js/catalog.js
 //        node tools/build-catalog.js --check  exits 1 when js/catalog.js is out of date (run it after editing a bank)
 const fs=require("fs"),path=require("path");
-const LAZY=["culture","energie","populism","compta2","uspop","gastro","ukculture"];   // socio is the default quiz: it stays in the first load
+const LAZY=["culture","energie","populism","compta2","uspop","gastro","ukculture","bizenglish","finance","brands","founders","barcelona"];   // socio is the default quiz: it stays in the first load
 const root=path.join(__dirname,"..");
 const meta={};
 for(const id of LAZY){
