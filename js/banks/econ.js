@@ -89,5 +89,61 @@ ty(4,"What is the name of the global body that sets international trade rules, a
 ty(5,"Which city hosts the European Central Bank? (German financial capital)",["Frankfurt","Frankfurt am Main"],"Frankfurt is the financial capital of Germany.",1);
 ty(2,"What is the term for a general fall in prices over time? (one word)",["deflation"],"Deflation is the opposite of inflation.",2);
 
+// ===================== More questions (batch 2) =====================
+m(1,"Classics","Who wrote “The General Theory of Employment, Interest and Money” (1936)?","John Maynard Keynes",["Friedrich Hayek","Milton Friedman","Paul Samuelson"],"The book argued that demand drives the economy and gave birth to modern macroeconomics.",2);
+m(1,"Classics","Which English economist predicted in 1798 that population growth would outrun food supply?","Thomas Malthus",["David Ricardo","John Stuart Mill","Adam Smith"],"Malthus’s idea was later called the “Malthusian trap”, though technology proved him too pessimistic.",3);
+m(1,"Classics","Which economist wrote “Principles of Economics” (1890) and popularised supply and demand curves?","Alfred Marshall",["Vilfredo Pareto","Léon Walras","William Jevons"],"Marshall’s Cambridge textbook was used for decades.",3);
+m(1,"Modern","Who in 2009 became the first woman to win the Nobel Prize in Economics?","Elinor Ostrom",["Joan Robinson","Esther Duflo","Janet Yellen"],"Ostrom won for showing how communities can manage shared resources without government or privatisation.",3);
+m(1,"Modern","Which Indian-born economist won the 1998 Nobel Prize for work on welfare, poverty and famines?","Amartya Sen",["Abhijit Banerjee","Raghuram Rajan","Jagdish Bhagwati"],"Sen showed that famines can happen even when there is enough food in a country.",2);
+m(1,"Modern","Who became the first woman to chair the US Federal Reserve in 2014?","Janet Yellen",["Christine Lagarde","Elizabeth Warren","Ben Bernanke"],"Yellen later became US Treasury Secretary in 2021.",2);
+m(1,"Modern","Which economist’s curve suggests that cutting very high tax rates could raise tax revenue?","Arthur Laffer",["Milton Friedman","Thomas Piketty","John Galbraith"],"The Laffer curve was reportedly sketched on a napkin in 1974.",3);
+vf(1,"Milton Friedman won the Nobel Prize in Economics in 1976.",true,"He was honoured for his work on consumption, monetary history and the complexity of stabilisation policy.",3);
+
+m(2,"Basics","What does CPI stand for in economics?","Consumer Price Index",["Central Policy Indicator","Corporate Profit Index","Capital Production Index"],"CPI tracks the average prices of a basket of goods and services.",1);
+m(2,"Basics","“GDP per capita” is…","GDP divided by the population",["GDP multiplied by the population","GDP minus exports","GDP of the capital city"],"It gives a rough idea of average income, though not of inequality.",1);
+m(2,"Basics","Fiscal policy is about…","Government decisions on spending and taxes",["Central bank interest rates","Stock market rules","Bank supervision"],"By contrast, monetary policy is set by the central bank.",2);
+m(2,"Basics","A “budget deficit” happens when…","The government spends more than it collects in revenue",["The government collects more than it spends","A company makes a loss","Exports exceed imports"],"Deficits are financed by borrowing, which adds to public debt.",1);
+m(2,"Basics","“Real GDP” is GDP adjusted for…","Inflation",["Population","Exchange rates","Taxes"],"Real GDP shows if an economy produces more goods, not just higher prices.",2);
+m(2,"Theory","The Phillips curve describes a link between inflation and…","Unemployment",["Exports","Interest rates","Population"],"It suggests that when unemployment is low, inflation tends to be higher.",3);
+m(2,"Debt","Which developed country has the highest public debt relative to GDP, above 200%?","Japan",["Italy","Greece","United States"],"Most of Japan’s debt is held by Japanese investors and its central bank.",3);
+vf(2,"Higher interest rates usually make borrowing cheaper.",false,"Higher interest rates make loans more expensive, which slows down spending.",1);
+vf(2,"GDP includes the value of unpaid housework.",false,"GDP only counts market transactions, so unpaid work at home is left out.",3);
+
+m(3,"Biases","“Confirmation bias” is the tendency to…","Favour information that supports what we already believe",["Always trust experts","Avoid all risks","Copy other people"],"It leads investors to read only news that supports their positions.",1);
+m(3,"Biases","The “framing effect” says that decisions are affected by…","How the options are presented",["The weather","The size of the budget","The time of the year"],"“90% survive” sounds better than “10% die”, though they are identical.",2);
+m(3,"Biases","The “Dunning-Kruger effect” suggests that people with low skill in a task often…","Overestimate their ability",["Underestimate everyone else","Refuse to compete","Work harder than experts"],"The effect was described by psychologists in 1999.",2);
+m(3,"Biases","“Hyperbolic discounting” means that people tend to prefer…","A smaller reward now over a bigger reward later",["A bigger reward later always","No reward","A random reward"],"It helps explain procrastination and low saving rates.",3);
+m(3,"Biases","“Mental accounting”, an idea by Richard Thaler, means that people…","Treat money differently depending on where it comes from",["Count everything on a calculator","Never spend savings","Hire accountants for everything"],"For example, people spend a bonus more freely than regular pay.",3);
+m(3,"Theory","A “Veblen good” is one whose demand…","Rises as its price rises",["Falls when income rises","Never changes","Depends only on advertising"],"Luxury handbags and watches can become more desirable when they cost more.",3);
+m(3,"Theory","In the “ultimatum game”, people often reject very unfair offers, even if they get nothing. This suggests they care about…","Fairness",["Speed","Taxes","Risk-free profit"],"This result goes against the strictly rational “homo economicus” model.",3);
+m(3,"Thinkers","Who was Daniel Kahneman’s long-time research partner on prospect theory?","Amos Tversky",["Richard Thaler","Herbert Simon","Gary Becker"],"Tversky died in 1996, before Kahneman won the Nobel Prize in 2002.",2);
+m(3,"Thinkers","Herbert Simon’s idea of “bounded rationality” says that people…","Decide with limited information, time and thinking ability",["Never make mistakes","Only decide at random","Always maximise profit"],"Simon won the Nobel Prize in 1978 and said people “satisfice”, or choose what is good enough.",3);
+m(3,"Pricing","Why do shops price a product at €9.99 instead of €10?","Prices ending in 9 seem lower than they are",["It is required by law","It saves printing costs","It helps to avoid taxes"],"This is called charm pricing. We read the left digit first and anchor on it.",1);
+vf(3,"For most people, losing €100 feels worse than gaining €100 feels good.",true,"This is loss aversion, a key idea in Kahneman and Tversky’s prospect theory.",1);
+vf(3,"A free item tends to feel disproportionately attractive.",true,"The “zero-price effect” makes people choose free options even when a cheap paid one is better.",2);
+
+m(4,"Trade","A country that exports more than it imports has a…","Trade surplus",["Trade deficit","Budget deficit","Trade embargo"],"China and Germany usually run large trade surpluses.",1);
+m(4,"Trade","Which country is the world’s largest exporter of goods?","China",["United States","Germany","Japan"],"China overtook Germany as the biggest exporter in 2009.",2);
+m(4,"Trade","What does FDI stand for?","Foreign direct investment",["Federal debt index","Financial deficit indicator","Fair duty import"],"FDI is when a company invests in or buys businesses in another country, e.g. a factory abroad.",3);
+m(4,"Trade","Protectionism means…","Shielding domestic industries from foreign competition",["Protecting borders with soldiers","Helping poor countries","Banning all exports"],"Typical tools are tariffs, quotas and subsidies for local firms.",2);
+m(4,"Trade","Which agreement replaced NAFTA among the US, Mexico and Canada in 2020?","USMCA",["TPP","CETA","Mercosur"],"The USMCA is also called T-MEC in Spanish and CUSMA in Canada.",3);
+m(4,"Money","A strong euro tends to make European exports…","More expensive for foreign buyers",["Cheaper for foreign buyers","Free of tax","Less popular in Europe"],"A stronger currency makes goods cost more in other currencies.",3);
+m(4,"Institutions","In which city are the IMF and the World Bank headquartered?","Washington, D.C.",["Geneva","New York","Brussels"],"Both were created at Bretton Woods in 1944 and are based in the US capital.",2);
+m(4,"History","The medieval Hanseatic League was a trade network mainly in…","Northern Europe and the Baltic",["The Mediterranean","The Black Sea","The Atlantic coast of Africa"],"Cities such as Lübeck and Hamburg dominated trade in fish, timber and grain.",3);
+vf(4,"OPEC was founded in 1960.",true,"Five countries founded it in Baghdad: Iran, Iraq, Kuwait, Saudi Arabia and Venezuela.",3);
+vf(4,"A trade deficit is always a sign of a weak economy.",false,"The US has run trade deficits for decades while remaining the world’s biggest economy.",3);
+
+m(5,"Euro","Which country adopted the euro on 1 January 2023?","Croatia",["Bulgaria","Romania","Poland"],"Croatia also joined the Schengen area on the same day.",3);
+m(5,"EU","Where does the European Parliament hold its official plenary sessions?","Strasbourg",["Brussels","Luxembourg","Frankfurt"],"It also meets in Brussels, which makes the Parliament a “travelling circus”.",3);
+m(5,"EU","In which city is the EU’s Court of Justice located?","Luxembourg",["Brussels","Strasbourg","The Hague"],"The court makes sure EU law is applied in the same way in all member states.",3);
+m(5,"EU","What is “NextGenerationEU”?","A recovery fund created after the COVID-19 pandemic",["A student exchange programme","A new type of euro banknote","A military alliance"],"It is worth around €800 billion and includes grants and loans for member states.",3);
+m(5,"EU","In which year did the United Kingdom officially leave the European Union?","2020",["2016","2019","2022"],"The UK voted to leave in 2016 and left on 31 January 2020.",2);
+m(5,"EU","How many gold stars are on the EU flag?","12",["27","15","10"],"The number is fixed and doesn’t change when new members join.",2);
+m(5,"EU","The EU’s anthem is based on which piece by Beethoven?","Ode to Joy",["Für Elise","Moonlight Sonata","The Pastoral Symphony"],"It comes from the finale of Beethoven’s Ninth Symphony.",2);
+m(5,"EU","Which country has the largest population in the EU?","Germany",["France","Italy","Spain"],"Germany has around 84 million inhabitants.",1);
+vf(5,"Switzerland is a member of the European Union.",false,"Switzerland is not in the EU, but it is in the Schengen area and trades closely with the EU.",1);
+
+ty(2,"What does CPI stand for? (three words: consumer … index)",["consumer price index","consumer prices index"],"The CPI is the most widely used measure of inflation.",1);
+
 return {id:"econ",title:"Economics & Big Ideas",kw:"economics economy economists adam smith keynes friedman gdp inflation recession central bank ecb fed behavioural kahneman nudge euro european union trade tariffs macro micro business",subject:"From Adam Smith to the euro: ideas every business student should know",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

@@ -79,5 +79,68 @@ ty(3,"What is Naruto’s village? (two words)",["Hidden Leaf","Hidden Leaf Villa
 ty(3,"Which studio made Spirited Away? (one word)",["Ghibli","Studio Ghibli"],"Studio Ghibli was founded in 1985.",2);
 ty(4,"Which Italian plumber is Nintendo’s most famous mascot? (one word)",["Mario"],"Mario is the mascot of Nintendo.",1);
 
+// ===================== More questions (batch 2) =====================
+m(1,"Pokémon","Which Pokémon does Charmander evolve into first?","Charmeleon",["Charizard","Bulbasaur","Vulpix"],"Charmander evolves into Charmeleon, then into Charizard.",1);
+m(1,"Pokémon","Which Kanto starter Pokémon is a Water type?","Squirtle",["Bulbasaur","Charmander","Pikachu"],"The three Kanto starters are Bulbasaur, Charmander and Squirtle.",1);
+m(1,"Pokémon","What is the name of the Pokémon professor in Pallet Town?","Professor Oak",["Professor Elm","Professor Birch","Professor Rowan"],"He gives players their first Pokémon in Red, Blue and Yellow.",2);
+m(1,"Pokémon","Which talking Pokémon is a member of Team Rocket’s trio?","Meowth",["Psyduck","Snorlax","Eevee"],"Meowth learned to talk to impress a female Pokémon.",2);
+m(1,"Pokémon","The sleepy Pokémon that blocks paths and loves to eat is called…","Snorlax",["Slowpoke","Onix","Jigglypuff"],"Players often need a special flute to wake it up.",2);
+m(1,"Pokémon","What does the word “Pokémon” originally mean?","Pocket Monsters",["Power Monsters","Poke Monsters","Picture Monsters"],"The Japanese name is “Poketto Monsutā”, shortened to Pokémon.",3);
+m(1,"Nintendo","Which Nintendo hero is a round pink character who inhales enemies?","Kirby",["Yoshi","Toad","Pac-Man"],"Kirby copies his enemies’ powers after inhaling them.",1);
+m(1,"Nintendo","What is the name of Mario’s green dinosaur friend?","Yoshi",["Bowser","Toad","Donkey Kong"],"Yoshi can eat enemies and flutter-jump.",1);
+m(1,"Nintendo","Which character is Mario’s greedy yellow-clad rival?","Wario",["Waluigi","Bowser","Luigi"],"The name Wario combines “Mario” with the Japanese word “warui”, meaning bad.",2);
+m(1,"Nintendo","Which Nintendo game features squid-kids that shoot colourful ink?","Splatoon",["Pikmin","ARMS","Kirby"],"Splatoon launched on the Wii U in 2015.",2);
+m(1,"Nintendo","Which console launched in 2017 along with “The Legend of Zelda: Breath of the Wild”?","Nintendo Switch",["Wii U","Nintendo 3DS","Nintendo Wii"],"It has Joy-Con controllers that work in handheld and TV mode.",2);
+vf(1,"Bowser is the main enemy in most Super Mario games.",true,"The king of the Koopas often kidnaps Princess Peach.",1);
+vf(1,"Pikachu is number 25 in the Pokédex.",true,"Bulbasaur is number 1 and Mew is number 151.",3);
+
+m(2,"Modern hits","Which game is football played with rocket-powered cars?","Rocket League",["Gran Turismo","Mario Kart","FIFA"],"It was a free game for PlayStation Plus in 2015 and exploded in popularity.",2);
+m(2,"Modern hits","In “Fall Guys”, players…","Race through wacky obstacle courses as jelly-bean characters",["Build cities","Fight dragons","Solve murder mysteries"],"Players compete until one winner remains.",2);
+m(2,"Modern hits","Which Japanese studio developed Elden Ring?","FromSoftware",["Capcom","Square Enix","Konami"],"FromSoftware is also known for Dark Souls, Bloodborne and Sekiro.",2);
+m(2,"Modern hits","Which game won Game of the Year at The Game Awards in 2023?","Baldur’s Gate 3",["Zelda: Tears of the Kingdom","Alan Wake 2","Spider-Man 2"],"Larian Studios’ role-playing game won many other awards.",3);
+m(2,"Modern hits","Genshin Impact was developed by which Chinese studio?","miHoYo",["Tencent","NetEase","Perfect World"],"The free-to-play game made billions of dollars on mobile and PC.",3);
+m(2,"Modern hits","Stardew Valley, a farming game, was made almost entirely by…","One developer, Eric Barone",["A team of 500","A school in Japan","The Minecraft team"],"Barone, known as ConcernedApe, spent over four years on the game.",3);
+m(2,"Terms","In gaming, what does RPG stand for?","Role-playing game",["Rapid play game","Rocket-propelled grenade","Real person gaming"],"Examples include Final Fantasy, The Witcher and Skyrim.",1);
+m(2,"Terms","In gaming, what does NPC stand for?","Non-player character",["New player club","No points counted","Next player choice"],"NPCs are characters controlled by the game, not by players.",1);
+m(2,"Terms","In gaming, “FPS” as a genre stands for…","First-person shooter",["Fast player speed","Final points score","Free play session"],"Call of Duty and Counter-Strike are first-person shooters.",1);
+m(2,"Terms","In gaming, MMO stands for…","Massively multiplayer online",["Multi-mission operation","Mega mobile option","Minimum move order"],"World of Warcraft is a classic MMO.",2);
+m(2,"Terms","What does it mean to “respawn” in a game?","To come back to life after dying",["To save the game","To change character","To buy an item"],"Many shooters let you respawn at a set location after a short delay.",1);
+vf(2,"Fortnite is free to play.",true,"Fortnite earns money by selling cosmetics like skins and emotes.",1);
+vf(2,"Minecraft was created by Markus “Notch” Persson.",true,"He released early versions in 2009 and sold the company to Microsoft in 2014.",2);
+vf(2,"Most games on Roblox are made by other players.",true,"Roblox provides tools so millions of users can build and publish their own games.",1);
+
+m(3,"Anime","What does the Japanese word “otaku” mean in the context of anime?","An obsessive fan",["A samurai","A cartoonist","A rice farmer"],"The word can be negative in Japan but is a proud label for many fans abroad.",2);
+m(3,"Anime","In anime, a “senpai” is…","A senior or mentor",["A younger sibling","An enemy","A teacher’s pet"],"Juniors use “senpai” to address people who are older or more experienced.",2);
+m(3,"Anime","What alien race is Goku from Dragon Ball?","Saiyan",["Namekian","Majin","Human"],"Goku was sent to Earth as a baby from planet Vegeta.",1);
+m(3,"Anime","Who is Naruto’s main rival and best friend?","Sasuke Uchiha",["Kakashi Hatake","Gaara","Itachi Uchiha"],"Their clash ends the series, in the Valley of the End.",2);
+m(3,"Anime","Fullmetal Alchemist is based on which basic principle?","Equivalent exchange",["An eye for an eye","Survival of the fittest","Divide and conquer"],"To gain something, alchemists must give up something of equal value.",2);
+m(3,"Anime","Which anime heroine fights evil “in the name of the Moon”?","Sailor Moon",["Cardcaptor Sakura","Magic Knight Rayearth","Pretty Cure"],"Usagi Tsukino became a global icon in the 1990s.",1);
+m(3,"Anime","Which anime features Saitama, a hero who defeats enemies with a single punch?","One Punch Man",["Mob Psycho 100","Dr. Stone","Fire Force"],"The joke is that he is so strong that fights bore him.",1);
+m(3,"Anime","In “Spy x Family”, what special power does little Anya have?","She can read minds",["She can fly","She is invisible","She has super strength"],"Anya’s telepathy helps her parents without them knowing.",1);
+m(3,"Anime","In “Jujutsu Kaisen”, Yuji Itadori gains powers by swallowing…","A cursed finger",["A magic stone","A demon’s heart","A sacred scroll"],"The finger belongs to the powerful curse Sukuna.",3);
+m(3,"Ghibli","Who directed Spirited Away?","Hayao Miyazaki",["Isao Takahata","Makoto Shinkai","Mamoru Hosoda"],"Miyazaki co-founded Studio Ghibli in 1985.",2);
+m(3,"Ghibli","Which Studio Ghibli film features a young witch who delivers parcels on a broomstick?","Kiki’s Delivery Service",["Spirited Away","Ponyo","Princess Mononoke"],"Kiki and her black cat Jiji set up a delivery business in a seaside town.",2);
+m(3,"Culture","What is “cosplay”?","Dressing up as a character from anime, games or films",["A type of video game","A Japanese tea ceremony","A sport"],"The word combines “costume” and “play”.",1);
+vf(3,"One Piece is one of the best-selling manga series of all time.",true,"More than 500 million copies have been sold.",2);
+vf(3,"Studio Ghibli was founded in 1985.",true,"It was created by Hayao Miyazaki, Isao Takahata and Toshio Suzuki.",3);
+
+m(4,"History","Which company made the Dreamcast console?","Sega",["Sony","Nintendo","Atari"],"The Dreamcast launched in 1998 and was Sega’s final console.",2);
+m(4,"History","Which simple tennis-like game from Atari became a hit in 1972?","Pong",["Breakout","Space Invaders","Asteroids"],"Pong helped to start the video-game industry.",2);
+m(4,"History","In which year was the original Super Mario Bros. released?","1985",["1981","1990","1993"],"It was released on the Nintendo Entertainment System in Japan in 1985.",2);
+m(4,"History","In which year was the Nintendo Switch released?","2017",["2015","2019","2020"],"It sold over 100 million units in under six years.",2);
+m(4,"History","In which year was the PlayStation 5 released?","2020",["2018","2021","2022"],"It launched in November 2020, during the pandemic.",2);
+m(4,"History","Which game was bundled with the original Game Boy in 1989?","Tetris",["Pac-Man","Pokémon Red","Super Mario Land"],"The bundle sold millions of consoles.",2);
+m(4,"History","Who is Sonic the Hedgehog’s main enemy?","Dr. Robotnik (Eggman)",["Bowser","Ganon","Wario"],"Dr. Eggman wants to take over the world with his robots.",2);
+m(4,"Industry","Ubisoft, the creator of Assassin’s Creed, is from which country?","France",["Japan","Canada","United States"],"Ubisoft was founded in Brittany in 1986.",2);
+m(4,"Industry","The Witcher 3 was developed by CD Projekt Red, which is from which country?","Poland",["Czech Republic","Finland","Germany"],"The game launched in 2015 and won over 250 awards.",3);
+m(4,"Industry","Which Dota 2 tournament is known for having the world’s biggest esports prize pools?","The International",["Worlds","Evo","Blast Premier"],"Prize pools passed $40 million in 2021.",3);
+m(4,"Industry","Which German city hosts the Gamescom video game fair every August?","Cologne",["Berlin","Munich","Hamburg"],"Gamescom is Europe’s biggest games event.",3);
+vf(4,"Pac-Man was created in Japan.",true,"Namco released Pac-Man in 1980 and Toru Iwatani designed it.",2);
+vf(4,"The original PlayStation began as a failed partnership between Sony and Nintendo.",true,"Sony then developed its own console and launched it in 1994.",3);
+vf(4,"Sega once made home video game consoles.",true,"The Master System, Mega Drive and Dreamcast were Sega consoles.",1);
+
+ty(1,"Which pink Pokémon can sing you to sleep? (one word)",["Jigglypuff"],"Jigglypuff’s lullaby puts everybody to sleep, then it draws on faces.",2);
+ty(4,"Which company created the Game Boy? (one word)",["Nintendo"],"The Game Boy launched in 1989 and made handheld gaming mainstream.",1);
+
 return {id:"gamer",title:"Gamer & Anime Challenge",kw:"gaming gamer anime manga mario pokemon zelda minecraft fortnite naruto one piece dragon ball nintendo playstation quiz",subject:"Mario, Pokémon, Minecraft, Fortnite and anime legends: are you a real gamer?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

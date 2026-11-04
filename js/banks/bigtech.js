@@ -90,5 +90,59 @@ ty(5,"Which streaming service made “Stranger Things”? (one word)",["Netflix"
 ty(1,"What is the Chinese company that owns TikTok? (one word)",["ByteDance","Bytedance"],"ByteDance was founded in 2012 by Zhang Yiming.",2);
 ty(2,"Which American company launched Windows? (one word)",["Microsoft"],"Windows 1.0 launched in 1985.",1);
 
+// ===================== More questions (batch 2) =====================
+m(1,"Giants","In the nickname FAANG for big tech stocks, which company does the “N” stand for?","Netflix",["Nvidia","Nokia","Nintendo"],"FAANG stands for Facebook, Apple, Amazon, Netflix and Google.",1);
+m(1,"Giants","The “Magnificent Seven” tech stocks are Apple, Microsoft, Alphabet, Amazon, Nvidia, Meta and…","Tesla",["Netflix","Intel","Oracle"],"The group has driven a large share of US stock market gains since 2023.",2);
+m(1,"Giants","Which company was the first to reach a market value of $3 trillion, in January 2022?","Apple",["Microsoft","Amazon","Saudi Aramco"],"Apple first passed $1 trillion in 2018 and $2 trillion in 2020.",3);
+m(1,"Giants","Microsoft is headquartered in which Washington state city?","Redmond",["Seattle","Tacoma","Spokane"],"Redmond is close to Seattle and also hosts Nintendo of America.",3);
+m(1,"Giants","Google’s headquarters, the “Googleplex”, are in which Californian city?","Mountain View",["Palo Alto","Cupertino","Menlo Park"],"Alphabet is also headquartered there.",2);
+m(1,"Giants","Meta’s headquarters are in which Californian city?","Menlo Park",["Mountain View","Cupertino","Santa Clara"],"Facebook moved to its Menlo Park campus in 2011.",3);
+m(1,"Giants","Which Chinese tech giant owns the messaging app WeChat?","Tencent",["Alibaba","Baidu","Xiaomi"],"WeChat is used by over a billion people and works as a messaging and payment app.",2);
+m(1,"Giants","Which company’s cloud platform is called Azure?","Microsoft",["Amazon","Google","IBM"],"Azure is the second-largest cloud platform after Amazon Web Services.",1);
+vf(1,"Oracle is best known for its database software.",true,"Larry Ellison co-founded Oracle in 1977.",2);
+vf(1,"Intel manufactures all the chips inside every iPhone.",false,"Apple designs its own chips, and most are manufactured by TSMC in Taiwan.",3);
+
+m(2,"Products","In which year did Apple launch the first iPod?","2001",["1999","2003","2005"],"“1,000 songs in your pocket” changed the music industry.",2);
+m(2,"Products","Which company launched the Kindle e-reader in 2007?","Amazon",["Apple","Sony","Barnes & Noble"],"The Kindle helped Amazon dominate digital books.",2);
+m(2,"Products","Which video-meeting app boomed during the 2020 lockdowns?","Zoom",["Slack","Dropbox","Skype"],"Zoom went from 10 million to over 300 million daily meeting participants in a few months.",1);
+m(2,"Products","Which company launched the Vision Pro mixed-reality headset in 2024?","Apple",["Meta","Sony","Samsung"],"It costs $3,499 in the US and runs on visionOS.",1);
+m(2,"Products","The first commercial Android smartphone, the HTC Dream, was released in which year?","2008",["2005","2010","2012"],"It came a year after the first iPhone.",3);
+m(2,"Products","Which Japanese company developed the QR code in 1994 for tracking car parts?","Denso Wave (Toyota group)",["Sony","Panasonic","Nintendo"],"QR means “quick response”. The inventors did not enforce their patent, so everyone could use it.",3);
+m(2,"Products","The name “Bluetooth” comes from…","A Danish Viking king",["A blue tooth in a logo","A blueberry company","A Finnish lake"],"King Harald “Bluetooth” united Denmark, as the technology unites devices.",3);
+vf(2,"“Wi-Fi” officially stands for “Wireless Fidelity”.",false,"Wi-Fi is just a brand name chosen by marketers and doesn’t stand for anything.",3);
+vf(2,"The first email was sent in the early 1970s.",true,"Ray Tomlinson sent the first network email in 1971 and chose the @ sign.",3);
+vf(2,"The iPhone 15, released in 2023, uses a USB-C charging port.",true,"EU rules pushed Apple to replace its Lightning connector.",2);
+
+m(3,"Basics","What does “LLM” stand for in AI?","Large language model",["Long learning machine","Linked logic module","Limited language method"],"LLMs like GPT and Claude are trained on vast amounts of text to predict the next word.",1);
+m(3,"Basics","What is “generative AI”?","AI that creates new content, such as text or images",["AI that only sorts data","A very fast computer","AI used only for games"],"Tools like ChatGPT, Midjourney and Sora are generative AI.",1);
+m(3,"Basics","What does “AGI” stand for?","Artificial general intelligence",["Automated graphics interface","Advanced game intelligence","Applied global internet"],"AGI would match human abilities across many tasks, which no current system does reliably.",2);
+m(3,"Basics","Why are GPUs important for training AI?","They can perform many calculations in parallel",["They store the internet","They are cheaper than CPUs","They connect to Wi-Fi faster"],"Nvidia’s GPUs became the engine of the AI boom.",2);
+m(3,"Basics","What are “tokens” in a language model?","Small pieces of text that the model processes",["Digital coins","Passwords","Paid subscriptions"],"A token can be a word, part of a word or punctuation, so “hamburger” could be several.",3);
+m(3,"History","Which computer beat the chess world champion Garry Kasparov in 1997?","Deep Blue",["AlphaZero","Watson","Stockfish"],"IBM’s Deep Blue won a six-game match 3½ to 2½.",2);
+m(3,"History","Which IBM system won the quiz show Jeopardy! in 2011?","Watson",["Deep Blue","Siri","Alexa"],"Watson beat the champions Ken Jennings and Brad Rutter.",3);
+m(3,"People","Which “godfather of AI” left Google in 2023 to warn about the risks of the technology?","Geoffrey Hinton",["Yann LeCun","Andrew Ng","Demis Hassabis"],"Hinton won the 2024 Nobel Prize in Physics with John Hopfield.",3);
+m(3,"Companies","Which Google DeepMind system predicted protein structures and contributed to a 2024 Nobel Prize in Chemistry?","AlphaFold",["AlphaGo","AlphaZero","Gemini"],"Demis Hassabis and John Jumper shared the prize for AlphaFold.",3);
+m(3,"Companies","Llama, a family of open AI models, is made by which company?","Meta",["Google","Microsoft","Apple"],"Meta released the models for free use, which helped many startups.",2);
+m(3,"Companies","Mistral AI, a European AI startup, is based in which country?","France",["Germany","Spain","United Kingdom"],"Mistral was founded in Paris in 2023 by former DeepMind and Meta researchers.",2);
+vf(3,"Nvidia’s chips are widely used to train AI models.",true,"Nvidia’s market value soared past $3 trillion thanks to AI demand.",1);
+
+m(4,"Founders","Which British designer led Apple’s design team in the era of the iMac, iPod and iPhone?","Jony Ive",["Tim Cook","Phil Schiller","Craig Federighi"],"Jony Ive left Apple in 2019 to found his own design firm, LoveFrom.",2);
+m(4,"Founders","Who co-founded the database giant Oracle?","Larry Ellison",["Larry Page","Scott McNealy","Michael Dell"],"Larry Ellison is one of the richest people in the world.",3);
+m(4,"Founders","Who founded Dell Technologies from his university dorm room?","Michael Dell",["Michael Bloomberg","Mark Cuban","Marc Benioff"],"Michael Dell started building PCs at the University of Texas in 1984.",2);
+m(4,"Founders","Who founded the professional social network LinkedIn?","Reid Hoffman",["Peter Thiel","Jack Dorsey","Evan Spiegel"],"Hoffman co-founded LinkedIn in 2002 and sold it to Microsoft in 2016.",3);
+m(4,"Founders","Who founded the video-conferencing company Zoom?","Eric Yuan",["Jack Ma","Satya Nadella","Jensen Huang"],"Yuan was an engineer at Cisco before starting Zoom in 2011.",3);
+m(4,"Founders","Which siblings co-founded the AI company Anthropic?","Dario and Daniela Amodei",["Sam and Jack Altman","Elon and Kimbal Musk","Cameron and Tyler Winklevoss"],"They left OpenAI in 2021 to build Anthropic with a focus on AI safety.",3);
+vf(4,"Steve Jobs was forced out of Apple in 1985 and returned in 1997.",true,"After the failure of NeXT and the success of Pixar, he came back and led Apple until 2011.",2);
+vf(4,"Bill Gates is still the CEO of Microsoft.",false,"He stepped down as CEO in 2000. Steve Ballmer then Satya Nadella took over.",1);
+
+m(5,"Gaming","Which company runs the Steam PC game store?","Valve",["Epic Games","Ubisoft","Blizzard"],"Valve also created Half-Life and Counter-Strike.",2);
+m(5,"Gaming","Grand Theft Auto is made by which studio?","Rockstar Games",["Ubisoft","Activision","Bethesda"],"GTA V has sold more than 200 million copies.",2);
+m(5,"Gaming","Candy Crush Saga was created by which company, later bought by Activision?","King",["Zynga","Supercell","Rovio"],"King is based in Barcelona and Stockholm, among other cities.",3);
+m(5,"Music","Which company is the world’s biggest music company by market share?","Universal Music Group",["Sony Music","Warner Music","Spotify"],"UMG is headquartered in the Netherlands and manages stars like Taylor Swift.",3);
+m(5,"Streaming","Which company bought the live-streaming platform Twitch in 2014 for about $970 million?","Amazon",["Google","Microsoft","Meta"],"Twitch is the world’s biggest platform for streaming video games.",3);
+vf(5,"Spotify pays artists a small fraction of a cent per stream.",true,"Payments vary by country, but are usually between $0.003 and $0.005 per stream.",2);
+
+ty(1,"Which company’s cloud service is called AWS? (one word)",["Amazon"],"Amazon Web Services is the world’s biggest cloud provider.",1);
+
 return {id:"bigtech",title:"Big Tech, AI & Entertainment",kw:"big tech apple google microsoft amazon meta nvidia ai chatgpt openai anthropic gaming disney netflix spotify technology business entertainment sports",subject:"Tech giants, AI, gaming and entertainment: who built the modern world?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

@@ -89,5 +89,62 @@ ty(5,"What does ROE stand for? (three words)",["return on equity"],"ROE = net in
 ty(5,"Which financial statement shows a company’s revenues and expenses over a period? (two words, starting with “income”)",["income statement","income statement."],"Also called the profit and loss account (P&L).",2);
 ty(2,"Which US central bank sets interest rates in the USA? (the Federal ...)",["Reserve","Federal Reserve","Fed"],"The Federal Reserve, or Fed, is the US central bank.",2);
 
+// ===================== More questions (batch 2) =====================
+m(1,"Basics","What is a “bear market”?","A period when prices are falling",["A period when prices rise","A market closed on Sundays","A market only for commodities"],"A fall of 20% or more from recent highs is the usual definition.",1);
+m(1,"Basics","What does “liquidity” mean for an asset?","How easily it can be turned into cash",["How much it is worth","How safe it is","How old it is"],"Cash is the most liquid asset. A house or a painting is much less liquid.",2);
+m(1,"Basics","What is a “bond”?","A loan to a company or government that pays interest",["A share in a company","A type of bank account","A contract to buy gold"],"The issuer promises to pay interest and to return the money at maturity.",1);
+m(1,"Basics","What generally happens to existing bond prices when interest rates rise?","They fall",["They rise","They stay the same","They are cancelled"],"New bonds pay more, so older ones with lower interest become less attractive.",3);
+m(1,"Basics","What does “volatility” measure?","How much prices swing up and down",["How big a company is","How much a share pays","How old a market is"],"The VIX is a famous index of expected stock-market volatility.",2);
+m(1,"Basics","What happens in a “stock split”?","Each share is divided into more shares, with the same total value",["The company is divided in two","Shareholders lose half their shares","The share price is doubled"],"Apple and Nvidia have used stock splits to make their shares more affordable.",3);
+m(1,"Indices","How many companies are in the Dow Jones Industrial Average?","30",["25","100","500"],"The Dow is one of the oldest US indices, created in 1896.",2);
+m(1,"Indices","The FTSE 100 lists the 100 largest companies on which stock exchange?","London Stock Exchange",["Euronext Paris","Deutsche Börse","Swiss Exchange"],"“FTSE” stands for the Financial Times Stock Exchange.",1);
+m(1,"Exchanges","Which stock exchange is the largest in the world by total market value of listed companies?","New York Stock Exchange",["Nasdaq","London Stock Exchange","Tokyo Stock Exchange"],"The NYSE sits on Wall Street and lists thousands of companies.",2);
+vf(1,"A share gives its owner partial ownership of a company.",true,"Shareholders can usually vote at meetings and may receive dividends.",1);
+
+m(2,"History","The 1997 Asian financial crisis began with the collapse of the currency of which country?","Thailand",["Indonesia","South Korea","Malaysia"],"The Thai baht was floated in July 1997 and the crisis quickly spread across Asia.",3);
+m(2,"History","In 2001 which country defaulted on about $93 billion of debt, one of the biggest ever sovereign defaults?","Argentina",["Brazil","Mexico","Chile"],"The default followed a deep recession and the end of the peso’s link to the US dollar.",3);
+m(2,"History","In 1998 a hedge fund run by Nobel-winning economists nearly collapsed and was rescued. Which fund?","Long-Term Capital Management",["Bridgewater","Citadel","Quantum Fund"],"LTCM’s failure was feared to threaten the whole financial system.",3);
+m(2,"History","Which investment bank was sold to JPMorgan in March 2008 with support from the Federal Reserve?","Bear Stearns",["Merrill Lynch","Goldman Sachs","Wachovia"],"The sale at $10 a share was a warning sign before Lehman Brothers collapsed.",3);
+m(2,"History","Credit Suisse was taken over in March 2023 by which bank?","UBS",["HSBC","Deutsche Bank","BNP Paribas"],"The Swiss government helped to arrange the deal after a loss of confidence in the bank.",2);
+m(2,"Vocabulary","What is a “bank run”?","Many customers withdraw their money at the same time",["A charity race","A bank robbery","A bank opening new branches"],"Because banks don’t keep all deposits in cash, a run can make them fail.",1);
+m(2,"Vocabulary","“Subprime mortgages” are loans to borrowers who…","Have a weak credit history",["Are very rich","Are under 18","Live abroad"],"Many subprime loans defaulted in 2007–08 and triggered the global financial crisis.",2);
+m(2,"Vocabulary","What is “quantitative easing” (QE)?","A central bank creating money to buy bonds",["A tax cut","A ban on loans","A new type of share"],"QE aims to lower long-term interest rates and boost lending and spending.",3);
+m(2,"History","In April 2020, the price of which commodity briefly turned negative?","US crude oil (WTI futures)",["Gold","Natural gas","Copper"],"Storage was full as demand collapsed, so traders paid to avoid taking delivery.",3);
+vf(2,"Iceland’s three biggest banks collapsed in October 2008.",true,"Iceland’s banks had grown to many times the size of the country’s economy.",3);
+
+m(3,"Legends","Which investor founded the hedge fund Bridgewater and wrote the book “Principles”?","Ray Dalio",["Carl Icahn","Bill Ackman","Paul Tudor Jones"],"Bridgewater became one of the world’s largest hedge funds.",2);
+m(3,"Legends","Which fund manager, known for the advice “buy what you know”, ran the Fidelity Magellan Fund?","Peter Lynch",["John Templeton","Ken Fisher","Jim Cramer"],"Lynch’s fund averaged annual returns of about 29% from 1977 to 1990.",3);
+m(3,"Legends","Which famous activist investor is known for taking over companies such as TWA and pushing for changes at Apple?","Carl Icahn",["Ray Dalio","Peter Thiel","Bill Gross"],"Icahn’s hostile takeovers and demands inspired the term “corporate raider”.",3);
+m(3,"Books","Who wrote “A Random Walk Down Wall Street”, arguing that markets are hard to beat?","Burton Malkiel",["Benjamin Graham","Peter Lynch","John Bogle"],"The book first appeared in 1973 and recommends low-cost index funds.",3);
+m(3,"Theory","Which economist developed the “efficient market hypothesis” and won the Nobel Prize in 2013?","Eugene Fama",["Milton Friedman","Paul Samuelson","Harry Markowitz"],"The theory says share prices already reflect all available information.",3);
+vf(3,"Warren Buffett still lives in the same Omaha house he bought in 1958.",true,"He paid $31,500 for it, a famous example of his frugal habits.",2);
+
+m(4,"Crypto","What is a blockchain?","A shared digital record made of linked blocks",["A type of bank card","A website for shopping","A stock market index"],"Each block contains transactions and is cryptographically linked to the previous one.",1);
+m(4,"Crypto","What is the Bitcoin “halving”?","The mining reward is cut in half roughly every four years",["The price drops by 50%","Half of all coins are destroyed","Fees are split between miners"],"Halvings limit new supply. The most recent took place in April 2024.",3);
+m(4,"Crypto","What is an NFT?","A unique digital token that proves ownership of an item",["A type of bank loan","A new stock market","A virtual credit card"],"NFTs boomed in 2021 when a digital artwork by Beeple sold for $69 million.",2);
+m(4,"Crypto","What is “DeFi”?","Decentralised finance, financial services built on blockchains",["A type of debit card","A credit-scoring agency","Defence funding"],"DeFi apps allow lending and trading without banks, using smart contracts.",2);
+m(4,"Crypto","What does “KYC” stand for in banking and crypto?","Know Your Customer",["Keep Your Cash","Key Yield Curve","Knowledge Yield Contract"],"KYC rules require firms to check customers’ identity to fight money laundering.",2);
+m(4,"Fintech","Which Twitter co-founder also founded the payments company Square, now called Block?","Jack Dorsey",["Evan Williams","Biz Stone","Elon Musk"],"Square started in 2009 with a small card reader that plugged into a phone.",2);
+m(4,"Fintech","Which neobank, founded in Berlin in 2013, is one of Europe’s best-known digital banks?","N26",["Monzo","Bunq","Starling"],"N26 started as a mobile bank with a smartphone-only account.",2);
+m(4,"Fintech","Which Brazilian digital bank went public in New York in 2021?","Nubank",["Itaú","Bradesco","Banco Inter"],"Nubank, known for its purple card, became one of Latin America’s biggest banks by customers.",3);
+vf(4,"Bitcoin was created in 2009.",true,"The first block of the Bitcoin blockchain was mined in January 2009.",1);
+vf(4,"A central bank digital currency (CBDC) is a digital version of a country’s money issued by its central bank.",true,"China’s digital yuan and the planned digital euro are examples of CBDCs.",3);
+
+m(5,"Ratios","What does EPS stand for?","Earnings per share",["Expenses per sale","Equity price spread","Estimated profit scale"],"EPS = net profit ÷ number of shares.",1);
+m(5,"Accounting","What is “working capital”?","Current assets minus current liabilities",["Total assets minus total debt","Salaries plus rent","Profit divided by sales"],"It shows whether a firm can pay its short-term bills.",3);
+m(5,"Accounting","What is “depreciation”?","Spreading the cost of an asset over its useful life",["A fall in a share price","A bank penalty","A tax on profits"],"A company that buys a €10,000 machine for 5 years may record €2,000 a year.",2);
+m(5,"Accounting","What is “goodwill” on a balance sheet?","The premium paid for a company above the value of its net assets",["A donation to charity","The value of the logo only","The cash held by the bank"],"Goodwill arises in acquisitions and includes reputation, customers and know-how.",3);
+m(5,"Analysis","The “break-even point” is when…","Revenue equals total costs",["Profit is at its maximum","The company sells its first product","Debt is repaid"],"Beyond break-even, each extra sale produces profit.",1);
+m(5,"Analysis","A “dividend yield” is calculated as…","Annual dividend ÷ share price",["Share price ÷ profit","Profit ÷ revenue","Debt ÷ equity"],"A share at €100 that pays €4 a year has a yield of 4%.",3);
+m(5,"Analysis","What does CAGR stand for?","Compound annual growth rate",["Capital and gain ratio","Corporate accounting guarantee rule","Cash and gold reserve"],"CAGR smooths growth over several years into a single yearly rate.",3);
+m(5,"Financing","Raising money by selling shares to investors is called…","Equity financing",["Debt financing","Leasing","Factoring"],"With equity financing, no repayment is needed, but owners give up part of the company.",1);
+m(5,"Financing","“Leverage” in finance means…","Using borrowed money to finance investments",["Selling shares at a premium","Hiring extra staff","Paying dividends early"],"Leverage increases both potential gains and potential losses.",2);
+vf(5,"A company can be profitable and still run out of cash.",true,"Customers paying late or heavy investment can drain cash even when the income statement shows profit.",2);
+vf(5,"Depreciation is a cash payment made to suppliers each year.",false,"Depreciation is an accounting charge, not a cash outflow.",3);
+
+ty(5,"What does EPS stand for? (three words: earnings … share)",["earnings per share"],"Earnings per share shows the profit that belongs to each share.",1);
+ty(4,"What does NFT stand for? (three words, the first is “non-fungible”)",["non-fungible token","non fungible token"],"A non-fungible token is a unique digital certificate of ownership stored on a blockchain.",2);
+ty(2,"What is the name of the bank that collapsed in 2023 in Silicon Valley? (abbreviation, three letters)",["SVB"],"Silicon Valley Bank failed in March 2023 after a run on deposits.",2);
+
 return {id:"finance",title:"Finance & Markets",kw:"finance markets stocks bonds investing investors buffett wall street crash lehman crypto bitcoin fintech revolut ebitda npv corporate finance bourse bolsa business",subject:"Crashes, legends, crypto and the maths of money",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

@@ -79,5 +79,67 @@ ty(3,"Which animal is this? 🐼 (one word)",["Panda","Giant panda"],"The panda 
 ty(2,"Which artist has the BeyHive fans? 🐝 (one word)",["Beyoncé","Beyonce"],"The BeyHive is the name of Beyoncé’s fandom.",2);
 ty(1,"Which Pixar film is this? 🚗⚡🏁 (one word)",["Cars"],"Lightning McQueen races in Cars (2006).",1);
 
+// ===================== More questions (batch 2) =====================
+m(1,"Fantasy","Which film series is this? 🧙‍♂️💍🌋","The Lord of the Rings",["The Chronicles of Narnia","Eragon","Willow"],"Gandalf, the One Ring and Mount Doom: Peter Jackson’s trilogy (2001–2003).",1);
+m(1,"Animation","Which film is this? 🐼🥋🍜","Kung Fu Panda",["Madagascar","Zootopia","Ice Age"],"Po, a noodle-loving panda, becomes the Dragon Warrior (2008).",1);
+m(1,"Disney","Which film is this? 🧞‍♂️🪔🐒","Aladdin",["The Jungle Book","Mulan","Pocahontas"],"The magic lamp, the Genie and Abu the monkey (1992).",1);
+m(1,"Disney","Which film is this? 🧜‍♀️🐠🦀","The Little Mermaid",["Finding Nemo","Moana","Frozen"],"Ariel and Sebastian the crab sing “Under the Sea” (1989).",1);
+m(1,"Disney","Which film is this? 🌹👹🕰️","Beauty and the Beast",["Cinderella","Sleeping Beauty","Tangled"],"The enchanted rose, the Beast and Cogsworth the clock (1991).",2);
+m(1,"Disney","Which film is this? 🐘🎪👂","Dumbo",["Madagascar","The Jungle Book","Tarzan"],"The little elephant with huge ears who learns to fly (1941).",2);
+m(1,"Adventure","Which film series is this? 🏴‍☠️🦜⚓","Pirates of the Caribbean",["Peter Pan","Treasure Island","Hook"],"Captain Jack Sparrow and the Black Pearl, starting in 2003.",1);
+m(1,"Adventure","Which film is this? 🦍🏙️🏢","King Kong",["Planet of the Apes","Godzilla","Jumanji"],"The giant ape climbs the Empire State Building in the 1933 classic.",2);
+m(1,"Family","Which film is this? 🏠👦🎄","Home Alone",["Elf","The Grinch","Jingle All the Way"],"Kevin McCallister defends his house from burglars (1990).",1);
+m(1,"Sci-fi","Which film is this? 🕶️💊🐇","The Matrix",["Men in Black","Blade Runner","Tron"],"Take the red pill and follow the white rabbit (1999).",2);
+m(1,"Sci-fi","Which film is this? 🚀👽🚲","E.T. the Extra-Terrestrial",["Close Encounters","Alien","Men in Black"],"Elliott and his alien friend fly across the moon on a bike (1982).",2);
+m(1,"Family","Which film is this? 🎩🍫🏭","Charlie and the Chocolate Factory",["Matilda","The Grinch","Hook"],"Willy Wonka’s chocolate factory, from Roald Dahl’s book.",2);
+m(1,"Thriller","Which classic film is this? 🔪🚿🏨","Psycho",["The Shining","Scream","Halloween"],"The shower scene at the Bates Motel is one of the most famous in cinema (1960).",3);
+m(1,"Drama","Which film is this? 🐯🚣🌊","Life of Pi",["Cast Away","The Jungle Book","Moana"],"A boy survives at sea on a lifeboat with a Bengal tiger (2012).",3);
+
+m(2,"Song","Which song is this? 💛🚢","Yellow Submarine",["Octopus’s Garden","Blue Moon","Sailing"],"The Beatles’ 1966 song: “We all live in a yellow submarine”.",1);
+m(2,"Song","Which song is this? 💜🌧️","Purple Rain",["Black Velvet","Blue Monday","Pink Moon"],"Prince’s 1984 ballad and the title of his film.",1);
+m(2,"Song","Which song is this? 🐌","Despacito",["Gasolina","Bailando","Mi Gente"],"“Despacito” means “slowly” in Spanish.",2);
+m(2,"Song","Which song is this? 🕶️🐴💃","Gangnam Style",["Dynamite","Boombayah","Fantastic Baby"],"PSY’s horse-riding dance took over the internet in 2012.",1);
+m(2,"Song","Which song is this? 🏨🌴☀️","Hotel California",["Sweet Home Alabama","Take It Easy","Margaritaville"],"The Eagles’ 1976 song: “You can check out any time you like, but you can never leave”.",2);
+m(2,"Song","Which song is this? 🛣️😈🔥","Highway to Hell",["Back in Black","Thunderstruck","Paradise City"],"AC/DC’s 1979 rock anthem.",2);
+m(2,"Song","Which song is this? 🪜☁️","Stairway to Heaven",["Kashmir","Whole Lotta Love","Hey Jude"],"Led Zeppelin’s 1971 epic, with a legendary guitar solo.",2);
+m(2,"Song","Which song is this? ✈️🌙","Fly Me to the Moon",["Moon River","Blue Moon","Space Oddity"],"A jazz standard made famous by Frank Sinatra in 1964.",2);
+m(2,"Song","Which song is this? 🌅🌞🎶","Here Comes the Sun",["Let It Be","Hey Jude","Come Together"],"George Harrison’s song on the Beatles’ album Abbey Road (1969).",2);
+m(2,"Song","Which song is this? 🍉🍬","Watermelon Sugar",["Peaches","Strawberry Fields","Candy Shop"],"Harry Styles’ 2019 hit.",2);
+m(2,"Song","Which song is this? 🧱","Another Brick in the Wall",["The Wall","Money","Time"],"Pink Floyd’s 1979 hit with the line “We don’t need no education”.",3);
+m(2,"Song","Which song is this? 🌍🤝🎤","We Are the World",["Heal the World","Imagine","Live and Let Die"],"A 1985 charity single written by Michael Jackson and Lionel Richie for famine relief.",2);
+m(2,"Artist","Which artist is this? 🐰😈","Bad Bunny",["J Balvin","Maluma","Rauw Alejandro"],"The Puerto Rican star often wears bunny-themed outfits and is one of Spotify’s most-streamed artists.",2);
+m(2,"Artist","Which artist is this? 🧤👟🌙","Michael Jackson",["Prince","Justin Timberlake","Usher"],"The glove, the loafers and the moonwalk are his trademarks.",2);
+
+m(3,"City","Which city is this? 🕌🌉🐈","Istanbul",["Cairo","Athens","Dubai"],"Mosques, the Bosphorus bridge and plenty of street cats.",2);
+m(3,"City","Which city is this? 🌁🌉🚋","San Francisco",["Los Angeles","Seattle","Portland"],"Fog, the Golden Gate Bridge and cable cars.",2);
+m(3,"City","Which city is this? 🚤🍝🎭","Venice",["Naples","Florence","Genoa"],"Canals, gondolas and the famous Carnival masks.",1);
+m(3,"City","Which city is this? 🍺🥨🎡","Munich",["Vienna","Prague","Zurich"],"Home of the Oktoberfest beer festival every autumn.",2);
+m(3,"City","Which city is this? 🏙️🏜️🏝️","Dubai",["Doha","Cairo","Riyadh"],"Skyscrapers, desert and man-made islands.",2);
+m(3,"City","Which city is this? 🏛️🫒🌅","Athens",["Rome","Istanbul","Lisbon"],"The Acropolis, olive oil and Mediterranean sunsets.",2);
+m(3,"Country","Which country is this? 🏔️🧀🕰️🍫","Switzerland",["Austria","Sweden","Norway"],"Mountains, cheese, watches and chocolate.",1);
+m(3,"Country","Which country is this? 🐘🛕🍛","India",["Thailand","Sri Lanka","Indonesia"],"Elephants, temples and curry.",1);
+m(3,"Country","Which country is this? 🐫🏜️🔺","Egypt",["Morocco","Saudi Arabia","Jordan"],"Camels, the desert and the pyramids of Giza.",1);
+m(3,"Country","Which country is this? 🥩💃🧉","Argentina",["Chile","Uruguay","Colombia"],"Steak (asado), tango and mate tea.",2);
+m(3,"Country","Which country is this? 🥝🏉🐑","New Zealand",["Australia","Ireland","South Africa"],"Kiwis, rugby and plenty of sheep.",1);
+m(3,"Country","Which country is this? 🍁🏒🦫","Canada",["Sweden","Finland","Russia"],"Maple leaf, ice hockey and beavers.",1);
+m(3,"Food","Which dish is this? 🥔🥚🧅","Spanish tortilla",["Paella","Gazpacho","Croquetas"],"Potatoes, eggs and onions, the classic Spanish omelette.",2);
+m(3,"Food","Which food is this? 🥟🥢","Dumplings",["Spring rolls","Sushi","Ramen"],"Dumplings are eaten across Asia, often with chopsticks.",1);
+m(3,"Food","Which spread is this? 🌰🍫🍞","Nutella",["Peanut butter","Marmite","Jam"],"Hazelnut and cocoa spread, made by the Italian company Ferrero.",1);
+m(3,"Food","Which pizza is this? 🍕🍍","Hawaiian",["Margherita","Pepperoni","Four cheese"],"Pineapple on pizza divides the world.",1);
+
+m(4,"Saying","Which saying is this? 🍎📅👨‍⚕️🚫","An apple a day keeps the doctor away",["Don’t cry over spilt milk","A rolling stone gathers no moss","Better late than never"],"A 19th-century proverb about healthy eating.",1);
+m(4,"Saying","Which saying is this? 🥚🥚🧺☝️","Don’t put all your eggs in one basket",["The early bird catches the worm","Don’t count your chickens","Curiosity killed the cat"],"It means don’t risk everything on a single option.",1);
+m(4,"Saying","Which saying is this? ⏰🐦🐛","The early bird catches the worm",["A bird in the hand is worth two in the bush","Birds of a feather flock together","A little bird told me"],"Those who start early have an advantage.",1);
+m(4,"Saying","Which saying is this? 🐦👂💬","A little bird told me",["Birds of a feather flock together","Kill two birds with one stone","The early bird catches the worm"],"You use it when you don’t want to say who gave you the information.",2);
+m(4,"Saying","Which saying is this? 🐴🎁👄🚫","Don’t look a gift horse in the mouth",["Hold your horses","Beat a dead horse","Straight from the horse’s mouth"],"Be grateful for a gift instead of checking its value; you can tell a horse’s age by its teeth.",3);
+m(4,"Saying","Which saying is this? 🍋🍋🥤","When life gives you lemons, make lemonade",["The grass is greener on the other side","Every cloud has a silver lining","Easy come, easy go"],"It means turn bad situations into something positive.",2);
+m(4,"Saying","Which saying is this? 🔥🤹","Playing with fire",["Burning the midnight oil","Fighting fire with fire","Where there’s smoke, there’s fire"],"It means doing something dangerous or risky.",2);
+m(4,"Saying","Which saying is this? 🐝🕐💼","Busy as a bee",["Quiet as a mouse","Strong as an ox","Free as a bird"],"It describes someone who is always working hard.",2);
+m(4,"App","Which app is this? 📷🌈","Instagram",["Snapchat","Pinterest","Flickr"],"The app shares photos and Reels, and its logo is a gradient camera.",1);
+m(4,"App","Which app is this? ▶️🔴","YouTube",["Vimeo","Twitch","Netflix"],"The red play button is one of the world’s most recognised logos.",1);
+m(4,"App","Which app is this? 💬🟢📞","WhatsApp",["Telegram","Signal","Line"],"A green logo with a phone and a speech bubble.",1);
+m(4,"App","Which app is this? 🎮🟣📺","Twitch",["Discord","Steam","Kick"],"Gamers stream live on this purple platform.",2);
+m(4,"Brand","Which streaming brand is this? 🔴🎬📺","Netflix",["Hulu","Disney+","HBO"],"The red N logo and its famous “ta-dum” sound.",1);
+
 return {id:"emoji",title:"Emoji Riddles",kw:"emoji riddles guess movie song artist emojis puzzle game fun tiktok",subject:"Guess the film, song, country or saying from a few emojis",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

@@ -72,5 +72,54 @@ ty(3,"What is the first name of the scientist in Mary Shelley’s novel about th
 ty(4,"Which planet has a day longer than its year? (one word)",["Venus"],"Venus rotates very slowly.",2);
 ty(4,"What food never spoils? (one word)",["Honey"],"Edible honey was found in Egyptian tombs.",1);
 
+// ===================== More questions (batch 2) =====================
+vf(1,"Eating carrots gives you night vision.",false,"Carrots have vitamin A, which is good for eyes, but the myth came from British WWII propaganda hiding radar.",2);
+vf(1,"You must wait 30 minutes after eating before swimming.",false,"There is no evidence that swimming after a meal causes dangerous cramps.",2);
+vf(1,"Hair and fingernails keep growing after death.",false,"The skin shrinks and pulls back, which makes them look longer.",2);
+vf(1,"Reading in dim light permanently damages your eyes.",false,"It can tire your eyes, but the effect is temporary.",2);
+vf(1,"You can catch a cold just by being out in the cold weather.",false,"Colds are caused by viruses, though we spend more time together indoors in winter.",2);
+vf(1,"People are either left-brained or right-brained.",false,"Both sides of the brain work together, and personality is not decided by one side.",2);
+vf(1,"Babies are born with more bones than adults.",true,"Babies have around 300 bones, many of which fuse together so adults have 206.",2);
+vf(1,"Your stomach lining is replaced every few days.",true,"Without regular renewal, stomach acid would digest the stomach itself.",3);
+m(1,"Body","What share of the body’s energy does the brain use?","About 20%",["About 2%","About 50%","About 80%"],"The brain is only about 2% of body weight but uses around a fifth of the energy.",2);
+m(1,"Body","Roughly how much of the adult human body is water?","About 60%",["About 30%","About 90%","About 10%"],"The exact number varies with age and body composition.",2);
+m(1,"Body","How long can a person typically survive without water?","About three days",["About three hours","About three weeks","About three months"],"It depends on heat and activity, but a few days is the limit.",3);
+m(1,"Body","Which blood type is the most common in the world?","O positive",["A positive","B negative","AB negative"],"About 38% of the world population has O positive blood.",3);
+
+vf(2,"Lemmings commit mass suicide by jumping off cliffs.",false,"The myth comes from a staged scene in the 1958 Disney film “White Wilderness”.",3);
+vf(2,"Touching a baby bird makes its mother reject it.",false,"Most birds have a weak sense of smell and don’t abandon their chicks.",2);
+vf(2,"Sharks never get cancer.",false,"Sharks can get cancer, and tumours have been found in many species.",3);
+vf(2,"Elephants are terrified of mice.",false,"There’s no evidence of this and elephants usually ignore mice.",2);
+vf(2,"A duck’s quack does not echo.",false,"It does echo, but it can be hard to hear because it fades quietly.",3);
+vf(2,"Sloths can hold their breath for longer than dolphins.",true,"Sloths can slow their heart rate and stay under for up to 40 minutes.",3);
+vf(2,"A group of flamingos is called a flamboyance.",true,"Other fun group names include a parliament of owls and a murder of crows.",2);
+m(2,"Animals","What is a group of crows called?","A murder",["A parade","A flock of fortune","A choir"],"Crows are very intelligent and can recognise human faces.",2);
+m(2,"Animals","Which of these animals cannot jump?","The elephant",["The kangaroo","The frog","The rabbit"],"An elephant’s leg bones and weight make jumping impossible.",2);
+m(2,"Animals","Flamingos are pink because of…","Their diet",["Their genes only","The sun’s heat","The water they stand in"],"They eat algae and shrimp that contain pink-orange pigments.",2);
+
+vf(3,"Christopher Columbus proved that the Earth is round.",false,"Educated people already knew the Earth was round, and Columbus underestimated its size.",3);
+vf(3,"Thomas Edison was the first person to invent an electric light bulb.",false,"Several inventors made bulbs earlier, but Edison made one practical and long-lasting.",3);
+vf(3,"In “Casablanca”, Humphrey Bogart says “Play it again, Sam”.",false,"The actual line is “Play it, Sam. Play ‘As Time Goes By’.”",3);
+vf(3,"Captain Kirk says “Beam me up, Scotty” in the original Star Trek series.",false,"The exact phrase was never said in the original series.",3);
+vf(3,"George Washington had wooden teeth.",false,"His dentures were made from ivory, metal and human or animal teeth, but not wood.",2);
+vf(3,"The Salem witch trials ended with the accused being burned at the stake.",false,"Those found guilty were hanged, not burned.",3);
+vf(3,"Ancient Romans used “vomitoriums” to be sick during feasts so they could eat more.",false,"A vomitorium was a passage in a stadium that let crowds out quickly.",3);
+vf(3,"The shortest war in history lasted less than an hour.",true,"The Anglo-Zanzibar War of 1896 lasted between 38 and 45 minutes.",3);
+
+vf(4,"Bananas are slightly radioactive.",true,"They contain potassium-40, but the dose is harmless.",2);
+vf(4,"There are more possible chess games than atoms in the observable universe.",true,"Claude Shannon’s estimate was about 10^120 possible games.",3);
+vf(4,"Sharks existed before trees did.",true,"Sharks appeared around 450 million years ago and trees about 350 million.",3);
+vf(4,"Russia has a larger surface area than the planet Pluto.",true,"Russia covers about 17 million km², while Pluto’s surface is around 16.6 million km².",3);
+vf(4,"Nintendo was founded in 1889, originally as a playing card company.",true,"Fusajiro Yamauchi started making hanafuda cards in Kyoto.",3);
+vf(4,"The Eiffel Tower can be about 15 cm taller in summer.",true,"Iron expands in the heat.",3);
+vf(4,"Cats cannot taste sweetness.",true,"Cats lack the gene for sweet taste receptors.",3);
+m(4,"Facts","What is the national animal of Scotland?","The unicorn",["The lion","The stag","The golden eagle"],"The unicorn has been a symbol of Scotland since the 12th century.",2);
+m(4,"Facts","Roughly how much of an apple is air?","About 25%",["About 5%","About 50%","About 75%"],"That is why apples float in water.",3);
+m(4,"Facts","Any two people share about how much of their DNA?","About 99.9%",["About 90%","About 75%","About 50%"],"The small difference explains all the variety between us.",2);
+m(4,"Facts","What is the most abundant element in the universe?","Hydrogen",["Oxygen","Carbon","Helium"],"About three quarters of all normal matter is hydrogen.",2);
+m(4,"Facts","On average, how long is a day on Mars?","About 24 hours and 37 minutes",["About 12 hours","About 48 hours","About 10 days"],"Martian days are called sols.",3);
+
+ty(2,"What do we call a group of owls? (one word)",["parliament"],"A group of owls is called a parliament.",3);
+
 return {id:"myths",title:"Myths & Mind-Blowing Facts",kw:"myths facts true false fake news believe wrong mind blown did you know science history animals brain quiz viral",subject:"Things everyone believes that are wrong, and true facts that sound fake",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

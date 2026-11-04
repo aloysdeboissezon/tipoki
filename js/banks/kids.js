@@ -79,5 +79,73 @@ ty(3,"How many seconds are there in one minute? (a number)",["60","sixty"],"Ther
 ty(4,"What is the capital of France? (one word)",["Paris"],"Paris is on the Seine.",1);
 ty(4,"Which ocean is the largest? (one word)",["Pacific","The Pacific","Pacific Ocean"],"The Pacific Ocean covers about a third of the planet.",1);
 
+// ===================== More questions (batch 2) =====================
+m(1,"Science","What is the hardest natural substance on Earth?","Diamond",["Gold","Iron","Quartz"],"Diamonds are made of carbon atoms arranged in a strong crystal structure.",1);
+m(1,"Science","What force keeps us on the ground and makes things fall?","Gravity",["Magnetism","Friction","Electricity"],"Gravity pulls objects towards the centre of the Earth.",1);
+m(1,"Science","What is the chemical symbol for oxygen?","O",["Ox","Oy","Os"],"Os is osmium, a different element.",1);
+m(1,"Science","Which metal is liquid at room temperature?","Mercury",["Lead","Tin","Iron"],"Mercury was used in old thermometers.",2);
+m(1,"Science","What type of energy comes from the Sun?","Solar energy",["Wind energy","Nuclear energy","Tidal energy"],"Solar panels turn sunlight into electricity.",1);
+m(1,"Space","What is the name of our galaxy?","The Milky Way",["Andromeda","The Whirlpool","The Sombrero"],"Our solar system is on one of its spiral arms.",1);
+m(1,"Space","Which planet is famous for its bright rings?","Saturn",["Jupiter","Mars","Neptune"],"The rings are made of ice and rock pieces.",1);
+m(1,"Space","How long does sunlight take to reach Earth?","About 8 minutes",["About 8 seconds","About 8 hours","About 8 days"],"Sunlight travels roughly 150 million kilometres to us.",3);
+m(1,"Space","Who was the first person to travel into space, in 1961?","Yuri Gagarin",["Neil Armstrong","Buzz Aldrin","John Glenn"],"Gagarin orbited the Earth once in the Soviet spacecraft Vostok 1.",2);
+m(1,"Space","Who was the first person to walk on the Moon?","Neil Armstrong",["Buzz Aldrin","Yuri Gagarin","Alan Shepard"],"He said, “That’s one small step for man, one giant leap for mankind.”",1);
+m(1,"Space","Pluto is now classified as…","A dwarf planet",["An asteroid","A comet","A moon"],"Pluto lost its planet status in 2006.",2);
+m(1,"Space","How many natural moons does Earth have?","One",["Two","Four","None"],"The Moon is about a quarter the size of Earth.",1);
+vf(1,"Sound travels faster than light.",false,"Light is much faster, which is why we see lightning before we hear thunder.",1);
+vf(1,"Venus is the hottest planet in our solar system.",true,"Venus is hotter than Mercury because its thick atmosphere traps heat.",2);
+
+m(2,"Animals","What do we call animals that eat only plants?","Herbivores",["Carnivores","Omnivores","Insectivores"],"Cows, rabbits and elephants are herbivores.",1);
+m(2,"Animals","What do we call animals that eat both plants and meat?","Omnivores",["Herbivores","Carnivores","Predators"],"Humans, bears and pigs are omnivores.",1);
+m(2,"Animals","What is a baby kangaroo called?","A joey",["A cub","A pup","A kit"],"Joeys live in their mother’s pouch for months.",1);
+m(2,"Animals","What is a group of lions called?","A pride",["A pack","A herd","A flock"],"A pride has several females, their cubs and a few males.",2);
+m(2,"Animals","Which is the largest animal in the world?","The blue whale",["The African elephant","The giraffe","The great white shark"],"A blue whale can reach 30 metres in length.",1);
+m(2,"Animals","How many legs does an insect have?","6",["4","8","10"],"All insects have six legs and three body parts.",1);
+m(2,"Animals","Which is the largest land animal?","The African elephant",["The rhinoceros","The hippopotamus","The giraffe"],"Males can weigh up to six tonnes.",1);
+m(2,"Plants","Which gas do plants release during photosynthesis?","Oxygen",["Carbon dioxide","Nitrogen","Hydrogen"],"Plants take in carbon dioxide and release oxygen.",1);
+m(2,"Plants","What do bees collect from flowers to make honey?","Nectar",["Pollen only","Sap","Water"],"Bees also carry pollen from flower to flower.",1);
+m(2,"Body","How many teeth does a typical adult human have?","32",["20","28","36"],"Children have 20 baby teeth and adults 32 permanent teeth, including wisdom teeth.",2);
+m(2,"Body","Which blood cells carry oxygen around the body?","Red blood cells",["White blood cells","Platelets","Plasma cells"],"Red blood cells contain haemoglobin, which binds to oxygen.",2);
+m(2,"Body","What is the largest bone in the human body?","The femur",["The tibia","The humerus","The skull"],"The femur is in your thigh.",3);
+m(2,"Body","Which organs filter waste from the blood and make urine?","The kidneys",["The liver","The lungs","The stomach"],"We have two kidneys.",2);
+vf(2,"A spider is an insect.",false,"Spiders are arachnids and have eight legs. Insects have six.",1);
+vf(2,"Whales are fish.",false,"Whales are mammals: they breathe air and feed milk to their babies.",1);
+vf(2,"Dolphins are mammals.",true,"They breathe air through a blowhole.",1);
+
+m(3,"Maths","What is 9 × 9?","81",["72","79","91"],"Nine times nine is eighty-one.",1);
+m(3,"Maths","What is the next number in this sequence: 2, 4, 8, 16, …?","32",["24","30","36"],"Each number is double the one before.",2);
+m(3,"Maths","What is 15% of 200?","30",["15","20","45"],"10% of 200 is 20 and 5% is 10, so 15% is 30.",3);
+m(3,"Maths","How many zeros does a million have?","6",["5","7","9"],"1,000,000 has six zeros.",2);
+m(3,"Maths","What is the perimeter of a square with sides of 5 cm?","20 cm",["10 cm","25 cm","15 cm"],"The perimeter is 4 × 5 = 20 cm.",2);
+m(3,"Maths","What is 100 ÷ 4?","25",["20","40","50"],"Dividing by four is the same as halving twice.",1);
+m(3,"Shapes","What is a shape with five sides called?","A pentagon",["A hexagon","An octagon","A square"],"The US Department of Defense building is a pentagon.",1);
+m(3,"Shapes","How many sides does an octagon have?","8",["6","7","10"],"A stop sign is an octagon.",2);
+m(3,"Shapes","What do we call an angle of exactly 90 degrees?","A right angle",["An acute angle","An obtuse angle","A straight angle"],"The corners of a square are right angles.",1);
+m(3,"Words","Which of these words is a verb?","Jump",["Table","Happy","Quickly"],"A verb describes an action or state.",1);
+m(3,"Words","What is a word that sounds the same as another but is spelled differently called?","A homophone",["A synonym","An antonym","An acronym"],"“Their” and “there” are homophones.",3);
+m(3,"Words","Which of these months has 31 days?","July",["April","June","September"],"A rhyme says: “Thirty days hath September, April, June and November.”",2);
+m(3,"Words","What is the opposite of “ancient”?","Modern",["Old","Huge","Silent"],"Antonyms are words with opposite meanings.",2);
+vf(3,"Zero is a positive number.",false,"Zero is neither positive nor negative.",2);
+vf(3,"A square is a special type of rectangle.",true,"It is a rectangle whose four sides are all equal.",2);
+vf(3,"The word “queue” is pronounced just like the letter Q.",true,"The letters “ueue” are silent.",2);
+
+m(4,"World","Which is the smallest continent by area?","Australia (Oceania)",["Europe","Antarctica","South America"],"Australia is also the only continent that is a single country.",1);
+m(4,"World","What is the capital of Portugal?","Lisbon",["Porto","Madrid","Faro"],"Lisbon sits on the Atlantic coast, at the mouth of the river Tagus.",1);
+m(4,"World","What is the capital of Argentina?","Buenos Aires",["Santiago","Montevideo","Lima"],"Buenos Aires is famous for tango and football.",2);
+m(4,"World","Which language has the most native speakers in the world?","Mandarin Chinese",["English","Spanish","Hindi"],"Spanish is second by native speakers, while English has the most speakers overall.",2);
+m(4,"History","Which ancient civilisation built the Colosseum in Rome?","The Romans",["The Greeks","The Egyptians","The Vikings"],"The Colosseum could hold around 50,000 spectators.",1);
+m(4,"History","Whose expedition was the first to sail around the world, between 1519 and 1522?","Ferdinand Magellan’s",["Christopher Columbus’s","Vasco da Gama’s","James Cook’s"],"Magellan died on the way; Juan Sebastián Elcano finished the journey.",3);
+m(4,"History","Which ship carried the Pilgrims from England to America in 1620?","The Mayflower",["The Santa María","The Endeavour","The Beagle"],"The Pilgrims landed at what is now Massachusetts.",2);
+m(4,"History","In which country did the Industrial Revolution begin?","Britain",["France","Germany","United States"],"It started in the 18th century with steam engines and textile factories.",2);
+m(4,"History","Who invented the practical electric light bulb in 1879?","Thomas Edison",["Nikola Tesla","Alexander Graham Bell","Benjamin Franklin"],"Edison’s team tested thousands of materials for the filament.",1);
+m(4,"History","Who invented the telephone in 1876?","Alexander Graham Bell",["Thomas Edison","Samuel Morse","Guglielmo Marconi"],"Bell made the first successful phone call to his assistant.",2);
+m(4,"Art","Who painted the ceiling of the Sistine Chapel?","Michelangelo",["Leonardo da Vinci","Raphael","Donatello"],"He painted it between 1508 and 1512, lying on scaffolding.",2);
+m(4,"Art","Who wrote “Romeo and Juliet”?","William Shakespeare",["Charles Dickens","Jane Austen","Oscar Wilde"],"Shakespeare wrote it around 1595.",1);
+m(4,"History","In which year did World War II end?","1945",["1939","1943","1950"],"It ended in Europe in May and in Asia in September 1945.",2);
+vf(4,"The Great Fire of London took place in 1666.",true,"It destroyed much of the old city, including St Paul’s Cathedral.",3);
+vf(4,"The ancient Romans spoke Latin.",true,"Spanish, French, Italian and Portuguese all grew out of Latin.",1);
+
+ty(4,"What is the capital of Italy? (one word)",["Rome","Roma"],"Rome is called the Eternal City.",1);
+
 return {id:"kids",title:"Are You Smarter Than a 10-Year-Old?",kw:"smarter than 10 year old kids school basics science maths geography history general knowledge quiz fun family",subject:"School basics that adults often get wrong: can you beat a fifth grader?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

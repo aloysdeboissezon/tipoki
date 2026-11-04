@@ -78,5 +78,53 @@ ty(3,"Which platform shows Wrapped every December? (one word)",["Spotify"],"Spot
 ty(2,"Which dog is behind the “Doge” meme? (two words)",["Shiba Inu","Shiba"],"The Shiba Inu is a Japanese dog breed.",2);
 ty(4,"What does “FOMO” stand for? (four words)",["fear of missing out"],"It is the social anxiety of missing exciting events.",1);
 
+// ===================== More questions (batch 2) =====================
+m(1,"Apps","What does “DM” stand for on social media?","Direct message",["Daily mood","Double match","Digital media"],"A DM is a private message sent to one person or a small group.",1);
+m(1,"Apps","What is a hashtag?","A word or phrase with # used to tag a topic",["A type of emoji","A private chat","A paid advert"],"Chris Messina proposed using # on Twitter in 2007.",1);
+m(1,"Apps","Which Meta app launched in July 2023 as a rival to X (formerly Twitter)?","Threads",["Bluesky","Mastodon","Truth Social"],"Threads got 100 million sign-ups in less than a week.",2);
+m(1,"Apps","Which website hosts topic communities with that start with “r/”, like r/funny?","Reddit",["Tumblr","Quora","Digg"],"Each subreddit focuses on a topic, such as r/AskReddit or r/funny.",1);
+m(1,"Apps","Which dating app popularised swiping right to like someone, launching in 2012?","Tinder",["Bumble","Hinge","Match.com"],"Swiping left means “no”, swiping right means “yes”.",1);
+m(1,"Apps","Which app is the most popular chat platform among gamers, with servers and channels?","Discord",["Slack","Skype","Zoom"],"Discord started in 2015 as a voice chat for gamers.",1);
+m(1,"Apps","In which year was Wikipedia launched?","2001",["1998","2004","2006"],"Jimmy Wales and Larry Sanger launched Wikipedia in January 2001.",3);
+m(1,"Apps","What does URL stand for?","Uniform Resource Locator",["Universal Reading Link","United Response List","User Reference Line"],"A URL, such as https://example.com, is the address of a web page.",3);
+vf(1,"Instagram was launched in 2010.",true,"It was launched in October 2010 and bought by Facebook in 2012.",2);
+vf(1,"The messaging app Telegram was founded by Pavel Durov.",true,"Durov, who also founded the Russian network VK, launched Telegram in 2013.",3);
+
+m(2,"Memes","Which meme pairs a woman pointing and shouting with a confused cat at a dinner table?","Woman Yelling at a Cat",["Distracted Boyfriend","Drake Hotline Bling","Success Kid"],"It combines a scene from “The Real Housewives” with a photo of a cat called Smudge.",2);
+m(2,"Memes","Which meme shows a man looking at another woman while his girlfriend looks angry?","Distracted Boyfriend",["Two Buttons","Hide the Pain Harold","Grumpy Cat"],"It was a stock photo from 2015 that became a meme in 2017.",1);
+m(2,"Memes","Which Pokémon’s shocked face is a very popular reaction meme?","Pikachu",["Jigglypuff","Meowth","Eevee"],"Surprised Pikachu comes from a 2018 shot of the anime.",1);
+m(2,"Memes","What was the real name of the internet-famous cat “Grumpy Cat”?","Tardar Sauce",["Nala","Smudge","Maru"],"Her grumpy face was caused by feline dwarfism and an underbite.",3);
+m(2,"Memes","The 2018 “In My Feelings” challenge was based on a song by which rapper?","Drake",["Kendrick Lamar","Travis Scott","Post Malone"],"People danced next to a moving car as part of the challenge.",2);
+m(2,"Memes","Which Norwegian duo’s 2013 viral hit asked what the fox says?","Ylvis",["a-ha","Röyksopp","Kygo"],"“The Fox (What Does the Fox Say?)” reached hundreds of millions of views.",3);
+m(2,"Memes","What was the “Mannequin Challenge” of 2016?","People stayed frozen like mannequins while a camera moved",["Dancing on shop windows","Wearing mannequin clothes","Pouring water on your head"],"Even celebrities and politicians joined in.",2);
+m(2,"Memes","“OK Boomer” became a viral phrase in 2019 to respond to…","Older people’s dismissive attitudes",["Gamers’ slang","Teachers’ homework","Influencers’ adverts"],"It was popularised on TikTok and made headlines when a New Zealand MP used it in parliament.",2);
+vf(2,"The Rickroll prank began on the forum 4chan in 2007.",true,"People tricked others into clicking a link that led to Rick Astley’s “Never Gonna Give You Up”.",3);
+vf(2,"The 2014 Ice Bucket Challenge raised over $100 million for ALS research.",true,"The ALS Association raised about $115 million during the challenge.",3);
+
+m(3,"Creators","What is MrBeast’s real first name?","Jimmy",["Mark","Chris","Tyler"],"Jimmy Donaldson started on YouTube at 13 and became the platform’s top creator.",2);
+m(3,"Creators","Which Spanish streamer organised “La Velada del Año”, a huge boxing event for Twitch creators?","Ibai Llanos",["El Rubius","AuronPlay","TheGrefg"],"The event gathered millions of live viewers and was held in stadiums.",2);
+m(3,"Creators","Which Spanish streamer broke the Twitch record in January 2021 with a Fortnite skin reveal?","TheGrefg",["Ibai Llanos","El Rubius","Willyrex"],"More than 2.4 million viewers watched at the same time.",3);
+m(3,"Creators","Who is the most-followed person on Instagram?","Cristiano Ronaldo",["Lionel Messi","Selena Gomez","Kylie Jenner"],"Ronaldo has more than 600 million followers.",2);
+m(3,"Creators","In 2023, which streamer passed one million subscribers during a month-long Twitch “subathon”?","Kai Cenat",["Ludwig","Ninja","xQc"],"Kai Cenat broke the Twitch subscriber record in September 2023.",3);
+m(3,"Platforms","What is the name of YouTube’s short vertical-video feature?","Shorts",["Reels","Spotlight","Stories"],"YouTube Shorts was launched in 2020 to compete with TikTok.",1);
+m(3,"Platforms","YouTube sends a “Gold Play Button” to channels reaching how many subscribers?","1 million",["100,000","500,000","10 million"],"Silver is for 100,000 subscribers, gold for 1 million and diamond for 10 million.",2);
+m(3,"Platforms","A “vlog” is…","A video blog",["A virtual log-in","A video game level","A long online game"],"Vlogs let creators share their daily life or opinions on video.",1);
+vf(3,"Twitch began as a platform called Justin.tv.",true,"Justin.tv’s gaming section became Twitch in 2011 and Amazon bought it in 2014.",3);
+
+m(4,"Slang","If something is “bussin”, it is…","Really good, especially food",["Broken","Very expensive","Old-fashioned"],"“Bussin’” comes from African-American slang and was popular on TikTok.",2);
+m(4,"Slang","If you “slay”, you…","Do something exceptionally well",["Cry loudly","Quit your job","Fall asleep"],"“You slayed that presentation!” is a compliment.",1);
+m(4,"Slang","If you are “salty”, you are…","Bitter or upset about something",["Very thirsty","Very rich","Very tired"],"The word is often used for losing gracefully, or not.",2);
+m(4,"Slang","A “stan” is…","An extremely devoted fan",["A type of student","A stand-up comic","A security guard"],"The word comes from Eminem’s 2000 song “Stan”.",2);
+m(4,"Slang","If someone calls you a “simp”, they mean you…","Do too much for someone you like",["Are very smart","Hate everyone","Dress badly"],"The word is often used jokingly among teenagers.",3);
+m(4,"Slang","If something is “mid”, it is…","Mediocre",["Excellent","Very large","In the middle of a queue"],"“That movie was mid” means “it was just average”.",1);
+m(4,"Slang","If you “flex” on social media, you…","Show off",["Exercise","Delete your account","Chat privately"],"Posting a new car or watch would be a typical flex.",1);
+m(4,"Slang","If someone has “drip”, they have…","Stylish clothes and accessories",["A cold","A leaky tap","A lot of debt"],"“Drip” means a fashionable outfit.",1);
+m(4,"Slang","What does “IRL” mean?","In real life",["In regular language","Is really late","Internet response link"],"People say IRL to contrast with online life.",1);
+m(4,"Slang","What does “SMH” mean?","Shaking my head",["So much hate","Super mega happy","Send me home"],"You use SMH to show disappointment or disbelief.",2);
+m(4,"Slang","What does “NGL” mean in a message?","Not gonna lie",["Next great level","No good luck","Never going live"],"“NGL, that was amazing” means “honestly, that was amazing”.",2);
+m(4,"Slang","What does “AFK” mean in gaming?","Away from keyboard",["A fast kill","After fun kicks","Always for kids"],"Players write AFK when they step away from the game.",2);
+m(4,"Slang","If something is described as “cheugy”, it is…","Outdated or trying too hard to be trendy",["Very expensive","Very cheap","Extremely tasty"],"The word was popular on TikTok in 2021.",3);
+vf(4,"“Yeet” means to throw something with great force.",true,"The word spread from a 2014 viral dance and became a slang verb.",2);
+
 return {id:"internet",title:"Internet & TikTok Culture",kw:"internet tiktok memes viral instagram youtube twitch slang gen z creators social media quiz",subject:"Apps, memes, viral moments and slang: are you terminally online?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

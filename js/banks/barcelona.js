@@ -90,5 +90,68 @@ ty(4,"What does “SME” stand for in business English? (four words, the type o
 ty(1,"Which Spanish football club from Madrid is FC Barcelona’s greatest rival?",["Real Madrid"],"Matches between Barça and Real Madrid are known as El Clásico.",1);
 ty(5,"ESADE stands for “Escuela Superior de Administración y Dirección de …” what? (one word, Spanish or English)",["Empresas","Business","Companies","Enterprises"],"ESADE = Escuela Superior de Administración y Dirección de Empresas.",3);
 
+// ===================== More questions (batch 2) =====================
+m(1,"Architecture","Which Gaudí building on Passeig de Gràcia is nicknamed “La Pedrera”, meaning “the quarry”?","Casa Milà",["Casa Batlló","Palau Güell","Casa Vicens"],"Its wavy stone facade has no straight walls and is a UNESCO World Heritage Site.",2);
+m(1,"Architecture","Which Gaudí house on Passeig de Gràcia is nicknamed the “House of Bones”?","Casa Batlló",["Casa Milà","Casa Calvet","Casa Vicens"],"Its balconies look like skulls and its columns look like bones.",3);
+m(1,"Architecture","Park Güell was originally planned as…","A garden city for wealthy families",["A cemetery","A zoo","A market"],"The housing project failed and the city bought it, opening it as a public park in 1926.",3);
+m(1,"Architecture","Which skyscraper by French architect Jean Nouvel, known as “the gherkin”, stands near Glòries?","Torre Glòries",["Torre Mapfre","Hotel Arts","Torre Telefónica"],"It was previously called Torre Agbar. It has over 4,000 windows and shines at night.",3);
+m(1,"Architecture","Which concert hall by Lluís Domènech i Montaner is a UNESCO World Heritage modernista treasure?","Palau de la Música Catalana",["Gran Teatre del Liceu","L’Auditori","Teatre Nacional"],"Its stained-glass skylight shows the sun and sky in blue and gold.",2);
+m(1,"Places","Barcelona’s medieval old centre, with narrow lanes and the cathedral, is called the…","Gothic Quarter",["Eixample","Poble-sec","Sarrià"],"The Barri Gòtic contains Roman remains and Gothic buildings from the Middle Ages.",1);
+m(1,"Places","Which seaside neighbourhood, once home to fishermen, is Barcelona’s best-known beach district?","Barceloneta",["Gràcia","Sants","Pedralbes"],"Barceloneta was built in the 18th century and is known for its seafood restaurants.",1);
+m(1,"Places","The Picasso Museum is located in which Barcelona neighbourhood?","El Born",["El Raval","Poblenou","Sarrià"],"The museum occupies five medieval palaces along Carrer de Montcada.",3);
+m(1,"Places","Which Barcelona neighbourhood, once a separate village, is famous for decorating its streets each August?","Gràcia",["El Born","Poble-sec","Sants"],"The Festa Major de Gràcia has street competitions for the most creative decorations.",2);
+vf(1,"The tallest tower of the Sagrada Família is planned to be slightly lower than Montjuïc hill.",true,"Gaudí felt that the work of man should not surpass the work of God, so it will be 172.5 m high.",3);
+vf(1,"FC Barcelona’s stadium Camp Nou was given the sponsored name Spotify Camp Nou in 2022.",true,"Spotify agreed a naming deal and also appears on the club’s shirts.",2);
+
+m(2,"Christmas","In Catalan Christmas nativity scenes, a small hidden figure of a squatting man is called…","El Caganer",["El Pastor","El Gegant","El Tió"],"El Caganer is a beloved tradition in Catalonia and politicians and celebrities are often made into figurines.",3);
+m(2,"Christmas","What is the “Tió de Nadal” that Catalan children hit with sticks?","A smiling log that “poops” presents",["A chocolate cake","A hanging star","A Christmas tree"],"Children sing a song and hit the log until it “gives” sweets and small gifts.",2);
+m(2,"Fiestas","In which city are giant papier-mâché sculptures burned during the Falles festival every March?","Valencia",["Seville","Málaga","Granada"],"Las Fallas ends on 19 March with the burning of the sculptures, called “ninots”.",1);
+m(2,"Music","Which traditional Catalan circle dance is performed in squares, often on Sundays?","Sardana",["Jota","Sevillanas","Fandango"],"People hold hands and dance in a circle to a band called a “cobla”.",2);
+m(2,"Food","What is “horchata” in Valencia?","A sweet drink made from tiger nuts",["A cold tomato soup","A spicy sausage","A type of cava"],"The drink is called “orxata” in Valencian and is usually served very cold in summer.",2);
+m(2,"Food","What is “botifarra” in Catalan cuisine?","A sausage",["A cheese","A soup","A cake"],"It is often grilled and served with white beans.",2);
+m(2,"Food","Jamón ibérico comes from pigs that are famously fed on…","Acorns",["Olives","Chestnuts","Corn"],"The best ham is called “bellota”, from the Spanish word for acorn.",2);
+m(2,"Traditions","The child who climbs to the top of a human tower (castell) is called…","The enxaneta",["The pinya","The folre","The tronc"],"The enxaneta raises a hand to show the tower is complete before climbing down.",3);
+m(2,"Fiestas","In a Catalan “correfoc” (fire run), people run among…","Dancing devils with fireworks",["Bulls in the street","Floats of flowers","Horse riders"],"Participants wear protective clothing and run through showers of sparks.",3);
+vf(2,"Spain’s Christmas lottery, known as “El Gordo”, is drawn every year on 22 December.",true,"The draw is broadcast live and its children singing out the numbers are a tradition.",2);
+
+m(3,"Culture","Which Spanish writer wrote “Don Quixote”?","Miguel de Cervantes",["Federico García Lorca","Miguel de Unamuno","Antonio Machado"],"The first part was published in 1605 and is often called the first modern novel.",1);
+m(3,"Culture","Which Spanish painter created the famous anti-war painting “Guernica”?","Pablo Picasso",["Salvador Dalí","Francisco Goya","Diego Velázquez"],"Picasso painted it in 1937 after the bombing of the Basque town of Guernica.",1);
+m(3,"Culture","In which city is the colourful Feria de Abril held?","Seville",["Madrid","Málaga","Barcelona"],"Women wear flamenco dresses and people dance sevillanas in small tents called “casetas”.",2);
+m(3,"Culture","Which Spanish city is home to the Guggenheim Museum, designed by Frank Gehry?","Bilbao",["San Sebastián","Santander","Vitoria"],"The titanium museum opened in 1997 and helped to transform the city.",2);
+m(3,"Geography","Which is the largest island of the Balearic Islands?","Mallorca",["Ibiza","Menorca","Formentera"],"Mallorca’s capital is Palma and the island attracts millions of tourists a year.",2);
+m(3,"Geography","What is the capital of Andalusia?","Seville",["Málaga","Granada","Córdoba"],"Seville is Spain’s fourth-largest city and is famous for flamenco and its cathedral.",2);
+m(3,"Politics","In Spain, the head of government is officially called…","President of the Government",["Chancellor","Prime Consul","Governor-General"],"The King is head of state. The head of government is the “Presidente del Gobierno”.",3);
+m(3,"History","In which year did Franco’s dictatorship end with his death?","1975",["1969","1978","1981"],"Spain then moved to democracy and approved its Constitution in 1978.",2);
+m(3,"Language","Which language is co-official with Spanish in the Basque Country?","Basque (Euskera)",["Galician","Occitan","Asturian"],"Basque is unrelated to any other known language in Europe.",1);
+m(3,"Sport","Spain’s national football team is nicknamed…","La Roja",["Los Toros","Los Leones","La Naranja"],"“The Red One” refers to the colour of the team’s shirt.",2);
+vf(3,"Spain is the second most visited country in the world, after France.",true,"Spain welcomed around 85 million international tourists in 2023.",2);
+vf(3,"Madrid is the highest capital city in the European Union.",true,"Madrid sits at around 650 metres above sea level.",3);
+
+m(4,"Companies","Iberia and British Airways belong to which airline group?","IAG",["Lufthansa Group","Air France-KLM","Ryanair Holdings"],"International Airlines Group was formed in 2011 by the merger of Iberia and British Airways.",2);
+m(4,"Companies","Mapfre is one of Spain’s biggest companies in which sector?","Insurance",["Airlines","Cement","Cars"],"Mapfre operates in more than 40 countries, particularly in Latin America.",3);
+m(4,"Companies","In 2023, the Spanish infrastructure group Ferrovial moved its headquarters to which country?","The Netherlands",["Ireland","Luxembourg","Portugal"],"Ferrovial, which builds roads and airports, also planned to list its shares in the United States.",3);
+m(4,"Companies","Grifols, a Barcelona-based company, is known for medicines made from…","Blood plasma",["Olive oil","Cork","Wool"],"Grifols is one of the world’s biggest producers of plasma-based treatments.",3);
+m(4,"Companies","Loewe, a luxury leather brand founded in Madrid in 1846, belongs to which group?","LVMH",["Kering","Inditex","Richemont"],"Loewe is Spain’s oldest luxury brand and was bought by LVMH in 1996.",3);
+m(4,"Economy","What is “Hacendado”, found in Spanish supermarkets?","Mercadona’s own-label brand",["A Catalan beer","A bank","A fashion brand"],"A white-label brand sells products under the supermarket’s own name instead of a maker’s brand.",2);
+m(4,"Economy","In Spain, an “autónomo” is…","A self-employed worker",["A robot","A government inspector","A foreign student"],"Spain has over 3 million autónomos, who pay monthly social-security contributions.",2);
+m(4,"Economy","What is the standard rate of VAT (IVA) in Spain?","21%",["15%","19%","25%"],"Some products, like food and books, have reduced rates of 10% or 4%.",2);
+
+m(5,"Catalan","How do you say “good night” in Catalan?","Bona nit",["Bon dia","Bona tarda","Adéu"],"Bona nit is used when saying goodbye in the evening or before going to sleep.",1);
+m(5,"Catalan","What does “adéu” mean in Catalan?","Goodbye",["Welcome","Thank you","Excuse me"],"It comes from the same roots as the Spanish “adiós” and the French “adieu”.",1);
+m(5,"Catalan","What does “perdó” mean in Catalan?","Sorry or excuse me",["Please","Thank you","Cheers"],"Catalans use “perdó” to apologise or to get past someone.",1);
+m(5,"Catalan","What does “a reveure” mean?","See you soon",["Good morning","Welcome","Thank you very much"],"It literally means “until we see each other again”.",2);
+m(5,"Catalan","What does “quant costa?” mean?","How much does it cost?",["Where is the coast?","What time is it?","How are you?"],"A useful phrase for markets such as La Boqueria.",2);
+m(5,"Catalan","What is “diumenge” in English?","Sunday",["Monday","Saturday","Friday"],"Dilluns is Monday, dimarts is Tuesday and dimecres is Wednesday.",1);
+m(5,"Catalan","What does “bon cap d’any” wish someone?","Happy New Year",["Good luck","Happy birthday","Merry Christmas"],"Catalans also say “Bon Nadal” for Merry Christmas.",3);
+m(5,"ESADE","ESADE was founded in 1958 with the help of which religious order?","The Jesuits",["Opus Dei","The Benedictines","The Franciscans"],"The Society of Jesus and a group of Catalan businessmen created the school.",3);
+m(5,"Student life","The Erasmus programme is…","An EU student exchange programme",["A Spanish-only scholarship","A language exam","A student sports league"],"Millions of students have taken part since it started in 1987.",1);
+m(5,"Student life","The Erasmus programme is named after which Renaissance humanist?","Erasmus of Rotterdam",["Thomas More","Dante","Voltaire"],"Erasmus travelled across Europe to study and teach, so he fits the idea of the programme.",2);
+m(5,"Student life","What does ECTS stand for at European universities?","European Credit Transfer and Accumulation System",["European Course Testing Standard","Educational Credit and Teaching Scale","European Certificate of Teaching Skills"],"One academic year is typically 60 ECTS credits.",3);
+m(5,"Student life","In Spanish universities, a “TFG” is…","The final degree project",["A sports club","A student card","A holiday"],"Trabajo de Fin de Grado is written in the final year of a bachelor’s degree.",3);
+vf(5,"The Erasmus programme only lets students study in Spain.",false,"Erasmus covers dozens of countries across Europe and beyond.",1);
+
+ty(3,"Which Spanish painter is famous for melting clocks and a curly moustache? (surname)",["Dalí","Dali"],"Salvador Dalí painted “The Persistence of Memory” in 1931 and was born in Figueres, Catalonia.",2);
+ty(4,"What was Spain’s currency before the euro? (one word)",["peseta","pesetas"],"The peseta was replaced by the euro on 1 January 2002.",2);
+
 return {id:"barcelona",title:"Barcelona & Spain",kw:"barcelona spain españa catalonia catalunya catalan gaudi sagrada familia barça fc barcelona traditions tapas paella business ibex mercadona esade madrid campus student life",subject:"Gaudí, tapas, IBEX 35 and survival Catalan: are you ready for life at ESADE?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();
