@@ -80,6 +80,15 @@ kids:{
 myths:{
  fr:["Idées reçues et faits incroyables","Ce que tout le monde croit à tort, et des faits vrais qui semblent faux",["Mythes sur le corps et le cerveau","Mythes sur les animaux","Mythes d'histoire et de cinéma","Des faits vrais qui semblent faux"],["Corps et cerveau","Animaux","Histoire et cinéma","Ça paraît faux"]],
  es:["Mitos y datos alucinantes","Lo que todo el mundo cree y es falso, y datos ciertos que parecen mentira",["Mitos del cuerpo y el cerebro","Mitos de animales","Mitos de historia y cine","Datos ciertos que parecen falsos"],["Cuerpo y cerebro","Animales","Historia y cine","Parece falso"]]},
+countryclues:{
+ fr:["Devinez le pays en 3 indices","Trois indices, un pays : en combien de temps le trouvez-vous ?",["Europe","Asie et Océanie","Les Amériques","Afrique et Moyen-Orient"],["Europe","Asie et Océanie","Amériques","Afrique et Moyen-Orient"]],
+ es:["Adivina el país con 3 pistas","Tres pistas, un país: ¿cuánto tardas en adivinarlo?",["Europa","Asia y Oceanía","Las Américas","África y Oriente Medio"],["Europa","Asia y Oceanía","Américas","África y Oriente Medio"]]},
+oddemoji:{
+ fr:["L'intrus en émojis","Repérez le faux jumeau en 5 secondes : quelle est la finesse de votre regard ?",["Une ligne de 6","Une ligne de 8","Une ligne de 10","Que vient-il ensuite ?"],["6 émojis","8 émojis","10 émojis","Suites logiques"]],
+ es:["El emoji intruso","Encuentra el gemelo distinto en 5 segundos: ¿qué tan fino es tu ojo?",["Una fila de 6","Una fila de 8","Una fila de 10","¿Qué viene después?"],["6 emojis","8 emojis","10 emojis","Patrones"]]},
+braintraps:{
+ fr:["Pièges pour le cerveau","Pièges de couleurs, questions pièges et devinettes : votre cerveau va-t-il tomber dedans ?",["Pièges de couleurs","Questions pièges","Nombres et logique","Devinettes"],["Pièges de couleurs","Questions pièges","Logique","Devinettes"]],
+ es:["Trampas para el cerebro","Trampas de colores, preguntas trampa y acertijos: ¿caerá tu cerebro?",["Trampas de color","Preguntas trampa","Números y lógica","Acertijos"],["Trampas de color","Trampas","Lógica","Acertijos"]]},
 foodtravel:{
  fr:["Défi cuisine et voyages","D'où viennent les plats, les spécialités du monde, les monuments et les bons réflexes de voyageur",["D'où ça vient ?","Manger autour du monde","Monuments et merveilles","Le b.a.-ba du voyageur"],["Origines","Plats","Monuments","Voyage"]],
  es:["Reto de comida y viajes","De dónde vienen los platos, especialidades del mundo, monumentos y trucos de viajero",["¿De dónde viene?","Comer por el mundo","Monumentos y maravillas","Lo básico del viajero"],["Orígenes","Platos","Monumentos","Viajes"]]}
