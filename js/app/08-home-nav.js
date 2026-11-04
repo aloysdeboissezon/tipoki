@@ -26,7 +26,14 @@ function quizList(extra){const seen=new Set();return Object.keys(BUILTIN).map(id
 // search: lowercase, no accents, punctuation as spaces, so "energie" finds "Énergie électrique"
 function fold(s){return String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()}
 function quizHay(q){return fold([q.title,q.subject,q.kw].concat(Object.values(q.sess||(q.data&&q.data.sess)||{}),Object.values(q.tags||{})).join(" "))}
-function renderQuizGrid(list){
+// ESADE collection: to put a new quiz in it, add its id here (or give its bank/catalog entry group:"esade")
+const ESADE_IDS=["socio","compta2","populism"];
+function isEsade(q){return ESADE_IDS.includes(q.id)||q.group==="esade"}
+let esadeOn=lsGet("tpk-esade")==="1",lastQuizList=null;
+function setEsade(on){esadeOn=on;lsSet("tpk-esade",on?"1":"0");renderQuizGrid(lastQuizList||quizList());$("quizGrid").scrollLeft=0}
+function renderQuizGrid(all){
+  lastQuizList=all;let list=all.filter(q=>isEsade(q)===esadeOn);
+  $("esadeBtn").setAttribute("aria-pressed",esadeOn?"true":"false");
   const box=$("quizGrid");box.textContent="";
   const rc=recentGet();list=list.map((q,i)=>[q,i]).sort((a,b)=>(rc[b[0].id]||0)-(rc[a[0].id]||0)||a[1]-b[1]).map(x=>x[0]);
   list.forEach(q=>{const c=el("button","qcard");c.type="button";c.dataset.hay=quizHay(q);c.dataset.id=q.id;
@@ -36,7 +43,7 @@ function renderQuizGrid(list){
   const L=$("qList");L.textContent="";
   list.forEach((q,i)=>{const b=el("button","qchip");b.type="button";b.dataset.hay=quizHay(q);b.dataset.id=q.id;b.dataset.i=i%8;
     const li=el("span","qchip-l");li.innerHTML=quizIcon(q);b.append(li,el("b",null,q.title),el("span","qgo","›"));b.onclick=()=>openQuiz(q.id,b);L.appendChild(b)});
-  $("qAllT").textContent=tl("All quizzes ({n})",{n:list.length});
+  $("qAllT").textContent=tl(esadeOn?"ESADE quizzes ({n})":"All quizzes ({n})",{n:list.length});
   filterQuizzes();renderProgressUI();carouselUpdate();
 }
 // every typed word must appear somewhere in the quiz's title, subject, keywords or chapter names
@@ -68,6 +75,7 @@ function filterQuizzes(){
 }
 function clearQuizSearch(focus){$("quizSearch").value="";filterQuizzes();if(focus)$("quizSearch").focus()}
 $("quizSearch").addEventListener("input",filterQuizzes);
+$("esadeBtn").onclick=()=>setEsade(!esadeOn);
 $("quizSearch").addEventListener("keydown",e=>{
   if(e.key==="Escape"&&$("quizSearch").value){e.preventDefault();clearQuizSearch(true)}
   else if(e.key==="Enter"){e.preventDefault();$("quizSearch").blur()}

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>qwebbo · Learn, compete, master</title>
-<meta name="description" content="Quizzes, flashcards and exams for your courses. Play solo or with your friends.">
+<title>Qwebbo – Quizzes and flashcards from your course notes</title>
+<meta name="description" content="Qwebbo turns your course notes into quizzes and flashcards. Study solo, play live with friends, and prepare your exams.">
 <meta name="theme-color" content="#4B2FE0">
 <meta name="color-scheme" content="light dark">
 <script>
@@ -19,17 +19,19 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/manifest.webmanifest">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://qwebbo.com/#website","url":"https://qwebbo.com/","name":"Qwebbo","alternateName":["qwebbo","qwebbo.com"],"inLanguage":"en"},{"@type":"Organization","@id":"https://qwebbo.com/#org","name":"Qwebbo","url":"https://qwebbo.com/","logo":"https://qwebbo.com/apple-touch-icon.png"}]}</script>
 <link rel="canonical" href="https://qwebbo.com/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://qwebbo.com/">
-<meta property="og:site_name" content="qwebbo">
-<meta property="og:title" content="qwebbo · Learn, compete, master">
-<meta property="og:description" content="Quizzes, flashcards and exams for your courses. Play solo or with your friends.">
+<meta property="og:site_name" content="Qwebbo">
+<meta property="og:title" content="Qwebbo – Quizzes and flashcards from your course notes">
+<meta property="og:description" content="Qwebbo turns your course notes into quizzes and flashcards. Study solo, play live with friends, and prepare your exams.">
 <meta property="og:image" content="https://qwebbo.com/img/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="qwebbo · Learn, compete, master">
+<meta name="twitter:title" content="Qwebbo – Quizzes and flashcards from your course notes">
 <meta name="twitter:image" content="https://qwebbo.com/img/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,7 +49,7 @@
 <link rel="stylesheet" href="css/figs.css?v=20261103c">
 <link rel="stylesheet" href="css/tour.css?v=20261103c">
 <link rel="stylesheet" href="css/theme.css?v=20261103c">
-<link rel="stylesheet" href="css/compact.css?v=20261103c">
+<link rel="stylesheet" href="css/compact.css?v=20261104a">
 <link rel="stylesheet" href="css/refine.css?v=20261103c">
 <link rel="stylesheet" href="css/finish.css?v=20261103c">
 <link rel="stylesheet" href="css/a11y.css?v=20261103c">
@@ -61,6 +63,7 @@
 
 </head>
 <body>
+<noscript><h1>Qwebbo</h1><p>Qwebbo turns your course notes into quizzes and flashcards. Study solo, play live with friends, and prepare your exams. Qwebbo needs JavaScript to run.</p><p><a href="/about.html">About</a> · <a href="/contact.html">Contact</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a> · <a href="/legal.html">Legal</a></p></noscript>
 <div class="wrap" id="main">
   <div class="top">
     <a class="brand" id="brandHome" href="./" title="Back to home"><img class="logo-l" src="img/logo.svg" alt="qwebbo, back to home" width="528" height="116"><img class="logo-d" src="img/logo-dark.svg" alt="qwebbo, back to home" width="528" height="116"></a>
@@ -92,7 +95,7 @@
       <div class="row"><button type="button" class="btn ghost" id="resumeDrop">Discard</button><button type="button" class="btn" id="resumeGo">Resume</button></div>
     </div></div>
     <div class="panel" id="pickPanel">
-      <div class="steph"><span class="stepn">1</span><h2>What do you want to study?</h2></div>
+      <div class="steph"><span class="stepn">1</span><h2>What do you want to study?</h2><button type="button" class="esade-btn" id="esadeBtn" aria-pressed="false" title="Show only the ESADE quizzes" aria-label="ESADE quizzes"><span class="esade-mark">ESADE</span></button></div>
       <div class="qsearch" role="search">
         <svg class="qs-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
         <input type="search" id="quizSearch" placeholder="Search quizzes…" title="Title, subject, chapter or keyword" aria-label="Search quizzes" aria-controls="quizGrid" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
@@ -467,7 +470,7 @@
 <script defer src="js/app/05-engine.js?v=20261103c"></script>
 <script defer src="js/app/06-game.js?v=20261103c"></script>
 <script defer src="js/app/07-end-flashcards.js?v=20261103c"></script>
-<script defer src="js/app/08-home-nav.js?v=20261103j"></script>
+<script defer src="js/app/08-home-nav.js?v=20261104a"></script>
 <script defer src="js/stats.js?v=20261103c"></script>
 <script defer src="js/exam.js?v=20261103c"></script>
 <script defer src="js/examresume.js?v=20261103c"></script>
