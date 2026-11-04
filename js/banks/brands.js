@@ -90,5 +90,61 @@ ty(1,"Which tech company’s slogan is “Connecting people”? (a Finnish phone
 ty(3,"What does “ROI” stand for? (three words)",["return on investment"],"ROI = gain from investment ÷ cost of the investment.",1);
 ty(2,"What is the name of the Swedish furniture giant known for flat-pack products and Billy bookcases?",["IKEA","Ikea"],"IKEA was founded in 1943 by Ingvar Kamprad.",1);
 
+// ===================== More questions (batch 2) =====================
+m(1,"Slogans","“Taste the rainbow” is the slogan of which fruity candy?","Skittles",["M&M’s","Starburst","Haribo"],"Skittles has used the slogan since 1994, with ads featuring colourful surreal stories.",1);
+m(1,"Slogans","“Think small” was a famous 1959 advertising campaign for which car?","Volkswagen Beetle",["Mini","Fiat 500","Renault 4"],"The Doyle Dane Bernbach ad is often called one of the best campaigns of the 20th century.",3);
+m(1,"Slogans","“Where’s the beef?” was a 1984 slogan of which fast-food chain?","Wendy’s",["McDonald’s","Burger King","Subway"],"The ad featured an elderly lady looking at a huge bun with a tiny burger patty.",3);
+m(1,"Slogans","“Don’t leave home without it” is the slogan of which financial services brand?","American Express",["Visa","Mastercard","Diners Club"],"American Express has used the line since the early 1970s for its cards and travellers’ cheques.",3);
+m(1,"Slogans","“The best a man can get” was a long-time slogan of which razor brand?","Gillette",["Old Spice","Nivea","Philips"],"Gillette used it from 1989 until 2019, when it changed to “The best men can be”.",2);
+m(1,"Slogans","“Have a break…” is the famous slogan of which chocolate wafer bar?","Kit Kat",["Twix","Snickers","Bounty"],"The full line is “Have a break, have a Kit Kat”, used since the 1950s.",1);
+m(1,"Slogans","“Every little helps” is the slogan of which British supermarket chain?","Tesco",["Sainsbury’s","Asda","Morrisons"],"Tesco is the UK’s biggest supermarket and has used the line since 1993.",3);
+vf(1,"“The happiest place on Earth” is a slogan of Disneyland.",true,"Disneyland in California has used the line since the 1950s–60s.",1);
+
+m(2,"Logos","The blue and white squares of the BMW roundel are said to represent which German state?","Bavaria",["Saxony","Hesse","Baden-Württemberg"],"BMW stands for Bayerische Motoren Werke, “Bavarian Motor Works”.",2);
+m(2,"Logos","Three stripes form the logo of which sportswear brand?","Adidas",["Puma","Reebok","Fila"],"Adidas bought the three-stripe design from the Finnish brand Karhu in the early 1950s for cash and two bottles of whisky.",1);
+m(2,"Logos","The three-pointed star of Mercedes-Benz symbolises power on…","Land, sea and air",["Three founders","Three continents","Three car models"],"Daimler’s engines were planned to drive vehicles on land, water and in the sky.",3);
+m(2,"Logos","Which car brand’s logo is made of four interlocking rings?","Audi",["BMW","Volvo","Subaru"],"The four rings stand for four companies that merged into Auto Union in 1932.",1);
+m(2,"Origins","Pepsi was originally called…","Brad’s Drink",["Pep Cola","Cola-Pop","Dr. Pepper"],"Pharmacist Caleb Bradham invented it in 1893 and renamed it Pepsi-Cola in 1898.",3);
+m(2,"Origins","Nike was originally called…","Blue Ribbon Sports",["Swoosh Sports","Greek Athletics","Jordan Brand"],"Phil Knight started by importing Japanese shoes. The name Nike came in 1971.",3);
+m(2,"Origins","The name Starbucks was inspired by a character in which novel?","Moby-Dick",["Treasure Island","Dracula","Frankenstein"],"Starbuck is the first mate of the whaling ship in Herman Melville’s novel.",3);
+vf(2,"Amazon’s original name was Cadabra.",true,"Jeff Bezos first registered Cadabra.com but changed it to Amazon after a lawyer misheard it as “cadaver”.",3);
+vf(2,"The name Mercedes comes from the daughter of an early customer of the company.",true,"Emil Jellinek, a car dealer, named his daughter Mercedes and raced Daimler cars under that name.",3);
+
+m(3,"Basics","What is “market segmentation”?","Dividing a market into groups with similar needs",["Cutting prices for everyone","Splitting a company in two","Moving sales to the internet"],"Segments can be based on age, income, location or lifestyle.",1);
+m(3,"Basics","In marketing, “positioning” is…","The place a brand holds in customers’ minds",["Where a shop is located","The price of a product","The size of the logo"],"A good position makes a brand clearly different from its rivals, like Volvo for safety.",2);
+m(3,"Basics","What does CRM stand for in business?","Customer relationship management",["Cost reduction method","Central revenue model","Corporate reporting mode"],"CRM software, such as Salesforce, stores data on customers and their interactions.",1);
+m(3,"Pricing","A company launches a new gadget at a very high price, then lowers it over time. This is…","Price skimming",["Penetration pricing","Loss-leader pricing","Bundle pricing"],"Skimming captures high earnings from early adopters before reaching the mass market.",3);
+m(3,"Pricing","Setting a low price to win market share quickly is called…","Penetration pricing",["Price skimming","Premium pricing","Cost-plus pricing"],"Streaming services often use low launch prices to build a large user base.",3);
+m(3,"Pricing","A “loss leader” is…","A product sold at a loss to attract customers",["A product nobody buys","A rival that is losing","A brand that is leaving the market"],"Shops hope customers will buy other, more profitable things too.",3);
+m(3,"Concepts","“Greenwashing” means…","Pretending a product is more environmentally friendly than it is",["Painting stores green","Recycling all packaging","Selling plants online"],"The EU is cracking down on vague claims such as “eco-friendly” without proof.",2);
+m(3,"Concepts","“Guerrilla marketing” relies on…","Surprising, low-cost stunts in public places",["Huge TV budgets","Aggressive sales calls","Selling only through the army"],"Think flash mobs, street art or unexpected installations that get people talking.",2);
+m(3,"Concepts","In the extended marketing mix for services (the 7Ps), which of these is one of the added Ps?","People",["Profit","Politics","Pricing"],"The added three are People, Process and Physical evidence.",3);
+vf(3,"“Market share” is a company’s sales as a percentage of total sales in the market.",true,"If a firm sells €20m in a €100m market, its market share is 20%.",1);
+vf(3,"“Cannibalisation” is when a company’s new product takes sales from its own existing product.",true,"For example, a cheaper version of a phone can pull buyers away from the premium model.",3);
+
+m(4,"Campaigns","Which brand’s 2014 “Like a Girl” campaign challenged stereotypes around the phrase?","Always",["Dove","Pantene","Tampax"],"The video won Cannes Lions awards and was seen by tens of millions.",2);
+m(4,"Campaigns","Which beer brand’s 1990s ads featured the catchphrase “Whassup?”","Budweiser",["Heineken","Corona","Miller"],"The ads showed friends calling each other and shouting the greeting.",2);
+m(4,"Campaigns","Which brand became famous for its “Will It Blend?” viral videos starting in 2006?","Blendtec",["Vitamix","Nutribullet","Philips"],"Its founder blended iPhones, marbles and golf balls to show how strong its blenders were.",3);
+m(4,"Campaigns","The “Intel Inside” campaign of 1991 marketed what to ordinary consumers?","A component inside computers",["A phone network","A video game console","An online shop"],"It made people ask for computers with Intel chips, even though they never saw the part.",2);
+m(4,"Campaigns","Which soft drink pulled a 2017 advert starring Kendall Jenner after a strong backlash?","Pepsi",["Coca-Cola","Sprite","Fanta"],"Critics said the ad trivialised protest movements and it was withdrawn within a day.",2);
+m(4,"Campaigns","Which Barcelona beer brand is known for its summer ads called “Mediterráneamente”?","Estrella Damm",["Mahou","San Miguel","Cruzcampo"],"The ads, released each summer since 2009, became cultural events in Spain.",2);
+vf(4,"Coca-Cola invented Santa Claus’s red suit.",false,"Santa was shown in red before 1931. Coke’s ads helped popularise the image worldwide.",2);
+
+m(5,"Luxury","Which fashion house’s logo is two interlocking letter Cs?","Chanel",["Gucci","Dior","Celine"],"Coco Chanel founded her house in Paris and launched the little black dress in the 1920s.",1);
+m(5,"Luxury","Which Italian fashion house’s logo is a pair of interlocking letter Gs?","Gucci",["Givenchy","Guess","Gap"],"Gucci was founded in Florence in 1921 by Guccio Gucci.",1);
+m(5,"Luxury","Which luxury house is known for its orange boxes and the Kelly bag?","Hermès",["Louis Vuitton","Cartier","Prada"],"Hermès started in 1837 as a harness maker in Paris.",2);
+m(5,"Luxury","What colour is the famous Tiffany & Co. box?","Robin’s-egg blue",["Emerald green","Ruby red","Lavender"],"Tiffany has even trademarked the colour, called “Tiffany Blue”.",2);
+m(5,"Luxury","Gucci, Balenciaga and Saint Laurent belong to which French luxury group?","Kering",["LVMH","Richemont","Hermès International"],"Kering is led by the Pinault family and rivals LVMH, owned by Bernard Arnault.",3);
+m(5,"Luxury","Cartier and Van Cleef & Arpels belong to which Swiss luxury group?","Richemont",["Swatch Group","Kering","LVMH"],"Richemont is based in Geneva and also owns watch brands such as IWC and Piaget.",3);
+m(5,"Luxury","What is “haute couture”?","Exclusive made-to-measure fashion",["Cheap mass fashion","Sports clothing","Second-hand clothing"],"Only a handful of Paris houses are officially allowed to use the title.",2);
+m(5,"Luxury","Uniqlo, a popular casual-wear brand, comes from which country?","Japan",["South Korea","China","Taiwan"],"Uniqlo was founded in Hiroshima in 1984 and is part of Fast Retailing.",1);
+m(5,"Luxury","Which sneaker line launched in 1985 with a star of the Chicago Bulls?","Air Jordan",["Air Max","Chuck Taylor","Superstar"],"The deal with Nike made Michael Jordan’s shoes into a billion-dollar brand.",1);
+vf(5,"Gucci is a French fashion house.",false,"Gucci was founded in Florence, Italy, in 1921.",1);
+vf(5,"Christian Dior founded his fashion house in 1946.",true,"Dior’s “New Look” of 1947 made the house famous worldwide.",2);
+
+ty(1,"Which Italian fashion house, founded in Florence in 1921, uses two interlocking Gs as its logo? (one word)",["Gucci"],"Gucci is now part of the French group Kering.",2);
+ty(3,"What does CRM stand for? (three words: customer … management)",["customer relationship management","customer relations management"],"CRM tools help companies manage contacts with customers.",2);
+ty(1,"Which fast-food chain uses golden arches as its logo? (one word)",["McDonald’s","McDonalds"],"The golden arches are among the most recognised logos in the world.",1);
+
 return {id:"brands",title:"Brands & Marketing Genius",kw:"brands marketing logos slogans advertising campaigns nike apple coca-cola zara inditex luxury lvmh 4ps kotler branding fashion business",subject:"Slogans, logos, 4Ps and the campaigns that changed advertising",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

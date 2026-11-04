@@ -79,5 +79,66 @@ ty(4,"In which city is the Colosseum? (one word)",["Rome"],"The Colosseum was fi
 ty(4,"In which country is Mount Fuji? (one word)",["Japan"],"Mount Fuji is Japan’s highest peak at 3,776 m.",1);
 ty(3,"What is the largest country in South America by area? (one word)",["Brazil","Brasil"],"Brazil covers almost half the continent.",1);
 
+// ===================== More questions (batch 2) =====================
+m(1,"Capitals","What is the capital of Pakistan?","Islamabad",["Karachi","Lahore","Rawalpindi"],"Islamabad was built in the 1960s to replace Karachi as the capital.",2);
+m(1,"Capitals","What is the capital of Tanzania?","Dodoma",["Dar es Salaam","Arusha","Zanzibar"],"Dar es Salaam is the largest city, but Dodoma is the official capital.",3);
+m(1,"Capitals","What is the capital of Ivory Coast (Côte d’Ivoire)?","Yamoussoukro",["Abidjan","Bouaké","San-Pédro"],"Abidjan is the economic centre, but Yamoussoukro is the political capital.",3);
+m(1,"Capitals","What is the capital of Belize?","Belmopan",["Belize City","San Ignacio","Orange Walk"],"Belmopan was built after Hurricane Hattie hit Belize City in 1961.",3);
+m(1,"Capitals","What is the capital of Malaysia?","Kuala Lumpur",["Putrajaya","Penang","Johor Bahru"],"Putrajaya is the administrative centre of the government.",2);
+m(1,"Capitals","What is the capital of Mongolia?","Ulaanbaatar",["Astana","Bishkek","Tashkent"],"It is one of the coldest capital cities in the world.",3);
+m(1,"Capitals","What is the capital of Ethiopia?","Addis Ababa",["Nairobi","Khartoum","Asmara"],"Addis Ababa is the headquarters of the African Union.",2);
+m(1,"Capitals","What is the capital of Bhutan?","Thimphu",["Kathmandu","Dhaka","Colombo"],"Bhutan measures “Gross National Happiness” instead of only GDP.",3);
+m(1,"Capitals","What is the capital of Cambodia?","Phnom Penh",["Vientiane","Hanoi","Bangkok"],"The city sits where the Mekong and Tonlé Sap rivers meet.",2);
+m(1,"Capitals","What is the capital of Scotland?","Edinburgh",["Glasgow","Aberdeen","Dundee"],"Glasgow is bigger, but Edinburgh is the capital.",1);
+vf(1,"New Delhi is the capital of India.",true,"New Delhi is part of the larger Delhi metropolitan area.",1);
+vf(1,"Washington, D.C. is located inside one of the US states.",false,"Washington, D.C. is a federal district and doesn’t belong to any state.",2);
+vf(1,"Rio de Janeiro was Brazil’s capital until 1960.",true,"Brasília became the capital in 1960.",3);
+
+m(2,"Flags","Which country’s flag is the oldest continuously used national flag in the world?","Denmark",["Sweden","England","The Netherlands"],"The Dannebrog, a white cross on red, has been used since at least the 14th century.",2);
+m(2,"Flags","Which country’s flag features a green cedar tree?","Lebanon",["Cyprus","Syria","Jordan"],"The cedar is a national symbol of Lebanon.",3);
+m(2,"Flags","How many stars are on the flag of the United States?","50",["48","52","13"],"One for each state, while the 13 stripes represent the original colonies.",1);
+m(2,"Flags","Which country’s flag is blue with a yellow Nordic cross?","Sweden",["Finland","Norway","Denmark"],"Finland’s flag has a blue cross on white.",2);
+m(2,"Flags","Which country’s flag is red with a single large yellow star in the centre?","Vietnam",["China","Morocco","Turkey"],"China’s flag has five yellow stars, and Morocco’s a green star.",2);
+m(2,"Flags","Which country’s flag is a red circle on a dark green rectangle?","Bangladesh",["Japan","Pakistan","Portugal"],"The red circle stands for the rising sun and the blood shed for independence.",2);
+m(2,"Flags","Which country’s flag shows the Union Jack and a large seven-pointed star?","Australia",["New Zealand","Fiji","Tuvalu"],"The star is the Commonwealth Star, next to the Southern Cross constellation.",2);
+m(2,"Flags","Which colours are on the German flag, from top to bottom?","Black, red, gold",["Red, black, gold","Black, white, red","Gold, red, black"],"The colours date back to the 19th century.",1);
+m(2,"Flags","The Catalan flag, the Senyera, has what design?","Four red stripes on a yellow background",["A red cross on white","Blue stars on yellow","Red and yellow checks"],"According to legend, the stripes were drawn in blood on a golden shield.",2);
+vf(2,"The flags of Italy and Ireland have exactly the same colours.",false,"Italy’s is green, white and red, while Ireland’s is green, white and orange.",2);
+vf(2,"Poland’s flag has two horizontal stripes: white on top and red below.",true,"Monaco and Indonesia have similar flags, but red is on top.",2);
+vf(2,"The Brazilian flag shows a blue circle with stars on a green and yellow background.",true,"The stars represent the night sky above Rio de Janeiro on the day the republic was declared.",2);
+vf(2,"The Canadian maple leaf has 11 points.",true,"The 11-point design was chosen in 1965 for the flag.",3);
+
+m(3,"Records","Which river carries the most water in the world?","The Amazon",["The Nile","The Mississippi","The Yangtze"],"The Amazon carries about 20% of all river water that flows into the oceans.",2);
+m(3,"Records","Where is the deepest point in the world’s oceans?","The Mariana Trench",["The Puerto Rico Trench","The Java Trench","The Tonga Trench"],"The Challenger Deep reaches almost 11,000 metres below sea level.",2);
+m(3,"Records","Which is the largest lake in the world by surface area?","The Caspian Sea",["Lake Superior","Lake Victoria","Lake Baikal"],"The Caspian Sea is technically a lake and is bordered by five countries.",3);
+m(3,"Records","Which is the deepest lake in the world?","Lake Baikal",["Lake Tanganyika","The Caspian Sea","Lake Superior"],"Lake Baikal in Russia is over 1,600 metres deep and holds about 20% of the world’s fresh water.",3);
+m(3,"Records","The highest air temperature ever reliably recorded, 56.7°C, was measured in…","Death Valley, USA",["The Sahara Desert","Dubai","Kuwait City"],"It was recorded in California on 10 July 1913.",3);
+m(3,"Records","Where was the lowest temperature ever recorded, about −89°C?","Antarctica",["Siberia","Greenland","The North Pole"],"The record was set at Vostok Station in 1983.",2);
+m(3,"Records","Which desert is often called the driest non-polar place on Earth?","The Atacama Desert",["The Sahara","The Gobi","The Kalahari"],"Some parts of the Atacama in Chile have gone years without rain.",2);
+m(3,"Records","Which continent has the most countries?","Africa",["Asia","Europe","South America"],"Africa has 54 recognised countries.",2);
+m(3,"Records","Which is the longest mountain range on Earth?","The Andes",["The Rockies","The Himalayas","The Alps"],"The Andes stretch about 7,000 km along the west of South America.",3);
+m(3,"Records","Which country has the most active volcanoes?","Indonesia",["Japan","Iceland","Italy"],"Indonesia sits on the Pacific Ring of Fire and has over 120 active volcanoes.",3);
+m(3,"Records","Which is the largest rainforest in the world?","The Amazon",["The Congo","The Daintree","The Tongass"],"The Amazon covers around 5.5 million square kilometres.",1);
+vf(3,"Antarctica is classified as a desert.",true,"It gets very little precipitation, so it is the world’s largest cold desert.",2);
+vf(3,"Mount Everest is the tallest mountain on Earth when measured from base to peak.",false,"Mauna Kea in Hawaii is taller from its base on the ocean floor.",3);
+vf(3,"The shore of the Dead Sea is the lowest point on land.",true,"It lies about 430 metres below sea level.",2);
+vf(3,"Russia spans 11 time zones.",true,"Russia is the largest country in the world by area.",3);
+
+m(4,"Which country?","In which country is Mount Kilimanjaro, Africa’s highest peak?","Tanzania",["Kenya","Uganda","Ethiopia"],"The snow-capped peak rises 5,895 metres above sea level.",2);
+m(4,"Which country?","The Galápagos Islands, which inspired Darwin, belong to which country?","Ecuador",["Peru","Colombia","Chile"],"They are about 1,000 km off the coast of Ecuador.",2);
+m(4,"Which country?","Easter Island, famous for its giant stone statues, belongs to which country?","Chile",["Peru","New Zealand","Mexico"],"The statues are called moai.",2);
+m(4,"Which country?","In which country is the Great Wall located?","China",["Japan","Mongolia","Vietnam"],"The walls were built over many centuries and stretch for thousands of kilometres.",1);
+m(4,"Which country?","In which country are the Cliffs of Moher?","Ireland",["Scotland","Wales","Iceland"],"The cliffs rise 214 metres above the Atlantic Ocean.",2);
+m(4,"Which country?","In which country is Cappadocia, famous for hot-air balloons and fairy chimneys?","Turkey",["Greece","Iran","Egypt"],"Hundreds of balloons fly over the region every morning.",2);
+m(4,"Which country?","In which country is the historic region of Transylvania?","Romania",["Hungary","Bulgaria","Poland"],"Transylvania is linked to the legend of Dracula.",2);
+m(4,"Which country?","In which country is Ha Long Bay, with its thousands of limestone islands?","Vietnam",["Thailand","Philippines","Cambodia"],"The name means “descending dragon bay”.",2);
+m(4,"Which country?","In which country is the historic city of Timbuktu?","Mali",["Niger","Morocco","Senegal"],"Timbuktu was a great centre of learning in the Middle Ages.",3);
+m(4,"Which country?","In which country is the Geirangerfjord, a UNESCO-listed fjord with waterfalls?","Norway",["Sweden","Finland","Iceland"],"The Geirangerfjord is a UNESCO World Heritage Site.",2);
+m(4,"Which country?","In which country is the island of Bali?","Indonesia",["Thailand","Philippines","Malaysia"],"Bali is known for its temples, rice terraces and beaches.",1);
+m(4,"Which country?","In which country is the city of Marrakech?","Morocco",["Tunisia","Algeria","Egypt"],"Its old town, the medina, is a UNESCO World Heritage Site.",1);
+
+ty(1,"What is the capital of Iceland? (one word)",["Reykjavik","Reykjavík"],"Reykjavík is the world’s northernmost capital of a sovereign state.",1);
+ty(3,"What is the largest island in the world? (one word)",["Greenland"],"Greenland is an autonomous territory of Denmark.",2);
+
 return {id:"worldtour",title:"World Tour: Flags, Capitals & Records",kw:"world tour flags capitals countries geography records landmarks which country quiz travel",subject:"Flags, capitals that trick everyone, world records and landmarks: how well do you know the planet?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

@@ -90,5 +90,75 @@ ty(4,"In Spanish, “librería” is a bookshop. What is the English word for th
 ty(5,"Who wrote “The Intelligent Investor”? (surname)",["Graham","Benjamin Graham"],"Benjamin Graham was Warren Buffett’s teacher and mentor.",2);
 ty(3,"What does MVP stand for in startups? (three words)",["minimum viable product"],"An MVP is the simplest version of a product to test an idea.",2);
 
+// ===================== More questions (batch 2) =====================
+m(1,"Acronyms","What does HR stand for in a company?","Human resources",["High returns","Head representative","Home rules"],"The HR team handles recruiting, contracts, training and employee relations.",1);
+m(1,"Acronyms","What does R&D stand for?","Research and development",["Revenue and distribution","Retail and delivery","Reports and data"],"R&D departments create new products and improve existing ones.",1);
+m(1,"Acronyms","What does AGM stand for?","Annual general meeting",["Annual growth margin","Associate general manager","Advanced group management"],"Shareholders vote on key decisions at the AGM.",2);
+m(1,"Acronyms","What does SKU stand for in retail?","Stock keeping unit",["Sales key update","Supply know-how unit","Store keeper union"],"Each product variant has its own SKU code, e.g. a T-shirt in size M and blue.",3);
+m(1,"Acronyms","What does RFP stand for in business?","Request for proposal",["Return for payment","Ready for production","Review of fixed prices"],"A company sends an RFP to suppliers to ask for offers on a project.",3);
+m(1,"Acronyms","What does SLA stand for in a service contract?","Service level agreement",["Sales line account","Supplier loan arrangement","Standard legal approval"],"An SLA sets the minimum quality, for example 99.9% uptime.",3);
+m(1,"Acronyms","What does FTE mean when counting staff?","Full-time equivalent",["Free trade entity","Final team evaluation","First-time employee"],"Two half-time workers count as 1 FTE.",3);
+m(1,"Acronyms","In an email, what does EOD mean?","End of day",["Early order delivery","Every other day","End of discussion"],"“Please send it by EOD” means before the end of the working day.",2);
+m(1,"Acronyms","If a colleague’s status says “OOO”, they are…","Out of office",["On order","Over our objectives","Online only"],"OOO replies tell you someone is away and when they’ll be back.",2);
+m(1,"Acronyms","What does “YoY” mean in a financial report?","Year over year",["Yearly output yield","Yes or yes","Young owner yield"],"“Sales grew 8% YoY” means they are 8% higher than the same period last year.",2);
+m(1,"Acronyms","What does ETA stand for?","Estimated time of arrival",["Extra time allowed","Effective tax amount","End of trading activity"],"Delivery apps and airlines use ETA constantly.",1);
+vf(1,"“PR” in business can stand for “public relations”.",true,"PR professionals manage a company’s image in the media.",1);
+vf(1,"“TBC” means “to be confirmed”.",true,"“TBD” means “to be determined”.",1);
+
+m(2,"Corporate speak","If a manager asks you to “do a deep dive”, they want…","A detailed analysis of a topic",["A day at the swimming pool","A quick summary","A cancelled project"],"A deep dive means going into the details of the data or problem.",1);
+m(2,"Corporate speak","A customer’s “pain point” is…","A problem they want solved",["A physical injury","A discount","A product feature"],"Good products are built around real pain points.",2);
+m(2,"Corporate speak","If you “leverage” a resource, you…","Use it to get the maximum advantage",["Lose it","Sell it quickly","Hide it"],"“Let’s leverage our network” means “let’s make good use of our contacts”.",2);
+m(2,"Corporate speak","A “stakeholder” is…","Anyone with an interest in a company’s decisions",["A butcher","Someone who only owns shares","A security guard"],"Stakeholders include employees, customers, suppliers and local communities.",2);
+m(2,"Corporate speak","“Let’s get on the same page” means…","Let’s make sure we agree and understand each other",["Let’s buy a notebook","Let’s end the meeting","Let’s start again from page one"],"It is used to align a team on goals or facts.",1);
+m(2,"Corporate speak","A “deliverable” is…","A tangible result you have to hand over in a project",["A letter sent by post","A late payment","A job candidate"],"Deliverables can be reports, prototypes or presentations.",2);
+m(2,"Corporate speak","“Buy-in” from colleagues means…","Their agreement and support for an idea",["A cheap product","Their payment","A stock purchase"],"Without buy-in from managers, change projects often fail.",3);
+m(2,"Corporate speak","A “paradigm shift” is…","A fundamental change in how something is done or seen",["A change of shift hours","A new office","A salary increase"],"The term was popularised by philosopher Thomas Kuhn.",2);
+m(2,"Corporate speak","To “streamline” a process means to…","Make it simpler and more efficient",["Make it longer","Outsource it","Cancel it"],"Companies streamline operations to cut costs and save time.",2);
+m(2,"Corporate speak","If someone “drills down” into the numbers, they…","Examine them in more detail",["Make a hole in the wall","Reduce the budget","Ignore the results"],"In reports, you drill down from totals to individual items.",2);
+m(2,"Corporate speak","“Bleeding edge” technology is…","So new and experimental that it is risky",["Dangerous to touch","Very cheap","Outdated"],"It goes a step beyond “cutting edge”.",3);
+m(2,"Corporate speak","“Headcount” is…","The number of employees",["A payment to staff","A type of meeting","A health check"],"“We’re freezing headcount” means no new hires.",1);
+vf(2,"A “heads-up” is an advance warning or notice.",true,"For example, “just a heads-up, the client moved the meeting”.",1);
+vf(2,"“Blue-sky thinking” means brainstorming ideas without limits.",true,"It encourages creative ideas without worrying about practical constraints.",2);
+
+m(3,"Marketing","A “sales funnel” describes…","The customer journey from first contact to purchase",["A device to pour liquids","A list of employees","A factory line"],"The funnel narrows because fewer people reach each next step.",2);
+m(3,"Marketing","What is “retargeting”?","Showing ads to people who already visited your site",["Changing company goals","Hiring new marketers","Selling to competitors"],"It explains why a product you looked at seems to follow you online.",3);
+m(3,"Marketing","A “landing page” is…","A web page designed for one campaign goal",["The page of an airport","An error page","A home screen of a phone"],"People “land” on it after clicking an ad or email.",2);
+m(3,"Marketing","“Conversion rate” is the percentage of visitors who…","Take the desired action, such as buying",["Visit the site twice","Leave the site","Subscribe to a rival"],"If 2 out of 100 visitors buy, the conversion rate is 2%.",2);
+m(3,"Marketing","In marketing, a “lead” is…","A potential customer who showed interest",["The boss of the team","A metal used in logos","The first product launched"],"Sales teams qualify leads to find those most likely to buy.",2);
+m(3,"Marketing","“Organic reach” means…","Audience reached without paying for ads",["Reaching only farmers","Reaching organic food buyers","Reaching users in Europe"],"Paid reach comes from advertising.",3);
+m(3,"Marketing","A “lead magnet” is…","A free resource offered in exchange for contact details",["A strong magnet in the office","A paid ad","A competitor’s product"],"Examples: a free ebook, a template or a discount code.",3);
+m(3,"Startup","A startup in “stealth mode” is…","Working in secret before its public launch",["Selling on the black market","Closed for holidays","Located underground"],"Companies stay in stealth to avoid being copied.",3);
+m(3,"Startup","“Traction” for a startup means…","Evidence of growth, such as users or revenue",["A type of vehicle","Legal protection","A funding round"],"Investors want to see traction before investing.",2);
+m(3,"Startup","A “soft launch” is…","A limited release before the full launch",["A launch with soft drinks","A cancelled launch","A launch only for investors"],"It allows teams to test and fix problems with a small audience.",2);
+m(3,"Startup","A “product roadmap” is…","A plan of what a product will do over time",["A map of the office","A delivery route","A sales target"],"Teams share roadmaps to align priorities.",2);
+vf(3,"“Churn” is good news for a subscription business.",false,"Churn is the rate at which customers cancel, so lower is better.",1);
+
+m(4,"False friends","In English, “a carpet” is…","A floor covering",["A folder for documents","A small table","A painting"],"The Spanish “carpeta” is a folder, and the English word for it is “folder”.",1);
+m(4,"False friends","In English, “parents” means…","Mother and father",["All relatives","Grandparents only","Neighbours"],"“Parientes” in Spanish means “relatives” in English.",1);
+m(4,"False friends","In English, “exit” means…","Way out",["Success","Entrance","Result"],"The Spanish “éxito” means “success”.",1);
+m(4,"False friends","In English, “large” means…","Big",["Long","Wide only","Heavy"],"The Spanish “largo” means “long”.",1);
+m(4,"False friends","In English, “a mayor” is…","The head of a city government",["An older person","A major problem","A military officer"],"The Spanish “mayor” can mean older or bigger.",1);
+m(4,"False friends","In English, a “lecture” is…","A talk given to students",["A reading","A library","A written exam"],"The Spanish “lectura” means “reading”.",2);
+m(4,"False friends","In the US, a “résumé” is…","A CV",["A summary","A menu","A timetable"],"The Spanish “resumen” means “summary”.",2);
+m(4,"False friends","If you are “sympathetic” to someone’s problem, you…","Feel compassion for them",["Find them friendly","Argue with them","Hire them"],"The Spanish “simpático” means “nice” or “friendly”.",2);
+m(4,"False friends","To “compromise” in English means…","To accept less than you wanted to reach an agreement",["To make a promise","To commit fully","To lie"],"The Spanish “compromiso” is closer to “commitment”.",2);
+m(4,"False friends","To “attend” a meeting in English means…","To be present at it",["To serve the participants","To organise it","To cancel it"],"The Spanish “atender” means “to help” or “to serve”.",2);
+vf(4,"In Spanish, “embarazada” means “pregnant”, not “embarrassed”.",true,"A classic false friend, so be careful in conversations!",1);
+
+m(5,"Books","Who wrote “Atomic Habits”?","James Clear",["Charles Duhigg","Stephen Covey","Mark Manson"],"The book argues that tiny daily changes lead to big results over time.",1);
+m(5,"Books","Who wrote “The 7 Habits of Highly Effective People”?","Stephen Covey",["Dale Carnegie","Tony Robbins","Napoleon Hill"],"It was published in 1989 and has sold more than 25 million copies.",2);
+m(5,"Books","Who wrote “Start with Why”, famous for the “Golden Circle” idea?","Simon Sinek",["Seth Godin","Tim Ferriss","Gary Vaynerchuk"],"Sinek says great organisations inspire people by explaining why they do what they do.",2);
+m(5,"Books","Who wrote “The 4-Hour Workweek”?","Tim Ferriss",["Malcolm Gladwell","Eric Ries","Peter Drucker"],"The 2007 bestseller popularised lifestyle design and outsourcing.",2);
+m(5,"Books","Who wrote “Lean In”, a 2013 book on women and leadership?","Sheryl Sandberg",["Arianna Huffington","Indra Nooyi","Marissa Mayer"],"Sandberg was then Chief Operating Officer at Facebook.",2);
+m(5,"Books","Who wrote “The Black Swan”, about rare and unpredictable events?","Nassim Nicholas Taleb",["Daniel Kahneman","Nate Silver","Michael Lewis"],"Taleb says markets are shaped by rare events that nobody predicts.",3);
+m(5,"Books","Who wrote “Competitive Strategy” (1980), introducing the Five Forces?","Michael Porter",["Peter Drucker","Clayton Christensen","Philip Kotler"],"Porter is a professor at Harvard Business School.",2);
+m(5,"Books","Who wrote “Crossing the Chasm”, about marketing to mainstream customers?","Geoffrey Moore",["Eric Ries","Steve Blank","Reid Hoffman"],"The “chasm” is the gap between early adopters and the mass market.",3);
+m(5,"Books","Who wrote “The Hard Thing About Hard Things” about running a startup?","Ben Horowitz",["Paul Graham","Marc Andreessen","Peter Thiel"],"Horowitz co-founded the venture firm Andreessen Horowitz.",3);
+m(5,"Quotes","“Stay hungry, stay foolish” ended which famous 2005 speech?","Steve Jobs’s Stanford commencement address",["Bill Gates’s Harvard speech","Barack Obama’s Berkeley speech","Mark Zuckerberg’s MIT speech"],"Jobs borrowed the line from the final issue of the Whole Earth Catalog.",2);
+
+ty(1,"What does HR stand for? (two words, the first is “human”)",["human resources"],"HR manages recruitment, payroll, training and company culture.",1);
+ty(1,"What does ASAP stand for? (four words)",["as soon as possible"],"ASAP is used in emails to mean “urgently”.",1);
+ty(1,"What does FYI stand for? (four words, “for … information”)",["for your information"],"FYI introduces facts that are shared without needing action.",1);
+
 return {id:"jargon",title:"Business Jargon Challenge",kw:"business english jargon acronyms vocabulary corporate speak buzzwords startup marketing false friends spanish french books quotes ceo cfo kpi roi",subject:"Acronyms, buzzwords and false friends: can you survive a meeting in English?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

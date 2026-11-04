@@ -79,5 +79,61 @@ ty(4,"Which girl group sang “Wannabe”? (two words)",["Spice Girls","The Spic
 ty(1,"Which K-pop group has the fan base called ARMY? (three letters)",["BTS"],"BTS stands for Bangtan Sonyeondan.",2);
 ty(3,"Which Swedish streaming service has a green logo? (one word)",["Spotify"],"Spotify was founded in Stockholm.",1);
 
+// ===================== More questions (batch 2) =====================
+m(1,"Legends","Which singer is nicknamed “The Boss”?","Bruce Springsteen",["Bob Dylan","Billy Joel","Bon Jovi"],"Springsteen’s hits include “Born to Run” and “Dancing in the Dark”.",2);
+m(1,"Legends","Which singer is known as the “Queen of Soul”?","Aretha Franklin",["Whitney Houston","Diana Ross","Tina Turner"],"Her hit “Respect” (1967) became an anthem.",1);
+m(1,"Legends","Which crooner was nicknamed “Ol’ Blue Eyes”?","Frank Sinatra",["Dean Martin","Elvis Presley","Tony Bennett"],"Sinatra’s signature songs include “My Way” and “New York, New York”.",2);
+m(1,"Legends","Who was the lead singer of the band Queen?","Freddie Mercury",["Elton John","David Bowie","Robert Plant"],"Mercury was famous for his four-octave voice and flamboyant stage presence.",1);
+m(1,"Legends","Which band’s lead singer is Mick Jagger?","The Rolling Stones",["Queen","The Who","Led Zeppelin"],"The band formed in London in 1962 and still tours today.",1);
+m(1,"Legends","Which rapper uses the alter ego “Slim Shady”?","Eminem",["Jay-Z","50 Cent","Drake"],"Eminem’s real name is Marshall Mathers.",1);
+m(1,"Legends","Which singer’s alter ego was Ziggy Stardust?","David Bowie",["Prince","Elton John","Lou Reed"],"Bowie released “The Rise and Fall of Ziggy Stardust” in 1972.",2);
+m(1,"Legends","Which band is led by singer Chris Martin?","Coldplay",["Radiohead","Oasis","Muse"],"Coldplay’s hits include “Yellow”, “Fix You” and “Viva la Vida”.",1);
+m(1,"Legends","In which country is the duo Daft Punk from?","France",["Belgium","Germany","Sweden"],"The robot-helmeted duo Thomas Bangalter and Guy-Manuel de Homem-Christo come from Paris.",2);
+m(1,"Legends","Which Spanish singer released the 2022 album “Motomami”?","Rosalía",["Aitana","Nathy Peluso","Natalia Lacunza"],"The Catalan star won multiple Latin Grammys and mixes flamenco with pop and reggaeton.",2);
+vf(1,"Elvis Presley was born in Memphis, Tennessee.",false,"He was born in Tupelo, Mississippi, in 1935 and moved to Memphis as a teenager.",3);
+vf(1,"Freddie Mercury was born in Zanzibar.",true,"He was born Farrokh Bulsara in 1946 in what is now Tanzania.",3);
+
+m(2,"Who sings it?","Who sings “Bad Romance”?","Lady Gaga",["Katy Perry","Rihanna","Pink"],"The 2009 song’s music video is one of the most watched ever.",1);
+m(2,"Who sings it?","Who sings the 2010 World Cup anthem “Waka Waka (This Time for Africa)”?","Shakira",["Jennifer Lopez","Beyoncé","Rihanna"],"It became one of the most-viewed videos on YouTube.",1);
+m(2,"Who sings it?","Who sings “Havana” (2017)?","Camila Cabello",["Selena Gomez","Ariana Grande","Dua Lipa"],"The song features rapper Young Thug and was a number-one hit in the UK.",2);
+m(2,"Who sings it?","Who sings “Dance Monkey”?","Tones and I",["Dua Lipa","Lizzo","Sia"],"The Australian singer’s 2019 hit was streamed billions of times.",2);
+m(2,"Who sings it?","Who sings “Sorry” (2015), with the line “Is it too late now to say sorry?”","Justin Bieber",["Ed Sheeran","Shawn Mendes","Charlie Puth"],"The song was written for his album “Purpose”.",2);
+m(2,"Who sings it?","Who sings “Montero (Call Me by Your Name)”?","Lil Nas X",["Doja Cat","Post Malone","Drake"],"The 2021 song was a number-one hit with a famously controversial video.",2);
+m(2,"Who sings it?","Who sings “drivers license” (2021)?","Olivia Rodrigo",["Billie Eilish","Dua Lipa","Sabrina Carpenter"],"It broke streaming records on Spotify in its first week.",2);
+m(2,"Who sings it?","Who sings “Espresso” (2024)?","Sabrina Carpenter",["Olivia Rodrigo","Chappell Roan","Tate McRae"],"It was one of the biggest songs of summer 2024.",2);
+m(2,"Who sings it?","Who sings “All I Want for Christmas Is You”?","Mariah Carey",["Whitney Houston","Celine Dion","Britney Spears"],"The 1994 song returns to the charts every December.",1);
+m(2,"Who sings it?","Which band sings “Heat Waves” (2020), a huge TikTok hit?","Glass Animals",["Imagine Dragons","Foster the People","Tame Impala"],"The song spent a record number of weeks on the Billboard Hot 100.",3);
+m(2,"Who sings it?","Who sings “Cheap Thrills” (2016)?","Sia",["Rihanna","Lorde","Adele"],"Sia is known for hiding her face behind a wig on stage.",3);
+m(2,"Who sings it?","Who sings “Sweet Caroline”, a song that crowds sing along to at sports events?","Neil Diamond",["Billy Joel","Elton John","Rod Stewart"],"Neil Diamond released it in 1969.",3);
+m(2,"Who sings it?","Who sings the Christmas song “Feliz Navidad”?","José Feliciano",["Julio Iglesias","Enrique Iglesias","Ricky Martin"],"The Puerto Rican singer released it in 1970.",3);
+vf(2,"“Stay” (2021) was a global hit by The Kid LAROI and Justin Bieber.",true,"It topped charts in many countries and broke streaming records.",3);
+
+m(3,"Records","Which group has had the most number-one singles on the Billboard Hot 100, with 20?","The Beatles",["Queen","The Rolling Stones","ABBA"],"Mariah Carey is second among all acts, with 19 number ones.",2);
+m(3,"Records","How many members does the K-pop group BTS have?","7",["5","9","12"],"RM, Jin, Suga, J-Hope, Jimin, V and Jung Kook.",1);
+m(3,"Records","How many members does the K-pop group Blackpink have?","4",["3","5","6"],"Jisoo, Jennie, Rosé and Lisa.",2);
+m(3,"Records","How many members were in One Direction’s line-up?","5",["4","6","3"],"Harry, Niall, Liam, Louis and Zayn (until 2015).",1);
+m(3,"Records","Which singer performed the Super Bowl halftime show in 2023, revealing her pregnancy on stage?","Rihanna",["Beyoncé","Lady Gaga","Shakira"],"Rihanna sang a medley of her hits on a floating platform.",2);
+m(3,"Records","Which two singers shared the Super Bowl halftime show in 2020?","Shakira and Jennifer Lopez",["Beyoncé and Jay-Z","Katy Perry and Rihanna","Adele and Pink"],"The show took place in Miami.",2);
+m(3,"Records","Which song won Eurovision in 1974 and launched ABBA’s international career?","Waterloo",["Dancing Queen","Mamma Mia","Fernando"],"ABBA performed in the contest in Brighton, UK.",2);
+m(3,"Records","Which country did Nemo win Eurovision for in 2024?","Switzerland",["Sweden","Austria","Croatia"],"Nemo sang “The Code”, which mixed rap, opera and drum and bass.",3);
+m(3,"Records","Which Bing Crosby Christmas song is often cited as the best-selling single of all time?","White Christmas",["Jingle Bells","Silent Night","Let It Snow"],"Estimates are over 50 million copies since its 1942 release.",3);
+vf(3,"Lady Gaga took her stage name from Queen’s song “Radio Ga Ga”.",true,"Stefani Germanotta chose the name after the song.",2);
+vf(3,"Justin Bieber was born in the United States.",false,"He was born in London, Ontario, Canada.",1);
+
+m(4,"Decades","Which band released “(I Can’t Get No) Satisfaction” in 1965?","The Rolling Stones",["The Beatles","The Kinks","The Who"],"The song’s riff is among the most recognised in rock.",2);
+m(4,"Decades","Which group sang “Stayin’ Alive” in 1977, the disco hit from “Saturday Night Fever”?","The Bee Gees",["ABBA","Earth, Wind & Fire","Chic"],"The brothers Barry, Robin and Maurice Gibb sang in high falsetto.",2);
+m(4,"Decades","Which singer released “Like a Virgin” in 1984?","Madonna",["Cyndi Lauper","Whitney Houston","Janet Jackson"],"Madonna performed the song at the first MTV Video Music Awards.",1);
+m(4,"Decades","Which singer had the 1983 hit “Girls Just Want to Have Fun”?","Cyndi Lauper",["Madonna","Pat Benatar","Tina Turner"],"Written by Robert Hazard, it became Lauper’s signature song.",2);
+m(4,"Decades","Which band sang “Every Breath You Take” (1983)?","The Police",["Genesis","Duran Duran","U2"],"Sting wrote it and it was number one in the US for eight weeks.",2);
+m(4,"Decades","Which boy band sang “I Want It That Way” (1999)?","Backstreet Boys",["*NSYNC","Take That","Boyzone"],"The song has been a karaoke favourite for decades.",1);
+m(4,"Decades","Which singer recorded “My Heart Will Go On” for the film “Titanic”?","Céline Dion",["Whitney Houston","Mariah Carey","Shania Twain"],"The 1997 ballad won an Oscar and a Grammy.",1);
+m(4,"Decades","Which singer released “Toxic” in 2003?","Britney Spears",["Christina Aguilera","Kylie Minogue","Beyoncé"],"The song won Britney a Grammy for Best Dance Recording.",2);
+m(4,"Decades","Which band released the 2004 indie-rock hit “Mr. Brightside”?","The Killers",["Arctic Monkeys","The Strokes","Franz Ferdinand"],"It has spent hundreds of weeks in the UK charts.",2);
+m(4,"Decades","Which band sang “Viva la Vida” (2008)?","Coldplay",["U2","Radiohead","Muse"],"The song was inspired by the painter Frida Kahlo’s final work.",2);
+m(4,"Decades","Which singer released “Roar” in 2013?","Katy Perry",["Lady Gaga","Pink","Demi Lovato"],"It became a worldwide empowerment anthem.",1);
+m(4,"Decades","Which New Zealand singer broke through in 2013 with “Royals”?","Lorde",["Adele","Sia","Kimbra"],"She was just 16 when the song became number one in the US.",2);
+m(4,"Decades","Which singer released “Can’t Stop the Feeling!” in 2016 for the film “Trolls”?","Justin Timberlake",["Bruno Mars","Pharrell Williams","Ed Sheeran"],"It was nominated for an Oscar for Best Original Song.",2);
+m(4,"Decades","Which duo had the 2022 hit “Unholy”?","Sam Smith and Kim Petras",["Dua Lipa and Elton John","Harry Styles and Lizzo","Doja Cat and The Weeknd"],"The song made Kim Petras the first openly transgender artist at number one on the Hot 100.",3);
+
 return {id:"hits",title:"Pop Hits & Music Stars",kw:"music pop hits songs singers taylor swift beyonce bts rihanna spotify tiktok songs artists quiz",subject:"Pop royalty, who sings it, records and hits through the decades",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

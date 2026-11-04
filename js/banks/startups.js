@@ -91,5 +91,62 @@ ty(5,"What is the term for a company’s total market value, calculated as share
 ty(2,"Which online retailer launched “Fire Phone” in 2014, which was discontinued the following year? (one word)",["Amazon"],"The Fire Phone flopped and Amazon wrote off about $170 million.",3);
 ty(1,"Which social network, founded in 2006 by Jack Dorsey and others, was renamed X in 2023?",["Twitter"],"Twitter, founded in 2006, was rebranded to X in July 2023.",1);
 
+// ===================== More questions (batch 2) =====================
+m(1,"Origins","Which company did Steve Jobs found after leaving Apple in 1985, later bought by Apple in 1997?","NeXT",["Pixar","Be Inc.","Palm"],"NeXT’s operating system became the base of macOS, and the deal brought Jobs back to Apple.",2);
+m(1,"Origins","Which tech company, started in a Palo Alto garage in 1939, is often called the first Silicon Valley startup?","HP",["Apple","Intel","Atari"],"Bill Hewlett and Dave Packard founded it with just $538 in capital.",2);
+m(1,"Origins","Dropbox’s Drew Houston reportedly got the idea after forgetting which object on a bus trip?","His USB flash drive",["His laptop charger","His phone","His wallet"],"Houston wanted his files available anywhere without carrying a drive. Dropbox launched in 2008.",2);
+m(1,"Origins","Elon Musk’s first company, founded in 1995 with his brother Kimbal, was an online city guide called…","Zip2",["X.com","PayPal","SolarCity"],"Zip2 was sold to Compaq in 1999 for about $307 million, funding Musk’s next ventures.",3);
+m(1,"Origins","WhatsApp’s founders Jan Koum and Brian Acton had both previously worked at which company?","Yahoo",["Google","Microsoft","Facebook"],"The two met at Yahoo and left in 2007. WhatsApp was founded in 2009.",3);
+m(1,"Origins","To raise early cash in 2008, Airbnb’s founders sold collectible cereal boxes themed on what?","The US presidential candidates",["The Olympic Games","Star Wars","Silicon Valley"],"“Obama O’s” and “Cap’n McCain’s” raised about $30,000 and helped them get into Y Combinator.",3);
+m(1,"Origins","Before it became Pinterest, Ben Silbermann’s first startup in 2008 was a shopping app called…","Tote",["Boardly","Snapfish","Pinboard"],"Tote flopped, but its users’ habit of saving images inspired Pinterest in 2010.",3);
+vf(1,"In 1999, Google’s founders tried to sell their company for about $1 million, but Excite said no.",true,"Excite’s CEO declined, and Google went on to be worth well over a trillion dollars.",3);
+vf(1,"Instagram started as a location check-in app called Burbn.",true,"Kevin Systrom and Mike Krieger kept only the photo feature and relaunched it as Instagram in 2010.",2);
+vf(1,"Mark Zuckerberg graduated from Harvard before building Facebook.",false,"Zuckerberg dropped out of Harvard in 2004 to work on Facebook full time.",1);
+
+m(2,"Missed the future","Which social network did the search giant behind Android launch in 2011 to rival Facebook, shutting it for consumers in 2019?","Google+",["Orkut","Google Wave","Google Hangouts"],"Google+ never caught on and a data bug in 2018 helped to speed up its closure.",2);
+m(2,"Missed the future","Which Microsoft music player, launched in 2006 to rival the iPod, was discontinued in 2011?","Zune",["Walkman","Xbox Pod","Surface Play"],"The Zune never gained more than a small share of the market against Apple.",2);
+m(2,"Hype","Which audio-only social app boomed in early 2021, only for people to leave in droves later that year?","Clubhouse",["Spotify Live","Discord Rooms","Twitter Circles"],"Clubhouse hit a $4 billion valuation in 2021 then lost most of its users.",1);
+m(2,"Hype","Which Indian ed-tech startup, once valued at around $22 billion, collapsed into financial trouble in 2023–24?","Byju’s",["Unacademy","Paytm","Ola"],"Byju’s grew via aggressive acquisitions but then missed audits and lenders’ payments.",2);
+m(2,"Missed the future","Which company bought Myspace in 2005 for about $580 million before it lost its audience to Facebook?","News Corp",["Google","Yahoo","Microsoft"],"Rupert Murdoch’s News Corp sold Myspace in 2011 for only about $35 million.",3);
+m(2,"Hype","Which dot-com grocery delivery startup burned through about $1 billion before it went bankrupt in 2001?","Webvan",["Peapod","Instacart","Ocado"],"Webvan expanded too fast with expensive warehouses. Grocery delivery only worked later with apps.",3);
+vf(2,"Google Glass smart glasses were a success and still sell widely to consumers today.",false,"Google ended the consumer Explorer programme in 2015 after privacy worries and a high price.",2);
+vf(2,"Twitter bought the short-video app Vine, and later shut it down in 2017.",true,"Vine’s six-second looping clips were overtaken by Instagram, Snapchat and TikTok.",2);
+
+m(3,"Deals","In 2019 Disney completed a roughly $71 billion deal for most of which company’s entertainment assets?","21st Century Fox",["Warner Bros.","Sony Pictures","Paramount"],"The deal brought X-Men, Avatar and The Simpsons under the Disney umbrella.",2);
+m(3,"Deals","In 2017 Amazon bought which grocery chain for about $13.7 billion?","Whole Foods",["Trader Joe’s","Kroger","Safeway"],"It was Amazon’s biggest acquisition and brought it into physical stores.",1);
+m(3,"Deals","Salesforce bought the workplace chat app Slack in 2021 for roughly…","$27 billion",["$2.7 billion","$270 million","$270 billion"],"It was one of the biggest software acquisitions at the time.",3);
+m(3,"Deals","Which company bought Skype in 2011 for $8.5 billion?","Microsoft",["Google","Apple","Cisco"],"Skype was later folded into Teams, and shut down in 2025.",2);
+m(3,"Deals","Which Chinese carmaker bought Volvo Cars from Ford in 2010?","Geely",["BYD","SAIC","Great Wall"],"Geely paid about $1.8 billion for Volvo, which remained headquartered in Gothenburg.",3);
+m(3,"Deals","Which Israeli navigation app did Google buy in 2013 for around $1.1 billion?","Waze",["Moovit","Citymapper","Strava"],"Waze’s crowd-sourced traffic data improved Google Maps.",2);
+m(3,"IPOs","Which crypto exchange went public in April 2021 through a direct listing on Nasdaq?","Coinbase",["Binance","Kraken","Gemini"],"Coinbase was valued at about $85 billion on its first day of trading.",3);
+vf(3,"Tesla was founded by Elon Musk in 2003.",false,"Martin Eberhard and Marc Tarpenning founded Tesla; Musk joined in 2004 as an investor and chairman.",2);
+vf(3,"Uber went public on the stock market in 2019.",true,"Uber’s IPO in May 2019 was valued at about $82 billion, though the share price dipped on day one.",2);
+
+m(4,"Mobility","Cabify, a ride-hailing rival to Uber, was founded in which Spanish city?","Madrid",["Barcelona","Valencia","Bilbao"],"Cabify was founded in Madrid in 2011 and also operates across Latin America.",2);
+m(4,"Social","Which Spanish social network, launched in 2006 and popular with teenagers, was bought by Telefónica in 2010?","Tuenti",["Orkut","Hi5","Fotolog"],"Tuenti was later turned into a mobile phone operator.",3);
+m(4,"Banks","Which large Spanish bank has its headquarters in Bilbao?","BBVA",["Santander","CaixaBank","Sabadell"],"BBVA stands for Banco Bilbao Vizcaya Argentaria.",2);
+m(4,"Events","South Summit, one of Southern Europe’s biggest startup events, takes place every year in which city?","Madrid",["Barcelona","Seville","Valencia"],"South Summit gathers thousands of founders and investors in Madrid each June.",2);
+m(4,"Tech","Wallbox, a Barcelona company listed on the New York Stock Exchange since 2021, makes what?","Electric vehicle chargers",["Delivery drones","Smartphones","Solar roofs"],"Wallbox started as a spin-off from a team of engineers in Barcelona in 2015.",3);
+m(4,"Brands","Who founded the Barcelona fashion brand Mango in 1984?","Isak Andic",["Amancio Ortega","Thomas Meyer","Josep Lluís Núñez"],"Isak Andic, a Turkish-born entrepreneur, opened the first Mango shop on Passeig de Gràcia.",3);
+m(4,"Law","In 2022 Spain passed a “Startup Law” mainly to…","Make it easier to create and fund startups",["Ban foreign investors","Tax startups more","Nationalise tech firms"],"The law gave tax breaks and a special visa path for founders and remote workers.",3);
+vf(4,"Inditex, the parent of Zara, is listed on the Spanish stock market.",true,"Inditex floated in 2001 and is among the biggest companies on the IBEX 35.",1);
+vf(4,"Telefónica, Spain’s telecoms giant, has its headquarters in Barcelona.",false,"Telefónica’s headquarters are in Madrid, in the Distrito Telefónica complex.",2);
+
+m(5,"Documents","In startup financing, what is a “term sheet”?","A non-binding summary of the main terms of an investment",["The final signed contract","A list of staff salaries","A monthly bank statement"],"It sets valuation and control terms before lawyers write the full agreement.",2);
+m(5,"Documents","What does a “cap table” show?","Who owns what share of the company",["The daily cash balance","The product price list","The board meeting dates"],"“Cap” stands for capitalisation. It lists founders, investors and option holders.",2);
+m(5,"Equity","What does “vesting” mean for shares or stock options?","They are earned gradually over time",["They are sold at an IPO","They are given back to the bank","They lose all their value"],"A typical vesting schedule is four years with a one-year “cliff”.",3);
+m(5,"Process","What is “due diligence” in an investment?","Checking a company thoroughly before investing or buying",["Paying taxes on time","Registering a trademark","Writing the pitch deck"],"Investors check financials, contracts, technology and the legal situation.",2);
+m(5,"Funding","Which platform, launched in 2009, lets people fund creative projects through crowdfunding?","Kickstarter",["Patreon","Etsy","PayPal"],"Kickstarter projects set a goal and a deadline, and money is only collected if the goal is reached.",1);
+m(5,"Strategy","“Product-market fit” is reached when…","A product satisfies strong demand in a market",["The product is cheaper than rivals","The team has a big office","The founders agree on the logo"],"Investor Marc Andreessen popularised the term as the one thing that matters for a startup.",2);
+m(5,"Exits","What is a “SPAC”?","A shell company that raises money on the stock market to buy a private firm",["A government startup agency","A type of coworking space","A patent database"],"SPAC means Special Purpose Acquisition Company; they boomed in 2020–21.",3);
+m(5,"Slang","In startup slang, a “zebra” company aims to be…","Both profitable and socially useful",["Valued above $10 billion","Funded only by the state","Run entirely by robots"],"Zebras were proposed in 2017 as an alternative to the unicorn growth-at-all-costs model.",3);
+vf(5,"“Equity” in a startup means a share of ownership in the company.",true,"Founders, employees and investors can all hold equity, usually as shares or options.",1);
+vf(5,"A “pre-money valuation” is the value of a company after an investment is added.",false,"Pre-money is the value before the new money; post-money = pre-money + investment.",3);
+vf(5,"A convertible note is a loan that can later turn into shares.",true,"Early investors often use convertible notes so valuation can be set at the next round.",3);
+
+ty(5,"What does VC stand for in startup finance? (two words, the first one is “venture”)",["venture capital","venture capitalist"],"Venture capital is money invested in young, high-growth companies in exchange for equity.",1);
+ty(3,"Which Swedish buy-now-pay-later company, founded in 2005, is known for its pink branding? (one word)",["Klarna"],"Klarna was founded in Stockholm and is one of Europe’s largest fintech companies.",3);
+ty(1,"Which company did Larry Page and Sergey Brin start in 1998 to organise the world’s information? (one word)",["Google"],"Google began as a Stanford research project and was incorporated in September 1998.",1);
+
 return {id:"startups",title:"Startup Legends & Flops",kw:"startup start-up entrepreneurship entrepreneur founders unicorn venture capital vc failures flops theranos wework ftx airbnb uber spotify glovo wallapop funding pitch business",subject:"From garage origins to epic flops: how well do you know the startup world?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

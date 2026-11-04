@@ -76,5 +76,65 @@ ty(3,"In which city is the Colosseum? (one word)",["Rome"],"The Colosseum is in 
 ty(4,"What currency does Japan use? (one word)",["Yen","The yen"],"The yen is Japan’s currency.",1);
 ty(4,"Which city is nicknamed the Big Apple? (two words)",["New York","New York City","NYC"],"The Big Apple is New York.",1);
 
+// ===================== More questions (batch 2) =====================
+m(1,"Origins","Feta cheese is a traditional product of which country?","Greece",["Turkey","Italy","Bulgaria"],"Feta is made from sheep’s milk, sometimes mixed with goat’s milk, and has protected status in the EU.",1);
+m(1,"Origins","Real Champagne can only come from which country?","France",["Italy","Spain","Belgium"],"Sparkling wine made elsewhere can’t legally be called Champagne in the EU.",1);
+m(1,"Origins","Gelato is a creamy frozen dessert from which country?","Italy",["France","Greece","Argentina"],"Gelato has less air and fat than most ice cream.",1);
+m(1,"Origins","The Caesar salad was invented in which country?","Mexico",["Italy","United States","France"],"Restaurateur Caesar Cardini created it in Tijuana in the 1920s.",3);
+m(1,"Origins","The sandwich was named after which English noble?","The Earl of Sandwich",["The Duke of Wellington","Lord Byron","Earl Grey"],"He is said to have asked for meat between bread so he could keep gambling.",2);
+m(1,"Origins","Which country produces the most coffee in the world?","Brazil",["Colombia","Vietnam","Ethiopia"],"Brazil produces roughly a third of the world’s coffee.",2);
+m(1,"Origins","Tequila is made in which country?","Mexico",["Spain","Peru","Cuba"],"It is made from the blue agave plant, mostly in the state of Jalisco.",1);
+vf(1,"Spaghetti with meatballs is a traditional dish from Italy.",false,"It was created by Italian immigrants in the United States.",3);
+vf(1,"Pineapples grow on trees.",false,"Each pineapple grows from the centre of a low plant on the ground.",2);
+vf(1,"Ketchup was originally a fish sauce from southern China.",true,"The word comes from “ke-tsiap”, a fermented fish sauce. Tomatoes were added in the 19th century.",3);
+
+m(2,"Dishes","What is hummus mainly made from?","Chickpeas",["Lentils","Aubergine","Potatoes"],"It is a staple of Middle Eastern cuisine, blended with tahini, lemon and garlic.",1);
+m(2,"Dishes","What is guacamole made from?","Avocado",["Lime","Tomato","Corn"],"The word comes from the Aztec Nahuatl “āhuacamōlli”, meaning avocado sauce.",1);
+m(2,"Dishes","What is tofu made from?","Soybeans",["Rice","Milk","Mushrooms"],"Tofu is soybean curd and a source of protein in Asian cuisine.",1);
+m(2,"Dishes","Which Hungarian dish is a stew flavoured with paprika?","Goulash",["Borscht","Pierogi","Schnitzel"],"Goulash has been a Hungarian staple since medieval herders.",2);
+m(2,"Dishes","Borscht, a bright red soup, is made mainly with which vegetable?","Beetroot",["Tomato","Red cabbage","Carrot"],"It is popular in Ukraine, Russia and Poland.",2);
+m(2,"Dishes","Which Korean rice dish is topped with vegetables, meat and a fried egg?","Bibimbap",["Kimbap","Bulgogi","Tteokbokki"],"The name means “mixed rice”.",2);
+m(2,"Dishes","Which Greek dish is made of layers of aubergine, minced meat and béchamel sauce?","Moussaka",["Souvlaki","Spanakopita","Tzatziki"],"It is often compared to lasagne.",2);
+m(2,"Dishes","What is “injera”, a staple in Ethiopia?","A spongy sourdough flatbread",["A spicy sausage","A fermented tea","A fried banana"],"People use pieces of injera to scoop up stews with their hands.",3);
+m(2,"Dishes","What cheese is traditionally used on a pizza Margherita?","Mozzarella",["Cheddar","Parmesan","Gouda"],"The colours of the pizza (red, white and green) match the Italian flag.",1);
+m(2,"Dishes","Which Italian dish is a creamy rice dish stirred slowly with stock?","Risotto",["Paella","Polenta","Gnocchi"],"Arborio and Carnaroli are classic risotto rice varieties.",1);
+vf(2,"Sushi always contains raw fish.",false,"Sushi refers to vinegared rice. Raw fish is only in some types, like sashimi-style pieces.",1);
+vf(2,"Chilli peppers are native to the Americas.",true,"Christopher Columbus brought them to Europe, and they spread to Asia and Africa.",3);
+
+m(3,"Landmarks","The statue of Christ the Redeemer stands above which city?","Rio de Janeiro",["São Paulo","Lisbon","Buenos Aires"],"It stands on Mount Corcovado and was completed in 1931.",1);
+m(3,"Landmarks","Which city is home to the Opera House with white sail-shaped roofs?","Sydney",["Melbourne","Auckland","Perth"],"Danish architect Jørn Utzon designed it, and it opened in 1973.",1);
+m(3,"Landmarks","Stonehenge, the prehistoric stone circle, is in which country?","England",["Scotland","Ireland","Wales"],"Some of its stones were carried from Wales, over 200 km away.",1);
+m(3,"Landmarks","In which city is the Brandenburg Gate?","Berlin",["Vienna","Prague","Munich"],"It was a symbol of a divided Germany during the Cold War.",1);
+m(3,"Landmarks","Hagia Sophia, once a cathedral and later a mosque, is in which city?","Istanbul",["Athens","Cairo","Rome"],"It was built in 537 and its dome is a masterpiece of Byzantine architecture.",2);
+m(3,"Landmarks","The Forbidden City, a palace complex of emperors, is in which city?","Beijing",["Shanghai","Tokyo","Seoul"],"It has nearly 1,000 buildings and was home to 24 emperors.",1);
+m(3,"Landmarks","Mount Rushmore, with four presidents carved into the rock, is in which country?","United States",["Canada","Mexico","Australia"],"The carved presidents are Washington, Jefferson, Roosevelt and Lincoln.",1);
+m(3,"Landmarks","The Great Barrier Reef lies off the coast of which country?","Australia",["Philippines","Mexico","Brazil"],"It is the world’s largest coral reef system and visible from space.",1);
+m(3,"Landmarks","Which pharaoh built the Great Pyramid of Giza?","Khufu",["Tutankhamun","Ramesses II","Akhenaten"],"It was the tallest man-made structure for over 3,800 years.",3);
+m(3,"Landmarks","Which bridge in California is famous for its orange-red colour?","The Golden Gate Bridge",["The Brooklyn Bridge","The Bay Bridge","The Tower Bridge"],"It opened in 1937 and spans the entrance to San Francisco Bay.",1);
+vf(3,"The Eiffel Tower was originally meant to stand for only 20 years.",true,"It was saved because it was useful as a radio antenna.",2);
+vf(3,"Niagara Falls lies on the border between Canada and the United States.",true,"It is made up of three waterfalls.",1);
+vf(3,"Stonehenge is located in Scotland.",false,"Stonehenge is in Wiltshire, in southern England.",1);
+
+m(4,"Currencies","What is the currency of Mexico?","The peso",["The dollar","The real","The bolívar"],"Mexico has used the peso since the 19th century.",1);
+m(4,"Currencies","What is the currency of Brazil?","The real",["The peso","The escudo","The bolívar"],"The Brazilian real replaced the cruzeiro in 1994.",2);
+m(4,"Currencies","What is the currency of Thailand?","The baht",["The dong","The ringgit","The rupiah"],"The baht is divided into 100 satang.",2);
+m(4,"Currencies","What is the currency of Sweden?","The krona",["The euro","The mark","The zloty"],"Sweden is in the EU but kept its own currency.",2);
+m(4,"Currencies","What is the currency of India?","The rupee",["The rial","The taka","The dinar"],"Pakistan, Nepal and Sri Lanka also use rupees.",1);
+m(4,"Currencies","What is the currency of South Africa?","The rand",["The pound","The birr","The shilling"],"The name comes from the Witwatersrand, the gold-rich ridge near Johannesburg.",2);
+m(4,"Know-how","In which of these countries do cars drive on the left?","Australia",["Spain","Brazil","Canada"],"The UK, Japan, India and Australia drive on the left.",2);
+m(4,"Know-how","Which city is located on two continents?","Istanbul",["Cairo","Moscow","Athens"],"The Bosphorus strait separates its European and Asian sides.",2);
+m(4,"Know-how","Which sea is so salty that you float easily in it?","The Dead Sea",["The Red Sea","The Black Sea","The Caspian Sea"],"It lies between Jordan and Israel and is the lowest place on land.",2);
+m(4,"Know-how","Which country has the most UNESCO World Heritage Sites?","Italy",["China","France","Germany"],"Italy has about 60, just ahead of China.",3);
+m(4,"Know-how","What does GMT stand for?","Greenwich Mean Time",["Global Meridian Time","General Metric Time","Greater Moscow Time"],"It is based on the meridian that passes through Greenwich in London.",2);
+m(4,"Know-how","What does the airport code BCN stand for?","Barcelona",["Bucharest","Brussels","Basel"],"Airport codes are three letters assigned by IATA.",1);
+m(4,"Know-how","What is the capital of Thailand?","Bangkok",["Hanoi","Manila","Jakarta"],"Its full ceremonial name is one of the longest city names in the world.",1);
+m(4,"Language","“Arigato” means thank you in which language?","Japanese",["Korean","Chinese","Thai"],"“Arigato gozaimasu” is the polite form.",2);
+m(4,"Language","“Obrigado” means thank you in which language?","Portuguese",["Italian","Romanian","Catalan"],"A woman says “obrigada”.",2);
+vf(4,"Switzerland uses the euro as its currency.",false,"Switzerland uses the Swiss franc.",1);
+vf(4,"Tipping is customary in restaurants in Japan.",false,"In Japan, tipping can even seem rude as good service is expected.",2);
+vf(4,"Monaco is an independent country.",true,"Monaco is the second-smallest country in the world after the Vatican City.",1);
+
+ty(4,"What is the capital of Peru? (one word)",["Lima"],"Lima lies on the Pacific coast and is famous for its cuisine.",2);
+
 return {id:"foodtravel",title:"Food & Travel Challenge",kw:"food travel dishes pizza sushi paella landmarks wonders countries cities currency tourism foodie quiz",subject:"Where foods come from, dishes of the world, landmarks and travel know-how",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

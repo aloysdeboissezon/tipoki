@@ -80,5 +80,67 @@ ty(3,"What is Tony Stark’s superhero name? (two words)",["Iron Man","Ironman"]
 ty(4,"What is Harry Potter’s school called? (one word)",["Hogwarts"],"Hogwarts School of Witchcraft and Wizardry.",1);
 ty(4,"Which villain is Luke Skywalker’s father? (two words)",["Darth Vader","Vader"],"Anakin Skywalker became Darth Vader.",2);
 
+// ===================== More questions (batch 2) =====================
+m(1,"Netflix","In “The Queen’s Gambit”, which game is Beth Harmon a prodigy at?","Chess",["Poker","Go","Bridge"],"The 2020 miniseries made chess sets sell out around the world.",1);
+m(1,"Netflix","Who played Geralt of Rivia in the first seasons of “The Witcher”?","Henry Cavill",["Chris Hemsworth","Tom Hardy","Michael Fassbender"],"Cavill left the role after season three and was replaced by Liam Hemsworth.",2);
+m(1,"Netflix","Which actor plays the obsessive Joe Goldberg in “You”?","Penn Badgley",["Zac Efron","Timothée Chalamet","Ben Affleck"],"Badgley was previously famous for playing Dan Humphrey in “Gossip Girl”.",3);
+m(1,"Netflix","Which 2022 Netflix K-drama features high school students trapped by a zombie outbreak?","All of Us Are Dead",["Kingdom","Sweet Home","Hellbound"],"The series quickly rose to the top of the Netflix charts in dozens of countries.",2);
+m(1,"Netflix","Which Netflix series follows an American marketing executive who moves to Paris?","Emily in Paris",["Gossip Girl","Lupin","Sex and the City"],"Lily Collins stars in the show created by Darren Star.",1);
+m(1,"Netflix","Which 2020 Netflix docuseries about big-cat owners went viral during the first lockdown?","Tiger King",["Making a Murderer","The Last Dance","Wild Wild Country"],"Millions of people watched it within its first ten days.",2);
+m(1,"Netflix","The animated Netflix series “Arcane” is based on which video game?","League of Legends",["Dota 2","World of Warcraft","Fortnite"],"Arcane won an Emmy for Outstanding Animated Program in 2022.",2);
+vf(1,"The Netflix series “Wednesday” was directed in part by Tim Burton.",true,"Burton directed four episodes of the first season, which starred Jenna Ortega.",2);
+vf(1,"“Money Heist” (La Casa de Papel) first aired on a Spanish TV channel, not on Netflix.",true,"It premiered on Antena 3 in 2017 and then became a global hit after Netflix bought it.",3);
+
+m(2,"Disney","In the Disney film “Tangled”, what is special about Rapunzel’s hair?","It is very long and magical",["It glows in the dark","It changes colour","It never grows"],"Rapunzel’s hair can heal and stay young in this 2010 film.",1);
+m(2,"Disney","Which Disney villain is a sea witch with tentacles in “The Little Mermaid”?","Ursula",["Maleficent","Jafar","Scar"],"Ursula steals Ariel’s voice in exchange for legs.",1);
+m(2,"Disney","Who is the villain in “The Lion King”?","Scar",["Jafar","Gaston","Hades"],"Simba’s uncle plots to become king.",1);
+m(2,"Disney","Which Disney princess is a warrior who disguises herself as a man in the army?","Mulan",["Merida","Tiana","Pocahontas"],"Mulan is based on a Chinese legend and was released by Disney in 1998.",1);
+m(2,"Disney","Which song from “Beauty and the Beast” is sung by the enchanted candlestick and objects?","Be Our Guest",["Belle","Gaston","Something There"],"Lumière leads the dazzling dinner show.",1);
+m(2,"Disney","Which song from “Moana” is sung when she first dreams of the sea?","How Far I’ll Go",["You’re Welcome","Shiny","We Know the Way"],"Auli‘i Cravalho sang it, with music by Lin-Manuel Miranda.",2);
+m(2,"Pixar","In “Finding Nemo”, what is Dory’s main problem?","She has short-term memory loss",["She can’t swim","She is blind","She can’t speak"],"Her line “Just keep swimming” became iconic.",1);
+m(2,"Pixar","What is the name of the red race car hero of “Cars”?","Lightning McQueen",["Mater","Doc Hudson","Sally"],"He is voiced by Owen Wilson.",1);
+m(2,"Pixar","In “Ratatouille”, what is the name of the rat who dreams of being a chef?","Remy",["Emile","Linguini","Django"],"Remy cooks by controlling a young chef called Linguini.",2);
+m(2,"Pixar","In “Up”, what is the name of the talking dog?","Dug",["Doug","Max","Buddy"],"His collar translates his thoughts into speech. His famous line is “Squirrel!”",2);
+m(2,"Disney","What is the name of Elsa’s snowman friend in “Frozen”?","Olaf",["Sven","Kristoff","Hans"],"Olaf loves warm hugs and dreams of summer.",1);
+vf(2,"Walt Disney was the original voice of Mickey Mouse.",true,"He voiced Mickey from 1928 until 1947.",2);
+vf(2,"Pixar was originally part of Lucasfilm.",true,"Steve Jobs bought the computer graphics division from George Lucas in 1986.",3);
+
+m(3,"Marvel","Which actor plays Iron Man in the Marvel Cinematic Universe?","Robert Downey Jr.",["Chris Evans","Mark Ruffalo","Jeremy Renner"],"“Iron Man” (2008) launched the MCU.",1);
+m(3,"Marvel","Which actor plays Thor in the MCU?","Chris Hemsworth",["Chris Pratt","Chris Pine","Tom Hiddleston"],"Hemsworth is Australian and has played Thor since 2011.",1);
+m(3,"Marvel","Which actress plays Black Widow in the MCU?","Scarlett Johansson",["Elizabeth Olsen","Zoe Saldaña","Brie Larson"],"Johansson’s Natasha Romanoff first appeared in “Iron Man 2”.",1);
+m(3,"Marvel","Who is the Hulk’s alter ego?","Bruce Banner",["Peter Parker","Steve Rogers","Clint Barton"],"A lab accident with gamma radiation turned Banner into the Hulk.",1);
+m(3,"Marvel","Who is the main villain of “Avengers: Infinity War”?","Thanos",["Loki","Ultron","Hela"],"Thanos wants the six Infinity Stones to wipe out half of all life.",1);
+m(3,"Marvel","Which actor plays Deadpool?","Ryan Reynolds",["Hugh Jackman","Chris Evans","Josh Brolin"],"Reynolds also helped produce and write the films.",1);
+m(3,"Marvel","Which actor played Spider-Man in the 2002 film directed by Sam Raimi?","Tobey Maguire",["Andrew Garfield","Tom Holland","Jake Gyllenhaal"],"The film was one of the first modern superhero blockbusters.",2);
+m(3,"Marvel","Which comics legend co-created Spider-Man, Iron Man and the X-Men and made cameos in Marvel films?","Stan Lee",["Jack Kirby","Frank Miller","Alan Moore"],"Stan Lee appeared in almost all Marvel films until his death in 2018.",1);
+m(3,"Marvel","What does MCU stand for?","Marvel Cinematic Universe",["Marvel Comics Union","Mighty Cartoon Universe","Movie Characters Unlimited"],"It is the shared universe of Marvel films and series.",1);
+m(3,"DC","Who is Batman’s loyal butler?","Alfred Pennyworth",["James Gordon","Lucius Fox","Harvey Dent"],"Alfred raised Bruce Wayne after his parents died.",1);
+m(3,"DC","What is Superman’s everyday identity as a journalist?","Clark Kent",["Bruce Wayne","Peter Parker","Barry Allen"],"He works at the newspaper the Daily Planet.",1);
+m(3,"DC","Which actor won the Oscar for Best Actor for playing the Joker in the 2019 film?","Joaquin Phoenix",["Jared Leto","Jack Nicholson","Robert De Niro"],"The film “Joker” was also nominated for 11 Oscars.",2);
+vf(3,"Wolverine is a DC Comics character.",false,"Wolverine is a Marvel character and a member of the X-Men.",1);
+vf(3,"Kryptonite is Superman’s greatest weakness.",true,"This green rock from his home planet Krypton drains his powers.",1);
+vf(3,"Thor’s adoptive brother is Loki.",true,"In Norse myth and the MCU, Loki is the god of mischief.",1);
+
+m(4,"Wizards","Who plays Harry Potter in the film series?","Daniel Radcliffe",["Rupert Grint","Tom Felton","Eddie Redmayne"],"Radcliffe was 11 when he was cast.",1);
+m(4,"Wizards","Who plays Hermione Granger in the Harry Potter films?","Emma Watson",["Emma Stone","Bonnie Wright","Keira Knightley"],"Watson was only about ten years old when she was cast.",1);
+m(4,"Wizards","What is the name of the evil wizard known as “He-Who-Must-Not-Be-Named”?","Voldemort",["Grindelwald","Sauron","Saruman"],"Voldemort’s real name is Tom Marvolo Riddle.",1);
+m(4,"Wizards","In Harry Potter, what is a “Muggle”?","A person without magical powers",["A type of broom","A magical creature","A Hogwarts teacher"],"Muggles can’t usually see or use magic.",1);
+m(4,"Wizards","Who is Harry Potter’s best friend with red hair?","Ron Weasley",["Neville Longbottom","Draco Malfoy","Seamus Finnigan"],"The Weasleys are a large family of wizards.",1);
+m(4,"Wizards","In which country is Hogwarts supposed to be located?","Scotland",["Wales","Ireland","England"],"Many scenes were filmed in the Scottish Highlands.",2);
+m(4,"Galaxies","What is the name of Han Solo’s spaceship in Star Wars?","Millennium Falcon",["Death Star","X-Wing","Tantive IV"],"Han says it “made the Kessel Run in less than twelve parsecs”.",1);
+m(4,"Galaxies","On which desert planet did Luke Skywalker grow up?","Tatooine",["Hoth","Endor","Naboo"],"Tatooine has two suns.",2);
+m(4,"Galaxies","What is R2-D2’s golden droid friend called?","C-3PO",["BB-8","K-2SO","IG-88"],"C-3PO speaks over six million forms of communication.",1);
+m(4,"Fantasy","Who is the “Mother of Dragons” in Game of Thrones?","Daenerys Targaryen",["Cersei Lannister","Sansa Stark","Arya Stark"],"She hatched three dragons named Drogon, Rhaegal and Viserion.",1);
+m(4,"Fantasy","Which director made “The Lord of the Rings” film trilogy?","Peter Jackson",["Steven Spielberg","Guillermo del Toro","Ridley Scott"],"The three films were shot in New Zealand.",2);
+m(4,"Cult hits","Which actor plays Captain Jack Sparrow in “Pirates of the Caribbean”?","Johnny Depp",["Orlando Bloom","Brad Pitt","Tom Cruise"],"Depp was nominated for an Oscar for the first film.",1);
+m(4,"Cult hits","At what speed must the DeLorean travel to time travel in “Back to the Future”?","88 miles per hour",["66 miles per hour","100 miles per hour","120 miles per hour"],"Doc Brown’s DeLorean also needs 1.21 gigawatts of power.",3);
+m(4,"Cult hits","In “The Big Bang Theory”, which character always says “Bazinga!”?","Sheldon Cooper",["Leonard Hofstadter","Howard Wolowitz","Raj Koothrappali"],"Jim Parsons won four Emmy Awards for playing Sheldon.",1);
+m(4,"Cult hits","In “Forrest Gump”, what does his mother say life is like?","A box of chocolates",["A bowl of cherries","A long road","A river"],"“You never know what you’re gonna get.”",2);
+vf(4,"The book “The Hobbit” was published before “The Lord of the Rings”.",true,"“The Hobbit” appeared in 1937 and “The Lord of the Rings” in 1954–55.",2);
+vf(4,"The first Star Wars film was released in 1977.",true,"“Star Wars: A New Hope” premiered in May 1977.",2);
+
+ty(3,"What is Captain America’s real name? (two words)",["Steve Rogers"],"Steve Rogers was a frail young man transformed into a super-soldier in World War II.",2);
+ty(4,"Who is the headmaster of Hogwarts in the first books? (one word)",["Dumbledore","Albus Dumbledore"],"Albus Dumbledore is one of the most powerful wizards in the series.",1);
+
 return {id:"screen",title:"Screen Time: Binge, Disney & Heroes",kw:"netflix series disney pixar marvel dc harry potter star wars squid game stranger things movies binge streaming tv quiz",subject:"Netflix hits, Disney, Marvel, Harry Potter and cult favourites: how much have you watched?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();
