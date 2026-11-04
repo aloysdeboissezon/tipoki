@@ -337,3 +337,13 @@
 .hero h1.slogan span{white-space:nowrap}
 @media (max-width:640px){.hero h1.slogan span{display:block}}
 @media (min-width:641px){.hero h1.slogan{white-space:nowrap;font-size:clamp(30px,3.6vw,40px)}}
+
+/* ESADE collection toggle */
+#pickPanel .steph{align-items:center}
+.esade-btn{margin-left:auto;border:2px solid var(--line);background:var(--card);border-radius:12px;padding:7px 10px;cursor:pointer;line-height:1;transition:background .15s,border-color .15s,transform .1s}
+.esade-btn:active{transform:scale(.96)}
+.esade-mark{font:800 15px/1 Georgia,"Times New Roman",serif;letter-spacing:.18em;color:#003A70;padding-left:.18em}
+.esade-btn[aria-pressed=true]{background:#003A70;border-color:#003A70}
+.esade-btn[aria-pressed=true] .esade-mark{color:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .esade-mark{color:#9CC4EE}:root:not([data-theme=light]) .esade-btn[aria-pressed=true]{background:#2B6CB0;border-color:#2B6CB0}:root:not([data-theme=light]) .esade-btn[aria-pressed=true] .esade-mark{color:#fff}}
+:root[data-theme=dark] .esade-mark{color:#9CC4EE}:root[data-theme=dark] .esade-btn[aria-pressed=true]{background:#2B6CB0;border-color:#2B6CB0}:root[data-theme=dark] .esade-btn[aria-pressed=true] .esade-mark{color:#fff}

@@ -46,8 +46,10 @@ async function openSite(page, { path = "/", storage = {} } = {}) {
   await expect(page.locator("#quizGrid .qcard").first()).toBeAttached();
 }
 
-// Pick a built-in quiz from the home grid, e.g. "socio".
+// Pick a built-in quiz from the home grid, e.g. "socio". ESADE quizzes (socio, compta2, populism) sit behind the ESADE badge, so switch it when the card is not in the current list.
 async function openQuiz(page, id) {
+  const card = page.locator(`#quizGrid .qcard[data-id="${id}"]`);
+  if (!(await card.count())) await page.locator("#esadeBtn").click();
   await page.locator(`#quizGrid .qcard[data-id="${id}"]`).click();
   await expect(page.locator("#topic")).toBeVisible();
 }
