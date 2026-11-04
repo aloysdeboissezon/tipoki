@@ -179,7 +179,7 @@ var ES={
 "Time per question":"Tiempo por pregunta",
 "Create game":"Crear partida",
 "Quiz":"Quiz",
-"All quizzes ({n})":"Todos los quizzes ({n})",
+"ESADE quizzes ({n})":"Quizzes ESADE ({n})","Show only the ESADE quizzes":"Ver solo los quizzes de ESADE","ESADE quizzes":"Quizzes ESADE","All quizzes ({n})":"Todos los quizzes ({n})",
 "What do you want to revise?":"¿Qué quieres repasar?",
 "{n} of {m} selected":"{n} de {m} seleccionados",
 "Select all":"Seleccionar todo",
