@@ -2,7 +2,7 @@
 // Fails on: wrong option count, duplicate options, duplicate questions, answer given away in the question,
 // missing explanation or difficulty, typed answers that are empty, unknown session numbers.
 const path=require("path");
-const ids=process.argv.slice(2).length?process.argv.slice(2):["uspop","gastro","ukculture","startups","brands","barcelona","finance","econ","strategy","jargon","bigtech","worldtour","emoji","internet","hits","screen","sports","gamer","kids","myths","foodtravel"];
+const ids=process.argv.slice(2).length?process.argv.slice(2):["uspop","gastro","ukculture","startups","brands","barcelona","finance","econ","strategy","jargon","bigtech","worldtour","emoji","internet","hits","screen","sports","gamer","kids","myths","foodtravel","countryclues","oddemoji","braintraps"];
 const norm=s=>String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g," ").trim();
 let bad=0;const err=(id,msg)=>{bad++;console.error(id+": "+msg)};
 for(const id of ids){

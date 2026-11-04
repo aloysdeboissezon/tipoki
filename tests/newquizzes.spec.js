@@ -2,7 +2,7 @@
 const { test, expect } = require("@playwright/test");
 const { openSite, openQuiz } = require("./helpers");
 
-for (const id of ["uspop", "gastro", "ukculture", "startups", "brands", "barcelona", "finance", "econ", "strategy", "jargon", "bigtech", "worldtour", "emoji", "internet", "hits", "screen", "sports", "gamer", "kids", "myths", "foodtravel"]) {
+for (const id of ["uspop", "gastro", "ukculture", "startups", "brands", "barcelona", "finance", "econ", "strategy", "jargon", "bigtech", "worldtour", "emoji", "internet", "hits", "screen", "sports", "gamer", "kids", "myths", "foodtravel","countryclues","oddemoji","braintraps"]) {
   test(`quiz ${id} opens and offers questions`, async ({ page }) => {
     await openSite(page);
     await openQuiz(page, id);
