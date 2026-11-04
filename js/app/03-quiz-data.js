@@ -139,7 +139,7 @@ function normBank(b){
 }
 function lsKey(k){return BANK.id==="socio"?"socio-"+k:"tpk-"+k+"-"+BANK.id}
 function loadBank(raw){
-  const b=normBank(raw);
+  const b=qmeta(normBank(raw));   // title, subject and chapter names in the interface language
   BANK=b;SESS={...b.sess};Q=b.Q.slice();TQ=b.TQ.slice();NHQ=Q.length;NHT=TQ.length;
   if(b.facts&&b.facts.length)expandFacts(b.facts,b.lang);
   diffInit();

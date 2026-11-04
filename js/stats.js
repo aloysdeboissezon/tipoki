@@ -93,7 +93,7 @@ function renderStats(s,all){
   // overview: one row per quiz, with a link to its own page (most missed questions need the quiz loaded)
   const qz=$("stQuizzes");qz.textContent="";
   (all?s.quizzes||[]:[]).forEach(([id,g,p,a,c,ret])=>{
-    const bk=BUILTIN[id]&&BUILTIN[id](),r=el("div","st-row st-qz"),name=el("a","nm",(bk&&bk.title)||id.slice(0,8));
+    const bk=BUILTIN[id]&&BUILTIN[id](),r=el("div","st-row st-qz"),name=el("a","nm",(bk&&qmeta(Object.assign({id},bk)).title)||id.slice(0,8));
     name.href="?stats="+encodeURIComponent(id);name.title=tl("Open this quiz's stats");
     r.append(name,el("span","muted",tl(g===1?"{n} game":"{n} games",{n:g})+" · "+tl(p===1?"{n} player":"{n} players",{n:p})),el("span","v",pct(c,a)+" %"));qz.appendChild(r)});
   $("stQuizWrap").hidden=!(all&&(s.quizzes||[]).length);

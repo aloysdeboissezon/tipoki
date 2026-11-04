@@ -63,7 +63,7 @@ renderMe();
 const SC_PAL=[["#6C4DFF","#A58BFF","#fff"],["#FF8F73","#FFC1A8","#2a1208"],["#18C29C","#7DEBCB","#04251d"],["#FFC933","#FFE58A","#2b2200"],["#2F9BFF","#8FCBFF","#041a30"],["#FF5FA2","#FFA6CB","#32061a"],["#7AC943","#BDEE96","#12260a"],["#9B6BFF","#D3BCFF","#1b0b3a"]];
 const SC_ICO=[[/induct|électromag|magn|aimant|champ/i,"🧲"],[/altern|moteur|machine|turbine/i,"⚙️"],[/calcul|exercice|formule|rendement|math|chiffr/i,"🧮"],[/photovolta|solaire|soleil|solar/i,"☀️"],[/semi|silicium|bande|puce|transistor/i,"🔬"],[/énerg|energ|électri|electri|courant|puissance/i,"⚡"],[/compta|bilan|compte|financ|invest|capital|budget|bourse/i,"📊"],[/histoir|guerre|révolution|siècle|empire|histor/i,"🏛️"],[/géo|monde|pays|europe|carte|geo/i,"🌍"],[/science|chimi|biolog|cell|atom/i,"🧪"],[/art|cinéma|film|musique|peinture|litt/i,"🎨"],[/sport|jeu|game/i,"🏅"],[/popul|politi|démocra|élection|etat|état|pouvoir|gouvern/i,"🗳️"],[/social|sociolog|classe|culture|société|norme|groupe|famille|école|travail/i,"👥"],[/droit|loi|justice|jurid/i,"⚖️"],[/langue|mot|gramm|anglais|english|vocab/i,"💬"]];
 const SC_FALL=["📚","💡","🎯","🧠","✨","🔍","🚀","🧩"];
-function scIcon(s,i){for(const t of [SESS[s]||"",BANK.tags&&BANK.tags[s]||""])for(const [re,e] of SC_ICO)if(re.test(t))return e;return SC_FALL[i%SC_FALL.length]}
+function scIcon(s,i){for(const t of [(BANK.sess0||SESS)[s]||"",(BANK.tags0||BANK.tags||{})[s]||""])for(const [re,e] of SC_ICO)if(re.test(t))return e;return SC_FALL[i%SC_FALL.length]}
 function renderShowcase(){
   const g=$("scGrid");if(!g||!BANK)return;g.textContent="";
   const st=fcStore(),cnt={};
