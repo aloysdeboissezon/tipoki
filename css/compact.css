@@ -340,10 +340,11 @@
 
 /* ESADE collection toggle */
 #pickPanel .steph{align-items:center}
-.esade-btn{margin-left:auto;border:2px solid var(--line);background:var(--card);border-radius:12px;padding:7px 10px;cursor:pointer;line-height:1;transition:background .15s,border-color .15s,transform .1s}
-.esade-btn:active{transform:scale(.96)}
-.esade-mark{font:800 15px/1 Georgia,"Times New Roman",serif;letter-spacing:.18em;color:#003A70;padding-left:.18em}
-.esade-btn[aria-pressed=true]{background:#003A70;border-color:#003A70}
-.esade-btn[aria-pressed=true] .esade-mark{color:#fff}
-@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .esade-mark{color:#9CC4EE}:root:not([data-theme=light]) .esade-btn[aria-pressed=true]{background:#2B6CB0;border-color:#2B6CB0}:root:not([data-theme=light]) .esade-btn[aria-pressed=true] .esade-mark{color:#fff}}
-:root[data-theme=dark] .esade-mark{color:#9CC4EE}:root[data-theme=dark] .esade-btn[aria-pressed=true]{background:#2B6CB0;border-color:#2B6CB0}:root[data-theme=dark] .esade-btn[aria-pressed=true] .esade-mark{color:#fff}
+.esade-btn{margin-left:auto;flex:none;border:0;background:none;padding:3px;border-radius:12px;cursor:pointer;line-height:0;position:relative;transition:transform .1s,box-shadow .15s}
+.esade-btn:active{transform:scale(.94)}
+.esade-logo{display:block;width:28px;height:28px;border-radius:7px;opacity:.8;transition:opacity .15s}
+.esade-btn:hover .esade-logo,.esade-btn:focus-visible .esade-logo{opacity:1}
+.esade-btn:focus-visible{outline:2px solid var(--hl);outline-offset:1px}
+.esade-btn[aria-pressed=true]{box-shadow:0 0 0 2px var(--hl)}
+.esade-btn[aria-pressed=true] .esade-logo{opacity:1}
+.esade-btn[aria-pressed=true]::after{content:"";position:absolute;right:-3px;top:-3px;width:11px;height:11px;border-radius:50%;background:#16a34a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 6.2l2 2 4-4.4' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat;border:1.5px solid var(--card,#fff)}
