@@ -197,7 +197,7 @@ var FR={
 "Time per question":"Temps par question",
 "Create game":"Créer la partie",
 "Quiz":"Quiz",
-"ESADE quizzes ({n})":"Quiz ESADE ({n})","Show only the ESADE quizzes":"Voir seulement les quiz ESADE","ESADE quizzes":"Quiz ESADE","All quizzes ({n})":"Tous les quiz ({n})",
+"ESADE":"ESADE","ESADE quizzes ({n})":"Quiz ESADE ({n})","Show only the ESADE quizzes":"Voir seulement les quiz ESADE","ESADE quizzes":"Quiz ESADE","All quizzes ({n})":"Tous les quiz ({n})",
 "What do you want to revise?":"Que veux-tu réviser ?",
 "{n} of {m} selected":"{n} sur {m} sélectionnés",
 "Select all":"Tout sélectionner",
