@@ -200,7 +200,7 @@ function show(id){["home","topic","make","lobby","question","reveal","end","card
   $("langBtn").hidden=!(id==="home"||id==="topic");   // switching reloads the page, so only offer it between games
   if(id==="home"||id==="topic")renderProgressUI();
   const rslot=id==="home"?$("resumeHome"):id==="topic"?$("resumeTopic"):null;if(rslot){if($("resumeCard").parentNode!==rslot)rslot.appendChild($("resumeCard"));renderResume()}
-  $("status").textContent=code?(tl("Game {code}",{code})):(mode==="solo"?"Solo":"");window.scrollTo(0,0)}
+  $("status").textContent=code?(tl("Game {code}",{code})):(mode==="solo"?tl("Solo"):"");window.scrollTo(0,0)}
 // two players of one room with the same name AND the same country get "(2)", "(3)"... in order of arrival (same result on every phone)
 let _nm={p:null,m:{}};
 function dupMap(){if(_nm.p===P)return _nm.m;const g={},m={};

@@ -5,9 +5,9 @@
 // when you change an English sentence there or in the JS, change its key below too, or French visitors see the English.
 // A key can start with "context|" when the same English word needs two French ones (e.g. "verdict|Wrong").
 // Quizzes are never translated: their questions stay in the quiz's own language.
-// Spanish lives in js/i18n-es.js (same keys, loaded first). Same rules: a new English text needs a key in both FR and ES.
+// Spanish lives in js/i18n-es.js and Korean in js/i18n-ko.js (same keys, loaded first). Same rules: a new English text needs a key in FR, ES and KO.
 // The choice is saved per device in "tpk-lang"; without one, the browser's language decides.
-var LANGS=["en","fr","es"];
+var LANGS=["en","fr","es","ko"];
 var LANG=(function(){
   var s=null;try{s=localStorage.getItem("tpk-lang")}catch(e){}
   if(LANGS.indexOf(s)>=0)return s;
@@ -15,10 +15,11 @@ var LANG=(function(){
   for(var i=0;i<l.length;i++){var c=String(l[i]).slice(0,2).toLowerCase();if(LANGS.indexOf(c)>=0)return c}
   return "en";
 })();
-var LOCALE={en:"en-US",fr:"fr-FR",es:"es-ES"}[LANG];
-var DATELOC={en:"en-GB",fr:"fr-FR",es:"es-ES"}[LANG];
+var LOCALE={en:"en-US",fr:"fr-FR",es:"es-ES",ko:"ko-KR"}[LANG];
+var DATELOC={en:"en-GB",fr:"fr-FR",es:"es-ES",ko:"ko-KR"}[LANG];
 
 var FR={
+"Solo":"Solo",
 // page
 "qwebbo · Learn, compete, master":"qwebbo · Apprends, défie, maîtrise",
 // header
@@ -693,7 +694,7 @@ var FR={
 
 // French typography: a non-breaking space before ? ! : ; » and after «, so they never start a line
 function frType(s){if(LANG!=="fr")return s;return s.replace(/ ([?!:;»])/g," $1").replace(/« /g,"« ")}
-var DICT=LANG==="fr"?FR:(LANG==="es"&&typeof ES!=="undefined"?ES:null);   // null = English
+var DICT=LANG==="fr"?FR:(LANG==="es"&&typeof ES!=="undefined"?ES:(LANG==="ko"&&typeof KO!=="undefined"?KO:null));   // null = English
 var tlMissing=new Set();   // English texts with no French yet (handy in the console: [...tlMissing])
 function tl(s,vars){
   var key=s,bar=s.indexOf("|");if(bar>0)s=s.slice(bar+1);
@@ -703,8 +704,8 @@ function tl(s,vars){
 }
 function fmtN(n){try{return Number(n).toLocaleString(LOCALE)}catch(e){return String(n)}}
 // one decimal, "2.5" in English, "2,5" in French
-function fmtDec(x){var s=(Math.round(x*10)/10).toString();return LANG==="en"?s:s.replace(".",",")}
-function ordinal(n){if(LANG==="es")return String(n);if(LANG==="fr")return n===1?"1er":n+"e";const v=n%100;return n+(v>=11&&v<=13?"th":["th","st","nd","rd"][n%10]||"th")}
+function fmtDec(x){var s=(Math.round(x*10)/10).toString();return LANG==="fr"||LANG==="es"?s.replace(".",","):s}
+function ordinal(n){if(LANG==="es")return String(n);if(LANG==="ko")return n+"위";if(LANG==="fr")return n===1?"1er":n+"e";const v=n%100;return n+(v>=11&&v<=13?"th":["th","st","nd","rd"][n%10]||"th")}
 
 // translates the text already written in the page (index.html, or a block built from HTML)
 function tpkTranslate(root){
@@ -735,7 +736,7 @@ if(DICT){
   tpkTranslate(document.body);
 }
 // header switch: a small menu with the three languages (the button shows the current one)
-var LANG_NAMES={en:"English",fr:"Français",es:"Español"};
+var LANG_NAMES={en:"English",fr:"Français",es:"Español",ko:"한국어"};
 function tpkLangPick(){   // the language menu, built on demand (also used by the Options page)
   return LANGS.map(function(c){var b=document.createElement("button");b.type="button";b.className="chip lang-opt";b.textContent=LANG_NAMES[c];b.lang=c;
     b.setAttribute("aria-pressed",c===LANG?"true":"false");b.onclick=function(){if(c!==LANG)tpkSetLang(c)};return b});

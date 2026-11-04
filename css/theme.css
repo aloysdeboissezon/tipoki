@@ -67,6 +67,8 @@ input[type=text],textarea,.qsearch input{background:var(--field,#FAFAFD)}
 /* French interface: the tags drawn in CSS (the English ones are in style.css / exam.css) */
 html[lang="es"] .tile.right::after{content:"Respuesta correcta"}
 html[lang="es"] .tile.mine::after,html[lang="es"] .ex-tiles .tile.sel::after{content:"Tu respuesta"}
+html[lang="ko"] .tile.right::after{content:"정답"}
+html[lang="ko"] .tile.mine::after,html[lang="ko"] .ex-tiles .tile.sel::after{content:"내 답"}
 html[lang="fr"] .tile.right::after{content:"Bonne réponse"}
 html[lang="fr"] .tile.mine::after,html[lang="fr"] .ex-tiles .tile.sel::after{content:"Ta réponse"}
 
