@@ -2,7 +2,7 @@
 // Usage: serve the repo with the test server (PORT=8765 node tests/server.js) then `node tools/make-pdfs.js [ids]`. Needs Playwright.
 // ESADE quizzes (api/_esade/) are not public files: their PDF is written as a base64 module in api/_esade/pdf/<id>.js instead of sheets/<id>.pdf.
 const {chromium}=require('playwright');const {isPrivate}=require('./bankpath');const fs=require('fs');const path=require('path');
-const ids=process.argv.slice(2).length?process.argv.slice(2):['socio','populism','energie','compta2','regression'];
+const ids=process.argv.slice(2).length?process.argv.slice(2):['socio','populism','energie','structure','compta2','regression'];
 const STUB=require('../tests/helpers').FAKE_SUPABASE;   // the same fake Supabase the tests use
 (async()=>{
   const b=await chromium.launch();fs.mkdirSync(path.join(__dirname,'..','sheets'),{recursive:true});
