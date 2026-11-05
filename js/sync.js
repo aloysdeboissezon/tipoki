@@ -140,7 +140,7 @@ function renderEntry(){
     acc.innerHTML=PERSON+'<span class="bt">'+tl("Sign in")+'</span>';
     if(nudgeOff())card.hidden=true;
     else{card.hidden=false;
-      card.innerHTML='<div class="acc-ico" aria-hidden="true">'+PERSON+'</div><div class="acc-main"><b>'+tl("Save your progress")+'</b><span>'+tl("Keep your scores on every device.")+'</span></div><div class="acc-act"><button type="button" class="btn" id="accGo">'+tl("Sign in")+'</button><button type="button" class="linkbtn" id="accNo" aria-label="'+tl("Not now")+'" title="'+tl("Not now")+'">×</button></div>';
+      card.innerHTML='<div class="acc-ico" aria-hidden="true">'+PERSON+'</div><div class="acc-main"><b>'+tl("Save your progress")+'</b><span>'+tl("Optional: keep your scores on every device.")+'</span></div><div class="acc-act"><button type="button" class="btn" id="accGo">'+tl("Sign in")+'</button><button type="button" class="linkbtn" id="accNo" aria-label="'+tl("Not now")+'" title="'+tl("Not now")+'">×</button></div>';
       card.querySelector("#accGo").onclick=()=>openDlg(state==="expired"?"in":"new");
       card.querySelector("#accNo").onclick=()=>{put(NUDGE,String(Date.now()));card.hidden=true}}}
 }

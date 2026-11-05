@@ -68,7 +68,7 @@ function renderShowcase(){
   const st=fcStore(),cnt={};
   ALL_S.forEach(s=>cnt[s]={q:0,f:0,k:0});
   Q.forEach(q=>{if(cnt[q.s])cnt[q.s].q++});TQ.forEach(q=>{if(cnt[q.s])cnt[q.s].q++});
-  (BANK.facts||[]).forEach(f=>{const c=cnt[Number(f[0])];if(c){c.f++;if(st[f[3]]===1)c.k++}});
+  (BANK.facts||[]).forEach(f=>{const c=cnt[Number(f[0])];if(c){c.f++;if(st[fk(f)]===1)c.k++}});
   ALL_S.forEach((s,i)=>{
     const [c1,c2,ink]=SC_PAL[i%SC_PAL.length],c=cnt[s],on=settings.sess.has(s);
     const b=el("button","sctile");b.type="button";b.setAttribute("aria-pressed",on);

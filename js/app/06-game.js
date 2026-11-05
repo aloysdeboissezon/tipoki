@@ -154,7 +154,7 @@ function renderReveal(){
     if(mode==="multi")b.appendChild(el("span","cnt",tl(counts[k]===1?"{n} player":"{n} players",{n:counts[k]})));
     box.appendChild(b)});
   $("rExplBox").hidden=!q.e;TipokiWhy.fill(q,$("rExplBox"),$("rExpl"),$("rExplMore"));
-  const wn=$("rWhyNot"),mine=a&&!ok?(typed?a.txt:a.c!=null?q.o[item.o[a.c]]:""):"",why=mine?TipokiWhy.whyNot(BANK&&BANK.facts,mine):"";
+  const wn=$("rWhyNot"),mine=a&&!ok?(typed?a.txt:a.c!=null?q.o[item.o[a.c]]:""):"",why=mine?TipokiWhy.whyNot(BANK&&(BANK.factsEn||BANK.facts),mine):"";
   wn.hidden=!why;wn.textContent=why?tl("Your answer: ")+why:"";
   {const all=totals(G.qi),prev=mode==="multi"&&G.qi>0?totals(G.qi-1).map(r=>r.id):null;
     all.forEach((r,i)=>{r.mv=prev&&prev.includes(r.id)?prev.indexOf(r.id)-i:0});

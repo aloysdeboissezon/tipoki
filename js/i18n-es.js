@@ -556,7 +556,7 @@ var ES={
 "Create account":"Crear cuenta",
 "Sign in to keep your scores, mistakes and flashcards on every device.":"Inicia sesión para tener tus puntuaciones, errores y flashcards en todos tus dispositivos.",
 "Not now":"Ahora no",
-"Keep your scores on every device.":"Tus puntuaciones en todos tus dispositivos.",
+"Optional: keep your scores on every device.":"Opcional: tus puntuaciones en todos tus dispositivos.",
 "Skip":"Omitir",
 "qwebbo – Quizzes and flashcards from your course notes":"qwebbo – Quizzes y flashcards a partir de tus apuntes",
 "qwebbo turns your course notes into quizzes and flashcards. Study solo, play live with friends, and prepare your exams.":"qwebbo convierte tus apuntes en quizzes y flashcards. Estudia solo, juega en directo con tus amigos y prepara tus exámenes.",

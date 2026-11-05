@@ -579,7 +579,7 @@ var FR={
 "Create account":"Créer le compte",
 "Sign in to keep your scores, mistakes and flashcards on every device.":"Connecte-toi pour retrouver tes scores, erreurs et flashcards sur tous tes appareils.",
 "Not now":"Plus tard",
-"Keep your scores on every device.":"Garde tes scores sur tous tes appareils.",
+"Optional: keep your scores on every device.":"Facultatif : garde tes scores sur tous tes appareils.",
 "Skip":"Passer",
 "qwebbo – Quizzes and flashcards from your course notes":"qwebbo – Quiz et flashcards à partir de tes cours",
 "qwebbo turns your course notes into quizzes and flashcards. Study solo, play live with friends, and prepare your exams.":"qwebbo transforme tes cours en quiz et flashcards. Révise seul, joue en direct avec tes amis et prépare tes examens.",

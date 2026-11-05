@@ -139,11 +139,20 @@ function normBank(b){
   const facts=(b.facts||[]).map(f=>Array.isArray(f)?f:[f.s,f.cat||"",f.kind==="p"?"p":"c",f.term,f.def,(f.aliases||[]).join(";")]);
   return {...b,Q,TQ,facts};
 }
+// a fact's stable id for saved progress: its original term, so cards keep their history when the interface language changes
+function fk(f){return f[6]||f[3]}
+// cards follow the interface language when the quiz ships a translation (factsTr: parallel to facts); otherwise they stay in the quiz's language
+function factsForLang(b){
+  const tr=b.factsTr&&b.factsTr[LANG];
+  if(!tr||!b.facts||tr.length!==b.facts.length)return b;
+  return {...b,factsEn:b.facts,facts:b.facts.map((f,i)=>[f[0],f[1],f[2],tr[i][0],tr[i][1],f[5],f[3]])};
+}
 function lsKey(k){return BANK.id==="socio"?"socio-"+k:"tpk-"+k+"-"+BANK.id}
 function loadBank(raw){
   const b=qmeta(normBank(raw));   // title, subject and chapter names in the interface language
   BANK=b;SESS={...b.sess};Q=b.Q.slice();TQ=b.TQ.slice();NHQ=Q.length;NHT=TQ.length;
   if(b.facts&&b.facts.length)expandFacts(b.facts,b.lang);
+  BANK=factsForLang(b);
   diffInit();
   ALL_S=Object.keys(SESS).map(Number).sort((x,y)=>x-y);
   settings.sess=new Set(ALL_S);
