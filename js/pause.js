@@ -36,7 +36,7 @@
   function save(){
     if(!BANK||!FC.deck.length)return;
     if(FC.i>=FC.deck.length){drop();return}   // round finished
-    if(FC.i>0)lsSet(KEY,JSON.stringify({bank:BANK.id,terms:FC.deck.map(f=>f[3]),i:FC.i,res:FC.res,side:settings.fcSide,at:Date.now()}));
+    if(FC.i>0)lsSet(KEY,JSON.stringify({bank:BANK.id,terms:FC.deck.map(fk),i:FC.i,res:FC.res,side:settings.fcSide,at:Date.now()}));
   }
   const oCard=renderCard;renderCard=function(){oCard();save()};
   const box=document.createElement("div");box.className="fc-resume";box.hidden=true;
@@ -49,7 +49,7 @@
   }
   go.onclick=()=>{
     const s=load();if(!s||!BANK||s.bank!==BANK.id)return;
-    const by={};(BANK.facts||[]).forEach(f=>by[f[3]]=f);
+    const by={};(BANK.facts||[]).forEach(f=>by[fk(f)]=f);
     const deck=s.terms.map(t=>by[t]).filter(Boolean);if(deck.length!==s.terms.length){drop();render();return}   // the quiz changed since: start fresh
     settings.fcSide=s.side||settings.fcSide;
     FC={deck,i:Math.min(s.i,deck.length-1),flip:false,res:s.res||{}};

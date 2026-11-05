@@ -568,7 +568,7 @@ var KO={
 "Create account":"계정 만들기",
 "Sign in to keep your scores, mistakes and flashcards on every device.":"로그인하면 점수, 오답, 플래시카드를 모든 기기에서 이어서 쓸 수 있어요.",
 "Not now":"나중에",
-"Keep your scores on every device.":"점수를 모든 기기에서 이어가세요.",
+"Optional: keep your scores on every device.":"선택 사항: 점수를 모든 기기에서 이어가세요.",
 "Skip":"건너뛰기",
 "Set up your profile":"프로필 설정",
 "Your name and photo show next to your scores when you play with friends. You can change them any time.":"친구들과 플레이할 때 점수 옆에 이름과 사진이 표시돼요. 언제든 바꿀 수 있어요.",

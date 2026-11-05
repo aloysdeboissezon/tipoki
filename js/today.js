@@ -3,7 +3,7 @@
 (function(){
   const panel=$("todayPanel");if(!panel)return;
   const RUN=10;
-  function dueCards(){const sr=fcSrStore();return (BANK.facts||[]).filter(f=>{const e=sr[f[3]];return e&&e.d<=Date.now()})}
+  function dueCards(){const sr=fcSrStore();return (BANK.facts||[]).filter(f=>{const e=sr[fk(f)];return e&&e.d<=Date.now()})}
   function weakKeys(){return wkList().sort((a,b)=>b.score-a.score).slice(0,RUN).map(x=>x.k)}
   function render(){
     if(!BANK){panel.hidden=true;return}

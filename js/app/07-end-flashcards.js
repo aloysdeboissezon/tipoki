@@ -58,19 +58,19 @@ function fcStore(){try{return JSON.parse(lsGet(lsKey("cards"))||"{}")}catch(e){r
 // spaced repetition (Leitner boxes) kept apart from the 1/0 above: term -> {b: box, d: due timestamp, t: last review}
 const FC_GAPS=[0,1,3,7,16,35],FC_SOON=10*60e3,FC_DAY=864e5;   // days between reviews per box; a missed card is back in 10 min
 function fcSrStore(){try{return JSON.parse(lsGet(lsKey("cards-sr"))||"{}")}catch(e){return {}}}
-function fcDue(f,sr){const e=sr[f[3]];return !e||e.d<=Date.now()}   // never scheduled (new, or studied before this update) = due
-function fcSchedule(f,ok){const sr=fcSrStore(),st=fcStore(),e=sr[f[3]],now=Date.now();
-  let b=e?e.b:(st[f[3]]===1?1:0);b=ok?Math.min(b+1,FC_GAPS.length-1):0;
-  sr[f[3]]={b,d:now+(ok?FC_GAPS[b]*FC_DAY:FC_SOON),t:now};lsSet(lsKey("cards-sr"),JSON.stringify(sr))}
+function fcDue(f,sr){const e=sr[fk(f)];return !e||e.d<=Date.now()}   // never scheduled (new, or studied before this update) = due
+function fcSchedule(f,ok){const sr=fcSrStore(),st=fcStore(),e=sr[fk(f)],now=Date.now();
+  let b=e?e.b:(st[fk(f)]===1?1:0);b=ok?Math.min(b+1,FC_GAPS.length-1):0;
+  sr[fk(f)]={b,d:now+(ok?FC_GAPS[b]*FC_DAY:FC_SOON),t:now};lsSet(lsKey("cards-sr"),JSON.stringify(sr))}
 function fcWhen(d){const m=Math.round((d-Date.now())/6e4);return m<=0?tl("now"):m<60?tl("in {n} min",{n:m}):m<2880?tl("in {n} h",{n:Math.round(m/60)}):tl("in {n} days",{n:Math.round(m/1440)})}
-function fcMark(f,ok){fcSchedule(f,ok);const st=fcStore();st[f[3]]=ok?1:0;lsSet(lsKey("cards"),JSON.stringify(st));markStudyDay();addDaily(1)}
+function fcMark(f,ok){fcSchedule(f,ok);const st=fcStore();st[fk(f)]=ok?1:0;lsSet(lsKey("cards"),JSON.stringify(st));markStudyDay();addDaily(1)}
 function fcPool(){return (BANK.facts||[]).filter(f=>settings.sess.has(Number(f[0])))}
 function fcPick(){const st=fcStore(),pool=fcPool();
   if(settings.fcSet==="due"){const sr=fcSrStore();return pool.filter(f=>fcDue(f,sr))}
-  return settings.fcSet==="todo"?pool.filter(f=>st[f[3]]!==1):settings.fcSet==="bad"?pool.filter(f=>st[f[3]]===0):pool}
+  return settings.fcSet==="todo"?pool.filter(f=>st[fk(f)]!==1):settings.fcSet==="bad"?pool.filter(f=>st[fk(f)]===0):pool}
 function renderCardsPanel(){
   const has=!!(BANK&&BANK.facts&&BANK.facts.length);$("cardsPanel").hidden=$("cardsJump").hidden=!has;if(!has)return;
-  const st=fcStore(),pool=fcPool(),nTodo=pool.filter(f=>st[f[3]]!==1).length,nBad=pool.filter(f=>st[f[3]]===0).length;
+  const st=fcStore(),pool=fcPool(),nTodo=pool.filter(f=>st[fk(f)]!==1).length,nBad=pool.filter(f=>st[fk(f)]===0).length;
   const sr=fcSrStore(),nDue=pool.filter(f=>fcDue(f,sr)).length;
   if(settings.fcSet==="bad"&&!nBad||settings.fcSet==="due"&&!nDue)settings.fcSet="all";
   $("fcUnits").textContent=unit(1);
@@ -79,7 +79,7 @@ function renderCardsPanel(){
   const sets=[["due",tl("Due now ({n})",{n:nDue}),tl("Cards you have not seen, plus the ones whose review time has come")],["all",tl("All ({n})",{n:pool.length})],["todo",tl("Not known yet ({n})",{n:nTodo}),tl("Skips the cards you marked “Got it”")]];
   if(nBad)sets.push(["bad",tl("To review ({n})",{n:nBad}),tl("Only the cards you marked “Not yet”")]);
   chips("fcSetChips","fcSet",sets);
-  const later=pool.map(f=>sr[f[3]]).filter(e=>e&&e.d>Date.now()).map(e=>e.d);
+  const later=pool.map(f=>sr[fk(f)]).filter(e=>e&&e.d>Date.now()).map(e=>e.d);
   $("fcNext").textContent=!nDue&&later.length?tl("All caught up! Next review {when}.",{when:fcWhen(Math.min(...later))}):"";
   chips("fcOrdChips","fcOrd",[["shuffle",tl("Shuffled")],["course",tl("Course order")]]);
   const n=fcPick().length;$("fcGo").textContent=n?tl(n>1?"Study {n} cards":"Study 1 card",{n}):tl("Study flashcards");
