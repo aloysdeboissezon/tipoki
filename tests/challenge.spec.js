@@ -17,7 +17,7 @@ test.describe("challenge a friend by link", () => {
     await expect(page.locator("#status")).toContainText("Challenge link copied");
     const copied = await page.evaluate(() => navigator.clipboard.readText());
     const link = copied.match(/https?:\/\/\S+/)[0];
-    expect(link).toContain("?quiz=socio&ch=");
+    expect(link).toContain("?quiz=socio&lang=en&ch=");
     expect(copied).toContain("4 / 5");
 
     // the friend opens the link on another device (clean storage)

@@ -71,7 +71,7 @@
   }
   function linkFor(){
     const r=myResult();
-    return location.origin+location.pathname+"?quiz="+BANK.id+"&ch="+encode({deck:G.deck,name:myNick(),T:G.T,...r});
+    return location.origin+location.pathname+"?quiz="+BANK.id+"&lang="+LANG+"&ch="+encode({deck:G.deck,name:myNick(),T:G.T,...r});
   }
   async function share(){
     const r=myResult(),u=linkFor(),text=tl("{name} challenges you: can you beat {c} / {n} on {title}?",{name:myNick(),c:r.c,n:r.n,title:BANK.title});

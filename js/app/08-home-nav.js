@@ -1,7 +1,7 @@
 // ---------- quiz maker ----------
 // AI generation needs the ANTHROPIC_API_KEY secret on Supabase; until then quizzes are added by hand and the upload form is hidden
 const MAKER_ON=false;
-function quizUrl(id){return location.origin+location.pathname+"?quiz="+id}
+function quizUrl(id){return location.origin+location.pathname+"?quiz="+id+"&lang="+LANG}
 function setQuizParam(){try{history.replaceState(null,"",BANK.id==="socio"?location.pathname:"?quiz="+BANK.id)}catch(e){}}
 // the quiz screen shows one way of studying at a time (quiz / flashcards / exam) so it stays short on a phone
 function setMode(m){
