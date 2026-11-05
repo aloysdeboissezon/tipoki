@@ -54,7 +54,7 @@ test.describe("About, contact and legal pages", () => {
   }
 
   test("no unfinished placeholder is visible on any page, and the legal notice names the publisher and hosts", async ({ page }) => {
-    for (const l of ["en", "fr", "es"]) {
+    for (const l of ["en", "fr", "es", "ko"]) {
       await page.addInitScript(l => localStorage.setItem("tpk-lang", l), l);
       for (const p of PAGES) {
         await page.goto(`/${p}.html`);
@@ -65,6 +65,17 @@ test.describe("About, contact and legal pages", () => {
       await expect(page.locator("main .lang:visible")).toContainText("qwebbo");
       await expect(page.locator("main .lang:visible")).toContainText("Vercel");
       await expect(page.locator("main .lang:visible")).toContainText("Supabase");
+    }
+  });
+
+  test("every page has a real Korean version, no English fallback", async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem("tpk-lang", "ko"));
+    for (const p of PAGES) {
+      await page.goto(`/${p}.html`);
+      await expect(page.locator("html")).not.toHaveClass(/fb-en/);
+      await expect(page.locator("main .lang:visible")).toHaveCount(1);
+      await expect(page.locator("main .lang:visible")).toHaveAttribute("lang", "ko");
+      expect(await page.title()).toMatch(/[가-힣]/);
     }
   });
 
