@@ -34,5 +34,15 @@ TQ.push({s:2,q:"A row has the pattern: 🍎 🍎 🍎 🍎 🍅 🍎. Which posi
 TQ.push({s:4,q:"Complete the doubling: 3, 6, 12, 24, ? (type the number)",a:["48"],e:"Each number doubles, so 24 × 2 = 48.",d:2});
 TQ.push({s:4,q:"What is the next letter? A, C, E, G, ?",a:["I"],e:"Skip one letter each time: A, C, E, G, I.",d:2});
 
+// ===== More questions =====
+nx("What comes next? 🟦 🟦 🟥 🟦 🟦 🟥 🟦 🟦 ?","Red square",["Blue square","Green square","Yellow square"],"Two blue squares then one red, repeated.",1);
+nx("What comes next? ⭐ 🌙 ⭐ 🌙 ⭐ ?","Moon",["Star","Sun","Cloud"],"Star and moon alternate.",1);
+nx("What comes next? 🍎 🍌 🍒 🍎 🍌 ?","Cherries",["Apple","Banana","Grapes"],"Apple, banana, cherries repeat.",1);
+nx("What comes next? 🔴 🟠 🟡 🟢 🔵 ?","Purple circle",["Red circle","Black circle","White circle"],"The circles follow rainbow order.",2);
+nx("What comes next? 1️⃣ 3️⃣ 5️⃣ 7️⃣ ?","9",["8","10","11"],"The odd numbers go up by two.",2);
+nx("What comes next? 🌱 🌿 🌳 🌱 🌿 ?","Tree",["Seed","Leaf","Flower"],"Seedling, plant, tree repeat.",1);
+nx("What comes next? 🔼 ▶️ 🔽 ◀️ 🔼 ?","Right arrow",["Up arrow","Left arrow","Down arrow"],"The arrows rotate clockwise: up, right, down, left.",2);
+nx("What comes next? 🟡 🟡 🔴 🟡 🟡 🟡 🔴 🟡 🟡 🟡 🟡 ?","Red circle",["Yellow circle","Blue circle","Green circle"],"Each red comes after one more yellow than the last time.",3);
+
 return {id:"oddemoji",title:"Odd Emoji Out",kw:"odd emoji out spot the difference eye test find the different look alike pattern brain game fun tiktok",subject:"Spot the look-alike in 5 seconds: how sharp are your eyes?",lang:"en",sess:SESS,tags:TAGS,unit:["level","levels","a level"],balance:true,Q,TQ};
 })();

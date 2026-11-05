@@ -20,7 +20,6 @@ m(1,"Zelda","What is the name of the kingdom in The Legend of Zelda?","Hyrule",[
 m(1,"Pokémon","What type is Pikachu?","Electric",["Fire","Water","Normal"],"Pikachu evolves into Raichu.",1);
 m(1,"Pokémon","How many Pokémon were in the original Generation 1 games?","151",["100","251","300"],"The first games, Pokémon Red and Green, came out in 1996 in Japan.",2);
 m(1,"Pokémon","Which Pokémon does Ash Ketchum start with?","Pikachu",["Charmander","Bulbasaur","Squirtle"],"Ash is from Pallet Town.",1);
-m(1,"Pokémon","What do you throw to catch a Pokémon?","A Poké Ball",["A net","A rope","A cage"],"Poké Balls come in several types.",1);
 m(1,"Pokémon","Which game made Pokémon a worldwide AR craze in 2016?","Pokémon GO",["Pokémon Snap","Pokémon Sleep","Pokkén"],"Pokémon GO was made by Niantic.",1);
 vf(1,"Pikachu evolves from Pichu.",true,"Pichu evolves into Pikachu, which evolves into Raichu.",2);
 vf(1,"The Legend of Zelda games star Zelda as the playable hero.",false,"The hero is Link; Zelda is the princess.",1);
@@ -141,6 +140,48 @@ vf(4,"Sega once made home video game consoles.",true,"The Master System, Mega Dr
 
 ty(1,"Which pink Pokémon can sing you to sleep? (one word)",["Jigglypuff"],"Jigglypuff’s lullaby puts everybody to sleep, then it draws on faces.",2);
 ty(4,"Which company created the Game Boy? (one word)",["Nintendo"],"The Game Boy launched in 1989 and made handheld gaming mainstream.",1);
+
+// ===== More questions =====
+m(1,"Nintendo","Which character is the princess Mario usually rescues?","Princess Peach",["Princess Zelda","Princess Daisy","Rosalina"],"Peach is captured by Bowser in most games.",1);
+m(1,"Nintendo","Which Nintendo game series features a hero named Link?","The Legend of Zelda",["Metroid","Kid Icarus","Fire Emblem"],"Link is the hero; Zelda is the princess.",1);
+m(1,"Pokémon","Which Pokémon evolves from Charmander?","Charmeleon",["Charizard","Bulbasaur","Squirtle"],"Charmeleon evolves into Charizard.",2);
+m(1,"Pokémon","Which Pokémon is a sleepy, large, blue-green bear-like creature that blocks roads?","Snorlax",["Slowpoke","Ursaring","Munchlax"],"Snorlax sleeps most of the day.",2);
+m(1,"Nintendo","Which Nintendo game lets you adopt villagers, catch fish and pay off a raccoon’s loan?","Animal Crossing",["Stardew Valley","Harvest Moon","Splatoon"],"Animal Crossing: New Horizons boomed in 2020.",1);
+vf(1,"Mario was originally called Jumpman.",true,"Mario first appeared in Donkey Kong (1981) as Jumpman.",2);
+vf(1,"Pikachu evolves from Raichu.",false,"Pikachu evolves into Raichu.",1);
+m(2,"Games","Which game has players build with blocks in a world made of cubes?","Minecraft",["Roblox","Terraria","Lego Worlds"],"Minecraft is the best-selling video game of all time.",1);
+m(2,"Games","Which battle royale game has a map with named areas like Tilted Towers?","Fortnite",["PUBG","Apex Legends","Call of Duty: Warzone"],"Fortnite launched in 2017.",1);
+m(2,"Games","Which game features a heroine named Ellie in a post-apocalyptic world?","The Last of Us",["Horizon Zero Dawn","Days Gone","Uncharted"],"The Last of Us was adapted into an HBO series.",2);
+m(2,"Games","In which game do you play as a monster hunter called Geralt?","The Witcher 3",["Skyrim","Dragon Age","Elden Ring"],"The Witcher 3 was released in 2015.",2);
+m(2,"Games","Which open-world game is set in the Wild West with Arthur Morgan?","Red Dead Redemption 2",["Grand Theft Auto V","Cyberpunk 2077","Far Cry 6"],"It was released by Rockstar in 2018.",2);
+m(2,"Games","Which game made by FromSoftware is known for its difficulty and the phrase “You died”?","Dark Souls",["Skyrim","Bloodborne","Hollow Knight"],"Dark Souls inspired the “Soulslike” genre.",2);
+m(2,"Games","Which 2020 indie game features a hell-escaping prince named Zagreus?","Hades",["Celeste","Hollow Knight","Cuphead"],"Hades won several Game of the Year awards.",3);
+m(2,"Games","Which game series features Master Chief?","Halo",["Gears of War","Destiny","Mass Effect"],"Halo is an Xbox franchise.",2);
+m(2,"Games","Which football simulation game series is made by EA?","FIFA / EA Sports FC",["Pro Evolution Soccer","Madden NFL","NBA 2K"],"EA Sports FC replaced the FIFA title in 2023.",2);
+m(2,"Games","Which free-to-play game lets players plant bombs and defuse them in a team shooter, from Riot Games?","Valorant",["Counter-Strike 2","Overwatch","Rainbow Six Siege"],"Valorant launched in 2020.",3);
+vf(2,"Fortnite was created by Epic Games.",true,"Epic Games also created Unreal Engine.",1);
+vf(2,"Minecraft was created by Valve.",false,"Minecraft was created by Markus “Notch” Persson and sold to Microsoft in 2014.",2);
+m(3,"Anime","Which anime features a boy named Goku?","Dragon Ball",["Naruto","One Piece","Bleach"],"Dragon Ball was created by Akira Toriyama.",1);
+m(3,"Anime","Which anime follows a young boy named Luffy who wants to become the Pirate King?","One Piece",["Fairy Tail","Hunter x Hunter","Bleach"],"One Piece is among the best-selling manga series.",1);
+m(3,"Anime","Which anime features titans attacking a walled city?","Attack on Titan",["Demon Slayer","Tokyo Ghoul","Fullmetal Alchemist"],"It was created by Hajime Isayama.",1);
+m(3,"Anime","Which Studio Ghibli film features a girl who works in a bathhouse for spirits?","Spirited Away",["My Neighbor Totoro","Howl’s Moving Castle","Princess Mononoke"],"Spirited Away won the Oscar for Best Animated Feature in 2003.",1);
+m(3,"Anime","Which anime features a boy with a scar who sells charcoal and fights demons to save his sister?","Demon Slayer",["Jujutsu Kaisen","Dr. Stone","My Hero Academia"],"The protagonist is Tanjiro Kamado.",1);
+m(3,"Anime","Which anime features a notebook that kills anyone whose name is written in it?","Death Note",["Code Geass","Monster","Steins;Gate"],"The main character is Light Yagami.",2);
+m(3,"Anime","Which anime features a student who can use Quirks to become a hero?","My Hero Academia",["Naruto","Bleach","Tokyo Revengers"],"The main hero is Izuku Midoriya.",2);
+m(3,"Anime","Which animated creature is the mascot of Studio Ghibli?","Totoro",["Pikachu","Doraemon","Hello Kitty"],"Totoro appears in the Ghibli logo.",1);
+m(3,"Anime","What is the name of the Japanese comics that anime is often based on?","Manga",["Kabuki","Haiku","Ukiyo-e"],"Manga is read from right to left.",1);
+vf(3,"Pokémon is based on an anime series first.",false,"Pokémon started as a video game in 1996, then the anime.",2);
+m(4,"History","Which company created Sonic the Hedgehog?","Sega",["Nintendo","Atari","Capcom"],"Sonic debuted in 1991.",1);
+m(4,"History","Which 1972 arcade game is considered the first commercially successful video game?","Pong",["Pac-Man","Space Invaders","Tetris"],"Pong was made by Atari.",2);
+m(4,"History","Which Russian-designed puzzle game is about falling blocks?","Tetris",["Columns","Bejeweled","Dr. Mario"],"Tetris was created by Alexey Pajitnov in 1984.",1);
+m(4,"History","Which handheld console launched in 1989 with Tetris?","Game Boy",["Game Gear","Lynx","Neo Geo Pocket"],"Game Boy was created by Nintendo.",2);
+m(4,"History","Which Nintendo console was released in 2006 with motion controls?","Wii",["Wii U","GameCube","DS"],"The Wii sold over 100 million units.",1);
+m(4,"History","Which Sega console was Sega’s last, released in 1998?","Dreamcast",["Saturn","Genesis","Game Gear"],"Sega stopped making consoles in 2001.",3);
+m(4,"History","Which global gaming event is held yearly in Los Angeles to show upcoming games?","E3",["Gamescom","PAX","BlizzCon"],"E3 was cancelled permanently in 2023.",3);
+vf(4,"The Nintendo Entertainment System came out in the 1980s.",true,"The NES launched in 1983 in Japan and 1985 in the US.",2);
+vf(4,"Sony made the Nintendo 64.",false,"Nintendo made the N64.",1);
+ty(1,"Which plumber is the mascot of Nintendo? (one word)",["Mario"],"Mario first appeared in 1981.",1);
+ty(2,"Which game sold the most copies of all time, built with blocks? (one word)",["Minecraft"],"Minecraft passed 300 million copies sold.",1);
 
 return {id:"gamer",title:"Gamer & Anime Challenge",kw:"gaming gamer anime manga mario pokemon zelda minecraft fortnite naruto one piece dragon ball nintendo playstation quiz",subject:"Mario, Pokémon, Minecraft, Fortnite and anime legends: are you a real gamer?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

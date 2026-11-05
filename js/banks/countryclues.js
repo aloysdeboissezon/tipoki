@@ -67,5 +67,37 @@ ty(2,"Which island country is famous for kangaroos and the Sydney Opera House? (
 ty(3,"Which North American country has a maple leaf on its flag? (one word)",["Canada"],"Canada.",1);
 ty(4,"Which African country is home of Mount Kilimanjaro and Zanzibar? (one word)",["Tanzania"],"Tanzania.",3);
 
+// ===== More questions =====
+c(1,"Portugal",["Spain","Italy","Greece"],"Its oldest bookshop in the world is in Lisbon","Fado music and pastel de nata come from here","Lisbon is its capital, on the Tagus river","Portugal’s pastel de nata is a custard tart.",1);
+c(1,"Switzerland",["Austria","Sweden","Germany"],"Has four national languages","Famous for chocolate, watches and banks","The Matterhorn stands on its border","Switzerland has German, French, Italian and Romansh as national languages.",1);
+c(1,"Greece",["Turkey","Italy","Cyprus"],"Has thousands of islands, only about 200 inhabited","Birthplace of democracy and the Olympic Games","Its capital is Athens, home of the Parthenon","The first Olympics were held in Olympia.",1);
+c(1,"Netherlands",["Belgium","Denmark","Germany"],"A quarter of its land is below sea level","Famous for tulips, windmills and cycling","Its capital is Amsterdam","Much of the country is reclaimed from the sea.",1);
+c(1,"Norway",["Sweden","Finland","Denmark"],"Awards the Nobel Peace Prize in its capital","Famous for fjords and the northern lights","Its capital is Oslo","The Nobel Peace Prize is awarded in Oslo.",2);
+c(1,"Ireland",["Scotland","Wales","Iceland"],"Its national symbol is a harp","Famous for shamrocks and Guinness","Its capital is Dublin","The harp is Ireland’s national emblem.",2);
+c(1,"Austria",["Switzerland","Germany","Hungary"],"Birthplace of Mozart","Famous for waltzes and Sachertorte","Its capital is Vienna","Mozart was born in Salzburg in 1756.",2);
+c(1,"Iceland",["Norway","Greenland","Finland"],"Has almost no mosquitoes","Famous for geysers, volcanoes and the Blue Lagoon","Its capital is Reykjavik","Iceland sits on the Mid-Atlantic Ridge.",2);
+c(2,"Japan",["China","South Korea","Thailand"],"Has more than 6,000 islands","Home of sushi, anime and bullet trains","Its capital is Tokyo","Japan’s shinkansen began in 1964.",1);
+c(2,"India",["Pakistan","Nepal","Sri Lanka"],"Has more than 20 officially recognised languages","Home of Bollywood and the Taj Mahal","Its capital is New Delhi","India is the most populous country in the world.",1);
+c(2,"Australia",["New Zealand","South Africa","Canada"],"Home to more kangaroos than people","Famous for the Great Barrier Reef and Uluru","Its capital is Canberra, not Sydney","Australia has about 40 million kangaroos.",1);
+c(2,"Thailand",["Vietnam","Cambodia","Malaysia"],"Never colonised by a European power","Known as the Land of Smiles, famous for pad thai","Its capital is Bangkok","Thailand is the only Southeast Asian country never colonised.",2);
+c(2,"South Korea",["Japan","China","North Korea"],"Has one of the fastest internet speeds in the world","Home of K-pop, kimchi and Samsung","Its capital is Seoul","Seoul is home to about 10 million people.",1);
+c(2,"New Zealand",["Australia","Fiji","Ireland"],"The first country to give women the vote in 1893","Home of the haka, kiwis and Lord of the Rings filming","Its capital is Wellington","Women voted there in 1893.",2);
+c(2,"China",["Japan","Vietnam","Mongolia"],"Invented paper, printing and gunpowder","Home of pandas and the Great Wall","Its capital is Beijing","The Great Wall is thousands of kilometres long.",1);
+c(3,"Argentina",["Chile","Uruguay","Brazil"],"Has the world’s widest avenue, 9 de Julio","Famous for tango, beef and Messi","Its capital is Buenos Aires","Messi led Argentina to win the World Cup in 2022.",1);
+c(3,"Peru",["Bolivia","Ecuador","Colombia"],"Home to the world’s highest navigable lake, shared with its neighbour","Famous for llamas, ceviche and the Inca","Machu Picchu is its most famous site","Machu Picchu was an Inca citadel.",1);
+c(3,"Cuba",["Jamaica","Dominican Republic","Haiti"],"Famous for vintage American cars","Home of salsa, cigars and Havana","The largest island in the Caribbean","Cuba is the largest Caribbean island.",1);
+c(3,"Chile",["Argentina","Peru","Bolivia"],"The longest north-south country in the world","Home of the Atacama Desert and Easter Island","Its capital is Santiago","Chile stretches about 4,300 km from north to south.",2);
+c(3,"Colombia",["Venezuela","Ecuador","Peru"],"Famous for coffee, emeralds and Shakira","Home of Gabriel García Márquez","Its capital is Bogotá","Shakira was born in Barranquilla.",2);
+c(4,"Egypt",["Sudan","Jordan","Libya"],"Home to the only surviving Wonder of the Ancient World","Famous for the Nile and the pharaohs","Its capital is Cairo","The Great Pyramid of Giza is the only surviving ancient wonder.",1);
+c(4,"South Africa",["Kenya","Namibia","Nigeria"],"Has three capital cities","Home to Nelson Mandela and Table Mountain","Home of the Springboks","South Africa has Pretoria, Cape Town and Bloemfontein as capitals.",2);
+c(4,"Morocco",["Tunisia","Algeria","Egypt"],"Home of the world’s oldest university still operating, in Fez","Famous for Marrakech and mint tea","Its capital is Rabat","The University of al-Qarawiyyin was founded in 859.",3);
+c(4,"Kenya",["Tanzania","Uganda","Ethiopia"],"Home of the Great Migration across the Maasai Mara","Famous for marathon runners and safaris","Its capital is Nairobi","Kenya’s runners are famous for long-distance records.",2);
+c(4,"Turkey",["Greece","Iran","Egypt"],"Spans two continents, Europe and Asia","Famous for kebabs, baklava and Cappadocia","Its largest city is Istanbul, but its capital is Ankara","Istanbul sits on the Bosphorus strait.",1);
+c(4,"Saudi Arabia",["Iraq","Oman","Jordan"],"Home to the cities of Mecca and Medina","Has the world’s largest sand desert, the Empty Quarter","Its capital is Riyadh","The Rub’ al Khali is the largest continuous sand desert.",2);
+c(4,"Israel",["Lebanon","Jordan","Egypt"],"Its capital is disputed, with Jerusalem as seat of government","Home of the Dead Sea","Founded as a state in 1948","The Dead Sea is the lowest point on land.",3);
+ty(1,"Which country is shaped like a boot? (one word)",["Italy"],"Italy is shaped like a boot.",1);
+ty(2,"Which Asian country is known as the Land of the Rising Sun? (one word)",["Japan"],"Nihon means origin of the sun.",1);
+ty(3,"Which South American country is home to Machu Picchu? (one word)",["Peru"],"Machu Picchu is an Inca site.",1);
+
 return {id:"countryclues",title:"Guess the Country in 3 Clues",kw:"guess the country clues geography world travel which country quiz tiktok countries capitals",subject:"Three clues, one country: how fast can you guess it?",lang:"en",sess:SESS,tags:TAGS,unit:["region","regions","a region"],balance:true,Q,TQ};
 })();

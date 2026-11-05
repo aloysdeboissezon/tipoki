@@ -126,5 +126,44 @@ m(4,"Slang","What does “AFK” mean in gaming?","Away from keyboard",["A fast 
 m(4,"Slang","If something is described as “cheugy”, it is…","Outdated or trying too hard to be trendy",["Very expensive","Very cheap","Extremely tasty"],"The word was popular on TikTok in 2021.",3);
 vf(4,"“Yeet” means to throw something with great force.",true,"The word spread from a 2014 viral dance and became a slang verb.",2);
 
+// ===== More questions =====
+m(1,"Apps","Which video platform is owned by Google and was founded in 2005?","YouTube",["Vimeo","Dailymotion","Twitch"],"YouTube was bought by Google in 2006 for about $1.65 billion.",1);
+m(1,"Apps","Which messaging app is known for disappearing photos and a ghost logo?","Snapchat",["Telegram","Signal","Viber"],"Snapchat was launched in 2011.",1);
+m(1,"Apps","Which company owns Instagram and WhatsApp?","Meta",["Google","Microsoft","Amazon"],"Meta was renamed from Facebook Inc. in 2021.",1);
+m(1,"Apps","Which professional social network was bought by Microsoft in 2016?","LinkedIn",["Xing","Indeed","Glassdoor"],"Microsoft paid about $26 billion.",1);
+m(1,"Apps","Which music streaming service launched in Sweden in 2008?","Spotify",["Deezer","Tidal","Pandora"],"Spotify was founded by Daniel Ek and Martin Lorentzon.",1);
+m(1,"Apps","Which app is used mainly for sharing short vertical videos, with a music note logo?","TikTok",["Likee","Triller","Dubsmash"],"TikTok became the most downloaded app in 2020.",1);
+m(1,"Apps","Which social network was started by Mark Zuckerberg in 2004?","Facebook",["Myspace","Friendster","Bebo"],"It started at Harvard.",1);
+m(1,"Apps","Which AI chatbot developed by OpenAI went viral in November 2022?","ChatGPT",["Siri","Alexa","Cortana"],"ChatGPT reached 100 million users in about two months.",1);
+m(1,"Apps","Which app lets you pay for rides and ride in cars hailed from your phone, founded in San Francisco in 2009?","Uber",["Lyft","Bolt","Cabify"],"Uber started as UberCab.",2);
+m(1,"Apps","Which language-learning app has a green owl mascot?","Duolingo",["Babbel","Busuu","Memrise"],"The owl is called Duo.",1);
+vf(1,"Pinterest is mainly used for sharing and saving images and ideas.",true,"Pinterest was launched in 2010.",1);
+vf(1,"WhatsApp was created by Mark Zuckerberg.",false,"WhatsApp was founded by Jan Koum and Brian Acton, and bought by Facebook.",2);
+m(2,"Memes","Which meme character is a green frog?","Pepe the Frog",["Kermit","Doge","Nyan Cat"],"Pepe was created by Matt Furie.",2);
+m(2,"Memes","Which viral dance by Psy featured a horse-riding move?","Gangnam Style",["Harlem Shake","Macarena","Dab"],"It became the first video with 1 billion YouTube views.",1);
+m(2,"Memes","Which 2016 viral trend saw people freeze like mannequins while a camera moved around?","Mannequin Challenge",["Ice Bucket","Planking","Bottle Flip"],"It began among US students.",2);
+m(2,"Memes","What is a “GIF”?","A short looping animated image",["A compressed audio","A text file","A website design"],"GIF stands for Graphics Interchange Format.",1);
+m(2,"Memes","What is the viral sound “Oh no, oh no, oh no no no” used for on TikTok?","Fails and bad situations",["Cooking","Dancing","Pet videos"],"It comes from a Turkish song snippet.",2);
+m(2,"Memes","Which app became popular in 2020 with a game where you find an impostor?","Among Us",["Fall Guys","Minecraft","Roblox"],"Among Us became popular during the pandemic.",1);
+vf(2,"The Rickroll uses a song by Queen.",false,"It uses Rick Astley’s “Never Gonna Give You Up”.",1);
+m(3,"Creators","Which YouTuber is known for giving away large amounts of money and building a Feastables brand?","MrBeast",["Markiplier","Logan Paul","Dude Perfect"],"MrBeast’s real name is Jimmy Donaldson.",1);
+m(3,"Creators","Which site did Jimmy Wales co-found as a free online encyclopedia?","Wikipedia",["Britannica","Quora","Google Books"],"Wikipedia launched in January 2001.",1);
+m(3,"Creators","Which TikTok creator is famous for his “silent reaction” videos and is Italian-Senegalese?","Khaby Lame",["Zach King","Bella Poarch","Addison Rae"],"Khaby Lame once had the most followers on TikTok.",2);
+m(3,"Creators","Which streaming platform is mostly used to watch video gamers and was bought by Amazon in 2014?","Twitch",["YouTube Gaming","Kick","Mixer"],"Amazon paid about $970 million.",2);
+vf(3,"MrBeast is the most subscribed individual on YouTube.",true,"MrBeast passed 400 million subscribers.",1);
+m(4,"Slang","What does “lol” stand for?","Laughing out loud",["Lots of love","Look over laugh","Long online life"],"Many people also use “lol” without laughing.",1);
+m(4,"Slang","What does “BRB” mean?","Be right back",["Be really brave","Bring real bread","Back right behind"],"BRB was common in early chat rooms.",1);
+m(4,"Slang","What does “TL;DR” stand for?","Too long; didn’t read",["Talk later; do it right","Tell me; don’t repeat","Time left; don’t rush"],"It is used to summarise long posts.",2);
+m(4,"Slang","What does “slay” mean in modern slang?","Do something excellently",["Make someone laugh","Be sleepy","Get angry"],"It was popularised in drag culture.",2);
+m(4,"Slang","What does “bet” mean in Gen Z slang?","Okay, sure",["No way","Maybe later","I'm lost"],"“Bet” is a casual way to say yes.",2);
+m(4,"Slang","What does “ratio” mean on social media?","Replies get more likes than the original post",["A very long thread","A paid ad","A reposted photo"],"Being ratioed means your post is unpopular.",3);
+m(4,"Slang","What does “main character energy” mean?","Acting confident, like the star of your own story",["Being shy","Copying others","Being lazy"],"The phrase went viral on TikTok.",2);
+m(4,"Slang","What does “cheugy” mean?","Out of date or trying too hard",["Very cool","Very funny","Very rich"],"The word became popular in 2021.",3);
+m(4,"Slang","What does “NPC” mean when used as an insult online?","Someone who acts without thinking",["A famous streamer","A very good player","A paid influencer"],"NPC means non-player character in video games.",2);
+vf(4,"“Simp” means someone who is very cool.",false,"A simp is someone who tries too hard to please another person.",2);
+ty(1,"Which company owns Instagram and WhatsApp? (one word)",["Meta"],"Meta was formerly named Facebook, Inc.",1);
+ty(3,"Which platform was bought by Amazon in 2014 for streaming video gamers? (one word)",["Twitch"],"Twitch was founded in 2011.",2);
+ty(4,"What does “OMG” stand for? (three words)",["Oh my god","Oh my gosh"],"The abbreviation dates back to 1917.",1);
+
 return {id:"internet",title:"Internet & TikTok Culture",kw:"internet tiktok memes viral instagram youtube twitch slang gen z creators social media quiz",subject:"Apps, memes, viral moments and slang: are you terminally online?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

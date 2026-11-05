@@ -153,5 +153,47 @@ vf(5,"The Erasmus programme only lets students study in Spain.",false,"Erasmus c
 ty(3,"Which Spanish painter is famous for melting clocks and a curly moustache? (surname)",["Dalí","Dali"],"Salvador Dalí painted “The Persistence of Memory” in 1931 and was born in Figueres, Catalonia.",2);
 ty(4,"What was Spain’s currency before the euro? (one word)",["peseta","pesetas"],"The peseta was replaced by the euro on 1 January 2002.",2);
 
+// ===== More questions =====
+m(1,"Gaudí","What is the name of the park designed by Gaudí with its mosaic salamander?","Park Güell",["Parc de la Ciutadella","Parc del Laberint","Parc de Montjuïc"],"Park Güell was designed as a garden city for Eusebi Güell.",1);
+m(1,"Landmarks","Which Barcelona neighbourhood is the old medieval centre around the Cathedral?","The Gothic Quarter",["Gràcia","Poblenou","Sants"],"The Barri Gòtic dates from Roman and medieval times.",1);
+m(1,"Landmarks","Which Barcelona market is the main covered market near La Rambla?","La Boqueria",["Mercat de Sant Antoni","Santa Caterina","Mercat de la Concepció"],"La Boqueria is one of the oldest and most visited markets in Europe.",2);
+m(1,"Landmarks","Which Barcelona district is known for its small squares and village feel, north of the Eixample?","Gràcia",["Raval","Sarrià","Les Corts"],"Gràcia was an independent town until 1897.",2);
+m(1,"Football","In which district of Barcelona is Camp Nou located?","Les Corts",["Sants","Gràcia","Sant Martí"],"The stadium opened in 1957.",3);
+m(1,"Landmarks","Which Barcelona museum is dedicated to Pablo Picasso?","Museu Picasso",["MACBA","CaixaForum","Fundació Miró"],"It is housed in medieval palaces in El Born.",2);
+vf(1,"Barcelona is the capital of Catalonia.",true,"Barcelona is Catalonia’s capital and the second-largest city in Spain.",1);
+vf(1,"The Sagrada Família is a cathedral.",false,"It is a basilica, not a cathedral.",3);
+m(2,"Tradition","What is the Catalan name for the feast of Saint George?","Sant Jordi",["Sant Joan","La Mercè","Nadal"],"On April 23, roses and books are exchanged.",1);
+m(2,"Tradition","Which celebration on the night of June 23 involves bonfires and fireworks?","Sant Joan",["La Mercè","Sant Jordi","Carnaval"],"Revetlla de Sant Joan marks the start of summer.",2);
+m(2,"Tradition","Which festival in late September is Barcelona’s main city festival?","La Mercè",["Sant Joan","La Diada","Gràcia Festival"],"La Mercè includes castells, correfocs and concerts.",2);
+m(2,"Tradition","What is the Catalan national day, celebrated on September 11, called?","La Diada",["La Mercè","Sant Jordi","La Patum"],"It commemorates the fall of Barcelona in 1714.",2);
+m(2,"Tradition","What is a “correfoc” in Catalonia?","A fire run with devils and fireworks",["A horse parade","A food fair","A boat race"],"Participants dressed as devils run with firecrackers.",3);
+m(2,"Tradition","What do Catalans call the “caga tió” at Christmas?","A log that “poops” gifts",["A Christmas tree","A nativity shepherd","A Christmas cake"],"Children hit the log with sticks and sing so it will deliver presents.",2);
+m(2,"Tradition","Which dance is Catalonia’s traditional circle dance, danced in plazas?","Sardana",["Flamenco","Jota","Fandango"],"The sardana is danced to the music of a cobla band.",2);
+m(2,"Food","Which dish is Catalan rice cooked in a shallow pan with seafood?","Arròs a la cassola",["Paella","Fideuà","Arròs negre"],"It is cooked in a clay dish.",3);
+m(2,"Food","Which Spanish dish is a cold tomato soup from Andalusia?","Gazpacho",["Salmorejo","Ajo blanco","Fabada"],"Gazpacho is made from tomato, cucumber, pepper and garlic.",1);
+m(2,"Food","Which Spanish ham is air-dried and made from acorn-fed pigs?","Jamón ibérico",["Jamón cocido","Lomo","Chorizo"],"The best jamón ibérico de bellota is cured for years.",2);
+m(2,"Food","Which dish is bread slices topped with food, served in bars in Basque Country?","Pintxos",["Tapas","Raciones","Bocadillos"],"Pintxos are held together with a toothpick.",2);
+vf(2,"“Sangria” is a traditional Spanish drink made of wine and fruit.",true,"Sangria is red wine mixed with fruit and sometimes a spirit.",1);
+vf(2,"Paella originated in Madrid.",false,"Paella is from Valencia.",1);
+m(3,"Spain","Which Spanish city is famous for the Semana Santa processions and the Giralda tower?","Seville",["Valencia","Bilbao","Salamanca"],"The Giralda is the bell tower of Seville’s cathedral.",2);
+m(3,"Spain","Which Spanish city holds the Las Fallas festival every March?","Valencia",["Seville","Pamplona","Alicante"],"Las Fallas involves burning huge sculptures.",2);
+m(3,"Spain","Which Spanish film director made “Volver” and “All About My Mother”?","Pedro Almodóvar",["Luis Buñuel","Alejandro Amenábar","Guillermo del Toro"],"Almodóvar won two Oscars.",2);
+m(3,"Spain","Which Spanish tennis star was born in Mallorca and won 14 French Open titles?","Rafael Nadal",["Carlos Alcaraz","David Ferrer","Roberto Bautista"],"Nadal is from Manacor.",1);
+m(3,"Spain","Which Spanish city has an ancient Roman aqueduct in its centre?","Segovia",["Toledo","Ávila","Burgos"],"The aqueduct of Segovia is almost 2,000 years old.",3);
+m(3,"Spain","What is the main river that flows through Madrid?","The Manzanares",["The Ebro","The Tagus","The Guadalquivir"],"The Manzanares is a small river that flows through the capital.",3);
+m(3,"Spain","Which Spanish island is the biggest of the Canary Islands?","Tenerife",["Gran Canaria","Lanzarote","Fuerteventura"],"Tenerife is home to Mount Teide.",3);
+m(3,"Spain","Which country borders Spain to the north-east, beyond the Pyrenees?","France",["Andorra","Italy","Portugal"],"The Pyrenees mark the border between Spain and France.",1);
+m(3,"Spain","Which festival is held in Seville two weeks after Easter, with horse carriages and casetas?","Feria de Abril",["La Tomatina","San Fermín","Las Fallas"],"Feria de Abril takes place in Seville two weeks after Easter.",3);
+vf(3,"Spain is the largest country in the European Union by area.",false,"France is larger; Spain is second.",3);
+vf(3,"Spain has more than one official language.",true,"Spanish, Catalan, Galician and Basque are co-official in their regions.",1);
+m(4,"Business","Which Spanish fashion group owns Zara?","Inditex",["Mango","Desigual","Pull&Bear"],"Inditex was founded by Amancio Ortega in A Coruña.",1);
+m(4,"Business","Which Catalan fashion company was founded in Barcelona by Isak Andic?","Mango",["Desigual","Custo Barcelona","Bershka"],"Mango opened its first store in 1984.",2);
+m(4,"Business","Which Spanish airline is the national flag carrier?","Iberia",["Air Europa","Vueling","Ryanair"],"Iberia is part of IAG.",2);
+m(4,"Business","Which Spanish bank is headquartered in Santander and has global operations?","Banco Santander",["BBVA","CaixaBank","Sabadell"],"Santander is one of the largest banks in the eurozone.",1);
+vf(4,"Zara was founded in Madrid.",false,"Zara was founded in A Coruña, Galicia, in 1975.",2);
+ty(1,"Which architect designed the Sagrada Família? (surname)",["Gaudí","Gaudi","Antoni Gaudí"],"Gaudí devoted his last years to it.",1);
+ty(2,"Which Catalan feast gives roses and books on April 23? (two words)",["Sant Jordi"],"It is Catalonia’s Valentine’s Day.",1);
+ty(3,"Which Spanish painter created Guernica? (surname)",["Picasso","Pablo Picasso"],"Picasso was born in Málaga.",1);
+
 return {id:"barcelona",title:"Barcelona & Spain",kw:"barcelona spain españa catalonia catalunya catalan gaudi sagrada familia barça fc barcelona traditions tapas paella business ibex mercadona esade madrid campus student life",subject:"Gaudí, tapas, IBEX 35 and survival Catalan: are you ready for life at ESADE?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

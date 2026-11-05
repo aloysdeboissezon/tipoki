@@ -147,5 +147,45 @@ vf(4,"The ancient Romans spoke Latin.",true,"Spanish, French, Italian and Portug
 
 ty(4,"What is the capital of Italy? (one word)",["Rome","Roma"],"Rome is called the Eternal City.",1);
 
+// ===== More questions =====
+m(1,"Space","Which planet is known as the Red Planet?","Mars",["Jupiter","Saturn","Venus"],"Its red colour comes from iron oxide on the surface.",1);
+m(1,"Space","Which planet has the most visible rings?","Saturn",["Jupiter","Uranus","Neptune"],"Saturn’s rings are made of ice and rock.",1);
+m(1,"Space","What do we call a scientist who studies stars and planets?","An astronomer",["A geologist","A biologist","A chemist"],"Astronomers use telescopes to study space.",1);
+m(1,"Space","How long does the Earth take to go around the Sun?","One year",["One day","One month","Ten years"],"The Earth orbits the Sun in about 365 days.",1);
+m(1,"Science","What force pulls objects toward the ground?","Gravity",["Magnetism","Friction","Electricity"],"Gravity keeps us on the Earth.",1);
+m(1,"Science","What is water called when it freezes?","Ice",["Steam","Fog","Dew"],"Water freezes at 0 °C.",1);
+m(1,"Science","What is the chemical symbol for water?","H2O",["CO2","O2","NaCl"],"Water has two hydrogen atoms and one oxygen atom.",2);
+m(1,"Science","How many colours are in a rainbow?","7",["5","6","9"],"Red, orange, yellow, green, blue, indigo and violet.",1);
+m(1,"Science","What do magnets attract?","Iron",["Wood","Plastic","Glass"],"Magnets attract iron and some other metals.",1);
+m(2,"Body","Which organ pumps blood around the body?","The heart",["The lungs","The liver","The stomach"],"The heart beats about 100,000 times a day.",1);
+m(2,"Body","Which organ do you use to breathe?","The lungs",["The kidneys","The heart","The brain"],"The lungs take oxygen from the air.",1);
+m(2,"Nature","What do bees make?","Honey",["Milk","Silk","Wax only"],"Bees make honey from flower nectar.",1);
+m(2,"Nature","Which animal is the fastest on land?","The cheetah",["The lion","The horse","The leopard"],"Cheetahs can run up to 110 km/h.",1);
+m(2,"Nature","What kind of animal is a dolphin?","A mammal",["A fish","A reptile","An amphibian"],"Dolphins breathe air and feed their young with milk.",2);
+m(2,"Nature","Which bird cannot fly but is famous for swimming in Antarctica?","The penguin",["The ostrich","The kiwi","The emu"],"Penguins use their wings as flippers.",1);
+vf(2,"Spiders are insects.",false,"Spiders are arachnids with eight legs; insects have six.",2);
+vf(2,"A group of lions is called a pride.",true,"A pride can include up to 30 lions.",1);
+m(3,"Maths","What is 7 × 8?","56",["54","49","63"],"7 × 8 equals 56 (seven eights).",1);
+m(3,"Maths","How many degrees are in a right angle?","90",["45","180","360"],"Four right angles make a full turn.",1);
+m(3,"Maths","What is half of 150?","75",["50","65","85"],"Half of 150 is 75 (150 ÷ 2).",1);
+m(3,"Maths","What is the name of a shape with three sides?","A triangle",["A square","A circle","A pentagon"],"The sum of its angles is 180 degrees.",1);
+m(3,"Words","How many letters are in the English alphabet?","26",["24","25","28"],"A to Z makes 26 letters.",1);
+m(3,"Words","What do we call a word that means the same as another word?","A synonym",["An antonym","A homonym","An acronym"],"Big and large are synonyms.",2);
+vf(3,"A year has 12 months.",true,"A year has 12 months and about 365 days.",1);
+m(4,"History","Which ancient civilisation built the pyramids at Giza?","The ancient Egyptians",["The Romans","The Greeks","The Mayans"],"The Great Pyramid was built around 2560 BC.",1);
+m(4,"History","Who sailed across the Atlantic in 1492, arriving in the Americas?","Christopher Columbus",["Marco Polo","Vasco da Gama","Magellan"],"Columbus sailed for the Spanish crown.",1);
+m(4,"History","Which empire built the Colosseum?","The Roman Empire",["The Greek Empire","The Ottoman Empire","The Persian Empire"],"It was finished in AD 80.",1);
+m(4,"History","Which wall fell in 1989, reuniting a European city?","The Berlin Wall",["The Great Wall","Hadrian’s Wall","The Western Wall"],"The Berlin Wall divided East and West Berlin from 1961 to 1989.",1);
+m(4,"History","Which queen of Egypt is famous for her relationships with Caesar and Mark Antony?","Cleopatra",["Nefertiti","Hatshepsut","Isis"],"Cleopatra ruled Egypt from 51 to 30 BC.",2);
+m(4,"History","Which ship sank in 1912 after hitting an iceberg?","The Titanic",["The Lusitania","The Bismarck","The Mayflower"],"The Titanic sank on its first voyage.",1);
+m(4,"History","Which country gave the Statue of Liberty to the United States?","France",["England","Spain","Italy"],"It was a gift in 1886.",1);
+m(4,"History","Which inventor is known for the light bulb?","Thomas Edison",["Nikola Tesla","Alexander Graham Bell","Benjamin Franklin"],"Edison patented a practical light bulb in 1879.",2);
+m(4,"History","In which continent is Egypt located?","Africa",["Asia","Europe","South America"],"Egypt also has a part in Asia, the Sinai Peninsula.",1);
+vf(4,"The first Olympic Games were in ancient Greece.",true,"They were held in Olympia in 776 BC.",2);
+vf(4,"Dinosaurs lived at the same time as humans.",false,"Dinosaurs died out about 66 million years ago.",1);
+ty(1,"What is the name of our galaxy? (two words)",["Milky Way","The Milky Way"],"Our galaxy contains hundreds of billions of stars.",1);
+ty(2,"What do caterpillars turn into? (one word)",["Butterfly","Butterflies","A butterfly","Moth"],"A caterpillar becomes a butterfly or a moth.",1);
+ty(3,"What is 9 × 9? (number)",["81"],"9 × 9 = 81.",1);
+
 return {id:"kids",title:"Are You Smarter Than a 10-Year-Old?",kw:"smarter than 10 year old kids school basics science maths geography history general knowledge quiz fun family",subject:"School basics that adults often get wrong: can you beat a fifth grader?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

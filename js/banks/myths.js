@@ -121,5 +121,45 @@ m(4,"Facts","On average, how long is a day on Mars?","About 24 hours and 37 minu
 
 ty(2,"What do we call a group of owls? (one word)",["parliament"],"A group of owls is called a parliament.",3);
 
+// ===== More questions =====
+m(1,"Body","Do we only use 10% of our brains?","No, we use virtually all of it",["Yes, only 10%","Yes, only 30%","Only while sleeping"],"Brain scans show activity in nearly all brain regions.",1);
+m(1,"Body","Does cracking your knuckles cause arthritis?","No, studies show no link",["Yes, always","Only in old age","Yes, in women"],"The popping sound is gas bubbles in the joint fluid.",2);
+m(1,"Body","Does shaving make hair grow back thicker?","No",["Yes, always","Only on legs","Only on the face"],"Shaved hair has a blunt tip, so it only feels coarser.",1);
+m(1,"Body","Does sugar make children hyperactive?","No, studies find no link",["Yes, always","Only chocolate does","Only in boys"],"The effect is mainly in parents’ expectations.",2);
+m(1,"Body","Do you need to wait 24 hours after eating before swimming?","No",["Yes, always","Only for one hour","Only in the sea"],"There is no evidence that swimming after eating is dangerous.",2);
+m(1,"Body","Is a hangover cured by drinking coffee?","No, only time helps",["Yes, quickly","Yes, with milk","Yes, if strong"],"Coffee may wake you but does not remove alcohol.",2);
+m(1,"Body","Does the tongue have separate zones for sweet, sour and bitter?","No, all areas can taste all flavours",["Yes, a clear map","Only sweet is at the tip","Only bitter is at the sides"],"The tongue map is a myth.",2);
+m(1,"Body","Do goosebumps happen only when we are cold?","No, also with emotions",["Yes, only cold","Only when scared","Only in winter"],"They also appear with strong emotions or music.",2);
+m(1,"Body","Do humans have only five senses?","No, there are more",["Yes, exactly five","Yes, six","Only four"],"We also sense balance, temperature and body position.",2);
+vf(1,"Humans swallow eight spiders a year in their sleep.",false,"This is a myth with no evidence.",1);
+m(2,"Animals","Do bats see nothing at all?","No, bats can see",["Yes, they are blind","Only at night","Only in cold weather"],"Bats use echolocation but also have vision.",1);
+m(2,"Animals","Do camels store water in their humps?","No, they store fat",["Yes, water","Yes, milk","Yes, sand"],"A camel’s hump stores fat as an energy reserve.",1);
+m(2,"Animals","Do ostriches bury their heads in the sand?","No",["Yes, when scared","Yes, to sleep","Yes, to hide eggs"],"They lower their heads to the ground to turn eggs or eat.",1);
+m(2,"Animals","Do bulls get angry at the colour red?","No, bulls are colour-blind to red",["Yes, red makes them mad","Only dark red","Only in Spain"],"Bulls react to the movement of the cape.",1);
+m(2,"Animals","Do goldfish have a three-second memory?","No, they remember for months",["Yes, three seconds","Yes, ten seconds","Only one minute"],"Goldfish can be trained and remember for months.",2);
+m(2,"Animals","Do lemmings commit mass suicide?","No",["Yes, every year","Only in the Arctic","Only in spring"],"The myth comes from a 1958 Disney documentary.",2);
+m(2,"Animals","Do chameleons change colour mainly to blend in?","No, mostly for communication and temperature",["Yes, only for camouflage","Only when sleeping","Only when eating"],"Mood, light and temperature affect their colour.",2);
+m(2,"Animals","Do sharks have bones?","No, their skeleton is cartilage",["Yes, strong bones","Yes, light bones","Only the great white"],"Cartilage is flexible and lighter than bone.",2);
+m(2,"Animals","Do cats always land on their feet?","Not always, but they often right themselves",["Yes, always","Never","Only kittens"],"Cats have a righting reflex but can still be injured.",2);
+vf(2,"Elephants are afraid of mice.",false,"There is no evidence that elephants are afraid of mice.",2);
+m(3,"History","Did Vikings wear horned helmets in battle?","No, there is no evidence for it",["Yes, always","Only the chiefs","Only in ceremonies"],"The image came from 19th-century opera costumes.",1);
+m(3,"History","Did Napoleon have an unusually short height?","No, he was about average",["Yes, very short","He was a giant","He was 1.40 m"],"He was about 1.69 m, and the legend comes from different units.",2);
+m(3,"History","Is the Great Wall of China visible from space with the naked eye?","No",["Yes, always","Only at night","Only from the Moon"],"It is too narrow to be seen from space without aid.",2);
+m(3,"History","Did Marie Antoinette say “Let them eat cake”?","There is no evidence she did",["Yes, in 1789","Yes, in 1791","Yes, in a letter"],"The phrase appeared in Rousseau’s writings before she arrived in France.",2);
+m(3,"History","Did Einstein fail maths at school?","No, he excelled in maths",["Yes, in primary school","Yes, in university","Yes, in physics"],"He mastered calculus by 15.",1);
+m(3,"History","Did Christopher Columbus prove the Earth was round?","No, educated people already knew",["Yes, in 1492","Yes, with a ship","Yes, with a map"],"The Greeks measured the Earth’s size about 2,000 years earlier.",2);
+m(3,"History","Did people in medieval times believe the Earth was flat?","Educated people knew it was round",["Yes, everyone","Only kings","Only the church"],"Medieval scholars knew the Earth was spherical.",2);
+vf(3,"Cleopatra lived closer in time to the Moon landing than to the building of the Great Pyramid.",true,"The Great Pyramid was built around 2560 BC; Cleopatra lived around 30 BC.",3);
+vf(3,"Samurai were just warriors and never had other roles.",false,"Many samurai served as administrators, poets and scholars.",3);
+m(4,"True facts","How long can sealed honey last without spoiling?","Honey can last for thousands of years",["It lasts only 10 years","It spoils in 1 year","It must be refrigerated"],"Archaeologists found edible honey in Egyptian tombs.",2);
+m(4,"True facts","Which animal has fingerprints almost identical to humans’?","The koala",["The chimpanzee","The dog","The pig"],"Koalas have fingerprints very similar to ours.",3);
+m(4,"True facts","Which planet has days longer than its year?","Venus",["Mercury","Mars","Neptune"],"A day on Venus lasts about 243 Earth days, and its year 225.",3);
+m(4,"True facts","Which fruit is technically a berry?","The banana",["The strawberry","The raspberry","The blackberry"],"Botanically, strawberries and raspberries are not true berries.",3);
+m(4,"True facts","How long can a snail sleep?","Up to three years",["One week","One month","One year"],"Snails can hibernate or estivate for years in harsh conditions.",3);
+m(4,"True facts","Which country has the most lakes in the world?","Canada",["Finland","Russia","United States"],"Canada has over 2 million lakes.",3);
+m(4,"True facts","What is a group of flamingos called?","A flamboyance",["A flock","A parade","A colony"],"It is also called a colony or a stand.",3);
+vf(4,"Venus is the hottest planet in the Solar System.",true,"Venus is hotter than Mercury because of its thick atmosphere.",2);
+ty(4,"What is the only mammal capable of true flight? (one word)",["Bat","Bats"],"Bats are the only mammals that can truly fly.",2);
+
 return {id:"myths",title:"Myths & Mind-Blowing Facts",kw:"myths facts true false fake news believe wrong mind blown did you know science history animals brain quiz viral",subject:"Things everyone believes that are wrong, and true facts that sound fake",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();
