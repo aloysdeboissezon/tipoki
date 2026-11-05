@@ -692,6 +692,7 @@ var FR={
 "Add a nickname on the home page so friends see your name.":"Ajoute un pseudo sur l'accueil pour que tes amis voient ton nom.",
 "← Home":"← Accueil",
 // site links (footer)
+"Privacy":"Données","Terms":"CGU","Legal":"Mentions",
 "About":"À propos","Contact":"Contact","Privacy policy":"Politique de confidentialité","Terms of use":"Conditions d'utilisation","Legal notice":"Mentions légales","About qwebbo":"À propos de qwebbo",
 "Options":"Options",
 "On":"Activé",

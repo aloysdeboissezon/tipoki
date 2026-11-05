@@ -669,6 +669,7 @@ var ES={
 "Add a nickname on the home page so friends see your name.":"Añade un apodo en la página de inicio para que tus amigos vean tu nombre.",
 "← Home":"← Inicio",
 // site links (footer)
+"Privacy":"Privacidad","Terms":"Términos","Legal":"Aviso",
 "About":"Acerca de","Contact":"Contacto","Privacy policy":"Política de privacidad","Terms of use":"Condiciones de uso","Legal notice":"Aviso legal","About qwebbo":"Acerca de qwebbo",
 "Options":"Opciones",
 "On":"Activado",
