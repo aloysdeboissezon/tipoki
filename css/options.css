@@ -9,3 +9,9 @@
 .opt-card .danger{color:#C0392B}
 html[data-motion=off] *,html[data-motion=off] *::before,html[data-motion=off] *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 @media(max-width:560px){#sizeBtn,#langBtn,#themeBtn{display:none}}
+/* Options card: header and Done stay in view, only the rows scroll (works with a mouse wheel on desktop); Done is small and centred */
+.opt-card{display:flex;flex-direction:column;overflow:hidden}
+.opt-card #optRows{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.opt-card .sync-actions{justify-content:center;flex:none;padding-top:10px}
+.opt-card .sync-actions .btn{flex:none;min-width:120px;padding:9px 28px;font-size:16px}
+body:has(#optDlg:not([hidden])){overflow:hidden}
