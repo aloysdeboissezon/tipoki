@@ -80,6 +80,8 @@ var KO={
 "waiting":"대기 중",
 "The code is 4 letters.":"코드는 4글자예요.",
 "Enter your first name so your friends know who you are.":"친구들이 알아볼 수 있게 이름을 입력해주세요.",
+"That name isn't allowed. Please pick a friendlier one.":"사용할 수 없는 이름이에요. 더 예쁜 이름을 골라주세요.",
+"Names can't contain links, e-mails or phone numbers.":"이름에는 링크, 이메일, 전화번호를 넣을 수 없어요.",
 "Enter your first name, then tap Join.":"이름을 입력한 다음 참가를 눌러주세요.",
 "Can't reach the server. Check your internet connection, then reload the page. Solo mode still works.":"서버에 연결할 수 없어요. 인터넷 연결을 확인하고 페이지를 새로고침하세요. 혼자 하기는 계속 사용할 수 있어요.",
 "Couldn't save the photo on this device.":"이 기기에 사진을 저장하지 못했어요.",

@@ -54,7 +54,7 @@ async function createGame(){
   finally{$("createBtn").disabled=false}
 }
 function applyGame(s){if(!s)return;if(G&&local.lastStatus!==null&&(s.seq||0)<=(G.seq||0))return;onGame(s)}
-function rowToPlayer(r){let ans=r.ans||{};const l=P[r.pid];if(r.pid===me&&l)ans={...ans,...(l.ans||{})};return {nick:r.nick,country:r.country||"",joined:Date.parse(r.created_at)||0,ans}}
+function rowToPlayer(r){let ans=r.ans||{};const l=P[r.pid];if(r.pid===me&&l)ans={...ans,...(l.ans||{})};return {nick:tpkNick.show(r.nick),country:r.country||"",joined:Date.parse(r.created_at)||0,ans}}
 async function loadPlayers(){
   const {data,error}=await sb.from("players").select(ctCol?"pid,nick,ans,created_at,country":"pid,nick,ans,created_at").eq("code",code);
   if(error&&ctCol){ctCol=false;return loadPlayers()}   // no country column yet (see supabase/migrations/add_player_country.sql)
@@ -207,7 +207,7 @@ function dupMap(){if(_nm.p===P)return _nm.m;const g={},m={};
   Object.keys(P).forEach(id=>{const p=P[id],k=String(p.nick||"").trim().toLowerCase()+"|"+(p.country||"");(g[k]=g[k]||[]).push(id)});
   for(const k in g)if(g[k].length>1)g[k].sort((a,b)=>((P[a].joined||0)-(P[b].joined||0))||(a<b?-1:1)).forEach((id,i)=>{if(i)m[id]=i+1});
   _nm={p:P,m};return m}
-function baseName(id){const p=P[id];return (p&&p.nick)||(profiles[id]&&profiles[id].name)||tl("Player")}
+function baseName(id){const p=P[id];return (p&&p.nick&&tpkNick.show(p.nick))||(profiles[id]&&profiles[id].name)||tl("Player")}
 function nameOf(id){const n=dupMap()[id];return baseName(id)+(n?" ("+n+")":"")}
 function flagOf(id){const p=P[id];return p&&window.tpkCountry?tpkCountry.flag(p.country):""}
 // name with the player's flag in front, for lists on screen

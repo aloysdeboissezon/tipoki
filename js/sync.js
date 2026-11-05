@@ -71,7 +71,7 @@ function same(a,b){const ka=Object.keys(a),kb=Object.keys(b);return ka.length===
 
 // the app reads most progress on demand; these parts are already on screen
 function refreshApp(){const t=f=>{try{f()}catch(e){}};
-  t(()=>{if(document.activeElement!==$("nick"))$("nick").value=get("socio-nick")||""});
+  t(()=>{const n=get("socio-nick")||"";if(n&&!tpkNick.ok(n)){store.setItem("socio-nick","");$("nick").value=""}else if(document.activeElement!==$("nick"))$("nick").value=n});
   t(()=>{const a=get("tpk-avatar");if(a)avs[me]=a;else delete avs[me]});
   t(()=>{if(window.tpkCountry)tpkCountry.paint()});t(renderMe);t(renderMissBtn);t(renderCardsPanel);t(renderMyQuizzes);
   t(renderEntry);t(()=>renderProgressUI());t(()=>{if(!$("exam")||$("exam").hidden)renderExamPanel()})}   // best scores / streak and exam history, from other features
@@ -177,6 +177,7 @@ dlg.innerHTML=`<div class="sync-card" id="syncCard">
   <div class="onb-top"><button type="button" class="onb-av av big" id="onbAv" aria-label="Add a photo"></button><div class="sync-field onb-nm"><label class="label" for="onbNick">Your first name or nickname</label><input type="text" id="onbNick" maxlength="18" autocomplete="given-name" placeholder="e.g. Alex"></div></div>
   <button type="button" class="linkbtn onb-ph" id="onbPh">Add a photo</button>
   <div class="sync-field"><label class="label" for="onbCountry">Your country (optional)</label><select id="onbCountry" class="country-sel"></select></div>
+  <p class="err" id="onbErr" hidden></p>
   <div class="row sync-actions"><button type="button" class="btn ghost" id="onbSkip">Skip</button><button type="button" class="btn" id="onbDone">Done</button></div>
   <div class="onb-acct" id="onbAcctBox" hidden><p class="muted" id="onbAcct"></p><button type="button" class="linkbtn" id="onbOut">Sign out</button></div>
 </div>
@@ -248,10 +249,11 @@ function openOnb(name,edit){
   q("onbTitle").textContent=edit?tl("Your profile"):tl("Set up your profile");
   if(edit)q("onbAcct").innerHTML=tl("Saved online as {u}",{u:"<b>"+esc2(acct?acct.u:"")+"</b>"});
   const sel=q("onbCountry");if(window.tpkCountry){tpkCountry.paint();sel.innerHTML=($("country")||{}).innerHTML||"";sel.value=tpkCountry.mine()}
-  q("onbNick").value=((get("socio-nick")||"").trim()||(name?name.charAt(0).toUpperCase()+name.slice(1):"")).slice(0,18);onbPaint();
+  q("onbNick").value=((get("socio-nick")||"").trim()||(name?name.charAt(0).toUpperCase()+name.slice(1):"")).slice(0,18);if(tpkNick.check(q("onbNick").value))q("onbNick").value="";perr("onbErr","");onbPaint();
   lastFocus=null;show("onb");dlg.hidden=false;document.body.classList.add("noscroll")}
 function onbEnd(save){
-  if(save){const n=q("onbNick").value.trim();
+  if(save){const n=q("onbNick").value.trim(),bad=tpkNick.check(n);if(bad){perr("onbErr",tpkNick.msg(bad));q("onbNick").focus();return}
+    
     try{if(n){store.setItem("socio-nick",n);$("nick").value=n}if(window.tpkCountry){tpkCountry.set(q("onbCountry").value);tpkCountry.paint()}}catch(e){}
     t0(renderMe);t0(renderEntry)}
   put("tpk-onboarded","1");closeDlg()}
@@ -273,7 +275,7 @@ q("syncCancel").onclick=closeDlg;
 dlg.addEventListener("keydown",e=>{if(e.key==="Escape")closeDlg()});
 dlg.addEventListener("click",e=>{if(e.target===dlg)closeDlg()});
 q("pvCancel").onclick=closeDlg;
-q("onbSkip").onclick=()=>onbEnd(false);q("onbOut").onclick=()=>{closeDlg();signOut()};q("onbDone").onclick=()=>onbEnd(true);q("onbNick").addEventListener("input",onbPaint);
+q("onbSkip").onclick=()=>onbEnd(false);q("onbOut").onclick=()=>{closeDlg();signOut()};q("onbDone").onclick=()=>onbEnd(true);q("onbNick").addEventListener("input",()=>{onbPaint();const c=tpkNick.check(q("onbNick").value);perr("onbErr",c?tpkNick.msg(c):"")});
 q("onbAv").onclick=q("onbPh").onclick=()=>{const f=$("pfpIn");if(f)f.click()};q("acClose").onclick=closeDlg;q("acOut").onclick=()=>{closeDlg();signOut()};
 q("pvLegacy").onclick=()=>{show("legacy");setMode("in");q("syncUser").focus()};
 q("syncBack").onclick=()=>show("choose");
@@ -388,7 +390,7 @@ async function finishAuth(ses){
     acct={u:r.username,tok:r.token,rev:r.rev,au:1};saveAcct();put(LINK,null);
     const wasEs=esPending();put(EPEND,null);if(r.esade)esSet({e:r.esade});else esRefresh();
     try{const md=(ses&&ses.user&&ses.user.user_metadata)||{},nm=String(md.full_name||md.name||"").trim().slice(0,18);   // Google gives a name: use it as the nickname if there is none yet
-      if(nm&&!(get("socio-nick")||"").trim())store.setItem("socio-nick",nm)}catch(x){}
+      if(nm&&tpkNick.ok(nm)&&!(get("socio-nick")||"").trim())store.setItem("socio-nick",nm)}catch(x){}
     if(r.created){if(edits===e0)put(DIRTY,null);else later(500)}
     else{const m=merge(snap(),r.data||{});apply(m);
       if(same(m,r.data||{}))put(DIRTY,null);else{put(DIRTY,"1");push()}}
