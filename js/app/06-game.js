@@ -31,7 +31,7 @@ function setQText(id,t){const e=$(id);qRich(e,t);e.classList.toggle("long",t.len
 function renderQuestion(){
   show("question");
   const item=G.deck[G.qi],q=qOf(G.qi),typed=isT(G.qi);
-  $("qSess").textContent=sLabel(q.s);$("qNum").textContent=tl("Question {i} / {n}",{i:G.qi+1,n:G.inf?"∞":G.deck.length})+" · "+(typed?tl("Typed answer"):q.t)+" · "+diffName(diffOf(q));
+  $("qSess").textContent=sLabel(q.s);$("qNum").textContent=tl("Question {i} / {n}",{i:G.qi+1,n:G.inf?"∞":G.deck.length})+" · "+(typed?tl("Typed answer"):(q.t||tl("Multiple choice")))+" · "+diffName(diffOf(q));
   setQText("qText",q.q);
   showImg("qImgBox","qImg",q,"qHint");
   const st=G.qi>0?scoreRun(me,G.qi-1).streak:0;$("qStreak").hidden=st<2;$("qStreak").textContent=tl("STREAK ×{n}",{n:st});
@@ -128,7 +128,7 @@ function renderReveal(){
   show("reveal");
   if(local.autoQ!==G.qi){local.autoQ=G.qi;local.autoAt=performance.now();local.autoFired=false}
   const item=G.deck[G.qi],q=qOf(G.qi),cp=correctPos(G.qi),a=myAns(),typed=isT(G.qi);
-  $("rSess").textContent=sLabel(q.s);$("rNum").textContent=tl("Question {i} / {n}",{i:G.qi+1,n:G.inf?"∞":G.deck.length})+" · "+(typed?tl("Typed answer"):q.t)+" · "+diffName(diffOf(q));
+  $("rSess").textContent=sLabel(q.s);$("rNum").textContent=tl("Question {i} / {n}",{i:G.qi+1,n:G.inf?"∞":G.deck.length})+" · "+(typed?tl("Typed answer"):(q.t||tl("Multiple choice")))+" · "+diffName(diffOf(q));
   const v=$("rVerdict");$("rBreak").hidden=true;
   const late=mode==="multi"&&local.joinQi>G.qi;   // just joined: this question was before your time
   if(local.sfxQ!==G.qi){local.sfxQ=G.qi;if(a&&isRight(a,G.qi)){rightFx(scoreRun(me,G.qi).streak)}else if(!late){sfx("bad");buzz([60,40,60])}}
