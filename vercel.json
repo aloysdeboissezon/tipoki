@@ -1,21 +1,61 @@
 {
-  "functions": { "api/esade.js": { "includeFiles": "api/_esade/**" }, "api/home.js": { "includeFiles": "index.html" } },
-  "rewrites": [
-    { "source": "/", "has": [{ "type": "query", "key": "lang" }], "destination": "/api/home" }
-  ],
-  "redirects": [
-    { "source": "/(.*)", "has": [{ "type": "host", "value": "(www\\.)?qwebbo\\.eu" }], "destination": "https://qwebbo.com/$1", "permanent": true },
-    { "source": "/(.*)", "has": [{ "type": "host", "value": "www\\.qwebbo\\.com" }], "destination": "https://qwebbo.com/$1", "permanent": true }
-  ],
-  "headers": [
+  "functions": {
+    "api/esade.js": {
+      "includeFiles": "api/_esade/**"
+    },
+    "api/home.js": {
+      "includeFiles": "index.html"
+    }
+  },
+  "routes": [
     {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=()" },
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" }
-      ]
+      "src": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "(www\\.)?qwebbo\\.eu"
+        }
+      ],
+      "status": 308,
+      "headers": {
+        "Location": "https://qwebbo.com/$1"
+      }
+    },
+    {
+      "src": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www\\.qwebbo\\.com"
+        }
+      ],
+      "status": 308,
+      "headers": {
+        "Location": "https://qwebbo.com/$1"
+      }
+    },
+    {
+      "src": "/(.*)",
+      "headers": {
+        "X-Content-Type-Options": "nosniff",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=()",
+        "X-Frame-Options": "SAMEORIGIN"
+      },
+      "continue": true
+    },
+    {
+      "src": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "lang"
+        }
+      ],
+      "dest": "/api/home"
+    },
+    {
+      "handle": "filesystem"
     }
   ]
 }
