@@ -1,6 +1,6 @@
 // Checks the quiz "compta2" against the official solutions of the course (assignments 1–5, Cases 1 & 2, slides).
 // Usage: node tools/check-compta2.js   (exits with code 1 if something is wrong)
-global.window={};require('../js/banks/compta2.js');
+global.window={};require('../api/_esade/banks/compta2.js');
 const B=window.BANK_COMPTA2;let fail=0;
 const find=(...subs)=>B.Q.filter(q=>!q.tf&&subs.every(s=>(q.t+' '+q.q).includes(s)));
 const ok=(label,subs,expected)=>{

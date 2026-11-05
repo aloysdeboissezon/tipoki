@@ -4,6 +4,8 @@ const fs = require("fs");
 const path = require("path");
 
 const root = path.join(__dirname, "..");
+// /api/esade is the real function (api/esade.js); only the "is this token an ESADE account?" question is answered locally, by the token's name
+const esade = require("../api/esade").createHandler({ check: async t => (t.startsWith("e2e-esade") ? "ok" : t.startsWith("e2e-plain") ? "not_esade" : "bad_token") });
 const types = {
   ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8",
   ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".webp": "image/webp",
@@ -12,6 +14,8 @@ const types = {
 
 http.createServer((req, res) => {
   const url = new URL(req.url, "http://x");
+  if (url.pathname === "/api/esade") { esade(req, res); return; }
+  if (url.pathname.startsWith("/api/")) { res.writeHead(404).end("not found"); return; }   // like Vercel: the folder api/ is code, not files to download
   let p = path.normalize(decodeURIComponent(url.pathname));
   if (p.endsWith("/")) p += "index.html";
   const file = path.join(root, p);

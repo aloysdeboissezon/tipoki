@@ -3,6 +3,21 @@
 // Loaded before i18n.js. A missing key just shows the English text (and lands in tlMissing, see i18n.js).
 // Quiz questions are never translated: only the interface is.
 var KO={
+"ESADE only":"ESADE 전용",
+"These quizzes are for ESADE students and alumni. Enter your ESADE email address and we'll send you a code to confirm it's really yours.":"이 퀴즈는 ESADE 재학생과 졸업생 전용이에요. ESADE 이메일 주소를 입력하면 본인 확인용 코드를 보내 드려요.",
+"Your ESADE email":"ESADE 이메일",
+"name@esade.edu":"name@esade.edu",
+"Code from the email":"이메일로 받은 코드",
+"By continuing you accept the":"계속하면 다음에 동의하는 것으로 봅니다:",
+"terms and conditions":"이용 약관",
+"Already have a qwebbo account? Sign in first":"qwebbo 계정이 이미 있나요? 먼저 로그인하세요",
+"This email isn't an ESADE address. Use the one that ends with esade.edu.":"ESADE 이메일이 아니에요. esade.edu로 끝나는 주소를 사용하세요.",
+"Use your ESADE email address, like name@esade.edu.":"ESADE 이메일 주소를 입력하세요. 예: name@esade.edu",
+"We sent a code to {e}. Type it below, or open the link in the email on this device.":"{e}(으)로 코드를 보냈어요. 아래에 입력하거나, 이 기기에서 이메일의 링크를 여세요.",
+"ESADE quizzes unlocked":"ESADE 퀴즈가 열렸어요",
+"ESADE verified: {e}":"ESADE 인증됨: {e}",
+"ESADE only: verify your ESADE email to unlock":"ESADE 전용: ESADE 이메일을 인증하면 열려요",
+"This game uses an ESADE quiz. Verify your ESADE email, then join again.":"이 게임은 ESADE 퀴즈를 사용해요. ESADE 이메일을 인증한 뒤 다시 참가하세요.",
 "Solo":"혼자",
 // page
 "qwebbo · Learn, compete, master":"qwebbo · 배우고, 겨루고, 마스터하세요",

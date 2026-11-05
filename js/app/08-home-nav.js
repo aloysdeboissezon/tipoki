@@ -16,7 +16,7 @@ new MutationObserver(()=>{$("sheetCard").hidden=$("sheetBtn").hidden}).observe($
 // step 1 of the start flow: one card per quiz, tapping it opens the settings / create screen
 async function openQuiz(id,btn){
   if(btn)btn.disabled=true;const ok=await useBank(id);if(btn)btn.disabled=false;
-  if(!ok){toast(tl("Quiz not found"));return}
+  if(!ok){if(!esadeDenied)toast(tl("Quiz not found"));return}
   setQuizParam();setMode("menu");show("topic");recentMark(id);renderPreviews();
 }
 // quizzes you opened most recently come first on the home screen
@@ -27,9 +27,8 @@ function quizList(extra){const seen=new Set();return Object.keys(BUILTIN).map(id
 function fold(s){return String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()}
 function quizHay(q){return fold([q.title,q.title0,q.subject,q.subject0,q.kw].concat(Object.values(q.sess||(q.data&&q.data.sess)||{}),Object.values(q.sess0||{}),Object.values(q.tags||{}),Object.values(q.tags0||{})).join(" "))}
 // ESADE collection: to put a new quiz in it, add its id here (or give its bank/catalog entry group:"esade")
-const ESADE_IDS=["socio","compta2","populism"];
-function isEsade(q){return ESADE_IDS.includes(q.id)||q.group==="esade"}
-let esadeOn=lsGet("tpk-esade")==="1",favOn=false,lastQuizList=null;
+function isEsade(q){return ESADE_IDS.includes(q.id)||q.group==="esade"}   // ESADE_IDS: js/app/03-quiz-data.js
+let esadeOn=lsGet("tpk-esade")==="1"&&esadeVerified(),favOn=false,lastQuizList=null;
 function setEsade(on){esadeOn=on;if(on)favOn=false;lsSet("tpk-esade",on?"1":"0");renderQuizGrid(lastQuizList||quizList());$("quizGrid").scrollLeft=0}
 function setFavOn(on){favOn=on;if(on&&esadeOn){esadeOn=false;lsSet("tpk-esade","0")}renderQuizGrid(lastQuizList||quizList());$("quizGrid").scrollLeft=0}
 // favourites: hearts on the cards, saved on this device (and with the online save); they always come first
@@ -42,7 +41,8 @@ function quizLang(id){const m=window.QMETA&&QMETA[id];if(!m)return "";return ["e
 function langFit(q){const L=window.LANG||"en";return (quizLang(q.id)===L||(LOCAL_QUIZZES[L]||[]).includes(q.id))?1:0}
 function renderQuizGrid(all){
   lastQuizList=all;const favs=favGet();let list=all.filter(q=>favOn?favs.includes(q.id):isEsade(q)===esadeOn);
-  $("esadeBtn").setAttribute("aria-pressed",esadeOn?"true":"false");
+  const eb=$("esadeBtn"),ver=esadeVerified();eb.setAttribute("aria-pressed",esadeOn?"true":"false");eb.classList.toggle("verified",ver);eb.classList.toggle("locked",!ver);
+  eb.title=eb.ariaLabel=ver?tl("Show only the ESADE quizzes"):tl("ESADE only: verify your ESADE email to unlock");
   const fb=$("favBtn");fb.setAttribute("aria-pressed",favOn?"true":"false");fb.classList.toggle("has",favs.length>0);
   const box=$("quizGrid");box.textContent="";
   const rc=recentGet();list=list.map((q,i)=>[q,i]).sort((a,b)=>(favs.includes(b[0].id)-favs.includes(a[0].id))||(rc[b[0].id]||0)-(rc[a[0].id]||0)||(langFit(b[0])-langFit(a[0]))||a[1]-b[1]).map(x=>x[0]);
@@ -87,7 +87,16 @@ function filterQuizzes(){
 }
 function clearQuizSearch(focus){$("quizSearch").value="";filterQuizzes();if(focus)$("quizSearch").focus()}
 $("quizSearch").addEventListener("input",filterQuizzes);
-$("esadeBtn").onclick=()=>setEsade(!esadeOn);
+// the ESADE logo: verified = show the ESADE quizzes; otherwise the "ESADE only" pop-up asks for an ESADE email (code by email)
+$("esadeBtn").onclick=()=>{if(esadeVerified())setEsade(!esadeOn);else askEsade(()=>setEsade(true))};
+function esadeChanged(){
+  if(!esadeVerified()){   // signed out, or the address was moved to another account: forget the ESADE quizzes that were loaded
+    esadeOn=false;lsSet("tpk-esade","0");
+    const gated=BANK&&ESADE_IDS.includes(BANK.id);
+    ESADE_IDS.forEach(id=>{delete window["BANK_"+id.toUpperCase()];if(window.SHEETS)delete window.SHEETS[id]});
+    if(gated){location.href="/";return}}
+  renderQuizGrid(lastQuizList||quizList())}
+document.addEventListener("tpk-esade-ready",()=>tpkEsade.on(esadeChanged));
 $("favBtn").onclick=()=>setFavOn(!favOn);
 $("quizSearch").addEventListener("keydown",e=>{
   if(e.key==="Escape"&&$("quizSearch").value){e.preventDefault();clearQuizSearch(true)}
@@ -204,11 +213,11 @@ $("mkGo").onclick=async()=>{
   });
 })();
 
-loadBank(window.BANK_SOCIO);renderMyQuizzes();renderResume();addEventListener("load",()=>renderPreviews());
+loadBank(window.BANK_CULTURE);renderMyQuizzes();renderResume();addEventListener("load",()=>renderPreviews());
 if(sb){setMultiNote(true)}else setMultiNote(false);
 (async()=>{let id=null;try{id=new URLSearchParams(location.search).get("quiz")}catch(e){}
   if(!id||!(BUILTIN[id]||/^[0-9a-f-]{36}$/i.test(id)))return;
-  if(!await useBank(id)){toast(tl("Quiz not found"));return}
+  if(!await useBank(id)){if(!esadeDenied)toast(tl("Quiz not found"));return}
   show("topic")})();
 (()=>{let c=null;try{c=(new URLSearchParams(location.search).get("code")||"").toUpperCase().replace(/[^A-Z]/g,"").slice(0,4)}catch(e){}
   if(!c||c.length!==4)return;$("codeIn").value=c;

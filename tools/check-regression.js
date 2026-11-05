@@ -1,7 +1,7 @@
 // Structure checks for the quiz "regression" (Unit 5, linear regression).
 // Usage: node tools/check-regression.js   (exits with code 1 if something is wrong)
 // The numbers are verified separately and independently by: python3 tools/check-regression.py
-global.window={};require("../js/banks/regression.js");
+global.window={};require("../api/_esade/banks/regression.js");
 const b=window.BANK_REGRESSION;let bad=0;const err=m=>{bad++;console.error(m)};
 const seen=new Set();
 for(const q of b.Q){

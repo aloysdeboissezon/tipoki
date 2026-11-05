@@ -220,16 +220,38 @@ const bankCache={};
 const scriptP={};
 function appVer(){try{return new URL(document.querySelector('script[src*="js/app/"]').src).search}catch(e){return ""}}
 function loadScript(src){return scriptP[src]||(scriptP[src]=new Promise(res=>{const s=document.createElement("script");s.src=src+appVer();s.onload=()=>res(true);s.onerror=()=>{delete scriptP[src];res(false)};document.head.appendChild(s)}))}
+// ESADE quizzes are not public files: /api/esade sends them (questions, study sheet) only to an account with a verified ESADE email (see api/esade.js)
+const ESADE_IDS=["socio","compta2","populism","regression"];
+let esadeDenied=false;   // the last useBank() was refused because the ESADE email is missing: callers don't say "quiz not found"
+async function gatedText(id,k){
+  const t=window.tpkEsade?tpkEsade.token():"";
+  try{const r=await fetch("/api/esade?k="+k+"&id="+encodeURIComponent(id),{cache:"no-store",headers:t?{Authorization:"Bearer "+t}:{}});
+    if(r.status===401||r.status===403)return {denied:true};
+    return r.ok?{text:await r.text()}:{}}catch(e){return {}}}
+async function gatedBlob(id,k){const t=window.tpkEsade?tpkEsade.token():"";
+  try{const r=await fetch("/api/esade?k="+k+"&id="+encodeURIComponent(id),{cache:"no-store",headers:t?{Authorization:"Bearer "+t}:{}});return r.ok?await r.blob():null}catch(e){return null}}
+function runScript(text){const s=document.createElement("script");s.textContent=text;document.head.appendChild(s);s.remove()}
+function esadeVerified(){try{return !!JSON.parse(localStorage.getItem("qwebbo-esade")||"null")}catch(e){return false}}
+function askEsade(after){if(window.tpkEsade)tpkEsade.open(after);else if(typeof toast==="function")toast(tl("Can't reach the server. Check your connection and try again."))}
 async function ensureBank(id){
   if(BUILTIN[id]())return true;
   const m=(window.BANK_META||{})[id];
-  const [ok]=await Promise.all([loadScript("js/banks/"+id+".js"),m&&m.sheet?loadScript("js/sheets/"+id+".js"):0]);
-  if(!ok||!BUILTIN[id]())return false;
+  if(ESADE_IDS.includes(id)){
+    const [b,sh]=await Promise.all([gatedText(id,"bank"),m&&m.sheet?gatedText(id,"sheet"):{text:""}]);
+    if(b.denied||sh.denied){esadeDenied=true;return false}
+    if(!b.text||sh.text===undefined)return false;
+    runScript(b.text);if(sh.text)runScript(sh.text);
+  }else{
+    const [ok]=await Promise.all([loadScript("js/banks/"+id+".js"),m&&m.sheet?loadScript("js/sheets/"+id+".js"):0]);
+    if(!ok)return false}
+  if(!BUILTIN[id]())return false;
   if(window.TipokiFig&&TipokiFig.tagLate)TipokiFig.tagLate("BANK_"+id.toUpperCase());
   return true}
 async function useBank(id){
   id=id||"socio";if(BANK&&BANK.id===id)return true;
-  if(BUILTIN[id]){if(!await ensureBank(id))return false;loadBank(BUILTIN[id]());return true}
+  if(BUILTIN[id]){esadeDenied=false;
+    if(!await ensureBank(id)){if(esadeDenied)askEsade(()=>openQuiz(id));return false}
+    loadBank(BUILTIN[id]());return true}
   let b=bankCache[id];
   if(!b){
     let data=null;

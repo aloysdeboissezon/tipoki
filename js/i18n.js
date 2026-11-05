@@ -19,6 +19,21 @@ var LOCALE={en:"en-US",fr:"fr-FR",es:"es-ES",ko:"ko-KR"}[LANG];
 var DATELOC={en:"en-GB",fr:"fr-FR",es:"es-ES",ko:"ko-KR"}[LANG];
 
 var FR={
+"ESADE only":"Réservé à l'ESADE",
+"These quizzes are for ESADE students and alumni. Enter your ESADE email address and we'll send you a code to confirm it's really yours.":"Ces quiz sont réservés aux étudiants et anciens de l'ESADE. Entre ton adresse e-mail ESADE : on t'envoie un code pour confirmer qu'elle est bien à toi.",
+"Your ESADE email":"Ton e-mail ESADE",
+"name@esade.edu":"name@esade.edu",
+"Code from the email":"Code reçu par e-mail",
+"By continuing you accept the":"En continuant, tu acceptes les",
+"terms and conditions":"conditions générales",
+"Already have a qwebbo account? Sign in first":"Tu as déjà un compte qwebbo ? Connecte-toi d'abord",
+"This email isn't an ESADE address. Use the one that ends with esade.edu.":"Cet e-mail n'est pas une adresse ESADE. Utilise celle qui se termine par esade.edu.",
+"Use your ESADE email address, like name@esade.edu.":"Utilise ton adresse e-mail ESADE, par exemple name@esade.edu.",
+"We sent a code to {e}. Type it below, or open the link in the email on this device.":"On a envoyé un code à {e}. Tape-le ci-dessous, ou ouvre le lien de l'e-mail sur cet appareil.",
+"ESADE quizzes unlocked":"Quiz ESADE débloqués",
+"ESADE verified: {e}":"ESADE vérifié : {e}",
+"ESADE only: verify your ESADE email to unlock":"Réservé à l'ESADE : vérifie ton e-mail ESADE pour débloquer",
+"This game uses an ESADE quiz. Verify your ESADE email, then join again.":"Cette partie utilise un quiz ESADE. Vérifie ton e-mail ESADE, puis rejoins à nouveau.",
 "Solo":"Solo",
 // page
 "qwebbo · Learn, compete, master":"qwebbo · Apprends, défie, maîtrise",

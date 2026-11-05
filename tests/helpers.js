@@ -28,7 +28,12 @@ const FAKE_SUPABASE = `
 `;
 
 // Open the site with a clean state. Only localhost is reachable: fonts, analytics and Supabase are replaced.
-async function openSite(page, { path = "/", storage = {} } = {}) {
+// By default the visitor is an ESADE-verified student: the page knows it (the hint in localStorage) and /api/esade gets an ESADE token. Pass esade:false for anyone else.
+async function openSite(page, { path = "/", storage = {}, esade = true } = {}) {
+  if (esade) {
+    storage = { "qwebbo-esade": JSON.stringify({ e: "student@esade.edu" }), ...storage };
+    await page.route(/\/api\/esade\?/, route => route.continue({ headers: { ...route.request().headers(), authorization: "Bearer e2e-esade-token-0000000000" } }));
+  }
   await page.route(/^https?:\/\/(?!localhost)/, route => {
     const url = route.request().url();
     if (/supabase-js/.test(url)) return route.fulfill({ contentType: "text/javascript", body: FAKE_SUPABASE });

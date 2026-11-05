@@ -89,7 +89,7 @@ async function joinGame(c){
   const {data,error}=await sb.from("games").select("state").eq("code",c).maybeSingle();
   if(error){showErr("joinErr",tl("Can't connect, try again."));return}
   if(!data){showErr("joinErr",tl("No game with this code."));return}
-  if(!await useBank(data.state.bank)){showErr("joinErr",tl("Couldn't load this game's quiz."));return}
+  if(!await useBank(data.state.bank)){showErr("joinErr",esadeDenied?tl("This game uses an ESADE quiz. Verify your ESADE email, then join again."):tl("Couldn't load this game's quiz."));return}
   leaveGame(true);
   mode="multi";code=c;G=data.state;P={};local={qi:-1,shownAt:0,revealing:false,lastStatus:null};
   const {data:mine}=await sb.from("players").select("pid").eq("code",c).eq("pid",me).maybeSingle();
@@ -149,7 +149,7 @@ function renderResume(){
 async function resumeSolo(){
   const s=savedSolo();if(!s){renderResume();return}
   $("resumeGo").disabled=true;const ok=await useBank(s.bank);$("resumeGo").disabled=false;
-  if(!ok){toast(tl("Couldn't load this quiz, check your connection"));return}
+  if(!ok){if(!esadeDenied)toast(tl("Couldn't load this quiz, check your connection"));return}
   setQuizParam();leaveGame(true);
   mode="solo";code=null;
   // a question that was already answered (or timed out) reopens on its answer; an unanswered one starts again
