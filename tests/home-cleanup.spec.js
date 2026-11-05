@@ -21,7 +21,7 @@ test.describe("Home page cleanup", () => {
   test("friend-code helper is a single short line; profile block is compact with the avatar on the left", async ({ page }) => {
     await openSite(page);
     const help = page.locator("#joinPanel p.muted");
-    await expect(help).toHaveText("Enter the code and rise to your friend's challenge!");
+    await expect(help).toHaveText("Rise to your friend's challenge!");
     expect(await help.evaluate(e => e.getBoundingClientRect().height < parseFloat(getComputedStyle(e).lineHeight) * 1.5)).toBe(true);
     await expect(page.locator(".me-hint")).toHaveCount(0);
     await expect(page.locator("#pfpPick")).toHaveCount(0);

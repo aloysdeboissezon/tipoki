@@ -72,7 +72,7 @@ var ES={
 "The goal spreads the {t} questions you have not mastered yet over the days left.":"El objetivo reparte las {t} preguntas que aún no dominas entre los días que quedan.",
 "Pick at least one.":"Elige al menos uno.",
 "{n} selected":"{n} seleccionados",
-"Enter the code and rise to your friend's challenge!":"Introduce el código y acepta el desafío de tu amigo.",
+"Rise to your friend's challenge!":"Acepta el desafío de tu amigo.",
 "Enter code...":"Introduce el código...",
 "No code? Ask your friend, or open the link they sent you.":"¿No tienes código? Pídeselo a tu amigo o abre el enlace que te envió.",
 "No open games right now.":"No hay partidas abiertas ahora mismo.",

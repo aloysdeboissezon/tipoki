@@ -94,7 +94,7 @@ var FR={
 "The goal spreads the {t} questions you have not mastered yet over the days left.":"L'objectif répartit les {t} questions pas encore maîtrisées sur les jours restants.",
 "Pick at least one.":"Choisis-en au moins un.",
 "{n} selected":"{n} sélectionnés",
-"Enter the code and rise to your friend's challenge!":"Saisis le code et relève le défi de ton ami !",
+"Rise to your friend's challenge!":"Relève le défi de ton ami !",
 "Enter code...":"Saisis le code...",
 "No code? Ask your friend, or open the link they sent you.":"Pas de code ? Demande-le à ton pote, ou ouvre le lien qu'il t'a envoyé.",
 "No open games right now.":"Aucune partie ouverte pour l'instant.",
