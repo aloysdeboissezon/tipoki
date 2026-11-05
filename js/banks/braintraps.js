@@ -57,5 +57,34 @@ ty(4,"What has an eye but cannot see? (one or two words)",["needle","a needle"],
 ty(4,"What has a neck but no head? (one or two words)",["bottle","a bottle"],"A bottle has a neck.",2);
 ty(2,"A man pushes his car to a hotel and tells the owner he is bankrupt. What game is he playing? (one word)",["Monopoly"],"In Monopoly you can go bankrupt in a hotel.",3);
 
+// ===== More questions =====
+m(2,"Lateral","If a red house is made of red bricks and a blue house of blue bricks, what is a greenhouse made of?","Glass",["Green bricks","Green plastic","Wood"],"A greenhouse is a glass building for plants.",1);
+m(2,"Lateral","How many animals of each kind did Noah take on the ark?","Two",["One","Seven","None"],"Noah took two of each kind; the trick is that it is Noah, not Moses.",1);
+m(2,"Time","One egg takes 6 minutes to boil. How long do three eggs take in the same pot together?","The same time",["18 minutes","12 minutes","9 minutes"],"The eggs cook together, so the time does not change.",1);
+m(2,"Lateral","A man looks at a painting and says: “Brothers and sisters I have none, but that man’s father is my father’s son.” Who is in the painting?","His son",["Himself","His father","His brother"],"My father’s son is the speaker himself, so the man in the painting is his son.",3);
+m(2,"Maths","You enter a dark room with a match, a candle and a lamp. What do you light first?","The match",["The candle","The lamp","The lamp and candle together"],"You need the match to light the others.",1);
+m(2,"Lateral","How far can a dog run into the woods?","Halfway",["All the way","Ten metres","As far as it wants"],"After halfway, it is running out of the woods.",2);
+m(2,"Lateral","Which weighs more: a ton of bricks or a ton of feathers?","They weigh the same",["The bricks","The feathers","It depends"],"A ton is a ton.",1);
+m(3,"Logic","If you have a bowl with 6 apples and you take away 4, how many do you have?","4",["2","6","10"],"You took 4, so you have 4.",2);
+m(3,"Logic","What is the next letter in this sequence? O, T, T, F, F, S, S, ?","E",["N","T","O"],"The letters are the first letters of One, Two, Three, Four, Five, Six, Seven, Eight.",3);
+m(3,"Logic","Which number is the odd one out: 2, 3, 5, 9, 11?","9",["2","3","11"],"9 is the only number that is not prime.",2);
+m(3,"Logic","If 3 cats catch 3 mice in 3 minutes, how many cats are needed to catch 100 mice in 100 minutes?","3",["100","30","33"],"Each cat catches one mouse every 3 minutes, so 3 cats catch 100 mice in 100 minutes.",3);
+m(3,"Maths","What is 20% of 50, plus 50% of 20?","20",["10","25","30"],"20% of 50 is 10 and 50% of 20 is 10, so the total is 20.",2);
+m(3,"Logic","What is the next number? 1, 4, 9, 16, 25, ?","36",["30","32","35"],"The numbers are squares: 1², 2², 3², 4², 5², 6².",1);
+m(3,"Logic","A clock shows 3:15. What is the angle between the hands?","7.5 degrees",["0 degrees","15 degrees","90 degrees"],"The hour hand moves a little past the 3 as the minutes go by.",3);
+m(3,"Logic","What is the missing number? 7, 14, 21, ?, 35","28",["26","27","30"],"The numbers go up by 7 each time.",1);
+m(3,"Logic","You have two coins that add up to 30 cents. One of them is not a nickel. What are the two coins?","A quarter and a nickel",["Two 15-cent coins","A dime and two nickels","A quarter and a dime"],"One of them (the quarter) is not a nickel, but the other is.",3);
+m(3,"Maths","How many times does the digit 9 appear in the numbers from 1 to 100?","20",["10","11","19"],"It appears 10 times as units digit and 10 times as tens digit.",3);
+m(4,"Riddle","What has a heart that does not beat?","An artichoke",["A statue","A clock","A card"],"An artichoke has a heart.",2);
+m(4,"Riddle","What has a bed but never sleeps?","A river",["A hotel","A hospital","A farm"],"A river has a riverbed.",1);
+m(4,"Riddle","What has a head and a tail but no body?","A coin",["A snake","A comet","A match"],"A coin has a head side and a tail side.",1);
+m(4,"Riddle","What has many teeth but cannot bite?","A comb",["A saw","A zipper","A key"],"A comb has teeth that pass through hair.",1);
+m(4,"Riddle","What gets bigger the more you take away from it?","A hole",["A shadow","A debt","A cloud"],"Digging removes earth, making the hole bigger.",2);
+m(4,"Riddle","What runs but never walks, has a mouth but never talks?","A river",["A clock","A car","A faucet"],"A river has a mouth where it meets the sea.",2);
+m(4,"Riddle","What is full of holes but still holds water?","A sponge",["A bucket","A net","A cup"],"A sponge absorbs water in its pores.",1);
+m(4,"Riddle","What can you break without ever touching it?","A promise",["A glass","A wave","A mirror"],"A promise can be broken without touching.",1);
+m(4,"Riddle","What begins with T, ends with T and has T in it?","A teapot",["A tent","A tight","A target"],"A teapot starts and ends with T and contains tea.",3);
+ty(4,"What has keys but no locks and can play music? (one or two words)",["piano","a piano","keyboard"],"A piano has keys.",2);
+
 return {id:"braintraps",title:"Brain Traps",kw:"brain traps stroop test colour trick questions riddles logic puzzles brain teasers only 1 percent tiktok",subject:"Colour traps, trick questions and riddles: will your brain fall for them?",lang:"en",sess:SESS,tags:TAGS,unit:["level","levels","a level"],balance:true,Q,TQ};
 })();

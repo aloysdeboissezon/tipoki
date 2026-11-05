@@ -141,5 +141,46 @@ m(4,"App","Which app is this? 💬🟢📞","WhatsApp",["Telegram","Signal","Lin
 m(4,"App","Which app is this? 🎮🟣📺","Twitch",["Discord","Steam","Kick"],"Gamers stream live on this purple platform.",2);
 m(4,"Brand","Which streaming brand is this? 🔴🎬📺","Netflix",["Hulu","Disney+","HBO"],"The red N logo and its famous “ta-dum” sound.",1);
 
+// ===== More questions =====
+m(1,"Disney","Which film is this? 🧸🍯🌳","Winnie the Pooh",["Paddington","Brave","Bambi"],"A bear, honey and the Hundred Acre Wood.",2);
+m(1,"Disney","Which film is this? 🐟🔍👶","Finding Dory",["Finding Nemo","The Little Mermaid","Shark Tale"],"The blue tang searches for her family.",2);
+m(1,"Disney","Which film is this? 🚗⚡🏁","Cars",["Planes","Ford v Ferrari","Fast and Furious"],"Lightning McQueen races in Radiator Springs.",1);
+m(1,"Disney","Which film is this? 🐯🐻🌴","The Jungle Book",["Madagascar","Tarzan","Zootopia"],"Baloo, Shere Khan and Mowgli.",2);
+m(1,"Action","Which film is this? 🚗💨🔥👨‍👨‍👦","Fast & Furious",["Mad Max","The Italian Job","Cars"],"Family, fast cars and Dominic Toretto.",2);
+m(1,"Action","Which film is this? 🦸‍♂️🛡️⭐","Captain America",["Iron Man","Thor","Hulk"],"The shield and the star belong to Steve Rogers.",1);
+m(1,"Action","Which film is this? 💍🧙‍♂️🏔️","The Hobbit",["Harry Potter","Narnia","Eragon"],"A hobbit, a wizard and the Lonely Mountain.",3);
+m(1,"Drama","Which film is this? 🎹🌃🌟","La La Land",["Whiplash","Chicago","Moulin Rouge"],"A pianist and an actress in Los Angeles.",3);
+m(1,"Horror","Which film is this? 🎈🤡🌧️","It",["Scream","Saw","Annabelle"],"Pennywise appears from the storm drain.",2);
+m(1,"Sci-fi","Which film is this? 🚀🌌👨‍🚀🕳️","Interstellar",["Gravity","The Martian","Moon"],"A journey through a wormhole to save humanity.",3);
+m(1,"Sci-fi","Which film is this? 🌍🔫🕶️🤖","Terminator",["I, Robot","RoboCop","Blade Runner"],"A cyborg sent back in time.",2);
+m(2,"Song","Which song is this? 🌍❤️🎶","We Are the World",["Heal the World","Imagine","Earth Song"],"A 1985 charity single by USA for Africa.",3);
+m(2,"Song","Which song is this? ❄️🎄🎅","Jingle Bells",["Silent Night","White Christmas","Frosty the Snowman"],"A classic holiday song.",1);
+m(2,"Artist","Which band is this? 🚶‍♂️🚶‍♂️🚶‍♂️🚶‍♂️🛣️","The Beatles",["The Rolling Stones","Queen","U2"],"The Abbey Road album cover.",2);
+m(2,"Artist","Which band is this? 👑🎤🎸","Queen",["Kiss","U2","The Who"],"Freddie Mercury's band.",1);
+m(3,"Country","Which country is this? 🍫🧀⛰️⌚","Switzerland",["Austria","Germany","Belgium"],"Chocolate, cheese, mountains and watches.",1);
+m(3,"Country","Which country is this? 🎻🍺🥨🏰","Germany",["Austria","Poland","Czech Republic"],"Beer, pretzels and castles.",2);
+m(3,"Country","Which country is this? 🐫🏜️🕌","Egypt",["Morocco","Saudi Arabia","Tunisia"],"Camels, deserts and mosques.",2);
+m(3,"Country","Which country is this? 🍣🏯🎌","Japan",["China","South Korea","Thailand"],"Sushi and temples.",1);
+m(3,"Country","Which country is this? 🌶️🪅🥑","Mexico",["Colombia","Peru","Spain"],"Chilli, piñatas and avocado.",1);
+m(3,"Country","Which country is this? 🥖🍷🗼","France",["Italy","Spain","Belgium"],"Bread, wine and tower.",1);
+m(3,"City","Which city is this? 🕌🌉🐟","Istanbul",["Cairo","Athens","Dubai"],"Mosques and a bridge between continents.",2);
+m(3,"City","Which city is this? 🎰🎲🌴","Las Vegas",["Miami","Los Angeles","Atlantic City"],"Casinos in the desert.",1);
+m(3,"City","Which city is this? 🌉🚋🌫️","San Francisco",["Seattle","Boston","Chicago"],"Golden Gate, cable cars and fog.",2);
+m(3,"Food","Which food is this? 🍝🧀🥩","Spaghetti bolognese",["Lasagna","Carbonara","Ravioli"],"Pasta with meat sauce.",2);
+m(3,"Food","Which food is this? 🍣🍚🥢","Sushi",["Ramen","Tempura","Dumplings"],"Rice, fish and chopsticks.",1);
+m(3,"Food","Which food is this? 🥞🍁🥓","Pancakes",["Waffles","Crêpes","Doughnuts"],"Maple syrup and bacon: a classic American breakfast.",2);
+m(4,"Saying","Which saying is this? 🔥🚒","Playing with fire",["Fire in the hole","Light my fire","Where there is smoke"],"Doing something dangerous.",2);
+m(4,"Saying","Which saying is this? ⏰💰","Time is money",["Time flies","Money talks","Better late than never"],"Time has value.",2);
+m(4,"Saying","Which saying is this? 🍎👨‍⚕️","An apple a day keeps the doctor away",["Rotten apple","Big Apple","Apple of my eye"],"Eating well keeps you healthy.",1);
+m(4,"Daily life","Which daily moment is this? ⏰☕🚿","Morning routine",["Lunch break","Bedtime","Weekend plans"],"Alarm, coffee and a shower.",1);
+m(4,"Daily life","Which daily moment is this? 🌙🛏️😴","Bedtime",["Lunch break","Morning rush","Gym time"],"Moon, bed and sleep.",1);
+m(4,"Daily life","Which activity is this? 💻☕📚","Studying",["Gaming","Cooking","Travelling"],"Laptop, coffee and books.",1);
+m(4,"Daily life","Which activity is this? 🏋️💪🥗","Working out",["Sleeping","Shopping","Cooking"],"Weights, muscles and a healthy meal.",1);
+m(4,"Brand","Which brand is this? 🔴🥤🐻","Coca-Cola",["Pepsi","Fanta","Sprite"],"Red can and polar bears.",1);
+m(4,"Brand","Which brand is this? 🍔🤡🍟","McDonald's",["Burger King","Wendy's","KFC"],"Ronald McDonald and fries.",2);
+m(4,"Brand","Which brand is this? ✔️👟","Nike",["Adidas","Puma","Reebok"],"The Nike swoosh logo and sneakers.",1);
+m(4,"Brand","Which brand is this? 🔍🌈","Google",["Bing","Yahoo","DuckDuckGo"],"Search and colours.",1);
+m(4,"Brand","Which brand is this? 📦➡️😊","Amazon",["eBay","Walmart","Zalando"],"Parcel and the smile arrow.",1);
+
 return {id:"emoji",title:"Emoji Riddles",kw:"emoji riddles guess movie song artist emojis puzzle game fun tiktok",subject:"Guess the film, song, country or saying from a few emojis",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

@@ -111,18 +111,14 @@ vf(2,"The Canadian maple leaf has 11 points.",true,"The 11-point design was chos
 m(3,"Records","Which river carries the most water in the world?","The Amazon",["The Nile","The Mississippi","The Yangtze"],"The Amazon carries about 20% of all river water that flows into the oceans.",2);
 m(3,"Records","Where is the deepest point in the world’s oceans?","The Mariana Trench",["The Puerto Rico Trench","The Java Trench","The Tonga Trench"],"The Challenger Deep reaches almost 11,000 metres below sea level.",2);
 m(3,"Records","Which is the largest lake in the world by surface area?","The Caspian Sea",["Lake Superior","Lake Victoria","Lake Baikal"],"The Caspian Sea is technically a lake and is bordered by five countries.",3);
-m(3,"Records","Which is the deepest lake in the world?","Lake Baikal",["Lake Tanganyika","The Caspian Sea","Lake Superior"],"Lake Baikal in Russia is over 1,600 metres deep and holds about 20% of the world’s fresh water.",3);
 m(3,"Records","The highest air temperature ever reliably recorded, 56.7°C, was measured in…","Death Valley, USA",["The Sahara Desert","Dubai","Kuwait City"],"It was recorded in California on 10 July 1913.",3);
 m(3,"Records","Where was the lowest temperature ever recorded, about −89°C?","Antarctica",["Siberia","Greenland","The North Pole"],"The record was set at Vostok Station in 1983.",2);
 m(3,"Records","Which desert is often called the driest non-polar place on Earth?","The Atacama Desert",["The Sahara","The Gobi","The Kalahari"],"Some parts of the Atacama in Chile have gone years without rain.",2);
-m(3,"Records","Which continent has the most countries?","Africa",["Asia","Europe","South America"],"Africa has 54 recognised countries.",2);
 m(3,"Records","Which is the longest mountain range on Earth?","The Andes",["The Rockies","The Himalayas","The Alps"],"The Andes stretch about 7,000 km along the west of South America.",3);
 m(3,"Records","Which country has the most active volcanoes?","Indonesia",["Japan","Iceland","Italy"],"Indonesia sits on the Pacific Ring of Fire and has over 120 active volcanoes.",3);
-m(3,"Records","Which is the largest rainforest in the world?","The Amazon",["The Congo","The Daintree","The Tongass"],"The Amazon covers around 5.5 million square kilometres.",1);
 vf(3,"Antarctica is classified as a desert.",true,"It gets very little precipitation, so it is the world’s largest cold desert.",2);
 vf(3,"Mount Everest is the tallest mountain on Earth when measured from base to peak.",false,"Mauna Kea in Hawaii is taller from its base on the ocean floor.",3);
 vf(3,"The shore of the Dead Sea is the lowest point on land.",true,"It lies about 430 metres below sea level.",2);
-vf(3,"Russia spans 11 time zones.",true,"Russia is the largest country in the world by area.",3);
 
 m(4,"Which country?","In which country is Mount Kilimanjaro, Africa’s highest peak?","Tanzania",["Kenya","Uganda","Ethiopia"],"The snow-capped peak rises 5,895 metres above sea level.",2);
 m(4,"Which country?","The Galápagos Islands, which inspired Darwin, belong to which country?","Ecuador",["Peru","Colombia","Chile"],"They are about 1,000 km off the coast of Ecuador.",2);
@@ -139,6 +135,51 @@ m(4,"Which country?","In which country is the city of Marrakech?","Morocco",["Tu
 
 ty(1,"What is the capital of Iceland? (one word)",["Reykjavik","Reykjavík"],"Reykjavík is the world’s northernmost capital of a sovereign state.",1);
 ty(3,"What is the largest island in the world? (one word)",["Greenland"],"Greenland is an autonomous territory of Denmark.",2);
+
+// ===== More questions =====
+m(1,"Capital","Which city is the seat of South Africa’s executive branch?","Pretoria",["Johannesburg","Cape Town","Durban"],"South Africa has three capitals: Pretoria, Cape Town and Bloemfontein.",3);
+m(1,"Capital","Which city is Sri Lanka’s official legislative capital, next to Colombo?","Sri Jayawardenepura Kotte",["Kandy","Galle","Jaffna"],"Colombo is the largest city and commercial capital.",3);
+m(1,"Capital","Which city is the seat of government of Bolivia?","La Paz",["Sucre","Santa Cruz","Cochabamba"],"Sucre is the constitutional capital.",3);
+m(1,"Capital","What is the capital of Peru?","Lima",["Cusco","Arequipa","Quito"],"Lima is on the Pacific coast.",1);
+m(1,"Capital","What is the capital of Argentina?","Buenos Aires",["Córdoba","Rosario","Montevideo"],"Buenos Aires is on the Río de la Plata.",1);
+m(1,"Capital","What is the capital of Kenya?","Nairobi",["Mombasa","Kampala","Dar es Salaam"],"Nairobi is the capital and largest city.",1);
+m(1,"Capital","What is the capital of Poland?","Warsaw",["Kraków","Gdańsk","Łódź"],"Kraków was the capital until 1596.",1);
+m(1,"Capital","What is the capital of Portugal?","Lisbon",["Porto","Coimbra","Faro"],"Lisbon sits on the Tagus river.",1);
+m(1,"Capital","What is the capital of Norway?","Oslo",["Bergen","Stockholm","Trondheim"],"Oslo is the largest city in Norway.",1);
+m(1,"Capital","What is the capital of Thailand?","Bangkok",["Chiang Mai","Phuket","Pattaya"],"Its full Thai name is one of the longest city names in the world.",1);
+m(1,"Capital","What is the capital of Saudi Arabia?","Riyadh",["Jeddah","Mecca","Dammam"],"Riyadh is in the centre of the country.",2);
+m(1,"Capital","What is the capital of Ghana?","Accra",["Kumasi","Lagos","Abidjan"],"Accra is on the Gulf of Guinea.",2);
+m(1,"Capital","What is the capital of Colombia?","Bogotá",["Medellín","Cali","Cartagena"],"Bogotá lies at about 2,600 m altitude.",2);
+m(1,"Capital","What is the capital of Slovakia?","Bratislava",["Košice","Ljubljana","Brno"],"Bratislava is on the Danube, near Austria.",2);
+vf(1,"Istanbul is the capital of Turkey.",false,"The capital is Ankara.",1);
+vf(1,"Sydney is the capital of Australia.",false,"The capital is Canberra.",1);
+m(2,"Flags","Which country’s flag features a white cross on a red field with Nordic style?","Denmark",["Finland","Norway","Iceland"],"The Dannebrog is Europe’s oldest flag still in use.",2);
+m(2,"Flags","Which country’s red flag has one large and four small yellow stars?","China",["Vietnam","Turkey","North Korea"],"China’s flag features one large and four small stars.",2);
+m(2,"Flags","Which country’s flag is green with a white crescent and star?","Pakistan",["Turkey","Saudi Arabia","Algeria"],"Pakistan’s flag has a white stripe on the left.",3);
+m(2,"Flags","Which country’s flag has the Union Jack and a Southern Cross of stars?","Australia",["New Zealand","Fiji","Tuvalu"],"New Zealand’s flag has four red stars; Australia’s has six white ones.",2);
+m(2,"Flags","Which colour is not on the flag of Germany?","White",["Black","Red","Gold"],"Germany’s flag is black, red and gold.",1);
+m(2,"Flags","How many stripes does the Greek flag have?","9",["7","5","11"],"Nine stripes, blue and white, with a cross in the corner.",3);
+vf(2,"The Spanish flag contains red and yellow.",true,"The Spanish flag is red-yellow-red.",1);
+vf(2,"The French tricolour is blue, white and red.",true,"The blue is next to the flagpole.",1);
+m(3,"Records","What is the longest river in the world, by traditional measurement?","The Nile",["The Amazon","The Yangtze","The Mississippi"],"The Nile is about 6,650 km long.",2);
+m(3,"Records","Which is the largest country in Africa by area?","Algeria",["Sudan","Libya","DR Congo"],"Algeria became the largest after South Sudan’s independence in 2011.",3);
+m(3,"Records","Which is the tallest building in the world?","Burj Khalifa",["Shanghai Tower","Merdeka 118","Abraj Al-Bait"],"It stands 828 m tall in Dubai.",1);
+m(3,"Records","Which is the driest place on Earth, a desert in Chile?","Atacama Desert",["Gobi Desert","Kalahari","Namib Desert"],"Some Atacama weather stations have never recorded rain.",3);
+m(3,"Records","Which is the largest island in the Mediterranean?","Sicily",["Sardinia","Crete","Cyprus"],"Sicily covers about 25,700 km².",3);
+m(3,"Records","Which is the most spoken language in the world by native speakers?","Mandarin Chinese",["English","Spanish","Hindi"],"English has more total speakers when second-language speakers are counted.",2);
+m(3,"Records","Which is the biggest coral reef system in the world?","The Great Barrier Reef",["The Belize Barrier Reef","The Red Sea Coral Reef","The Andros Reef"],"The Great Barrier Reef is off Queensland, Australia.",1);
+vf(3,"The Pacific Ocean is the smallest ocean.",false,"The Pacific is the largest; the Arctic is the smallest.",1);
+m(4,"Countries","In which country is the ancient city of Pompeii?","Italy",["Greece","Turkey","Spain"],"Pompeii was buried by Vesuvius in AD 79.",1);
+m(4,"Countries","In which country is the Great Pyramid of Giza?","Egypt",["Sudan","Mexico","Iraq"],"It is the oldest of the Seven Wonders of the Ancient World.",1);
+m(4,"Countries","In which country is the Christ the Redeemer statue?","Brazil",["Argentina","Portugal","Mexico"],"The statue stands above Rio de Janeiro.",1);
+m(4,"Countries","In which country is the Colosseum?","Italy",["Greece","France","Spain"],"The Colosseum is in Rome.",1);
+m(4,"Countries","In which country is the Serengeti National Park?","Tanzania",["Kenya","South Africa","Botswana"],"The Great Migration crosses into Kenya’s Maasai Mara.",2);
+m(4,"Countries","In which country is Lake Titicaca partly located, besides Peru?","Bolivia",["Chile","Ecuador","Argentina"],"Lake Titicaca is on the Peru–Bolivia border.",3);
+vf(4,"Venice is built on islands in a lagoon.",true,"Venice is spread over 118 small islands.",1);
+vf(4,"The Eiffel Tower is located in Lyon.",false,"It is in Paris.",1);
+ty(1,"What is the capital of Italy? (one word)",["Rome","Roma"],"Rome is also called the Eternal City.",1);
+ty(3,"What is the longest river in South America? (one word)",["Amazon","The Amazon"],"The Amazon flows through Brazil, Peru and Colombia.",1);
+ty(4,"In which country is the Eiffel Tower? (one word)",["France"],"It was built for the 1889 World’s Fair.",1);
 
 return {id:"worldtour",title:"World Tour: Flags, Capitals & Records",kw:"world tour flags capitals countries geography records landmarks which country quiz travel",subject:"Flags, capitals that trick everyone, world records and landmarks: how well do you know the planet?",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();

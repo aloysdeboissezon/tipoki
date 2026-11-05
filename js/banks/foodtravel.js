@@ -136,5 +136,53 @@ vf(4,"Monaco is an independent country.",true,"Monaco is the second-smallest cou
 
 ty(4,"What is the capital of Peru? (one word)",["Lima"],"Lima lies on the Pacific coast and is famous for its cuisine.",2);
 
+// ===== More questions =====
+m(1,"Origins","Which country is the origin of sushi in its modern form?","Japan",["China","Korea","Thailand"],"Modern nigiri sushi appeared in Edo (Tokyo) in the 1800s.",1);
+m(1,"Origins","Which country invented the croissant in the form we know?","France (inspired by Austrian kipferl)",["Italy","Germany","Belgium"],"The kipferl came from Vienna; French bakers developed the buttery croissant.",3);
+m(1,"Origins","Which country is the origin of paella?","Spain",["Italy","Portugal","Mexico"],"Paella is from Valencia.",1);
+m(1,"Origins","Which country is the origin of tacos?","Mexico",["Spain","Peru","Argentina"],"Tacos are a staple of Mexican cuisine.",1);
+m(1,"Origins","Which country is the origin of kimchi?","Korea",["Japan","China","Vietnam"],"Kimchi is fermented cabbage with chili.",1);
+m(1,"Origins","Which country is the origin of the hamburger as a sandwich with bun, as we know in the US?","United States",["Germany","Austria","France"],"The Hamburg steak came from Germany, but the sandwich was popularised in the US.",3);
+m(1,"Origins","Which country invented fish and chips as a takeaway meal?","England",["Scotland","Ireland","Australia"],"The first fish and chip shops opened in the 1860s.",2);
+m(1,"Origins","In which region were cacao beans first cultivated?","Mesoamerica (today’s Mexico and Central America)",["West Africa","Switzerland","Belgium"],"The Maya and Aztecs drank cacao as a bitter beverage.",3);
+vf(1,"Pasta was brought to Italy from China by Marco Polo.",false,"Pasta existed in Italy before Marco Polo’s travels.",2);
+vf(1,"Tomatoes come from the Americas.",true,"Tomatoes were brought to Europe after 1492.",1);
+m(2,"Dishes","Which dish is made of rice, seaweed and raw fish rolled together?","Sushi",["Ramen","Tempura","Gyoza"],"Rolled sushi is called maki.",1);
+m(2,"Dishes","Which Indian dish features chicken in a creamy tomato sauce?","Butter chicken",["Biryani","Samosa","Dal"],"Butter chicken was created in Delhi in the 1950s.",2);
+m(2,"Dishes","Which Middle Eastern dip is made from chickpeas and tahini?","Hummus",["Baba ganoush","Tzatziki","Guacamole"],"Hummus means chickpeas in Arabic.",1);
+m(2,"Dishes","Which Thai noodle dish is stir-fried with peanuts and tamarind?","Pad thai",["Tom yum","Green curry","Satay"],"Pad thai is a national dish of Thailand.",2);
+m(2,"Dishes","Which Japanese soup has noodles in a rich broth?","Ramen",["Miso","Udon only","Tempura"],"Ramen has many regional styles.",1);
+m(2,"Dishes","Which Ethiopian bread is used to scoop up stews?","Injera",["Naan","Pita","Roti"],"Injera is a spongy flatbread made from teff.",3);
+m(2,"Dishes","Which Spanish dessert is a custard with caramel on top?","Flan",["Churros","Turrón","Tarta de Santiago"],"Flan is served with caramel sauce.",2);
+m(2,"Dishes","Which Turkish dish consists of meat roasted on a vertical spit?","Döner kebab",["Falafel","Manti","Baklava"],"Döner means rotating in Turkish.",2);
+m(2,"Dishes","Which Indian bread is cooked in a tandoor oven?","Naan",["Chapati","Paratha","Puri"],"Naan is leavened bread.",2);
+m(2,"Dishes","Which Mexican dish is a rolled tortilla filled with meat, covered in sauce?","Enchilada",["Quesadilla","Burrito","Nacho"],"Enchilada means seasoned with chili.",2);
+vf(2,"Baklava is made with layers of filo pastry and nuts.",true,"Baklava is soaked in syrup or honey.",1);
+vf(2,"Guacamole is made primarily from tomatoes.",false,"Guacamole is made from mashed avocado.",1);
+m(3,"Landmarks","In which city is the Colosseum?","Rome",["Athens","Naples","Milan"],"The Colosseum was finished in AD 80.",1);
+m(3,"Landmarks","In which country is Machu Picchu?","Peru",["Chile","Bolivia","Ecuador"],"Machu Picchu is a 15th-century Inca citadel.",1);
+m(3,"Landmarks","Which landmark is in Agra, India?","The Taj Mahal",["The Red Fort","The Gateway of India","The Lotus Temple"],"The Taj Mahal was built by Shah Jahan for his wife.",1);
+m(3,"Landmarks","Which landmark is in Sydney, Australia, shaped like sails?","Sydney Opera House",["Harbour Bridge","Sydney Tower","Opera Bar"],"It opened in 1973.",1);
+m(3,"Landmarks","In which city is the Acropolis?","Athens",["Rome","Istanbul","Delphi"],"The Parthenon sits on the Acropolis.",1);
+m(3,"Landmarks","In which country is Angkor Wat?","Cambodia",["Thailand","Laos","Vietnam"],"Angkor Wat is the largest religious monument in the world.",2);
+m(3,"Landmarks","Which landmark stands in Rio de Janeiro on Corcovado mountain?","Christ the Redeemer",["Sugarloaf Mountain","Copacabana Fort","Maracanã"],"The statue is 30 m tall.",1);
+m(3,"Landmarks","Which famous bridge crosses San Francisco Bay’s entrance?","Golden Gate Bridge",["Brooklyn Bridge","Bay Bridge","Tower Bridge"],"It opened in 1937.",1);
+m(3,"Landmarks","In which city is the Sagrada Família?","Barcelona",["Madrid","Valencia","Seville"],"It was started in 1882.",1);
+vf(3,"The Leaning Tower of Pisa is in Florence.",false,"It is in Pisa, Italy.",1);
+vf(3,"Mount Fuji is an active volcano in Japan.",true,"Its last eruption was in 1707.",2);
+m(4,"Travel","Which currency is used in Japan?","The yen",["The yuan","The won","The baht"],"The yen is abbreviated ¥.",1);
+m(4,"Travel","Which side of the road do people drive on in the UK?","The left",["The right","Both","It depends"],"The UK, Japan, India and Australia drive on the left.",1);
+m(4,"Travel","Which airport code is used for London Heathrow?","LHR",["LGW","LON","LDN"],"Heathrow is the UK’s busiest airport.",3);
+m(4,"Travel","Which is the busiest airport in the world by passenger numbers in recent years?","Atlanta (ATL)",["London Heathrow","Dubai (DXB)","Tokyo Haneda"],"Atlanta’s Hartsfield–Jackson has led the ranking for years.",3);
+m(4,"Travel","Which European rail pass allows travel in many countries with one ticket?","Interrail",["Eurostar","EuroPass","TGV Pass"],"Interrail is for European residents; Eurail for others.",3);
+m(4,"Travel","In which country do people tip very little because service is included?","Japan",["United States","Canada","Mexico"],"Tipping is not customary in Japan.",2);
+m(4,"Travel","What does a visa usually allow?","Entry to a foreign country",["A free flight","A discounted hotel","A local SIM card"],"A visa is an official permission to enter or stay.",1);
+m(4,"Travel","What is a layover?","A stop between flights",["A cancelled flight","An overbooked flight","A free upgrade"],"A layover is a short stop during a trip.",2);
+vf(4,"You can drive in many countries with a US driving licence.",true,"Many countries accept it, sometimes with an international permit.",2);
+vf(4,"The euro is used in all countries of the European Union.",false,"Some EU countries, like Poland and Sweden, keep their own currency.",2);
+ty(1,"Which country is the home of sushi? (one word)",["Japan"],"Sushi comes from Japan.",1);
+ty(3,"Which city is home to the Eiffel Tower? (one word)",["Paris"],"The tower was built for 1889.",1);
+ty(4,"What is the currency of the United Kingdom? (two words)",["Pound sterling","Pound","British pound"],"The pound sterling is the oldest currency still in use.",2);
+
 return {id:"foodtravel",title:"Food & Travel Challenge",kw:"food travel dishes pizza sushi paella landmarks wonders countries cities currency tourism foodie quiz",subject:"Where foods come from, dishes of the world, landmarks and travel know-how",lang:"en",sess:SESS,tags:TAGS,unit:["theme","themes","a theme"],balance:true,Q,TQ};
 })();
