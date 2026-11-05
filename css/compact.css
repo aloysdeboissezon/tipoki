@@ -370,3 +370,16 @@
 .es-head{display:flex;align-items:center;gap:12px}
 .es-head .esade-logo{width:40px;height:40px;flex:none;opacity:1;border-radius:10px}
 .sync-foot a{color:var(--hl);font-weight:700}
+
+/* home: friend-code row is shorter (44-46px tap targets), placeholder is plain text */
+#joinPanel .codein{font-size:22px!important;padding:6px 14px!important;height:46px;min-height:0}
+#joinPanel .codein::placeholder{letter-spacing:0;text-transform:none;font:600 16px var(--f-body);opacity:.6}
+#joinPanel .joinrow .btn{min-height:46px;height:46px;padding:0 22px;font-size:17px}
+/* home profile block: label on top, avatar centred against the name + country rows */
+#meHome .me-panel{display:grid;grid-template-columns:64px 1fr;gap:6px 16px;align-items:center}
+#meHome .me-panel .me-main{display:contents}
+#meHome .me-main .label{grid-column:1/-1;align-self:auto;text-align:center}
+#meHome .pfp{grid-column:1;grid-row:2/span 2}
+#meHome #nick,#meHome #country{grid-column:2}
+#meHome .me-sub,#meHome #nickErr{grid-column:2}
+#meHome .me-main>*:not(.label):not(#nick):not(#country){grid-column:1/-1}

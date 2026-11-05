@@ -21,7 +21,7 @@ test.describe("Home page cleanup", () => {
   test("friend-code helper is a single short line; profile block is compact with the avatar on the left", async ({ page }) => {
     await openSite(page);
     const help = page.locator("#joinPanel p.muted");
-    await expect(help).toHaveText("Rise to your friend's challenge!");
+    await expect(help).toHaveText("Enter your friend's code... and rise");
     expect(await help.evaluate(e => e.getBoundingClientRect().height < parseFloat(getComputedStyle(e).lineHeight) * 1.5)).toBe(true);
     await expect(page.locator(".me-hint")).toHaveCount(0);
     await expect(page.locator("#pfpPick")).toHaveCount(0);
@@ -33,5 +33,12 @@ test.describe("Home page cleanup", () => {
     expect(a.x + a.width).toBeLessThanOrEqual(n.x);
     expect(a.y).toBeLessThan(c.y + c.height);
     expect(a.y + a.height).toBeGreaterThan(n.y);
+    // friend-code row: plain placeholder, compact controls; avatar centred on the name + country rows
+    await expect(page.locator("#codeIn")).toHaveAttribute("placeholder", "Enter code...");
+    const ci = await page.locator("#codeIn").boundingBox(), jb = await page.locator("#joinBtn").boundingBox();
+    expect(ci.height).toBeLessThanOrEqual(48); expect(ci.height).toBeGreaterThanOrEqual(44);
+    expect(jb.height).toBeLessThanOrEqual(48); expect(jb.height).toBeGreaterThanOrEqual(44);
+    const mid = (n.y + c.y + c.height) / 2;
+    expect(Math.abs(a.y + a.height / 2 - mid)).toBeLessThan(8);
   });
 });
