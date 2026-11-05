@@ -48,3 +48,24 @@ test.describe("/api/esade", () => {
     expect(ids).toEqual(files);
   });
 });
+
+// the temporary open mode (ESADE_OPEN = true in api/esade.js and js/app/03-quiz-data.js): both switches must say the same thing
+test.describe("temporary open mode", () => {
+  test("the two switches match, and open mode serves the quizzes without any token while the real gate stays closed", async ({ page, request }) => {
+    const server = fs.readFileSync(path.join(__dirname, "..", "api", "esade.js"), "utf8").match(/const ESADE_OPEN = (true|false);/)[1];
+    const client = fs.readFileSync(path.join(__dirname, "..", "js", "app", "03-quiz-data.js"), "utf8").match(/const ESADE_OPEN=(true|false);/)[1];
+    expect(client).toBe(server);
+    const run = (open) => new Promise(resolve => {
+      const res = { headers: {}, setHeader(k, v) { this.headers[k] = v; }, end(b) { resolve({ status: this.statusCode, len: b && b.length }); } };
+      require("../api/esade").createHandler({ open, check: async () => "bad_token" })({ method: "GET", url: "/api/esade?k=bank&id=socio", headers: {} }, res);
+    });
+    expect((await run(true)).status).toBe(200);
+    expect((await run(false)).status).toBe(401);
+    // in the browser, open mode makes the ESADE logo a plain filter button (no lock, no pop-up)
+    await page.goto("/");
+    await expect(page.locator("#esadeBtn")).not.toHaveClass(/locked/);
+    await page.locator("#esadeBtn").click();
+    await expect(page.locator("#esadeForm")).toBeHidden();
+    await expect(page.locator('#quizGrid .qcard[data-id="socio"]')).toBeVisible();
+  });
+});
