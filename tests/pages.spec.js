@@ -13,12 +13,22 @@ test.describe("About, contact and legal pages", () => {
     await expect(page.locator("main h1:visible")).toContainText("Learn, compete");
   });
 
+  test("the home nav is an in-flow card, not floating", async ({ page }) => {
+    await openSite(page);
+    const nav = page.locator("#home .sitefoot");
+    expect(await nav.evaluate(e => getComputedStyle(e).position)).toBe("static");
+    const prev = await page.locator("#home .me-panel").boundingBox();
+    const box = await nav.boundingBox();
+    expect(box.y).toBeGreaterThanOrEqual(prev.y + prev.height);
+    await expect(nav.locator("a")).toHaveCount(5);
+  });
+
   test("the footer is translated", async ({ browser }) => {
     const ctx = await browser.newContext({ locale: "es-ES" });
     const page = await ctx.newPage();
     await openSite(page);
-    await expect(page.locator("#home .sitefoot")).toContainText("Política de privacidad");
-    await expect(page.locator("#home .sitefoot")).toContainText("Aviso legal");
+    await expect(page.locator("#home .sitefoot")).toContainText("Privacidad");
+    await expect(page.locator("#home .sitefoot")).toContainText("Aviso");
     await ctx.close();
   });
 

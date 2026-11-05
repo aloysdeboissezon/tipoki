@@ -678,6 +678,7 @@ var KO={
 "Add a nickname on the home page so friends see your name.":"홈 화면에서 닉네임을 추가하면 친구들이 내 이름을 볼 수 있어요.",
 "← Home":"← 홈",
 // site links (footer)
+"Privacy":"개인정보","Terms":"약관","Legal":"법적 고지",
 "About":"소개","Contact":"문의","Privacy policy":"개인정보 처리방침","Terms of use":"이용약관","Legal notice":"법적 고지","About qwebbo":"qwebbo 소개",
 "Options":"옵션",
 "On":"켜짐",
