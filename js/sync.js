@@ -187,9 +187,10 @@ dlg.innerHTML=`<div class="sync-card" id="syncCard">
 </div>
 <form class="sync-view" id="emailForm" data-v="email" novalidate hidden>
   <h2>Continue with Email</h2>
-  <p class="muted sync-help" id="emHelp">We'll email you a 6-digit code: no password to remember.</p>
+  <p class="muted sync-help" id="emHelp">We'll email you a code: no password to remember.</p>
   <div class="sync-field"><label class="label" for="emAddr">Email</label><input type="email" id="emAddr" maxlength="120" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="you@example.com"></div>
   <div class="sync-field" id="emCodeBox" hidden><label class="label" for="emCode">Code from the email</label><input type="text" id="emCode" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="123456"></div>
+  <p class="muted sync-foot" id="emHint" hidden><span>Nothing yet? Check your spam or junk folder.</span> <button type="button" class="linkbtn" id="emResend">Send again</button></p>
   <p class="err" id="emErr" hidden></p>
   <div class="row sync-actions"><button type="button" class="btn ghost" id="emBack">Back</button><button type="submit" class="btn" id="emGo">Send me a code</button></div>
 </form>
@@ -206,6 +207,7 @@ dlg.innerHTML=`<div class="sync-card" id="syncCard">
   <p class="muted sync-help" id="esHelp">These quizzes are for ESADE students and alumni. Enter your ESADE email address and we'll send you a code to confirm it's really yours.</p>
   <div class="sync-field"><label class="label" for="esAddr">Your ESADE email</label><input type="email" id="esAddr" maxlength="120" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="name@esade.edu"></div>
   <div class="sync-field" id="esCodeBox" hidden><label class="label" for="esCode">Code from the email</label><input type="text" id="esCode" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="123456"></div>
+  <p class="muted sync-foot" id="esHint" hidden><span>Nothing yet? Check your spam or junk folder.</span> <button type="button" class="linkbtn" id="esResend">Send again</button></p>
   <p class="muted sync-foot"><span>By continuing you accept the</span> <a href="/terms.html" target="_blank" rel="noopener">terms and conditions</a>.</p>
   <p class="err" id="esErr" hidden></p>
   <div class="row sync-actions"><button type="button" class="btn ghost" id="esCancel">Cancel</button><button type="submit" class="btn" id="esGo">Send me a code</button></div>
@@ -279,7 +281,7 @@ q("emBack").onclick=q("phBack").onclick=()=>{show("choose");sentTo=null};
 
 // ---------- sign in with Email / Phone / Google / Apple (Supabase Auth) ----------
 const AMSG={already_linked:tl("This email is already linked to another qwebbo account."),
-  rate:tl("Too many messages sent. Wait a few minutes, then try again."),bad_code:tl("This code is wrong or has expired."),
+  rate:tl("Too many requests. Wait a minute, then try again (and check your spam folder: the first code may already be there)."),bad_code:tl("This code is wrong or has expired."),
   bad_email:tl("Enter a valid email address."),bad_phone:tl("Enter your number with the country code, like +33 6 12 34 56 78."),
   not_esade:tl("This email isn't an ESADE address. Use the one that ends with esade.edu."),
   fail:tl("Sign-in didn't work. Try again."),net:tl("Can't reach the server. Check your connection and try again.")};
@@ -290,8 +292,17 @@ function aerr(e){const m=String(e&&(e.code||e.message)||"");
   if(/phone/i.test(m))return AMSG.bad_phone;
   return /fetch|network/i.test(m)?AMSG.net:AMSG.fail}
 const redirectUrl=()=>location.origin+location.pathname;
+const cleanCode=v=>String(v||"").replace(/\D/g,"");   // pasted codes often carry spaces or dashes
+// "Send again" link under the code box: shown after a code is sent, locked for 60 s (the mail service refuses faster resends)
+const resendTimers={};
+function armResend(pre){const hint=q(pre+"Hint"),b=q(pre+"Resend");hint.hidden=false;b.disabled=true;let n=60;clearInterval(resendTimers[pre]);
+  const tick=()=>{if(n<=0){clearInterval(resendTimers[pre]);b.disabled=false;b.textContent=tl("Send again");return}b.textContent=tl("Send again")+" ("+n--+")"};
+  tick();resendTimers[pre]=setInterval(tick,1000)}
+function hideResend(pre){clearInterval(resendTimers[pre]);q(pre+"Hint").hidden=true}
+function wireResend(pre,form,again){q(pre+"Resend").onclick=()=>{sentTo=null;q(pre+"Code").value="";q(form).requestSubmit()}}
 function rememberLink(){put(LINK,linking&&acct?acct.tok:null)}   // survives the trip to Google and back
-q("pvEmail").onclick=()=>{show("email");q("emCodeBox").hidden=true;q("emGo").textContent=tl("Send me a code");perr("emErr","");sentTo=null;q("emAddr").focus()};
+wireResend("em","emailForm");wireResend("es","esadeForm");
+q("pvEmail").onclick=()=>{hideResend("em");show("email");q("emCodeBox").hidden=true;q("emGo").textContent=tl("Send me a code");perr("emErr","");sentTo=null;q("emAddr").focus()};
 q("pvPhone").onclick=()=>{show("phone");q("phCodeBox").hidden=true;q("phGo").textContent=tl("Send me a code");perr("phErr","");sentTo=null;q("phNum").focus()};
 async function oauth(provider){perr("pvErr","");rememberLink();
   try{const {error}=await sbA.auth.signInWithOAuth({provider,options:{redirectTo:redirectUrl()}});if(error)throw error}
@@ -303,11 +314,11 @@ q("emailForm").onsubmit=async e=>{e.preventDefault();perr("emErr","");
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){perr("emErr",AMSG.bad_email);q("emAddr").focus();return}
   go.disabled=true;
   try{
-    if(sentTo===em&&q("emCode").value.trim()){
-      const {error}=await sbA.auth.verifyOtp({email:em,token:q("emCode").value.trim(),type:"email"});if(error)throw error}   // signed in: onAuthStateChange takes over
+    if(sentTo===em&&cleanCode(q("emCode").value)){
+      const {error}=await sbA.auth.verifyOtp({email:em,token:cleanCode(q("emCode").value),type:"email"});if(error)throw error}   // signed in: onAuthStateChange takes over
     else{rememberLink();
       const {error}=await sbA.auth.signInWithOtp({email:em,options:{emailRedirectTo:redirectUrl(),shouldCreateUser:true}});if(error)throw error;
-      sentTo=em;q("emCodeBox").hidden=false;go.textContent=tl("Confirm the code");
+      sentTo=em;q("emCodeBox").hidden=false;armResend("em");go.textContent=tl("Confirm the code");
       q("emHelp").textContent=tl("We sent a code to {e}. Type it below.",{e:em})}
   }catch(x){perr("emErr",aerr(x))}finally{go.disabled=false}};
 q("phoneForm").onsubmit=async e=>{e.preventDefault();perr("phErr","");
@@ -324,7 +335,7 @@ q("phoneForm").onsubmit=async e=>{e.preventDefault();perr("phErr","");
 
 // ---------- ESADE access: confirm an ESADE email with a code ----------
 function openEsade(after){lastFocus=document.activeElement;esAfter=typeof after==="function"?after:null;sentTo=null;
-  perr("esErr","");q("esCodeBox").hidden=true;q("esCode").value="";q("esGo").textContent=tl("Send me a code");q("esGo").disabled=false;
+  perr("esErr","");hideResend("es");q("esCodeBox").hidden=true;q("esCode").value="";q("esGo").textContent=tl("Send me a code");q("esGo").disabled=false;
   q("esSignin").hidden=!!acct||!AUTH_ON;
   q("esHelp").textContent=tl("These quizzes are for ESADE students and alumni. Enter your ESADE email address and we'll send you a code to confirm it's really yours.");
   dlg.classList.remove("page");show("esade");dlg.hidden=false;document.body.classList.add("noscroll");setTimeout(()=>q("esAddr").focus(),0)}
@@ -336,15 +347,15 @@ q("esadeForm").onsubmit=async e=>{e.preventDefault();perr("esErr","");
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){perr("esErr",tl("Use your ESADE email address, like name@esade.edu."));q("esAddr").focus();return}
   go.disabled=true;
   try{
-    if(sentTo===em&&q("esCode").value.trim()){
+    if(sentTo===em&&cleanCode(q("esCode").value)){
       put(EPEND,String(Date.now()));
-      const {error}=await sbA.auth.verifyOtp({email:em,token:q("esCode").value.trim(),type:"email"});if(error)throw error}   // signed in: onAuthStateChange takes over
+      const {error}=await sbA.auth.verifyOtp({email:em,token:cleanCode(q("esCode").value),type:"email"});if(error)throw error}   // signed in: onAuthStateChange takes over
     else{
       let ok=null;try{ok=(await sb.rpc("esade_domain_ok",{p_email:em})).data}catch(x){}
       if(ok===false){perr("esErr",AMSG.not_esade);q("esAddr").focus();return}
       rememberLink();put(EPEND,String(Date.now()));
       const {error}=await sbA.auth.signInWithOtp({email:em,options:{emailRedirectTo:redirectUrl(),shouldCreateUser:true}});if(error)throw error;
-      sentTo=em;q("esCodeBox").hidden=false;go.textContent=tl("Confirm the code");
+      sentTo=em;q("esCodeBox").hidden=false;armResend("es");go.textContent=tl("Confirm the code");
       q("esHelp").textContent=tl("We sent a code to {e}. Type it below.",{e:em});q("esCode").focus()}
   }catch(x){perr("esErr",aerr(x))}finally{go.disabled=false}};
 // the code was accepted while an account is already signed in on this device: attach the ESADE address to it

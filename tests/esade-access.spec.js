@@ -172,4 +172,17 @@ test.describe("ESADE access", () => {
     await page.goto("/?quiz=compta2");
     await expect(page.locator("#esadeForm")).toBeVisible();
   });
+
+  test("after the code is sent: spam hint + locked 'Send again'; a code pasted with spaces is accepted", async ({ page }) => {
+    const server = await setup(page);
+    await openHome(page);
+    await askCode(page, "ana@esade.edu");
+    await expect(page.locator("#esHint")).toBeVisible();
+    await expect(page.locator("#esHint")).toContainText("spam");
+    await expect(page.locator("#esResend")).toBeDisabled();
+    await page.locator("#esCode").fill("123 456");
+    await page.locator("#esGo").click();
+    await expect(page.locator("#esadeBtn")).toHaveClass(/verified/);
+    expect(server.verify[server.verify.length - 1].token).toBe("123456");
+  });
 });
