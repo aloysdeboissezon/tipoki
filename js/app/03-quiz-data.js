@@ -69,6 +69,8 @@ function closeTo(n,v){const nc=n.replace(/ /g,""),vc=v.replace(/ /g,"");if(!vc)r
   if(vws.every(vw=>wordHit(words,vw)))return true;                       // every word of the answer is present (typos ok)
   return false}
 function checkTyped(input,variants,wrong){
+  // a decimal such as 1.8 or 0,4 must not pass for 18 or 4 (norm() drops punctuation): refuse it when no accepted answer is a decimal
+  const DEC=/\d[.,]\d{1,2}(?!\d)/;if(DEC.test(input)&&!variants.some(v=>DEC.test(String(v))))return false;
   const n=norm(input);if(!n)return false;
   const nc=n.replace(/ /g,"");
   const ok=variants.some(v=>closeTo(n,norm(v)));if(!ok)return false;
