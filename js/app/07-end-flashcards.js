@@ -21,7 +21,7 @@ function renderEnd(){
   renderEndProgress();
   const miss=$("endMiss");miss.textContent="";
   G.deck.forEach((d,i)=>{const a=P[me]&&P[me].ans&&P[me].ans[i];if(i<from||isRight(a,i))return;const q=qOf(i);
-    const x=el("div");x.append(el("div","label",sLabel(q.s)+" · "+(d.t!=null?tl("Typed answer"):q.t)),el("div",null,q.q),el("div","a","→ "+(d.t!=null?q.a[0]:q.o[q.a])));miss.appendChild(x)});
+    const x=el("div");x.append(el("div","label",sLabel(q.s)+" · "+(d.t!=null?tl("Typed answer"):(q.t||tl("Multiple choice")))),el("div",null,q.q),el("div","a","→ "+(d.t!=null?q.a[0]:q.o[q.a])));miss.appendChild(x)});
   $("endMissWrap").hidden=!miss.children.length;
   $("endAgain").hidden=!isHost();$("endAgain").textContent=mode==="solo"?tl("Play again"):tl("Rematch");$("endWait").hidden=isHost()||mode!=="multi";
   const k=miss.children.length,n=missLive().length;
