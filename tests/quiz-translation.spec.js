@@ -35,3 +35,23 @@ test("every translation file matches its quiz and the catalog is up to date", ()
   execFileSync("node", ["tools/check-tr.js"], { stdio: "pipe" });
   execFileSync("node", ["tools/build-catalog.js", "--check"], { stdio: "pipe" });
 });
+
+test("true/false questions keep their truth value and use the interface language's words", async ({ page }) => {
+  await openSite(page, { path: "/?lang=es" });
+  await openQuiz(page, "kids");
+  const r = await page.evaluate(async () => {
+    await ensureTr("kids");
+    const en = BANK_KIDS, es = applyTr({ ...BANK_KIDS, id: "kids" });
+    const out = { translated: es.qlang === "es", bad: [] };
+    en.Q.forEach((q, i) => {
+      const t = es.Q[i];
+      if (q.tf) {
+        const orig = /^(True|Vrai)$/.test(q.o[0]), now = /^Verdadero$/.test(t.o[0]);
+        if (orig !== now || !/^(Verdadero|Falso)$/.test(t.o[1]) || t.a !== 0) out.bad.push(i);
+      } else if (t.o.length !== 4 || t.a !== 0 || t.d !== q.d) out.bad.push(i);
+    });
+    return out;
+  });
+  expect(r.translated).toBe(true);
+  expect(r.bad).toEqual([]);
+});
