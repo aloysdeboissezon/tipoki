@@ -581,7 +581,7 @@ var ES={
 "Continue with Apple":"Continuar con Apple",
 "or":"o",
 "Use a username and password instead":"Usar un nombre de usuario y una contraseña",
-"We'll email you a 6-digit code: no password to remember.":"Te enviamos un código de 6 dígitos por correo: sin contraseña que recordar.",
+"We'll email you a code: no password to remember.":"Te enviamos un código por correo: sin contraseña que recordar.",
 "Email":"Correo electrónico",
 "Confirm the code":"Confirmar el código",
 "Back":"Atrás",

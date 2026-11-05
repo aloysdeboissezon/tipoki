@@ -590,7 +590,7 @@ var KO={
 "Continue with Apple":"Apple로 계속",
 "or":"또는",
 "Use a username and password instead":"대신 사용자 이름과 비밀번호 사용",
-"We'll email you a 6-digit code: no password to remember.":"6자리 코드를 이메일로 보내드려요. 비밀번호를 외울 필요가 없어요.",
+"We'll email you a code: no password to remember.":"코드를 이메일로 보내드려요. 비밀번호를 외울 필요가 없어요.",
 "Email":"이메일",
 "Confirm the code":"코드 확인",
 "Back":"뒤로",

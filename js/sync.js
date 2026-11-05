@@ -187,7 +187,7 @@ dlg.innerHTML=`<div class="sync-card" id="syncCard">
 </div>
 <form class="sync-view" id="emailForm" data-v="email" novalidate hidden>
   <h2>Continue with Email</h2>
-  <p class="muted sync-help" id="emHelp">We'll email you a 6-digit code: no password to remember.</p>
+  <p class="muted sync-help" id="emHelp">We'll email you a code: no password to remember.</p>
   <div class="sync-field"><label class="label" for="emAddr">Email</label><input type="email" id="emAddr" maxlength="120" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="you@example.com"></div>
   <div class="sync-field" id="emCodeBox" hidden><label class="label" for="emCode">Code from the email</label><input type="text" id="emCode" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="123456"></div>
   <p class="err" id="emErr" hidden></p>

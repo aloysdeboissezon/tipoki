@@ -2,7 +2,7 @@
 
 Ce que ça fait :
 - Cliquer sur le logo ESADE (ou ouvrir un quiz ESADE par lien) sans être vérifié ouvre la fenêtre « ESADE only ».
-- La personne tape son adresse ESADE (`@esade.edu`, sous-domaines compris, ex. `alumni.esade.edu`). Un **code à 6 chiffres** part par e-mail vers cette adresse : personne ne peut entrer une fausse adresse ESADE.
+- La personne tape son adresse ESADE (`@esade.edu`, sous-domaines compris, ex. `alumni.esade.edu`). Un **code** part par e-mail vers cette adresse : personne ne peut entrer une fausse adresse ESADE.
 - Une fois le code accepté, le logo ESADE reçoit sa coche verte et les quiz ESADE s'ouvrent.
 - Une adresse ESADE ne reste connectée que sur **2 appareils** : se connecter sur un 3ᵉ déconnecte le plus ancien.
 - L'e-mail contient l'avertissement « en entrant ce code ou en cliquant, tu acceptes les conditions générales » (EN / ES / FR).
@@ -35,7 +35,7 @@ Supabase → Authentication → Email Templates. Pour **« Magic Link »** puis 
 - Subject : `Your qwebbo code: {{ .Token }}`
 - Message body (code seul, sans lien) : coller le contenu de `supabase/email-templates/magic-link.html` (identique pour « Confirm signup », fichier `confirm-signup.html`). Save.
 
-Authentication → Providers → Email : « Confirm email » activé, « Email OTP Length » : 6.
+Authentication → Providers → Email : « Confirm email » activé, « Email OTP Length » : 6 ou 8 (les deux marchent).
 
 ### 5. Fusionner la PR (quand tu dis « publie »)
 Vercel déploie tout seul. Aucune variable à régler (la fonction utilise la clé publique du site ; facultatif : `SUPABASE_URL` et `SUPABASE_ANON_KEY` dans Vercel → Settings → Environment Variables).

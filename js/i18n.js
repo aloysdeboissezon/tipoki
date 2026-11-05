@@ -604,7 +604,7 @@ var FR={
 "Continue with Apple":"Continuer avec Apple",
 "or":"ou",
 "Use a username and password instead":"Utiliser plutôt un nom d'utilisateur et un mot de passe",
-"We'll email you a 6-digit code: no password to remember.":"On t'envoie un code à 6 chiffres par e-mail : pas de mot de passe à retenir.",
+"We'll email you a code: no password to remember.":"On t'envoie un code par e-mail : pas de mot de passe à retenir.",
 "Email":"E-mail",
 "Confirm the code":"Valider le code",
 "Back":"Retour",
