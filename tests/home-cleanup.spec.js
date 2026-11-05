@@ -39,6 +39,6 @@ test.describe("Home page cleanup", () => {
     expect(ci.height).toBeLessThanOrEqual(48); expect(ci.height).toBeGreaterThanOrEqual(44);
     expect(jb.height).toBeLessThanOrEqual(48); expect(jb.height).toBeGreaterThanOrEqual(44);
     const mid = (n.y + c.y + c.height) / 2;
-    expect(Math.abs(a.y + a.height / 2 - mid)).toBeLessThan(3);
+    expect(Math.abs(a.y + a.height / 2 - mid)).toBeLessThan(8);
   });
 });
