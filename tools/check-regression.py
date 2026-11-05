@@ -9,7 +9,7 @@ import numpy as np
 from scipy import stats
 root = pathlib.Path(__file__).resolve().parent.parent
 bank = json.loads(subprocess.check_output(["node", "-e",
-    "global.window={};require('./js/banks/regression.js');console.log(JSON.stringify(window.BANK_REGRESSION))"], cwd=root))
+    "global.window={};require('./api/_esade/banks/regression.js');console.log(JSON.stringify(window.BANK_REGRESSION))"], cwd=root))
 bad = 0
 def chk(name, got, want, tol):
     global bad

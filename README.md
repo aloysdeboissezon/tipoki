@@ -4,7 +4,7 @@ Envoie ton cours, qwebbo en fait un quiz. Joue seul ou en multi avec tes potes (
 
 ## Structure
 - `index.html`, `css/style.css`, `js/app/*.js` (le moteur, en 8 fichiers chargés dans l'ordre) : le site (statique, aucun build).
-- `js/banks/socio.js` : le quiz d'origine (Socio Trivia, sessions 1–10).
+- `api/_esade/` : les quiz réservés ESADE (socio, compta2, populism, regression : questions, fiches, PDF), servis seulement par `api/esade.js` aux comptes avec une adresse ESADE vérifiée. Voir `docs/esade-acces.md`.
 - `supabase/functions/generate-quiz/` : fonction serveur qui transforme un PDF ou un texte en quiz avec Claude.
 - Base Supabase `socio-trivia` : tables `games`, `players` (multi), `quizzes` (quiz générés), `gen_log` (limites d'usage).
 
@@ -19,7 +19,7 @@ Sauvegarde quotidienne de la base via GitHub Actions, procédure de restauration
 `python3 -m http.server` dans ce dossier, puis http://localhost:8000
 
 ## Quiz chargés à la demande
-`socio` est dans le premier chargement ; `culture`, `energie`, `populism`, `compta2` (et leurs fiches `js/sheets/`) ne sont téléchargés qu'à l'ouverture du quiz. Leur fiche de liste est dans `js/catalog.js` (généré) : après avoir modifié le titre/les sessions d'un quiz, lancer `node tools/build-catalog.js` (`--check` pour vérifier). Un nouveau quiz suit le même modèle : ajouter son id dans `tools/build-catalog.js` et ses `<meta name="tpk-lazy" data-lazy="…">` dans `index.html` (le service worker les stocke pour le hors-ligne).
+`culture` est dans le premier chargement ; `energie` et les autres quiz publics (et leurs fiches `js/sheets/`) ne sont téléchargés qu'à l'ouverture du quiz. Leur fiche de liste est dans `js/catalog.js` (généré) : après avoir modifié le titre/les sessions d'un quiz, lancer `node tools/build-catalog.js` (`--check` pour vérifier). Un nouveau quiz suit le même modèle : ajouter son id dans `tools/build-catalog.js` et ses `<meta name="tpk-lazy" data-lazy="…">` dans `index.html` (le service worker les stocke pour le hors-ligne).
 
 ## Suivi des erreurs
 `js/errlog.js` envoie les erreurs JavaScript (et promesses rejetées) de la prod vers la table Supabase `error_log`, de façon anonyme (pas de cookie, pas de pseudo, pas de query string). Limites : 5 par chargement de page, 3 par minute, 30 par minute sur tout le site (côté base). Hors ligne, elles attendent dans la file de `js/offline.js`. Création : `supabase/migrations/add_error_log.sql`. Lecture (éditeur SQL Supabase) : `select * from public.error_summary;`

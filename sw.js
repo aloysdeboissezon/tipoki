@@ -2,7 +2,7 @@
 // Install: the whole app shell (page, scripts, styles, quiz banks, images, Supabase client, fonts) is stored, so the app opens and the built-in quizzes play with no network.
 // Fetch: the page is network first with a short timeout (a new deploy shows up on the next visit; a weak connection falls back to the stored copy).
 // Supabase API calls, analytics and the video are never touched (the page queues its own writes, see js/offline.js).
-const CACHE="qwebbo-v24",SHELL_PAGE="/",NET_MS=4000;
+const CACHE="qwebbo-v25",SHELL_PAGE="/",NET_MS=4000;
 const CDN=/^https:\/\/(cdn\.jsdelivr\.net|fonts\.googleapis\.com|fonts\.gstatic\.com)\//;
 self.addEventListener("install",e=>{e.waitUntil((async()=>{
   const c=await caches.open(CACHE);
@@ -27,6 +27,7 @@ function timeout(p,ms){return Promise.race([p,new Promise((_,rej)=>setTimeout(()
 self.addEventListener("fetch",e=>{
   const r=e.request,u=new URL(r.url);
   if(r.method!=="GET")return;
+  if(u.origin===location.origin&&u.pathname.startsWith("/api/"))return;   // ESADE quizzes (api/esade.js): never stored, the server decides each time
   const same=u.origin===location.origin;
   if(same?u.pathname.startsWith("/_vercel/"):!CDN.test(u.href))return;
   e.respondWith((async()=>{

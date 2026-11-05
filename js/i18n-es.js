@@ -2,6 +2,21 @@
 // Same keys as FR in i18n.js: the English text on the left, the Spanish on the right. Informal "tú", natural Spanish, not word for word.
 // Loaded before i18n.js. A missing key just shows the English text (and lands in tlMissing, see i18n.js).
 var ES={
+"ESADE only":"Solo para ESADE",
+"These quizzes are for ESADE students and alumni. Enter your ESADE email address and we'll send you a code to confirm it's really yours.":"Estos quizzes son para estudiantes y antiguos alumnos de ESADE. Escribe tu correo de ESADE y te enviaremos un código para confirmar que es tuyo.",
+"Your ESADE email":"Tu correo de ESADE",
+"name@esade.edu":"name@esade.edu",
+"Code from the email":"Código del correo",
+"By continuing you accept the":"Al continuar aceptas los",
+"terms and conditions":"términos y condiciones",
+"Already have a qwebbo account? Sign in first":"¿Ya tienes una cuenta de qwebbo? Inicia sesión primero",
+"This email isn't an ESADE address. Use the one that ends with esade.edu.":"Este correo no es de ESADE. Usa el que termina en esade.edu.",
+"Use your ESADE email address, like name@esade.edu.":"Usa tu correo de ESADE, por ejemplo name@esade.edu.",
+"We sent a code to {e}. Type it below, or open the link in the email on this device.":"Hemos enviado un código a {e}. Escríbelo abajo o abre el enlace del correo en este dispositivo.",
+"ESADE quizzes unlocked":"Quizzes de ESADE desbloqueados",
+"ESADE verified: {e}":"ESADE verificado: {e}",
+"ESADE only: verify your ESADE email to unlock":"Solo ESADE: verifica tu correo de ESADE para desbloquear",
+"This game uses an ESADE quiz. Verify your ESADE email, then join again.":"Esta partida usa un quiz de ESADE. Verifica tu correo de ESADE y vuelve a unirte.",
 "Solo":"En solitario",
 // page
 "qwebbo · Learn, compete, master":"qwebbo · Aprende, compite, domina",

@@ -1,4 +1,5 @@
 {
+  "functions": { "api/esade.js": { "includeFiles": "api/_esade/**" } },
   "redirects": [
     { "source": "/(.*)", "has": [{ "type": "host", "value": "(www\\.)?qwebbo\\.eu" }], "destination": "https://qwebbo.com/$1", "permanent": true },
     { "source": "/(.*)", "has": [{ "type": "host", "value": "www\\.qwebbo\\.com" }], "destination": "https://qwebbo.com/$1", "permanent": true }

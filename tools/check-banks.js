@@ -6,7 +6,7 @@ const ids=process.argv.slice(2).length?process.argv.slice(2):["uspop","gastro","
 const norm=s=>String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g," ").trim();
 let bad=0;const err=(id,msg)=>{bad++;console.error(id+": "+msg)};
 for(const id of ids){
-  global.window={};require(path.join(__dirname,"../js/banks/"+id+".js"));
+  global.window={};require(require("./bankpath").bankFile(id));
   const b=window["BANK_"+id.toUpperCase()],seen=new Set(),per={};
   for(const q of b.Q){
     const w=q.q.slice(0,50);per[q.s]=(per[q.s]||0)+1;

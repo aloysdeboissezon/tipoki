@@ -89,6 +89,8 @@ async function connect(context, store) {
 // Like helpers.openSite, but with the shared fake backend.
 async function openShared(page, { path = "/", storage = {} } = {}) {
   const { expect } = require("@playwright/test");
+  storage = { "qwebbo-esade": JSON.stringify({ e: "student@esade.edu" }), ...storage };   // an ESADE-verified student, see helpers.openSite
+  await page.route(/\/api\/esade\?/, route => route.continue({ headers: { ...route.request().headers(), authorization: "Bearer e2e-esade-token-0000000000" } }));
   await page.route(/^https?:\/\/(?!localhost)/, route => {
     const url = route.request().url();
     if (/supabase-js/.test(url)) return route.fulfill({ contentType: "text/javascript", body: REMOTE_SUPABASE });

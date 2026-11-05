@@ -22,6 +22,13 @@ function get(k){try{return oGet.call(store,k)}catch(e){return null}}
 function put(k,v){try{v==null?oDel.call(store,k):oSet.call(store,k,v)}catch(e){}}
 let acct=null;try{acct=JSON.parse(get(ACCT)||"null")}catch(e){}
 function saveAcct(){put(ACCT,acct?JSON.stringify(acct):null)}
+// ESADE access. The page only keeps a HINT of "this account has a verified ESADE email" (to draw the tick on the logo); the real check is
+// on the server: /api/esade sends the ESADE quizzes only to a token whose account has a verified ESADE email (see supabase/migrations/add_esade_access.sql).
+const ESADE="qwebbo-esade",EPEND="qwebbo-esade-pending";   // EPEND: time a code was asked for (the link in the email may open in another tab)
+let esade=null;try{esade=JSON.parse(get(ESADE)||"null")}catch(e){}
+const esListeners=[];let esAfter=null;
+function esSet(v){esade=v&&v.e?v:null;put(ESADE,esade?JSON.stringify(esade):null);esListeners.forEach(f=>{try{f(esade)}catch(e){}})}
+const esPending=()=>{const t=+get(EPEND);return !!t&&Date.now()-t<1800000};
 
 // every write to a progress key marks the copy online as out of date
 let applying=false,edits=0;
@@ -101,7 +108,7 @@ async function pull(){
     else if(get(DIRTY))push();else setState("ok");
   }catch(e){if(e.message==="bad_token"){dropAcct();setState("expired")}else setState("offline")}
 }
-function dropAcct(){acct=null;saveAcct()}
+function dropAcct(){acct=null;saveAcct();esSet(null)}
 addEventListener("online",()=>{if(acct&&!busy){get(DIRTY)?push():pull()}});
 document.addEventListener("visibilitychange",()=>{if(!acct)return;
   if(document.visibilityState==="hidden"&&get(DIRTY))push();
@@ -194,6 +201,16 @@ dlg.innerHTML=`<div class="sync-card" id="syncCard">
   <p class="err" id="phErr" hidden></p>
   <div class="row sync-actions"><button type="button" class="btn ghost" id="phBack">Back</button><button type="submit" class="btn" id="phGo">Send me a code</button></div>
 </form>
+<form class="sync-view" id="esadeForm" data-v="esade" novalidate hidden>
+  <div class="es-head"><img class="esade-logo" src="/img/esade.png" width="40" height="40" alt="ESADE"><h2>ESADE only</h2></div>
+  <p class="muted sync-help" id="esHelp">These quizzes are for ESADE students and alumni. Enter your ESADE email address and we'll send you a code to confirm it's really yours.</p>
+  <div class="sync-field"><label class="label" for="esAddr">Your ESADE email</label><input type="email" id="esAddr" maxlength="120" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="name@esade.edu"></div>
+  <div class="sync-field" id="esCodeBox" hidden><label class="label" for="esCode">Code from the email</label><input type="text" id="esCode" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="123456"></div>
+  <p class="muted sync-foot"><span>By continuing you accept the</span> <a href="/terms.html" target="_blank" rel="noopener">terms and conditions</a>.</p>
+  <p class="err" id="esErr" hidden></p>
+  <div class="row sync-actions"><button type="button" class="btn ghost" id="esCancel">Cancel</button><button type="submit" class="btn" id="esGo">Send me a code</button></div>
+  <button type="button" class="linkbtn" id="esSignin">Already have a qwebbo account? Sign in first</button>
+</form>
 <form class="sync-view" id="syncForm" data-v="legacy" novalidate>
   <button type="button" class="linkbtn sync-back" id="syncBack" hidden>← Other ways to sign in</button>
   <h2 id="syncTitle">Save your progress</h2>
@@ -238,7 +255,7 @@ function onbEnd(save){
   put("tpk-onboarded","1");closeDlg()}
 const t0=f=>{try{f()}catch(e){}};
 function openDlg(m){lastFocus=document.activeElement;
-  if(m==="account"){q("acInfo").innerHTML=tl("Saved online as {u}",{u:"<b>"+esc2(acct?acct.u:"")+"</b>"});show("account");dlg.hidden=false;document.body.classList.add("noscroll");return}linking=m==="link";perr("pvErr","");sentTo=null;
+  if(m==="account"){q("acInfo").innerHTML=tl("Saved online as {u}",{u:"<b>"+esc2(acct?acct.u:"")+"</b>"})+(esade?"<br>"+tl("ESADE verified: {e}",{e:"<b>"+esc2(esade.e)+"</b>"}):"");show("account");dlg.hidden=false;document.body.classList.add("noscroll");return}linking=m==="link";perr("pvErr","");sentTo=null;
   q("pvEmail").hidden=!AUTH.email;q("pvPhone").hidden=!AUTH.phone;q("pvGoogle").hidden=!AUTH.google;q("pvApple").hidden=!AUTH.apple;
   q("pvOr").hidden=!AUTH.email||!(AUTH.phone||AUTH.google||AUTH.apple);
   q("pvLegacy").hidden=linking;   // adding an email to a username account: no new username
@@ -264,6 +281,7 @@ q("emBack").onclick=q("phBack").onclick=()=>{show("choose");sentTo=null};
 const AMSG={already_linked:tl("This email is already linked to another qwebbo account."),
   rate:tl("Too many messages sent. Wait a few minutes, then try again."),bad_code:tl("This code is wrong or has expired."),
   bad_email:tl("Enter a valid email address."),bad_phone:tl("Enter your number with the country code, like +33 6 12 34 56 78."),
+  not_esade:tl("This email isn't an ESADE address. Use the one that ends with esade.edu."),
   fail:tl("Sign-in didn't work. Try again."),net:tl("Can't reach the server. Check your connection and try again.")};
 function aerr(e){const m=String(e&&(e.code||e.message)||"");
   if(e&&(e.status===429||/rate|too_many|over_/i.test(m)))return AMSG.rate;
@@ -304,6 +322,49 @@ q("phoneForm").onsubmit=async e=>{e.preventDefault();perr("phErr","");
       sentTo=ph;q("phCodeBox").hidden=false;go.textContent=tl("Confirm the code");q("phHelp").textContent=tl("We texted a code to {p}.",{p:ph});q("phCode").focus()}
   }catch(x){perr("phErr",aerr(x))}finally{go.disabled=false}};
 
+// ---------- ESADE access: confirm an ESADE email with a code ----------
+function openEsade(after){lastFocus=document.activeElement;esAfter=typeof after==="function"?after:null;sentTo=null;
+  perr("esErr","");q("esCodeBox").hidden=true;q("esCode").value="";q("esGo").textContent=tl("Send me a code");q("esGo").disabled=false;
+  q("esSignin").hidden=!!acct||!AUTH_ON;
+  q("esHelp").textContent=tl("These quizzes are for ESADE students and alumni. Enter your ESADE email address and we'll send you a code to confirm it's really yours.");
+  dlg.classList.remove("page");show("esade");dlg.hidden=false;document.body.classList.add("noscroll");setTimeout(()=>q("esAddr").focus(),0)}
+q("esCancel").onclick=closeDlg;
+q("esSignin").onclick=()=>openDlg("new");
+q("esadeForm").onsubmit=async e=>{e.preventDefault();perr("esErr","");
+  const go=q("esGo"),em=q("esAddr").value.trim().toLowerCase();
+  if(!AUTH_ON){perr("esErr",AMSG.fail);return}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){perr("esErr",tl("Use your ESADE email address, like name@esade.edu."));q("esAddr").focus();return}
+  go.disabled=true;
+  try{
+    if(sentTo===em&&q("esCode").value.trim()){
+      put(EPEND,String(Date.now()));
+      const {error}=await sbA.auth.verifyOtp({email:em,token:q("esCode").value.trim(),type:"email"});if(error)throw error}   // signed in: onAuthStateChange takes over
+    else{
+      let ok=null;try{ok=(await sb.rpc("esade_domain_ok",{p_email:em})).data}catch(x){}
+      if(ok===false){perr("esErr",AMSG.not_esade);q("esAddr").focus();return}
+      rememberLink();put(EPEND,String(Date.now()));
+      const {error}=await sbA.auth.signInWithOtp({email:em,options:{emailRedirectTo:redirectUrl(),shouldCreateUser:true}});if(error)throw error;
+      sentTo=em;q("esCodeBox").hidden=false;go.textContent=tl("Confirm the code");
+      q("esHelp").textContent=tl("We sent a code to {e}. Type it below, or open the link in the email on this device.",{e:em});q("esCode").focus()}
+  }catch(x){perr("esErr",aerr(x))}finally{go.disabled=false}};
+// the code was accepted while an account is already signed in on this device: attach the ESADE address to it
+async function esFinish(){
+  if(finishing)return;finishing=true;
+  try{
+    const r=await rpc("esade_verify",{p_token:acct.tok},sbA);
+    put(EPEND,null);esSet({e:r.email});closeDlg();if(typeof toast==="function")toast(tl("ESADE quizzes unlocked"));
+    const f=esAfter;esAfter=null;if(f)setTimeout(f,0);
+  }catch(x){
+    put(EPEND,null);const m=x&&x.message;
+    if(m==="bad_token"){dropAcct();setState("expired");closeDlg();openDlg("new");perr("pvErr",AMSG.fail)}
+    else{openEsade(esAfter);perr("esErr",m==="not_esade"?AMSG.not_esade:AMSG.fail)}}
+  finally{finishing=false;try{await sbA.auth.signOut({scope:"local"})}catch(x){}}
+}
+async function esRefresh(){if(!acct)return;
+  try{const r=await rpc("esade_status",{p_token:acct.tok});if(r&&typeof r.verified==="boolean")esSet(r.verified?{e:r.email}:null)}catch(x){}}
+window.tpkEsade={ok:()=>!!esade,email:()=>esade?esade.e:"",token:()=>acct?acct.tok:"",open:openEsade,on:f=>{esListeners.push(f)},refresh:esRefresh};
+try{document.dispatchEvent(new Event("tpk-esade-ready"))}catch(x){}
+
 // Supabase Auth says "signed in" (link opened, Google came back, code accepted): trade that for the usual save token
 let finishing=false;
 const RET=(()=>{try{return /[?&]code=|access_token=|error=|error_description=/.test((location.hash||"")+(location.search||""))}catch(e){return false}})();   // the page was opened by a sign-in return
@@ -314,6 +375,7 @@ async function finishAuth(ses){
   try{
     const r=await rpc("tpk_auth_login",{p_link:link||null,p_data:snap()},sbA);
     acct={u:r.username,tok:r.token,rev:r.rev,au:1};saveAcct();put(LINK,null);
+    const wasEs=esPending();put(EPEND,null);if(r.esade)esSet({e:r.esade});else esRefresh();
     try{const md=(ses&&ses.user&&ses.user.user_metadata)||{},nm=String(md.full_name||md.name||"").trim().slice(0,18);   // Google gives a name: use it as the nickname if there is none yet
       if(nm&&!(get("socio-nick")||"").trim())store.setItem("socio-nick",nm)}catch(x){}
     if(r.created){if(edits===e0)put(DIRTY,null);else later(500)}
@@ -321,14 +383,17 @@ async function finishAuth(ses){
       if(same(m,r.data||{}))put(DIRTY,null);else{put(DIRTY,"1");push()}}
     try{const c=new URLSearchParams(location.search);if(c.has("code")){c.delete("code");history.replaceState(null,"",location.pathname+(c.toString()?"?"+c:"")+location.hash)}}catch(x){}
     dbg("signed in as "+(r.username||"?")+(r.created?" (new account)":""));
-    setState("ok");closeDlg();if(typeof toast==="function")toast(r.created?tl("Progress saved online"):tl("Progress restored"));
+    setState("ok");closeDlg();if(typeof toast==="function")toast(wasEs&&r.esade?tl("ESADE quizzes unlocked"):r.created?tl("Progress saved online"):tl("Progress restored"));
+    if(wasEs&&r.esade&&esAfter){const f=esAfter;esAfter=null;setTimeout(f,0)}
     if(!get("tpk-onboarded")&&(r.created||!(get("socio-nick")||"").trim())){const md=(ses&&ses.user&&ses.user.user_metadata)||{};
       openOnb(String(md.full_name||md.name||String(r.username||"").split("@")[0]).replace(/[^\p{L}\p{N} ._-]/gu,"").trim())}
   }catch(x){dbg("error: "+String(x&&x.message||x).slice(0,120));put(LINK,null);openDlg("new");perr("pvErr",AMSG[x.message]||AMSG.fail+" ("+String(x&&x.message||x).slice(0,80)+")")}
   finally{finishing=false;try{await sbA.auth.signOut({scope:"local"})}catch(x){}}
 }
 if(AUTH_ON){
-  sbA.auth.onAuthStateChange((ev,ses)=>{dbg("auth event "+ev+(ses?" (session)":" (no session)"));if((ev==="SIGNED_IN"||ev==="INITIAL_SESSION")&&ses&&(!acct||get(LINK)))setTimeout(()=>finishAuth(ses),0)});   // INITIAL_SESSION: a sign-in that was not finished before the page reloaded
+  sbA.auth.onAuthStateChange((ev,ses)=>{dbg("auth event "+ev+(ses?" (session)":" (no session)"));if((ev==="SIGNED_IN"||ev==="INITIAL_SESSION")&&ses){
+    if(acct&&!get(LINK)&&esPending())setTimeout(()=>esFinish(ses),0);   // an ESADE code, asked for while signed in
+    else if(!acct||get(LINK))setTimeout(()=>finishAuth(ses),0)}});   // INITIAL_SESSION: a sign-in that was not finished before the page reloaded
   if(RET)try{sbA.auth.getSession().then(r=>{if(r&&r.error)dbg("error: "+String(r.error.message||r.error).slice(0,120))}).catch(()=>{})}catch(x){}
   // back from Google with a ?code=: supabase-js must read it first, so the address is only cleaned after the sign-in; if nothing happens after a while, say so
   try{if(!acct&&/[?&]code=/.test(location.search))setTimeout(()=>{if(!acct&&!finishing){openDlg("new");dbg("no session after 9s: the sign-in code was not accepted");perr("pvErr",AMSG.fail+" (no session after Google)")}},9000)}catch(x){}
@@ -362,5 +427,5 @@ async function signOut(){const t=acct&&acct.tok;
   if(typeof toast==="function")toast(tl("Signed out. Your progress stays on this device."))}
 
 renderLine();renderEntry();
-if(acct){setState("saving");pull()}
+if(acct){setState("saving");pull();esRefresh()}
 })();

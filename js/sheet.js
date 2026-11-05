@@ -4,6 +4,12 @@
   const btn=$("sheetBtn");
   let root=null,lastFocus=null;
   const get=()=>BANK&&window.SHEETS&&window.SHEETS[BANK.id];
+  // the PDF of an ESADE quiz is not a public file: it comes from /api/esade (with the account token) and is saved from memory
+  function setPdf(a,S){const id=BANK.id,name=(S.file||id)+".pdf";a.setAttribute("download",name);
+    if(ESADE_IDS.includes(id)){a.removeAttribute("target");a.href="#";
+      a.onclick=async e=>{e.preventDefault();const b=await gatedBlob(id,"pdf");if(!b){toast(tl("Couldn't load this quiz, check your connection"));return}
+        const u=URL.createObjectURL(b),x=document.createElement("a");x.href=u;x.download=name;document.body.appendChild(x);x.click();x.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)}}
+    else{a.href="sheets/"+encodeURIComponent(id)+".pdf";a.onclick=null}}
 
   // blocks: p, h3, dl (term / definition rows), ul, ol, formula, key (to remember), table, ex (worked example)
   // the document speaks the quiz's language, whatever the interface language is
@@ -61,7 +67,7 @@
     root=el("div","sheet");root.id="sheet";root.setAttribute("data-lenis-prevent","");root.setAttribute("role","dialog");root.setAttribute("aria-modal","true");root.setAttribute("aria-label",tl("Study sheet"));
     const bar=el("div","sh-bar");
     const close=el("button","btn ghost sh-close",tl("Close"));close.type="button";close.onclick=hide;
-    const dl=el("a","btn sh-dl",tl("Download PDF"));dl.href="sheets/"+encodeURIComponent(BANK.id)+".pdf";dl.setAttribute("download",(S.file||BANK.id)+".pdf");dl.target="_blank";dl.rel="noopener";
+    const dl=el("a","btn sh-dl",tl("Download PDF"));dl.target="_blank";dl.rel="noopener";setPdf(dl,S);
     const pr=el("button","btn ghost sh-pr",tl("Print"));pr.type="button";pr.onclick=()=>window.print();
     const sp=el("span","sh-sp");
     bar.append(close,sp,pr,dl);
@@ -78,7 +84,7 @@
     if(lastFocus&&lastFocus.focus)lastFocus.focus({preventScroll:true});
   }
   const panel=$("sheetPanel"),pdf=$("sheetPdf");
-  function sync(){const S=get();btn.hidden=!S;panel.hidden=!S;if(S){pdf.href="sheets/"+encodeURIComponent(BANK.id)+".pdf";pdf.setAttribute("download",(S.file||BANK.id)+".pdf")}}
+  function sync(){const S=get();btn.hidden=!S;panel.hidden=!S;if(S)setPdf(pdf,S)}
   btn.onclick=()=>show();$("sheetOpen").onclick=()=>show();window.TipokiSheet={has:()=>!!get(),open:show};
   document.addEventListener("keydown",e=>{if(e.key==="Escape"&&root)hide()});
   const old=window.renderBankUI;
