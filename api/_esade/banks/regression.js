@@ -468,5 +468,5 @@ const FACTS=[
 [6,"use","c","Stepwise selection","Mixes forward and backward selection; use it for automation. Drawback: can be unstable with multicollinearity or small datasets"],
 ];
 
-return {id:"regression",group:"esade",title:"Unit 5 · Linear Regression",kw:"statistics regression linear regression SLR MLR SAD statistical analysis data unit 5 R2 OLS residuals multicollinearity VIF ANOVA F-test t-test adjusted R2 esade maths",subject:"SAD · Descriptive SLR, simple and multiple linear regression model (slides B5)",lang:"en",sess:SESS,tags:TAGS,unit:["chapter","chapters","a chapter"],balance:true,Q,TQ,facts:FACTS};
+return {id:"regression",group:"esade",title:"Statistics · Unit 5: Linear Regression",kw:"statistics regression linear regression SLR MLR SAD statistical analysis data unit 5 R2 OLS residuals multicollinearity VIF ANOVA F-test t-test adjusted R2 esade maths",subject:"Statistical Analysis of Data (SAD) · Descriptive SLR, simple and multiple linear regression model (slides B5)",lang:"en",sess:SESS,tags:TAGS,unit:["chapter","chapters","a chapter"],balance:true,Q,TQ,facts:FACTS};
 })();

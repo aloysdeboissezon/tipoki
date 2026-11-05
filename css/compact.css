@@ -349,6 +349,7 @@
 .fav-btn[aria-pressed=true] svg{fill:currentColor}
 .fav-btn+.esade-btn{margin-left:2px}
 .qfav{position:absolute;z-index:2;top:8px;right:8px;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.9);color:#6b6890;cursor:pointer;box-shadow:0 3px 8px -4px rgba(0,0,0,.4)}
+.qesade{position:absolute;z-index:2;top:8px;right:46px;width:34px;height:34px;padding:5px;box-sizing:border-box;object-fit:contain;border-radius:50%;background:rgba(255,255,255,.9);pointer-events:none}
 .qfav svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linejoin:round}
 .qfav[aria-pressed=true]{color:#ec407a}
 .qfav[aria-pressed=true] svg{fill:currentColor}

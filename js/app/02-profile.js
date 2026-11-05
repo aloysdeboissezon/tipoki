@@ -4,7 +4,7 @@ if(myAv())avs[me]=myAv();
 function renderMe(){
   const a=$("pfpAv");a.className="av big";a.removeAttribute("style");a.style.backgroundColor="hsl("+hue(me)+" 55% 42%)";
   a.textContent=($("nick").value.trim()||"?").charAt(0).toUpperCase();paintAv(a,myAv());
-  $("pfpPick").textContent=myAv()?tl("Change photo"):tl("Add a photo");$("pfpDel").hidden=!myAv();
+  const pb=$("pfpBtn"),pl=tl(myAv()?"Change photo":"Add a photo");pb.title=pl;pb.setAttribute("aria-label",pl);$("pfpDel").hidden=!myAv();
 }
 // ---- cropper: drag + zoom (slider, wheel, pinch) in a square view shown through a circular mask ----
 const AV_OUT=256,AV_MAX=90000;   // saved size: 4x the biggest place it is shown (64 px) so it stays sharp on retina phones
@@ -53,7 +53,6 @@ $("cropOk").onclick=()=>{if(!crop.img)return;
   lsSet("tpk-avatar",d);
   if(lsGet("tpk-avatar")!==d){closeCrop();showErr("nickErr",tl("Couldn't save the photo on this device."));return}
   avs[me]=d;closeCrop();renderMe()};
-$("pfpPick").onclick=()=>$("pfpIn").click();
 $("pfpIn").onchange=async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;showErr("nickErr","");
   try{openCrop(await loadForCrop(f))}
   catch(err){showErr("nickErr",tl("Can't use this image, try another photo (JPG or PNG)."))}};
