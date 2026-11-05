@@ -4,7 +4,7 @@
 // The text already in index.html is translated once on load by tpkTranslate (text, title, placeholder, aria-label, alt):
 // when you change an English sentence there or in the JS, change its key below too, or French visitors see the English.
 // A key can start with "context|" when the same English word needs two French ones (e.g. "verdict|Wrong").
-// Quizzes are never translated: their questions stay in the quiz's own language.
+// Quizzes follow the language too when they ship a translation (js/banks/tr/<id>.<lang>.js, see applyTr in js/app/03-quiz-data.js); without one their questions stay in the quiz's own language.
 // Spanish lives in js/i18n-es.js and Korean in js/i18n-ko.js (same keys, loaded first). Same rules: a new English text needs a key in FR, ES and KO.
 // The choice is saved per device in "tpk-lang"; without one, the browser's language decides.
 var LANGS=["en","fr","es","ko"];
