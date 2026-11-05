@@ -23,7 +23,7 @@
     const id=lid(!!open);if(!id)return LG;
     busy=true;const send=Math.min(pend(),600);
     try{
-      const {data,error}=await sb.rpc("tpk_league_sync",{p_pid:id,p_nick:($("nick").value.trim()||"").slice(0,18),p_xp:send,...(ctOk&&myCountry()?{p_country:myCountry()}:{})});
+      const {data,error}=await sb.rpc("tpk_league_sync",{p_pid:id,p_nick:(tpkNick.ok($("nick").value)&&$("nick").value.trim()||"").slice(0,18),p_xp:send,...(ctOk&&myCountry()?{p_country:myCountry()}:{})});
       if(error&&ctOk&&myCountry()){ctOk=false;busy=false;return sync(open)}   // league SQL without country not updated yet: retry without
       if(error)throw error;
       LG=data;lsSet(QUEUE,String(Math.max(0,pend()-send)));
@@ -72,8 +72,8 @@
     rows.forEach((r,i)=>{
       const zone=i<LG.up&&lg<6?" upz":(LG.down&&i>=LG.n-LG.down?" dnz":"");
       const row=el("div","lg-row"+(r.me?" me":"")+zone);
-      const av=el("div","av",(r.nick||"?").charAt(0).toUpperCase());av.style.backgroundColor="hsl("+hue(r.nick)+" 55% 42%)";
-      row.append(el("span","lg-rk",String(i+1)),av,el("span","lg-nm",((f=>f?f+"\u00a0":"")(window.tpkCountry?tpkCountry.flag(r.country||(r.me?myCountry():"")):""))+(r.me?tl("You"):r.nick)),el("span","lg-xp",r.xp+" XP"));
+      const rn=tpkNick.show(r.nick),av=el("div","av",(rn||"?").charAt(0).toUpperCase());av.style.backgroundColor="hsl("+hue(rn)+" 55% 42%)";
+      row.append(el("span","lg-rk",String(i+1)),av,el("span","lg-nm",((f=>f?f+"\u00a0":"")(window.tpkCountry?tpkCountry.flag(r.country||(r.me?myCountry():"")):""))+(r.me?tl("You"):rn)),el("span","lg-xp",r.xp+" XP"));
       box.appendChild(row)});
     if(!rows.length)box.appendChild(emptyState("M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3",tl("No one on the board yet"),tl("Nobody has earned XP in this league yet this week. Be the first!")));
     root.appendChild(box);

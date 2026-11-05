@@ -101,6 +101,8 @@ var FR={
 "waiting":"en attente",
 "The code is 4 letters.":"Le code fait 4 lettres.",
 "Enter your first name so your friends know who you are.":"Entre ton prénom pour que tes potes te reconnaissent.",
+"That name isn't allowed. Please pick a friendlier one.":"Ce prénom n'est pas autorisé. Choisis-en un plus sympa.",
+"Names can't contain links, e-mails or phone numbers.":"Les pseudos ne peuvent pas contenir de liens, d'e-mails ni de numéros de téléphone.",
 "Enter your first name, then tap Join.":"Entre ton prénom, puis appuie sur Rejoindre.",
 "Can't reach the server. Check your internet connection, then reload the page. Solo mode still works.":"Connexion au serveur impossible. Vérifie ta connexion internet puis recharge la page. Le mode solo marche quand même.",
 "Couldn't save the photo on this device.":"Impossible d'enregistrer la photo sur cet appareil.",

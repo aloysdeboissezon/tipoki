@@ -79,6 +79,8 @@ var ES={
 "waiting":"esperando",
 "The code is 4 letters.":"El código tiene 4 letras.",
 "Enter your first name so your friends know who you are.":"Escribe tu nombre para que tus amigos sepan quién eres.",
+"That name isn't allowed. Please pick a friendlier one.":"Ese nombre no está permitido. Elige uno más amable.",
+"Names can't contain links, e-mails or phone numbers.":"Los nombres no pueden contener enlaces, correos ni números de teléfono.",
 "Enter your first name, then tap Join.":"Escribe tu nombre y pulsa Unirme.",
 "Can't reach the server. Check your internet connection, then reload the page. Solo mode still works.":"No se puede conectar con el servidor. Revisa tu conexión a internet y recarga la página. El modo solo sigue funcionando.",
 "Couldn't save the photo on this device.":"No se ha podido guardar la foto en este dispositivo.",

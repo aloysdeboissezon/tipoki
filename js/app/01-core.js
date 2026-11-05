@@ -38,10 +38,15 @@ function setMultiNote(ok){
 
 // ---------- home ----------
 
+// a name saved before the filter existed (or restored from an online save) that would not pass is dropped
+if(lsGet("socio-nick")&&!tpkNick.ok(lsGet("socio-nick")))lsSet("socio-nick","");
 $("nick").value=lsGet("socio-nick")||"";
-$("nick").addEventListener("input",()=>{lsSet("socio-nick",$("nick").value.trim());showErr("nickErr","");renderMe()});
+// an offensive name is refused as it is typed: the message shows, nothing is saved, and it never reaches a room or the league
+function nickProblem(){const c=tpkNick.check($("nick").value);$("nick").setAttribute("aria-invalid",c?"true":"false");return c}
+$("nick").addEventListener("input",()=>{const c=nickProblem();if(c){showErr("nickErr",tpkNick.msg(c));renderMe();return}lsSet("socio-nick",$("nick").value.trim());showErr("nickErr","");renderMe()});
 function myCountry(){return window.tpkCountry?tpkCountry.mine():""}
-function myNick(){return ($("nick").value.trim()||tl("Player")).slice(0,18)}
+function myNick(){return (tpkNick.ok($("nick").value)&&$("nick").value.trim()||tl("Player")).slice(0,18)}
 // multiplayer needs a real name, so friends know who is who
-function needNick(){if($("nick").value.trim())return false;showErr("nickErr",tl("Enter your first name so your friends know who you are."));$("nick").focus();$("nick").scrollIntoView({block:"center"});return true}
+function needNick(){const bad=nickProblem();if(bad){showErr("nickErr",tpkNick.msg(bad));$("nick").focus();$("nick").scrollIntoView({block:"center"});return true}
+  if($("nick").value.trim())return false;showErr("nickErr",tl("Enter your first name so your friends know who you are."));$("nick").focus();$("nick").scrollIntoView({block:"center"});return true}
 
