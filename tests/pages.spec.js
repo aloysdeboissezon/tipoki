@@ -17,6 +17,8 @@ test.describe("About, contact and legal pages", () => {
     await openSite(page);
     const nav = page.locator("#home .sitefoot");
     expect(await nav.evaluate(e => getComputedStyle(e).position)).toBe("static");
+    // the cards slide in when the page opens: wait until they have settled before measuring
+    await page.waitForFunction(() => getComputedStyle(document.querySelector("#meHome")).transform === "none");
     const prev = await page.locator("#home .me-panel").boundingBox();
     const box = await nav.boundingBox();
     expect(box.y).toBeGreaterThanOrEqual(prev.y + prev.height);
