@@ -145,3 +145,12 @@ test.describe("?lang= in the address", () => {
     expect(await page.evaluate(() => quizUrl("gastro"))).toContain("?quiz=gastro&lang=en");
   });
 });
+
+test("info pages: Korean switch exists and falls back to English text where untranslated", async ({ page }) => {
+  await page.goto("/legal.html");
+  await page.locator('.langs button[data-set="ko"]').click();
+  await expect(page.locator('.langs button[data-set="ko"]')).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("main .lang:visible").first()).toBeVisible();
+  await page.goto("/about.html");
+  await expect(page.locator('main .lang[lang="ko"]')).toBeVisible();
+});

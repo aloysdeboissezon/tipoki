@@ -16,7 +16,7 @@ body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font-family
 [data-theme="dark"] .brand .logo-l{display:none}
 [data-theme="dark"] .brand .logo-d{display:block}
 .brand:focus-visible,a:focus-visible,button:focus-visible{outline:3px solid var(--hl);outline-offset:3px}
-.langs{display:flex;gap:6px}
+.langs{display:flex;gap:6px;align-items:center}.langs::before{content:"\1F310";font-size:18px;margin-right:2px}
 .langs button{font:800 14px var(--f-body);min-width:44px;min-height:44px;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;cursor:pointer}
 .langs button[aria-pressed="true"]{background:var(--hl);border-color:var(--hl);color:var(--hl-ink)}
 .panel{background:var(--card);border:2px solid var(--line);border-radius:24px;padding:26px;box-shadow:0 10px 30px -18px rgba(40,30,120,.25)}
@@ -35,9 +35,9 @@ a{color:var(--hl);font-weight:700}
 .todo{background:#FFE36E;color:#17162B;border-radius:6px;padding:1px 6px;font-weight:800}
 /* languages: English without JavaScript, otherwise the one in data-l */
 .lang{display:none}
-html:not([data-l]) .lang[lang="en"],html[data-l="en"] .lang[lang="en"],html[data-l="fr"] .lang[lang="fr"],html[data-l="es"] .lang[lang="es"]{display:block}
+html:not([data-l]) .lang[lang="en"],html[data-l="en"] .lang[lang="en"],html[data-l="fr"] .lang[lang="fr"],html[data-l="es"] .lang[lang="es"],html[data-l="ko"] .lang[lang="ko"],html.fb-en main .lang[lang="en"]{display:block}
 .pnav .lang,.pnav a .lang{display:none}
-html:not([data-l]) .pnav .lang[lang="en"],html[data-l="en"] .pnav .lang[lang="en"],html[data-l="fr"] .pnav .lang[lang="fr"],html[data-l="es"] .pnav .lang[lang="es"]{display:block}
+html:not([data-l]) .pnav .lang[lang="en"],html[data-l="en"] .pnav .lang[lang="en"],html[data-l="fr"] .pnav .lang[lang="fr"],html[data-l="es"] .pnav .lang[lang="es"],html[data-l="ko"] .pnav .lang[lang="ko"]{display:block}
 /* bottom navigation bar, fixed like a phone app */
 .pnav{position:fixed;left:50%;transform:translateX(-50%);bottom:max(10px,env(safe-area-inset-bottom,0px));width:min(560px,calc(100% - 20px));z-index:20;display:flex;gap:2px;padding:6px;background:var(--card);border:2px solid var(--line);border-radius:26px;box-shadow:0 12px 32px -10px rgba(40,30,120,.38)}
 .pnav a{flex:1 1 0;min-width:0;min-height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 2px;border-radius:20px;text-decoration:none;color:var(--muted);font:800 11px/1.1 var(--f-body);text-align:center}
@@ -51,3 +51,7 @@ body{padding-bottom:calc(110px + env(safe-area-inset-bottom,0px))}
 .founder img{width:96px;height:96px;border-radius:50%;object-fit:cover;flex:none}
 .founder h2{margin:0 0 6px}.founder p{margin:0}
 @media (max-width:520px){.founder{flex-direction:column;text-align:center}}
+/* four language buttons must fit next to the logo on a phone */
+.top{gap:8px}.brand{min-width:0;flex:0 1 auto}.brand img{max-width:100%;height:auto;max-height:40px}
+.langs{flex:none;gap:4px}.langs button{min-width:42px;padding:0 8px}
+@media (max-width:420px){.langs::before{display:none}.brand img{max-height:32px}}

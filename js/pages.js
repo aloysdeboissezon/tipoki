@@ -3,7 +3,7 @@
 (function(){
   var d=document.documentElement,btns=document.querySelectorAll(".langs button");
   function apply(l){
-    d.setAttribute("data-l",l);d.lang=l;
+    d.setAttribute("data-l",l);d.lang=l;d.classList.toggle("fb-en",l==="ko"&&!document.querySelector("main .lang[lang=ko]"));
     if(window.PAGE_TITLES)document.title=PAGE_TITLES[l]||PAGE_TITLES.en;
     var m=document.querySelector('meta[name="description"]');if(m&&window.PAGE_DESC)m.content=PAGE_DESC[l]||PAGE_DESC.en;
     Array.prototype.forEach.call(btns,function(b){b.setAttribute("aria-pressed",b.getAttribute("data-set")===l?"true":"false")});

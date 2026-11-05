@@ -214,7 +214,7 @@ var KO={
 "Favorite quizzes":"즐겨찾는 퀴즈",
 "Add to favorites":"즐겨찾기에 추가",
 "Remove from favorites":"즐겨찾기에서 삭제",
-"ESADE quizzes ({n})":"ESADE 퀴즈 ({n})",
+"ESADE favorites ({n})":"ESADE 즐겨찾기 ({n})","ESADE quizzes ({n})":"ESADE 퀴즈 ({n})",
 "Show only the ESADE quizzes":"ESADE 퀴즈만 보기",
 "ESADE quizzes":"ESADE 퀴즈",
 "All quizzes ({n})":"전체 퀴즈 ({n})",
