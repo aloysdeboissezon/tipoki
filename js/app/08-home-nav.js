@@ -29,21 +29,33 @@ function quizHay(q){return fold([q.title,q.title0,q.subject,q.subject0,q.kw].con
 // ESADE collection: to put a new quiz in it, add its id here (or give its bank/catalog entry group:"esade")
 const ESADE_IDS=["socio","compta2","populism"];
 function isEsade(q){return ESADE_IDS.includes(q.id)||q.group==="esade"}
-let esadeOn=lsGet("tpk-esade")==="1",lastQuizList=null;
-function setEsade(on){esadeOn=on;lsSet("tpk-esade",on?"1":"0");renderQuizGrid(lastQuizList||quizList());$("quizGrid").scrollLeft=0}
+let esadeOn=lsGet("tpk-esade")==="1",favOn=false,lastQuizList=null;
+function setEsade(on){esadeOn=on;if(on)favOn=false;lsSet("tpk-esade",on?"1":"0");renderQuizGrid(lastQuizList||quizList());$("quizGrid").scrollLeft=0}
+function setFavOn(on){favOn=on;if(on&&esadeOn){esadeOn=false;lsSet("tpk-esade","0")}renderQuizGrid(lastQuizList||quizList());$("quizGrid").scrollLeft=0}
+// favourites: hearts on the cards, saved on this device (and with the online save); they always come first
+function favGet(){try{const a=JSON.parse(lsGet("tpk-favs")||"[]");return Array.isArray(a)?a:[]}catch(e){return []}}
+function favToggle(id){const a=favGet(),i=a.indexOf(id);if(i<0)a.push(id);else a.splice(i,1);lsSet("tpk-favs",JSON.stringify(a));return i<0}
+// language of a quiz's questions: the one interface language its names are not translated into (see js/qmeta.js);
+// quizzes of your own language (or about your country) rise above the others, school (ESADE) quizzes stay in their own list
+const LOCAL_QUIZZES={fr:["gastro"],es:["barcelona"],ko:["kwave","korea"]};
+function quizLang(id){const m=window.QMETA&&QMETA[id];if(!m)return "";return ["en","fr","es","ko"].find(l=>!m[l])||""}
+function langFit(q){const L=window.LANG||"en";return (quizLang(q.id)===L||(LOCAL_QUIZZES[L]||[]).includes(q.id))?1:0}
 function renderQuizGrid(all){
-  lastQuizList=all;let list=all.filter(q=>isEsade(q)===esadeOn);
+  lastQuizList=all;const favs=favGet();let list=all.filter(q=>favOn?favs.includes(q.id):isEsade(q)===esadeOn);
   $("esadeBtn").setAttribute("aria-pressed",esadeOn?"true":"false");
+  const fb=$("favBtn");fb.setAttribute("aria-pressed",favOn?"true":"false");fb.classList.toggle("has",favs.length>0);
   const box=$("quizGrid");box.textContent="";
-  const rc=recentGet();list=list.map((q,i)=>[q,i]).sort((a,b)=>(rc[b[0].id]||0)-(rc[a[0].id]||0)||a[1]-b[1]).map(x=>x[0]);
+  const rc=recentGet();list=list.map((q,i)=>[q,i]).sort((a,b)=>(favs.includes(b[0].id)-favs.includes(a[0].id))||(rc[b[0].id]||0)-(rc[a[0].id]||0)||(langFit(b[0])-langFit(a[0]))||a[1]-b[1]).map(x=>x[0]);
+  const heart=q=>{const h=el("span","qfav");h.setAttribute("role","button");h.tabIndex=0;const on=favs.includes(q.id);h.setAttribute("aria-pressed",on?"true":"false");h.setAttribute("aria-label",tl(on?"Remove from favorites":"Add to favorites"));h.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.8 4.2 13.4A5 5 0 0 1 11 6.2l1 1 1-1a5 5 0 0 1 6.8 7.2z"/></svg>';
+    const go=e=>{e.stopPropagation();e.preventDefault();favToggle(q.id);renderQuizGrid(lastQuizList)};h.onclick=go;h.onkeydown=e=>{if(e.key==="Enter"||e.key===" ")go(e)};return h};
   list.forEach(q=>{const c=el("button","qcard");c.type="button";c.dataset.hay=quizHay(q);c.dataset.id=q.id;
     const ico=el("span","qico");ico.innerHTML=quizIcon(q);
     const t=el("span","qtxt");t.append(el("b",null,q.title));if(q.subject)t.append(el("small",null,q.subject));const qb=el("span","qbest");qb.hidden=true;t.append(qb);
-    c.append(ico,t,el("span","qgo","›"));c.onclick=()=>openQuiz(q.id,c);box.appendChild(c)});
+    c.append(ico,t,el("span","qgo","›"),heart(q));c.onclick=()=>openQuiz(q.id,c);box.appendChild(c)});
   const L=$("qList");L.textContent="";
   list.forEach((q,i)=>{const b=el("button","qchip");b.type="button";b.dataset.hay=quizHay(q);b.dataset.id=q.id;b.dataset.i=i%8;
-    const li=el("span","qchip-l");li.innerHTML=quizIcon(q);b.append(li,el("b",null,q.title),el("span","qgo","›"));b.onclick=()=>openQuiz(q.id,b);L.appendChild(b)});
-  $("qAllT").textContent=tl(esadeOn?"ESADE quizzes ({n})":"All quizzes ({n})",{n:list.length});
+    const li=el("span","qchip-l");li.innerHTML=quizIcon(q);b.append(li,el("b",null,q.title),heart(q),el("span","qgo","›"));b.onclick=()=>openQuiz(q.id,b);L.appendChild(b)});
+  $("qAllT").textContent=tl(favOn?"Favorites ({n})":esadeOn?"ESADE quizzes ({n})":"All quizzes ({n})",{n:list.length});
   filterQuizzes();renderProgressUI();carouselUpdate();
 }
 // every typed word must appear somewhere in the quiz's title, subject, keywords or chapter names
@@ -76,6 +88,7 @@ function filterQuizzes(){
 function clearQuizSearch(focus){$("quizSearch").value="";filterQuizzes();if(focus)$("quizSearch").focus()}
 $("quizSearch").addEventListener("input",filterQuizzes);
 $("esadeBtn").onclick=()=>setEsade(!esadeOn);
+$("favBtn").onclick=()=>setFavOn(!favOn);
 $("quizSearch").addEventListener("keydown",e=>{
   if(e.key==="Escape"&&$("quizSearch").value){e.preventDefault();clearQuizSearch(true)}
   else if(e.key==="Enter"){e.preventDefault();$("quizSearch").blur()}

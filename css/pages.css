@@ -48,3 +48,11 @@ html:not([data-l]) .pnav .lang[lang="en"],html[data-l="en"] .pnav .lang[lang="en
 .founder img{width:96px;height:96px;border-radius:50%;object-fit:cover;flex:none}
 .founder h2{margin:0 0 6px}.founder p{margin:0}
 @media (max-width:520px){.founder{flex-direction:column;text-align:center}}
+
+/* always-visible way back to the app: a round button at the bottom left, like a tab bar */
+.homefab{position:fixed;z-index:20;left:max(16px,env(safe-area-inset-left));bottom:max(16px,env(safe-area-inset-bottom));display:inline-flex;align-items:center;gap:8px;height:52px;padding:0 20px 0 16px;border-radius:26px;background:#4B2FE0;color:#fff;font:800 16px var(--f-body,Nunito,system-ui,sans-serif);text-decoration:none;box-shadow:0 10px 24px -8px rgba(40,20,140,.6)}
+.homefab svg{width:24px;height:24px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.homefab .lang{display:none}
+html:not([data-l]) .homefab .lang[lang="en"],html[data-l="en"] .homefab .lang[lang="en"],html[data-l="fr"] .homefab .lang[lang="fr"],html[data-l="es"] .homefab .lang[lang="es"]{display:inline}
+.homefab:focus-visible{outline:3px solid #fff;outline-offset:2px;box-shadow:0 0 0 6px #4B2FE0}
+.wrap{padding-bottom:84px}

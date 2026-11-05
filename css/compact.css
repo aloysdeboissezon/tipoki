@@ -340,6 +340,21 @@
 
 /* ESADE collection toggle */
 #pickPanel .steph{align-items:center}
+.fav-btn{margin-left:auto;flex:none;display:grid;place-items:center;width:36px;height:36px;border:0;border-radius:12px;background:none;padding:0;cursor:pointer;color:#9a97b3;transition:transform .1s}
+.fav-btn svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round}
+.fav-btn.has{color:#ec407a}
+.fav-btn:active{transform:scale(.92)}
+.fav-btn:focus-visible{outline:2px solid var(--hl);outline-offset:1px}
+.fav-btn[aria-pressed=true]{color:#ec407a;box-shadow:0 0 0 2px #ec407a}
+.fav-btn[aria-pressed=true] svg{fill:currentColor}
+.fav-btn+.esade-btn{margin-left:2px}
+.qfav{position:absolute;z-index:2;top:8px;right:8px;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.9);color:#6b6890;cursor:pointer;box-shadow:0 3px 8px -4px rgba(0,0,0,.4)}
+.qfav svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linejoin:round}
+.qfav[aria-pressed=true]{color:#ec407a}
+.qfav[aria-pressed=true] svg{fill:currentColor}
+.qfav:focus-visible{outline:2px solid #17162B;outline-offset:1px}
+.qchip .qfav{position:static;flex:none;width:30px;height:30px;box-shadow:none;background:rgba(255,255,255,.7)}
+.qchip .qfav svg{width:17px;height:17px}
 .esade-btn{margin-left:auto;flex:none;border:0;background:none;padding:3px;border-radius:12px;cursor:pointer;line-height:0;position:relative;transition:transform .1s,box-shadow .15s}
 .esade-btn:active{transform:scale(.94)}
 .esade-logo{display:block;width:28px;height:28px;border-radius:7px;opacity:.8;transition:opacity .15s}
