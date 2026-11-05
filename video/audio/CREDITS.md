@@ -1,0 +1,1 @@
+Tutorial music: "Cyber Reality" by Alex Kizenkov (Pixabay), used under the Pixabay Content License (free for commercial use, no attribution required). Mixed into video/qwebbo-intro-*.mp4 (first 36.8 s, normalised, fades).
