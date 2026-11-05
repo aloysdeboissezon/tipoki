@@ -79,7 +79,30 @@ function checkTyped(input,variants,wrong){
   return !wrong.some(w=>{const wn=norm(w);if(!wn)return false;const dW=lev(nc,wn.replace(/ /g,""));return dW<dR||(dW===0)||((" "+n+" ").includes(" "+wn+" ")&&!variants.some(v=>(" "+n+" ").includes(" "+norm(v)+" ")))});
 }
 // true/false questions always show "true" first, whatever the quiz's language
-function tfOrder(q){return /^(Vrai|True)$/.test(q.o[0])?[0,1]:[1,0]}
+function tfOrder(q){return TRUEW.test(q.o[0])?[0,1]:[1,0]}
+// ---------- quiz translations ----------
+// A hand-written quiz can ship its questions in the other interface languages: js/banks/tr/<id>.<lang>.js registers BANK_TR["<id>.<lang>"],
+// the same questions in the same order (so ids, difficulty, saved progress and multiplayer decks stay valid). Missing file = the quiz stays in its own language.
+//   Q:  [question, right option, wrong 1, wrong 2, wrong 3, explanation]   (true/false: [question, explanation]; the right answer keeps its truth value)
+//   TQ: [question, [accepted answers], explanation]      T: {"original topic label":"translated"}
+const TRUEW=/^(Vrai|True|Verdadero|참)$/;
+const TFW={en:["True","False"],fr:["Vrai","Faux"],es:["Verdadero","Falso"],ko:["참","거짓"]};
+const TFL={en:"True or false",fr:"Vrai ou faux",es:"Verdadero o falso",ko:"참 또는 거짓"};
+function applyTr(b){
+  const tr=window.BANK_TR&&window.BANK_TR[b.id+"."+LANG];
+  if(!tr||b.facts||!b.Q||LANG===b.lang||tr.Q.length!==b.Q.length||(tr.TQ||[]).length!==b.TQ.length)return b;
+  const T=tr.T||{},W=TFW[LANG]||TFW.en;
+  const Q=b.Q.map((q,i)=>{const x=tr.Q[i],r={...q};
+    r.q=x[0];r.t=q.tf&&/^(true or false|vrai ou faux)$/i.test(q.t||"")?TFL[LANG]:(T[q.t]||q.t);
+    if(q.tf){const yes=TRUEW.test(q.o[0])||/^(Vrai|True)$/.test(q.o[0]);r.o=yes?[W[0],W[1]]:[W[1],W[0]];r.e=x[1]}
+    else{r.o=[x[1],x[2],x[3],x[4]];r.e=x[5]}
+    return r});
+  const TQ=b.TQ.map((q,i)=>{const x=tr.TQ[i];return {...q,q:x[0],a:[...new Set([...x[1],...q.a])],e:x[2]}});
+  return {...b,Q,TQ,qlang:LANG};
+}
+async function ensureTr(id){
+  const m=(window.BANK_META||{})[id];
+  if(m&&m.tr&&m.tr[LANG]&&!(window.BANK_TR&&window.BANK_TR[id+"."+LANG]))await loadScript("js/banks/tr/"+id+"."+LANG+".js?v="+m.tr[LANG])}   // m.tr: language -> content hash (cache busting), made by tools/build-catalog.js
 function isT(qi){return G.deck[qi].t!=null}
 // typed answers get 10 s more; exercises with a long statement get up to 30 s more to read it
 function qT(qi){const n=qOf(qi).q.length;return (G.T+(isT(qi)?10:0)+(n>170?Math.min(30,Math.ceil((n-170)/25)):0))*1000}
@@ -149,7 +172,7 @@ function factsForLang(b){
 }
 function lsKey(k){return BANK.id==="socio"?"socio-"+k:"tpk-"+k+"-"+BANK.id}
 function loadBank(raw){
-  const b=qmeta(normBank(raw));   // title, subject and chapter names in the interface language
+  const b=applyTr(qmeta(normBank(raw)));   // title, subject and chapter names in the interface language
   BANK=b;SESS={...b.sess};Q=b.Q.slice();TQ=b.TQ.slice();NHQ=Q.length;NHT=TQ.length;
   if(b.facts&&b.facts.length)expandFacts(b.facts,b.lang);
   BANK=factsForLang(b);
@@ -157,7 +180,7 @@ function loadBank(raw){
   ALL_S=Object.keys(SESS).map(Number).sort((x,y)=>x-y);
   settings.sess=new Set(ALL_S);
   // questions are in the quiz's language (often English): lets the browser hyphenate long words in the right language
-  ["question","reveal","end","cards","exam"].forEach(id=>$(id).lang=b.lang||"fr");
+  ["question","reveal","end","cards","exam"].forEach(id=>$(id).lang=b.qlang||b.lang||"fr");
   renderBankUI();
 }
 // previews behind the glass of the four squares, drawn from the quiz's own content
@@ -202,7 +225,7 @@ function fitText(box,min,max,set,flow){
 function fitPreviews(){
   const mt=$("modeTabs");if(mt)mt.dataset.n=mt.querySelectorAll(".mcard:not([hidden])").length;   // lets the phone layout (2x2) know how many squares there are
   document.querySelectorAll("#topic .mc-pv").forEach(pv=>{
-    pv.classList.remove("tight","tighter");if(!pv.offsetParent)return;pv.lang=(BANK&&BANK.lang)||"fr";
+    pv.classList.remove("tight","tighter");if(!pv.offsetParent)return;pv.lang=(BANK&&(BANK.qlang||BANK.lang))||"fr";
     pv.querySelectorAll(".pv-q").forEach(q=>fitText(q,7,26,v=>{q.style.fontSize=v+"px"}));
     pv.querySelectorAll(".pv-tiles i").forEach(t=>fitText(t,7,20,v=>{t.style.fontSize=v+"px"}));
     const f=pv.querySelector(".pv-card.front");if(f){const tb=f.querySelector("b");fitText(f,6,22,v=>{f.style.setProperty("--fs",v+"px");if(tb)for(let k=2.6;k>=1;k-=.2){tb.style.fontSize=(v*k).toFixed(1)+"px";if(tb.scrollWidth<=tb.clientWidth+1)break}},1)}
@@ -230,7 +253,7 @@ const bankCache={};
 // the default quiz ships with the page; the other built-in quizzes (and their study sheets) are fetched the first time they are opened
 const scriptP={};
 function appVer(){try{return new URL(document.querySelector('script[src*="js/app/"]').src).search}catch(e){return ""}}
-function loadScript(src){return scriptP[src]||(scriptP[src]=new Promise(res=>{const s=document.createElement("script");s.src=src+appVer();s.onload=()=>res(true);s.onerror=()=>{delete scriptP[src];res(false)};document.head.appendChild(s)}))}
+function loadScript(src){return scriptP[src]||(scriptP[src]=new Promise(res=>{const s=document.createElement("script");s.src=src.includes("?")?src:src+appVer();s.onload=()=>res(true);s.onerror=()=>{delete scriptP[src];res(false)};document.head.appendChild(s)}))}
 // ESADE quizzes are not public files: /api/esade sends them (questions, study sheet) only to an account with a verified ESADE email (see api/esade.js)
 const ESADE_IDS=["socio","compta2","populism","regression"];
 // TEMPORARY OPEN MODE: true = everybody can open the ESADE quizzes, no ESADE login (the pop-up and email code stay in the code, unused).
@@ -266,6 +289,7 @@ async function useBank(id){
   id=id||"socio";if(BANK&&BANK.id===id)return true;
   if(BUILTIN[id]){esadeDenied=false;
     if(!await ensureBank(id)){if(esadeDenied)askEsade(()=>openQuiz(id));return false}
+    await ensureTr(id);
     loadBank(BUILTIN[id]());return true}
   let b=bankCache[id];
   if(!b){
