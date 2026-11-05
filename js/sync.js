@@ -187,11 +187,11 @@ dlg.innerHTML=`<div class="sync-card" id="syncCard">
 </div>
 <form class="sync-view" id="emailForm" data-v="email" novalidate hidden>
   <h2>Continue with Email</h2>
-  <p class="muted sync-help" id="emHelp">We'll email you a link: no password to remember.</p>
+  <p class="muted sync-help" id="emHelp">We'll email you a 6-digit code: no password to remember.</p>
   <div class="sync-field"><label class="label" for="emAddr">Email</label><input type="email" id="emAddr" maxlength="120" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="you@example.com"></div>
-  <div class="sync-field" id="emCodeBox" hidden><label class="label" for="emCode">Code from the email (if there is one)</label><input type="text" id="emCode" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="123456"></div>
+  <div class="sync-field" id="emCodeBox" hidden><label class="label" for="emCode">Code from the email</label><input type="text" id="emCode" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="123456"></div>
   <p class="err" id="emErr" hidden></p>
-  <div class="row sync-actions"><button type="button" class="btn ghost" id="emBack">Back</button><button type="submit" class="btn" id="emGo">Send me a sign-in link</button></div>
+  <div class="row sync-actions"><button type="button" class="btn ghost" id="emBack">Back</button><button type="submit" class="btn" id="emGo">Send me a code</button></div>
 </form>
 <form class="sync-view" id="phoneForm" data-v="phone" novalidate hidden>
   <h2>Continue with Phone</h2>
@@ -291,7 +291,7 @@ function aerr(e){const m=String(e&&(e.code||e.message)||"");
   return /fetch|network/i.test(m)?AMSG.net:AMSG.fail}
 const redirectUrl=()=>location.origin+location.pathname;
 function rememberLink(){put(LINK,linking&&acct?acct.tok:null)}   // survives the trip to Google and back
-q("pvEmail").onclick=()=>{show("email");q("emCodeBox").hidden=true;q("emGo").textContent=tl("Send me a sign-in link");perr("emErr","");sentTo=null;q("emAddr").focus()};
+q("pvEmail").onclick=()=>{show("email");q("emCodeBox").hidden=true;q("emGo").textContent=tl("Send me a code");perr("emErr","");sentTo=null;q("emAddr").focus()};
 q("pvPhone").onclick=()=>{show("phone");q("phCodeBox").hidden=true;q("phGo").textContent=tl("Send me a code");perr("phErr","");sentTo=null;q("phNum").focus()};
 async function oauth(provider){perr("pvErr","");rememberLink();
   try{const {error}=await sbA.auth.signInWithOAuth({provider,options:{redirectTo:redirectUrl()}});if(error)throw error}
@@ -308,7 +308,7 @@ q("emailForm").onsubmit=async e=>{e.preventDefault();perr("emErr","");
     else{rememberLink();
       const {error}=await sbA.auth.signInWithOtp({email:em,options:{emailRedirectTo:redirectUrl(),shouldCreateUser:true}});if(error)throw error;
       sentTo=em;q("emCodeBox").hidden=false;go.textContent=tl("Confirm the code");
-      q("emHelp").textContent=tl("We sent a link to {e}. Open it on this device to sign in. If the email shows a code instead, type it below.",{e:em})}
+      q("emHelp").textContent=tl("We sent a code to {e}. Type it below.",{e:em})}
   }catch(x){perr("emErr",aerr(x))}finally{go.disabled=false}};
 q("phoneForm").onsubmit=async e=>{e.preventDefault();perr("phErr","");
   const go=q("phGo"),ph=q("phNum").value.replace(/[\s().-]/g,"");
@@ -345,7 +345,7 @@ q("esadeForm").onsubmit=async e=>{e.preventDefault();perr("esErr","");
       rememberLink();put(EPEND,String(Date.now()));
       const {error}=await sbA.auth.signInWithOtp({email:em,options:{emailRedirectTo:redirectUrl(),shouldCreateUser:true}});if(error)throw error;
       sentTo=em;q("esCodeBox").hidden=false;go.textContent=tl("Confirm the code");
-      q("esHelp").textContent=tl("We sent a code to {e}. Type it below, or open the link in the email on this device.",{e:em});q("esCode").focus()}
+      q("esHelp").textContent=tl("We sent a code to {e}. Type it below.",{e:em});q("esCode").focus()}
   }catch(x){perr("esErr",aerr(x))}finally{go.disabled=false}};
 // the code was accepted while an account is already signed in on this device: attach the ESADE address to it
 async function esFinish(){

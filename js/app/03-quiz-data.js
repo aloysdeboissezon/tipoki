@@ -222,6 +222,10 @@ function appVer(){try{return new URL(document.querySelector('script[src*="js/app
 function loadScript(src){return scriptP[src]||(scriptP[src]=new Promise(res=>{const s=document.createElement("script");s.src=src+appVer();s.onload=()=>res(true);s.onerror=()=>{delete scriptP[src];res(false)};document.head.appendChild(s)}))}
 // ESADE quizzes are not public files: /api/esade sends them (questions, study sheet) only to an account with a verified ESADE email (see api/esade.js)
 const ESADE_IDS=["socio","compta2","populism","regression"];
+// TEMPORARY OPEN MODE: true = everybody can open the ESADE quizzes, no ESADE login (the pop-up and email code stay in the code, unused).
+// Set to false to ask for a verified ESADE email again. Keep it equal to ESADE_OPEN in api/esade.js. (window.__esadeLocked: used by the tests only)
+const ESADE_OPEN=true;
+const esadeOpen=()=>ESADE_OPEN&&!window.__esadeLocked;
 let esadeDenied=false;   // the last useBank() was refused because the ESADE email is missing: callers don't say "quiz not found"
 async function gatedText(id,k){
   const t=window.tpkEsade?tpkEsade.token():"";
@@ -231,7 +235,7 @@ async function gatedText(id,k){
 async function gatedBlob(id,k){const t=window.tpkEsade?tpkEsade.token():"";
   try{const r=await fetch("/api/esade?k="+k+"&id="+encodeURIComponent(id),{cache:"no-store",headers:t?{Authorization:"Bearer "+t}:{}});return r.ok?await r.blob():null}catch(e){return null}}
 function runScript(text){const s=document.createElement("script");s.textContent=text;document.head.appendChild(s);s.remove()}
-function esadeVerified(){try{return !!JSON.parse(localStorage.getItem("qwebbo-esade")||"null")}catch(e){return false}}
+function esadeVerified(){if(esadeOpen())return true;try{return !!JSON.parse(localStorage.getItem("qwebbo-esade")||"null")}catch(e){return false}}
 function askEsade(after){if(window.tpkEsade)tpkEsade.open(after);else if(typeof toast==="function")toast(tl("Can't reach the server. Check your connection and try again."))}
 async function ensureBank(id){
   if(BUILTIN[id]())return true;

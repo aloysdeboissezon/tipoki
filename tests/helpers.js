@@ -40,6 +40,7 @@ async function openSite(page, { path = "/", storage = {}, esade = true } = {}) {
     if (/fonts\.googleapis/.test(url)) return route.fulfill({ contentType: "text/css", body: "" });
     return route.abort();
   });
+  await page.addInitScript(() => { window.__esadeLocked = true; });   // the tests play the real ESADE gate, not the temporary open mode
   await page.addInitScript(items => {
     // the first visit shows a tour and a daily goal prompt; the tests start from a visitor who has seen them
     if (!sessionStorage.getItem("__e2e_init")) {

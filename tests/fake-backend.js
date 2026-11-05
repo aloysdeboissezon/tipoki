@@ -97,6 +97,7 @@ async function openShared(page, { path = "/", storage = {} } = {}) {
     if (/fonts\.googleapis/.test(url)) return route.fulfill({ contentType: "text/css", body: "" });
     return route.abort();
   });
+  await page.addInitScript(() => { window.__esadeLocked = true; });   // the tests play the real ESADE gate, not the temporary open mode
   await page.addInitScript(items => {
     if (!sessionStorage.getItem("__e2e_init")) {
       sessionStorage.setItem("__e2e_init", "1");

@@ -64,6 +64,7 @@ async function setup(page, { accounts = {}, local = {}, esade = true } = {}) {
     const k = u.searchParams.get("k"), id = u.searchParams.get("id");
     return route.fulfill({ status: 200, contentType: "text/javascript", body: k === "bank" ? file("banks", id + ".js") : file("sheets", id + ".js") });
   });
+  await page.addInitScript(() => { window.__esadeLocked = true; });
   await page.addInitScript(l => { try { for (const k in l) if (!localStorage.getItem("__init_" + k)) { localStorage.setItem(k, l[k]); localStorage.setItem("__init_" + k, "1"); } } catch (e) {} }, {
     "tpk-onboarded": "1", "tpk-tour": "1", "tpk-goal-asked": "1", ...local,
   });

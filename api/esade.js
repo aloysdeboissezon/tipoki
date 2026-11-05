@@ -9,6 +9,9 @@ const path = require("path");
 const SB_URL = process.env.SUPABASE_URL || "https://eowcxqqkewijzgemqbhi.supabase.co";
 const SB_KEY = process.env.SUPABASE_ANON_KEY || "sb_publishable_WYtzPauL3s0sPu_Vvj0iOQ_uUTg1uW7";   // the public (publishable) key, same one the website uses
 const DIR = path.join(__dirname, "_esade");
+// TEMPORARY OPEN MODE: true = the ESADE quizzes are served to everyone (no ESADE login needed). Set to false to require a verified ESADE email again.
+// Keep it equal to ESADE_OPEN in js/app/03-quiz-data.js (a test checks they match).
+const ESADE_OPEN = true;
 const KINDS = { bank: ["banks", "js", "text/javascript; charset=utf-8"], sheet: ["sheets", "js", "text/javascript; charset=utf-8"], pdf: ["pdf", "pdf", "application/pdf"] };
 
 // asks the database: "ok" | "bad_token" | "not_esade"; throws when Supabase can't be reached
@@ -28,7 +31,7 @@ async function checkWithSupabase(token) {
   } finally { clearTimeout(timer); }
 }
 
-function createHandler({ check = checkWithSupabase, dir = DIR } = {}) {
+function createHandler({ check = checkWithSupabase, dir = DIR, open = ESADE_OPEN } = {}) {
   return async (req, res) => {
     const send = (code, type, body) => {
       res.statusCode = code;
@@ -41,11 +44,13 @@ function createHandler({ check = checkWithSupabase, dir = DIR } = {}) {
     const u = new URL(req.url, "http://x"), kind = KINDS[u.searchParams.get("k")], id = u.searchParams.get("id") || "";
     const m = /^Bearer ([A-Za-z0-9._-]{16,200})$/.exec(String(req.headers.authorization || ""));
     if (!kind || !/^[a-z0-9]{1,30}$/.test(id)) return err(404, "not_found");
-    if (!m) return err(401, "login");
-    let verdict;
-    try { verdict = await check(m[1]); } catch (e) { return err(503, "unavailable"); }
-    if (verdict === "bad_token") return err(401, "login");
-    if (verdict !== "ok") return err(403, "esade_only");
+    if (!open) {
+      if (!m) return err(401, "login");
+      let verdict;
+      try { verdict = await check(m[1]); } catch (e) { return err(503, "unavailable"); }
+      if (verdict === "bad_token") return err(401, "login");
+      if (verdict !== "ok") return err(403, "esade_only");
+    }
     let buf;
     try { buf = fs.readFileSync(path.join(dir, kind[0], id + ".js")); } catch (e) { return err(404, "not_found"); }
     if (kind[1] === "pdf") buf = Buffer.from(String(require(path.join(dir, "pdf", id + ".js"))), "base64");

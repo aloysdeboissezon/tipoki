@@ -5,7 +5,7 @@ const path = require("path");
 
 const root = path.join(__dirname, "..");
 // /api/esade is the real function (api/esade.js); only the "is this token an ESADE account?" question is answered locally, by the token's name
-const esade = require("../api/esade").createHandler({ check: async t => (t.startsWith("e2e-esade") ? "ok" : t.startsWith("e2e-plain") ? "not_esade" : "bad_token") });
+const esade = require("../api/esade").createHandler({ open: false, check: async t => (t.startsWith("e2e-esade") ? "ok" : t.startsWith("e2e-plain") ? "not_esade" : "bad_token") });
 const types = {
   ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8",
   ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".webp": "image/webp",

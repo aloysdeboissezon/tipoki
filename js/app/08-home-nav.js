@@ -90,7 +90,7 @@ $("quizSearch").addEventListener("input",filterQuizzes);
 // the ESADE logo: verified = show the ESADE quizzes; otherwise the "ESADE only" pop-up asks for an ESADE email (code by email)
 $("esadeBtn").onclick=()=>{if(esadeVerified())setEsade(!esadeOn);else askEsade(()=>setEsade(true))};
 function esadeChanged(){
-  if(!esadeVerified()){   // signed out, or the address was moved to another account: forget the ESADE quizzes that were loaded
+  if(!esadeVerified()){   // (never in open mode)   // signed out, or the address was moved to another account: forget the ESADE quizzes that were loaded
     esadeOn=false;lsSet("tpk-esade","0");
     const gated=BANK&&ESADE_IDS.includes(BANK.id);
     ESADE_IDS.forEach(id=>{delete window["BANK_"+id.toUpperCase()];if(window.SHEETS)delete window.SHEETS[id]});
