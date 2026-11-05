@@ -114,3 +114,34 @@ test.describe("Quiz names in every interface language", () => {
     });
   }
 });
+
+test.describe("?lang= in the address", () => {
+  const cases = [["fr", "fr"], ["fra", "fr"], ["FRE", "fr"], ["spa", "es"], ["kor", "ko"], ["ko-KR", "ko"], ["eng", "en"]];
+  for (const [param, want] of cases) {
+    test(`?lang=${param} opens the interface in ${want}, with the quiz`, async ({ browser }) => {
+      const ctx = await browser.newContext({ locale: want === "en" ? "fr-FR" : "en-US" });
+      const page = await ctx.newPage();
+      await openSite(page, { path: `/?quiz=gastro&lang=${param}` });
+      await expect(page.locator("html")).toHaveAttribute("lang", want);
+      expect(await page.evaluate(() => BANK.id)).toBe("gastro");
+      await ctx.close();
+    });
+  }
+
+  test("an unknown code falls back to the browser language; the URL wins over a saved choice", async ({ browser }) => {
+    const ctx = await browser.newContext({ locale: "es-ES" });
+    const page = await ctx.newPage();
+    await openSite(page, { path: "/?lang=xyz" });
+    await expect(page.locator("html")).toHaveAttribute("lang", "es");
+    await page.goto("/?lang=kor");
+    await expect(page.locator("html")).toHaveAttribute("lang", "ko");
+    await page.goto("/");   // saved from the link
+    await expect(page.locator("html")).toHaveAttribute("lang", "ko");
+    await ctx.close();
+  });
+
+  test("the share-quiz link carries the current language", async ({ page }) => {
+    await openSite(page);
+    expect(await page.evaluate(() => quizUrl("gastro"))).toContain("?quiz=gastro&lang=en");
+  });
+});

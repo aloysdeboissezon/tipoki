@@ -8,7 +8,12 @@
 // Spanish lives in js/i18n-es.js and Korean in js/i18n-ko.js (same keys, loaded first). Same rules: a new English text needs a key in FR, ES and KO.
 // The choice is saved per device in "tpk-lang"; without one, the browser's language decides.
 var LANGS=["en","fr","es","ko"];
+// ?lang=fr / ?lang=fra / ?lang=fre (2-letter or 3-letter ISO 639 codes, any case, "fr-FR" too) sets the language of a shared link; it wins over the saved choice and is then saved
+var LANG3={eng:"en",fra:"fr",fre:"fr",spa:"es",kor:"ko"};
+function tpkLangCode(v){var c=String(v||"").toLowerCase().split(/[-_]/)[0];if(LANG3[c])c=LANG3[c];return LANGS.indexOf(c)>=0?c:null}
+function tpkLangParam(){try{return tpkLangCode(new URLSearchParams(location.search).get("lang"))}catch(e){return null}}
 var LANG=(function(){
+  var u=tpkLangParam();if(u){try{localStorage.setItem("tpk-lang",u)}catch(e){}return u}
   var s=null;try{s=localStorage.getItem("tpk-lang")}catch(e){}
   if(LANGS.indexOf(s)>=0)return s;
   var l=(navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language||""]);
