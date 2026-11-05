@@ -73,6 +73,7 @@ var KO={
 "The goal spreads the {t} questions you have not mastered yet over the days left.":"아직 마스터하지 못한 {t}문제를 남은 날짜에 나눠서 목표를 정해요.",
 "Pick at least one.":"하나 이상 골라주세요.",
 "{n} selected":"{n}개 선택됨",
+"Rise to your friend's challenge!":"친구의 도전에 응해 보세요!",
 "No code? Ask your friend, or open the link they sent you.":"코드가 없나요? 친구에게 물어보거나 받은 링크를 열어보세요.",
 "No open games right now.":"지금 열려 있는 게임이 없어요.",
 "No open games right now. Create one or enter a code.":"지금 열려 있는 게임이 없어요. 게임을 만들거나 코드를 입력하세요.",

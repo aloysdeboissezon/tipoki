@@ -409,5 +409,5 @@ const FACTS=[
 [6,"delib","c","#Ichbinhier","European movement applying standards of evidence-based argument and civility","Ichbinhier"]
 ];
 
-return {id:"populism",title:"Training Quiz 7 · Sessions 14 & 15",kw:"sociologie sociology socio populism populisme deliberation délibération démocratie democracy Müller Muller Dryzek science politique training quiz 7 session 14 15",subject:"Müller, The Logic of Populism · Dryzek et al., The crisis of democracy and the science of deliberation",lang:"en",sess:SESS,tags:TAGS,unit:["part","parts","a part"],balance:true,Q,TQ,facts:FACTS};
+return {id:"populism",title:"Sociology · Sessions 14–15",kw:"sociologie sociology socio populism populisme deliberation délibération démocratie democracy Müller Muller Dryzek science politique training quiz 7 session 14 15",subject:"Müller, The Logic of Populism · Dryzek et al., The crisis of democracy and the science of deliberation",lang:"en",sess:SESS,tags:TAGS,unit:["part","parts","a part"],balance:true,Q,TQ,facts:FACTS};
 })();

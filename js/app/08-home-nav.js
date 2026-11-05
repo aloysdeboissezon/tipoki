@@ -51,7 +51,7 @@ function renderQuizGrid(all){
   list.forEach(q=>{const c=el("button","qcard");c.type="button";c.dataset.hay=quizHay(q);c.dataset.id=q.id;
     const ico=el("span","qico");ico.innerHTML=quizIcon(q);
     const t=el("span","qtxt");t.append(el("b",null,q.title));if(q.subject)t.append(el("small",null,q.subject));const qb=el("span","qbest");qb.hidden=true;t.append(qb);
-    c.append(ico,t,el("span","qgo","›"),heart(q));c.onclick=()=>openQuiz(q.id,c);box.appendChild(c)});
+    c.append(ico,t,el("span","qgo","›"),heart(q));if(isEsade(q)){const eb=el("img","qesade");eb.src="/img/esade.png";eb.alt="ESADE";eb.width=eb.height=24;eb.decoding="async";c.append(eb)}c.onclick=()=>openQuiz(q.id,c);box.appendChild(c)});
   const L=$("qList");L.textContent="";
   list.forEach((q,i)=>{const b=el("button","qchip");b.type="button";b.dataset.hay=quizHay(q);b.dataset.id=q.id;b.dataset.i=i%8;
     const li=el("span","qchip-l");li.innerHTML=quizIcon(q);b.append(li,el("b",null,q.title),heart(q),el("span","qgo","›"));b.onclick=()=>openQuiz(q.id,b);L.appendChild(b)});

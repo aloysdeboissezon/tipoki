@@ -737,5 +737,5 @@ function fmtStmt(st){
 for(const q of Q.concat(TQ)){const i=q.q.lastIndexOf("\n\n");if(i>0)q.q=fmtStmt(q.q.slice(0,i))+q.q.slice(i)}
 
 
-return {id:"compta2",title:"Quiz compta 2",kw:"comptabilité compta consolidation consolidée consolidation financial statements goodwill NCI equity method associate subsidiary filiale analyse financière finance accounting quiz compta 2",subject:"Consolidation of financial statements: groups, full consolidation, internal transactions and equity method",lang:"en",sess:SESS,tags:TAGS,unit:["part","parts","a part"],balance:true,Q,TQ,facts:FACTS};
+return {id:"compta2",title:"Comptabilité · Consolidation",kw:"comptabilité compta consolidation consolidée consolidation financial statements goodwill NCI equity method associate subsidiary filiale analyse financière finance accounting quiz compta 2",subject:"Consolidation of financial statements: groups, full consolidation, internal transactions and equity method",lang:"en",sess:SESS,tags:TAGS,unit:["part","parts","a part"],balance:true,Q,TQ,facts:FACTS};
 })();

@@ -390,5 +390,5 @@ ty(6,"In the homicide example, the greater standardised coefficient in absolute 
   ty(7,`R² = ${R2}. What percentage of the variation of Y is explained by the model? (a number)`,[num(R2*100,0),num(R2*100,0)+"%"],`R² is the proportion explained: ${R2} = ${num(R2*100,0)}%.`,1);
 }
 
-return {id:"regression",group:"esade",title:"Unit 5 · Linear Regression",kw:"statistics regression linear regression SLR MLR SAD statistical analysis data unit 5 R2 OLS residuals multicollinearity VIF ANOVA F-test t-test adjusted R2 esade maths",subject:"SAD · Descriptive SLR, simple and multiple linear regression model (slides B5)",lang:"en",sess:SESS,tags:TAGS,unit:["chapter","chapters","a chapter"],balance:true,Q,TQ};
+return {id:"regression",group:"esade",title:"Statistics · Unit 5: Linear Regression",kw:"statistics regression linear regression SLR MLR SAD statistical analysis data unit 5 R2 OLS residuals multicollinearity VIF ANOVA F-test t-test adjusted R2 esade maths",subject:"Statistical Analysis of Data (SAD) · Descriptive SLR, simple and multiple linear regression model (slides B5)",lang:"en",sess:SESS,tags:TAGS,unit:["chapter","chapters","a chapter"],balance:true,Q,TQ};
 })();

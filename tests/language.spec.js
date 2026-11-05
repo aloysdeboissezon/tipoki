@@ -99,7 +99,7 @@ test.describe("Quiz names in every interface language", () => {
     expect(res.covered).toBe(res.ids);
   });
 
-  for (const [lang, locale, wants] of [["en", "en-US", { compta2: "Accounting Quiz 2" }], ["fr", "fr-FR", { compta2: "Quiz compta 2", gastro: "Gastronomie" }], ["es", "es-ES", { compta2: "Quiz de contabilidad 2", gastro: "Gastronomía" }], ["ko", "ko-KR", { compta2: "회계 퀴즈 2", gastro: "프랑스 미식과 전통" }]]) {
+  for (const [lang, locale, wants] of [["en", "en-US", { compta2: "Accounting · Consolidation" }], ["fr", "fr-FR", { compta2: "Comptabilité · Consolidation", gastro: "Gastronomie" }], ["es", "es-ES", { compta2: "Contabilidad · Consolidación", gastro: "Gastronomía" }], ["ko", "ko-KR", { compta2: "회계 · 연결", gastro: "프랑스 미식과 전통" }]]) {
     test(`home cards and the opened quiz show the ${lang} names`, async ({ browser }) => {
       const ctx = await browser.newContext({ locale });
       const page = await ctx.newPage();
