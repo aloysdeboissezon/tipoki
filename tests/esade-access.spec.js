@@ -136,6 +136,15 @@ test.describe("ESADE access", () => {
     await expect(logo).toHaveAttribute("aria-pressed", "true");   // the pop-up came from the logo: the ESADE quizzes are shown right away
     await expect(page.locator("#status")).toContainText("ESADE quizzes unlocked");
     expect(server.accounts["ana@esade.edu"].esade).toBe("ana@esade.edu");
+    // heart + ESADE together: ESADE quizzes that are favorites
+    await page.locator('#quizGrid .qcard[data-id="socio"] .qfav').click();
+    await page.locator("#favBtn").click();
+    await expect(page.locator("#favBtn")).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator("#esadeBtn")).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator("#qAllT")).toContainText("ESADE favorites (1)");
+    await expect(page.locator('#quizGrid .qcard')).toHaveCount(1);
+    await page.locator("#favBtn").click();
+    await page.locator('#quizGrid .qcard[data-id="socio"] .qfav').click();
     await page.locator('#quizGrid .qcard[data-id="socio"]').click();
     await expect(page.locator("#topic")).toBeVisible();
     expect(await page.evaluate(() => BANK.id)).toBe("socio");
