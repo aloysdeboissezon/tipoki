@@ -33,7 +33,7 @@ Sans ça, **seuls les membres de ton équipe Supabase reçoivent le code** (l'en
 ### 4. Les deux e-mails (code + avertissement des conditions)
 Supabase → Authentication → Email Templates. Pour **« Magic Link »** puis pour **« Confirm signup »** :
 - Subject : `Your qwebbo code: {{ .Token }}`
-- Message body (code seul, sans lien) : coller le contenu de `supabase/email-templates/magic-link.html` (identique pour « Confirm signup », fichier `confirm-signup.html`). Save.
+- Message body (code seul, sans lien) : coller le contenu de `supabase/email-templates/magic-link.html` (identique pour « Confirm signup », fichier `confirm-signup.html`; le logo et l’icône sont servis depuis `qwebbo.com/img/` donc visibles après déploiement). Save.
 
 Authentication → Providers → Email : « Confirm email » activé, « Email OTP Length » : 6 ou 8 (les deux marchent).
 
