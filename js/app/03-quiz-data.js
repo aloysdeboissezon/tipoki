@@ -104,8 +104,12 @@ async function ensureTr(id){
   const m=(window.BANK_META||{})[id];
   if(m&&m.tr&&m.tr[LANG]&&!(window.BANK_TR&&window.BANK_TR[id+"."+LANG]))await loadScript("js/banks/tr/"+id+"."+LANG+".js?v="+m.tr[LANG])}   // m.tr: language -> content hash (cache busting), made by tools/build-catalog.js
 function isT(qi){return G.deck[qi].t!=null}
-// typed answers get 10 s more; exercises with a long statement get up to 30 s more to read it
-function qT(qi){const n=qOf(qi).q.length;return (G.T+(isT(qi)?10:0)+(n>170?Math.min(30,Math.ceil((n-170)/25)):0))*1000}
+// typed answers get 10 s more; a question can carry its own extra time `x` (seconds, set in the bank data, e.g. calculation exercises);
+// otherwise a long statement gets up to 30 s more to read it. Same data on every device, so multiplayer stays in sync.
+function qExtra(q){return q.x!=null?q.x:(q.q.length>170?Math.min(30,Math.ceil((q.q.length-170)/25)):0)}
+function isHard(qi){return (qOf(qi).x||0)>=HARD_X}
+const HARD_X=20;
+function qT(qi){return (G.T+(isT(qi)?10:0)+qExtra(qOf(qi)))*1000}
 function qOf(qi){const d=G.deck[qi];return d.t!=null?TQ[d.t]:Q[d.id]}
 
 // ---------- generated questions (deterministic: same on every device) ----------

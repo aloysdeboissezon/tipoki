@@ -38,6 +38,11 @@ function renderQuestion(){
   if(local.goQ!==G.qi){local.goQ=G.qi;sfx("go");local.lastTick=null}
   const intro=$("qIntro");$("qIntroN").textContent=(G.qi+1)+"/"+(G.inf?"∞":G.deck.length);$("qIntroType").textContent=typed?tl("Typed answer"):(q.t||tl("Multiple choice"));
   if(performance.now()<local.shownAt){intro.hidden=false;clearTimeout(local.introT);local.introT=setTimeout(()=>{intro.hidden=true;if(isT(G.qi))$("qInput").focus()},Math.max(0,local.shownAt-performance.now()))}else intro.hidden=true;
+  const hard=isHard(G.qi),hb=$("qHard");
+  $("qHardChip").hidden=!hard;if(hard){$("qHardChip").textContent=tl("+{n} s",{n:qExtra(q)});$("qHardTxt").textContent=tl("Hard question");$("qHardSub").textContent=tl("Extra time given")}
+  if(hard&&local.hardQ!==G.qi){local.hardQ=G.qi;sfx("tick");hb.hidden=false;hb.classList.remove("go");void hb.offsetWidth;hb.classList.add("go");
+    clearTimeout(local.hardT);local.hardT=setTimeout(()=>{hb.hidden=true;hb.classList.remove("go")},Math.max(0,local.shownAt-performance.now())+3200)}
+  else if(!hard){hb.hidden=true;local.hardQ=null}
   const box=$("qTiles");box.textContent="";box.hidden=typed;$("qType").hidden=!typed;
   if(typed){$("qInput").value="";$("qInput").disabled=false;$("qSend").disabled=false;setTimeout(()=>$("qInput").focus(),50)}
   const hid=local.hint&&local.hint.qi===G.qi?local.hint.ks:[];
