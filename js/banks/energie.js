@@ -359,5 +359,7 @@ const FACTS=[
 [1,"mots","p","James Maxwell","Théorise l'induction électromagnétique en 1865","Maxwell;James Clerk Maxwell"]
 ];
 
+// Extra time `x` (seconds) for calculation exercises (never changes the question itself).
+[...Q,...TQ].forEach(q=>{if((q.s===3||q.s===6)&&(q.q.match(/\d/g)||[]).length>=4)q.x=25});
 return {id:"energie",title:"Physique · Énergie électrique, chap. 1",kw:"physique électricité sciences physiques STI énergie renouvelable solaire",subject:"Deux siècles d'énergie électrique : alternateur, photovoltaïque, calculs",lang:"fr",sess:SESS,tags:TAGS,unit:["part","parts","a part"],balance:true,Q,TQ,facts:FACTS};
 })();
