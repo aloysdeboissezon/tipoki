@@ -16,7 +16,7 @@ for(const f of files){
   topics.forEach(t=>{if(!(tr.T||{})[t])err(f,"topic \""+t+"\" has no translation in T")});
   const ne=s=>typeof s==="string"&&s.trim().length>0;
   b.Q.forEach((q,i)=>{const x=tr.Q[i];if(!x)return;const w=i+" "+q.q.slice(0,30);
-    const n=q.tf?2:6;
+    const n=q.tf?2:(q.hint?7:6);
     if(x.length!==n||!x.every(ne))return err(f,"bad entry "+w+" (needs "+n+" non-empty strings)");
     if(!q.tf){if(new Set(x.slice(1,5).map(s=>s.toLowerCase())).size!==4)err(f,"duplicate options "+w);if(x.slice(1,5).some(s=>s.length>90))err(f,"option too long "+w)}
     const dig=s=>(String(s).match(/\d+/g)||[]).join(",");
