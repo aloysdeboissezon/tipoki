@@ -83,7 +83,7 @@ function tfOrder(q){return TRUEW.test(q.o[0])?[0,1]:[1,0]}
 // ---------- quiz translations ----------
 // A hand-written quiz can ship its questions in the other interface languages: js/banks/tr/<id>.<lang>.js registers BANK_TR["<id>.<lang>"],
 // the same questions in the same order (so ids, difficulty, saved progress and multiplayer decks stay valid). Missing file = the quiz stays in its own language.
-//   Q:  [question, right option, wrong 1, wrong 2, wrong 3, explanation]   (true/false: [question, explanation]; the right answer keeps its truth value)
+//   Q:  [question, right option, wrong 1, wrong 2, wrong 3, explanation(, hint shown when the picture cannot load)]   (true/false: [question, explanation]; the right answer keeps its truth value)
 //   TQ: [question, [accepted answers], explanation]      T: {"original topic label":"translated"}
 const TRUEW=/^(Vrai|True|Verdadero|참)$/;
 const TFW={en:["True","False"],fr:["Vrai","Faux"],es:["Verdadero","Falso"],ko:["참","거짓"]};
@@ -95,7 +95,7 @@ function applyTr(b){
   const Q=b.Q.map((q,i)=>{const x=tr.Q[i],r={...q};
     r.q=x[0];r.t=q.tf&&/^(true or false|vrai ou faux)$/i.test(q.t||"")?TFL[LANG]:(T[q.t]||q.t);
     if(q.tf){const yes=TRUEW.test(q.o[0])||/^(Vrai|True)$/.test(q.o[0]);r.o=yes?[W[0],W[1]]:[W[1],W[0]];r.e=x[1]}
-    else{r.o=[x[1],x[2],x[3],x[4]];r.e=x[5]}
+    else{r.o=[x[1],x[2],x[3],x[4]];r.e=x[5];if(q.hint&&x[6])r.hint=x[6]}
     return r});
   const TQ=b.TQ.map((q,i)=>{const x=tr.TQ[i];return {...q,q:x[0],a:[...new Set([...x[1],...q.a])],e:x[2]}});
   return {...b,Q,TQ,qlang:LANG};
@@ -103,6 +103,8 @@ function applyTr(b){
 async function ensureTr(id){
   const m=(window.BANK_META||{})[id];
   if(m&&m.tr&&m.tr[LANG]&&!(window.BANK_TR&&window.BANK_TR[id+"."+LANG]))await loadScript("js/banks/tr/"+id+"."+LANG+".js?v="+m.tr[LANG])}   // m.tr: language -> content hash (cache busting), made by tools/build-catalog.js
+// the quiz shown at start (culture is preloaded by index.html) was built before its translation file was fetched: rebuild it once when it is opened
+function trMissing(id){const m=(window.BANK_META||{})[id];return !!(m&&m.tr&&m.tr[LANG]&&LANG!==BANK.lang&&!BANK.qlang)}
 function isT(qi){return G.deck[qi].t!=null}
 // typed answers get 10 s more; a question can carry its own extra time `x` (seconds, set in the bank data, e.g. calculation exercises);
 // otherwise a long statement gets up to 30 s more to read it. Same data on every device, so multiplayer stays in sync.
@@ -290,7 +292,7 @@ async function ensureBank(id){
   if(window.TipokiFig&&TipokiFig.tagLate)TipokiFig.tagLate("BANK_"+id.toUpperCase());
   return true}
 async function useBank(id){
-  id=id||"socio";if(BANK&&BANK.id===id)return true;
+  id=id||"socio";if(BANK&&BANK.id===id&&!(BUILTIN[id]&&trMissing(id)))return true;
   if(BUILTIN[id]){esadeDenied=false;
     if(!await ensureBank(id)){if(esadeDenied)askEsade(()=>openQuiz(id));return false}
     await ensureTr(id);

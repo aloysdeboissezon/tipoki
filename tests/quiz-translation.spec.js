@@ -55,3 +55,20 @@ test("true/false questions keep their truth value and use the interface language
   expect(r.translated).toBe(true);
   expect(r.bad).toEqual([]);
 });
+
+test("Culture générale is fully Korean for a Korean visitor (questions, answers, language questions)", async ({ page }) => {
+  await openSite(page, { path: "/?lang=ko" });
+  await openQuiz(page, "culture");
+  await page.waitForFunction(() => BANK && BANK.id === "culture" && BANK.qlang === "ko");
+  const r = await page.evaluate(() => {
+    const hangul = /[가-힣]/;
+    const bad = Q.filter(q => !hangul.test(q.q)).length;
+    const lang = Q.filter(q => q.t === "언어").slice(0, 4).map(q => q.q);
+    return { n: Q.length, bad, qlang: BANK.qlang, lang, typed: TQ.filter(q => !hangul.test(q.q)).length };
+  });
+  expect(r.qlang).toBe("ko");
+  expect(r.n).toBeGreaterThan(2000);
+  expect(r.bad).toBe(0);
+  expect(r.typed).toBe(0);
+  expect(r.lang.join(" ")).not.toMatch(/Comment dit-on/);
+});
