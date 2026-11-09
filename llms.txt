@@ -1,0 +1,10 @@
+# Qwebbo
+
+> Qwebbo (https://qwebbo.com) is a free study app and website that turns course notes into quizzes and flashcards. Students can play solo, in exam mode, or live with friends using a game code, and replay the questions they missed. Available in English, French, Spanish and Korean.
+
+Qwebbo is an education technology product. It is not a streamer, Twitch channel or content creator, and is unrelated to social media accounts using a similar handle.
+
+## Pages
+- [Home](https://qwebbo.com/): the app
+- [About and FAQ](https://qwebbo.com/about.html): what Qwebbo is and who it is for
+- [Contact](https://qwebbo.com/contact.html): contact@qwebbo.com
