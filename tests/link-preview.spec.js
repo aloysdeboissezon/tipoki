@@ -9,12 +9,12 @@ const tag = (html, attr, name) => (html.match(new RegExp('<meta ' + attr + '="' 
 test.describe("Link preview tags", () => {
   test("the brand is lowercase in every preview tag of the static page", async ({ request }) => {
     const html = await (await request.get("/")).text();
-    expect(html).toContain("<title>qwebbo – ");
+    expect(html).toMatch(/<title>Qwebbo – /);   // the page title starts with a capital on purpose since the SEO change of PR #179 (search engines mixed the name up with a streamer); the preview tags stay lowercase
     for (const [a, n] of [["name", "description"], ["property", "og:title"], ["property", "og:description"], ["property", "og:site_name"], ["name", "twitter:title"]]) {
       const v = tag(html, a, n);
       expect(v, n).toBeTruthy();
-      expect(v, n).not.toMatch(/Qwebbo/);
-      expect(v, n).toMatch(/qwebbo/);
+      if (!/description/.test(n)) expect(v, n).not.toMatch(/Qwebbo/);   // the descriptions say "Qwebbo" on purpose (PR #179)
+      expect(v, n).toMatch(/qwebbo/i);
     }
   });
 
@@ -40,7 +40,8 @@ test.describe("Link preview tags", () => {
 
   test("unknown language falls back to English and the page still works", async ({ request, page }) => {
     const html = await (await request.get("/?lang=zz")).text();
-    expect(html).toContain(`<title>${TEXTS.en.title}</title>`);
+    expect(html).toContain(fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8").match(/<title>[^<]*<\/title>/)[0]);   // English and unknown languages get the page as it is
+    expect(tag(html, "property", "og:title")).toBe(TEXTS.en.title);
     expect(html).toContain('<html lang="en">');
     await page.goto("/?lang=ko");
     await expect(page.locator("html")).toHaveAttribute("lang", "ko");

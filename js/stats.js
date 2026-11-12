@@ -29,7 +29,7 @@ async function recordExam(ex){
   try{await tpkInsert("play_stats",{quiz:BANK.id,game:ex.sid,player:await statsPlayer(BANK.id),mode:"exam",n:ex.deck.length,correct,qs})}catch(e){console.warn(e)}
 }
 async function recordPlay(){
-  if(!statsOn()||!sb||!G||!G.deck||!BANK)return;
+  if(!statsOn()||!(sb||BANK&&BANK.demo)||!G||!G.deck||!BANK)return;
   const game=statsGameId();
   if(statsSent===game)return;
   const mine=(P[me]&&P[me].ans)||{};if(!Object.keys(mine).length)return;   // joined but never answered: not counted
@@ -37,7 +37,27 @@ async function recordPlay(){
   const qs={};let correct=0;
   G.deck.forEach((d,i)=>{const ok=isRight(mine[i],i);qs[d.t!=null?"t"+d.t:"m"+d.id]=ok?1:0;if(ok)correct++});
   const row={quiz:BANK.id,game,player:await statsPlayer(BANK.id),mode:mode==="multi"?"multi":G.review?"review":"solo",n:G.deck.length,correct,qs};
+  // a professor's course also records WHICH wrong option was picked (original option number), for "most chosen wrong answer" on the class dashboard
+  if(BANK.course){const w={};G.deck.forEach((d,i)=>{const a=mine[i];if(d.t==null&&a&&a.c!=null&&d.o&&d.o[a.c]!==0&&d.o[a.c]!=null)w["m"+d.id]=d.o[a.c]});row.w=w}
+  if(BANK.demo){if(window.QwebboCourse)QwebboCourse.demoAdd("play",row);return}   // demo: kept in this browser, never sent
   try{await tpkInsert("play_stats",row)}catch(e){console.warn(e)}
+}
+// One question after a game on a professor's course: "Did this help you revise?" 1 to 5. Asked once per course and device, anonymous like the statistics.
+function surveyAsk(){
+  const old=document.getElementById("survey");if(old)old.remove();
+  if(!BANK||!BANK.course||!statsOn())return;
+  const key="qwebbo-survey-"+BANK.id;try{if(localStorage.getItem(key))return}catch(e){return}
+  const box=el("div","survey");box.id="survey";box.setAttribute("role","group");
+  const q=el("p","survey-q",tl("Did this help you revise?"));q.id="surveyQ";box.setAttribute("aria-labelledby","surveyQ");box.appendChild(q);
+  const row=el("div","chips");box.appendChild(row);
+  for(let v=1;v<=5;v++){const b=el("button","chip",String(v));b.type="button";b.setAttribute("aria-label",tl("{n} out of 5",{n:v}));
+    b.onclick=async()=>{try{localStorage.setItem(key,String(v))}catch(e){}
+      box.textContent="";box.appendChild(el("p","survey-q",tl("Thank you!")));
+      if(BANK.demo){if(window.QwebboCourse)QwebboCourse.demoAdd("survey",{quiz:BANK.id,score:v});return}
+      try{await tpkInsert("course_survey",{course:BANK.id,player:await statsPlayer(BANK.id),score:v})}catch(e){console.warn(e)}};
+    row.appendChild(b)}
+  box.appendChild(el("p","muted survey-h",tl("1 = not at all · 5 = a lot")));
+  const at=document.getElementById("endSess");if(at)at.insertAdjacentElement("afterend",box);
 }
 
 // ---------- stats page ----------

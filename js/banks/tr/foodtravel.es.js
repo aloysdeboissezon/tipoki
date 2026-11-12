@@ -136,7 +136,7 @@ Q:[
 ["La Torre de Pisa está en Florencia.","Está en Pisa, Italia."],
 ["El monte Fuji es un volcán activo de Japón.","Su última erupción fue en 1707."],
 ["¿Qué moneda se usa en Japón?","El yen","El yuan","El won","El baht","El yen se abrevia ¥."],
-["¿Por qué lado de la carretera se conduce en el Reino Unido?","Por la izquierda","Por la derecha","Por ambos","Depende","Reino Unido, Japón, India y Australia conducen por la izquierda."],
+["¿Por qué lado se conduce en las carreteras del Reino Unido?","Por la izquierda","Por la derecha","Por ambos","Depende","Reino Unido, Japón, India y Australia conducen por la izquierda."],
 ["¿Qué código de aeropuerto se usa para Londres Heathrow?","LHR","LGW","LON","LDN","Heathrow es el aeropuerto más concurrido del Reino Unido."],
 ["¿Cuál ha sido en los últimos años el aeropuerto más concurrido del mundo por número de pasajeros?","Atlanta (ATL)","Londres Heathrow","Dubái (DXB)","Tokio Haneda","El Hartsfield–Jackson de Atlanta lleva años encabezando la clasificación."],
 ["¿Qué pase ferroviario europeo permite viajar por muchos países con un solo billete?","Interrail","Eurostar","EuroPass","TGV Pass","Interrail es para residentes europeos; Eurail, para el resto."],

@@ -216,6 +216,7 @@ $("mkGo").onclick=async()=>{
 loadBank(window.BANK_CULTURE);renderMyQuizzes();renderResume();addEventListener("load",()=>renderPreviews());
 if(sb){setMultiNote(true)}else setMultiNote(false);
 (async()=>{let id=null;try{id=new URLSearchParams(location.search).get("quiz")}catch(e){}
+  if(!id&&window.QwebboCourse&&QwebboCourse.code){id=await QwebboCourse.byCode(QwebboCourse.code);if(!id){toast(tl("Course not found. Check the code with your professor."));return}}
   if(!id||!(BUILTIN[id]||/^[0-9a-f-]{36}$/i.test(id)))return;
   if(!await useBank(id)){if(!esadeDenied)toast(tl("Quiz not found"));return}
   show("topic")})();

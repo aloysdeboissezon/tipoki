@@ -10,7 +10,7 @@ const home = require("../api/home");
 const types = {
   ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8",
   ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".webp": "image/webp",
-  ".json": "application/json", ".webmanifest": "application/manifest+json", ".mp4": "video/mp4", ".pdf": "application/pdf",
+  ".json": "application/json", ".webmanifest": "application/manifest+json", ".mp4": "video/mp4", ".pdf": "application/pdf", ".mjs": "text/javascript; charset=utf-8",
 };
 
 http.createServer((req, res) => {

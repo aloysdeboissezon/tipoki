@@ -12,6 +12,7 @@ function renderEnd(){
   [1,0,2].forEach(i=>{const r=t[i];const d=el("div","pod p"+(i+1));if(r){d.append(avatar(r.id,nameOf(r.id)),el("div","nm",dispName(r.id)),el("div","pts",r.t+" pts"))}d.appendChild(el("div","blk",r?String(i+1):""));pod.appendChild(d)});
   renderBoard($("endBoard"),t,false);
   if(typeof recordPlay==="function")recordPlay();
+  if(typeof surveyAsk==="function")surveyAsk();
   if(local.confEnd!==G.created){local.confEnd=G.created;
     const r={c:correct,n:G.deck.length-from,pts:(t.find(x=>x.id===me)||{t:0}).t},played=!!P[me],prev=!played||G.review?bestOf(BANK.id):recordGame(BANK.id,r);
     local.endRes=played?{r,prev,newDay:markStudyDay()}:null;if(played)addDaily(r.n);
