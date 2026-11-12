@@ -32,7 +32,8 @@
     rows.forEach(r => { const t = +new Date(r.at), wk = weekOf(t);
       (activeByWeek[wk] = activeByWeek[wk] || new Set()).add(r.player);
       if (firstSeen[r.player] == null) firstSeen[r.player] = t;
-      Object.keys(r.qs).forEach(k => { const ok = +r.qs[k] === 1, id = bank && bank.keys ? bank.keys[k] : k;   // without a bank, the rows already use item ids if (!id || !byId[id]) return;   // answers to items that were unpublished since are left out
+      Object.keys(r.qs).forEach(k => { const ok = +r.qs[k] === 1, id = bank && bank.keys ? bank.keys[k] : k;   // without a bank, the rows already use item ids
+        if (!id || !byId[id] || byId[id].status !== "approved") return;   // answers to items that were unpublished since are left out
         answers++; if (ok) correct++;
         const q = perQ[id] || (perQ[id] = { n: 0, wrong: 0, players: new Set(), picks: {} }); q.n++; if (!ok) q.wrong++; q.players.add(r.player);
         if (!ok && r.w && r.w[k] != null) q.picks[r.w[k]] = (q.picks[r.w[k]] || 0) + 1;

@@ -101,6 +101,12 @@ var ES={
 "Play today to keep it":"Juega hoy para mantenerla",
 "Best {p}%":"Récord {p} %",
 "Quiz not found":"Quiz no encontrado",
+"Qwebbo – Study app: quizzes and flashcards from your course notes":"Qwebbo – App de estudio: quizzes y flashcards a partir de tus apuntes",
+"Qwebbo is a free study app that turns your course notes into quizzes and flashcards. Study solo, play live with friends, and prepare your exams.":"Qwebbo es una app de estudio gratuita que convierte tus apuntes en quizzes y flashcards. Estudia solo, juega en directo con tus amigos y prepara tus exámenes.",
+"<h1>Qwebbo – study app for quizzes and flashcards</h1><p>Qwebbo is a study app and website (not a streamer or content creator). It turns your course notes into quizzes and flashcards. Study solo, play live with friends, and prepare your exams. Qwebbo needs JavaScript to run.</p><p><a href=\"/flashcards.html\">Flashcards</a> · <a href=\"/quiz.html\">Quiz</a> · <a href=\"/exam-mode.html\">Exam mode</a> · <a href=\"/about.html\">About</a> · <a href=\"/contact.html\">Contact</a> · <a href=\"/privacy.html\">Privacy</a> · <a href=\"/terms.html\">Terms</a> · <a href=\"/legal.html\">Legal</a></p>":"<h1>Qwebbo – app de estudio con quizzes y flashcards</h1><p>Qwebbo es una app y web de estudio (no es un streamer ni un creador de contenido). Convierte tus apuntes en quizzes y flashcards. Estudia solo, juega en directo con tus amigos y prepara tus exámenes. Qwebbo necesita JavaScript para funcionar.</p><p><a href=\"/flashcards.html\">Flashcards</a> · <a href=\"/quiz.html\">Quiz</a> · <a href=\"/exam-mode.html\">Modo examen</a> · <a href=\"/about.html\">Acerca de</a> · <a href=\"/contact.html\">Contacto</a> · <a href=\"/privacy.html\">Privacidad</a> · <a href=\"/terms.html\">Condiciones</a> · <a href=\"/legal.html\">Aviso legal</a></p>",
+"Sign in with your school email to open this course.":"Inicia sesión con tu correo de la escuela para abrir este curso.",
+"This course is reserved for its school's verified email addresses.":"Este curso está reservado a los correos verificados de su escuela.",
+"Course not found. Check the code with your professor.":"Curso no encontrado. Comprueba el código con tu profesor.",
 "Couldn't load this quiz, check your connection":"No se ha podido cargar este quiz, revisa tu conexión",
 // language switch
 "Quizzes, flashcards and exams for your courses. Play solo or with your friends.":"Quizzes, flashcards y exámenes para tus cursos. Juega solo o con tus amigos.",

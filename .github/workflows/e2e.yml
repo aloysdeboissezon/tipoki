@@ -20,6 +20,10 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Check every quiz in every language, the translations and the catalog
+        run: npm run check
+      - name: Check the professor-space SQL on a local Postgres
+        run: bash tools/test-professor-sql.sh
       - name: Install the browser
         run: npx playwright install --with-deps chromium
       - name: Run the tests

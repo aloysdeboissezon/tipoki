@@ -45,6 +45,15 @@
       "continue": true
     },
     {
+      "src": "/prof(\\.html)?",
+      "headers": {
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://eowcxqqkewijzgemqbhi.supabase.co; worker-src 'self' blob:; frame-src blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'",
+        "X-Robots-Tag": "noindex",
+        "Cache-Control": "no-cache"
+      },
+      "continue": true
+    },
+    {
       "src": "/",
       "has": [
         {

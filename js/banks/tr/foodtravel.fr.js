@@ -136,7 +136,7 @@ Q:[
 ["La tour penchée de Pise se trouve à Florence.","Elle est à Pise, en Italie."],
 ["Le mont Fuji est un volcan actif du Japon.","Sa dernière éruption date de 1707."],
 ["Quelle monnaie est utilisée au Japon ?","Le yen","Le yuan","Le won","Le baht","Le yen s'abrège ¥."],
-["De quel côté de la route roule-t-on au Royaume-Uni ?","À gauche","À droite","Des deux côtés","Cela dépend","Le Royaume-Uni, le Japon, l'Inde et l'Australie roulent à gauche."],
+["Au Royaume-Uni, de quel côté de la route roule-t-on ?","À gauche","À droite","Des deux côtés","Cela dépend","Le Royaume-Uni, le Japon, l'Inde et l'Australie roulent à gauche."],
 ["Quel code d'aéroport désigne Londres Heathrow ?","LHR","LGW","LON","LDN","Heathrow est l'aéroport le plus fréquenté du Royaume-Uni."],
 ["Quel est l'aéroport le plus fréquenté au monde en nombre de passagers ces dernières années ?","Atlanta (ATL)","Londres Heathrow","Dubaï (DXB)","Tokyo Haneda","L'aéroport Hartsfield–Jackson d'Atlanta est en tête du classement depuis des années."],
 ["Quel pass ferroviaire européen permet de voyager dans de nombreux pays avec un seul billet ?","Interrail","Eurostar","EuroPass","TGV Pass","Interrail est réservé aux résidents européens ; Eurail aux autres."],
