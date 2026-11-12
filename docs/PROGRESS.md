@@ -32,8 +32,9 @@ Vendre à ESADE une licence non exclusive à 80 000 € par an, après un pilote
 5. Mode démo isolé (données fictives étiquetées).
 6. Migration SQL `add_professor_space.sql` (écoles, rôles, cours, journal) testée sur un Postgres local.
 7. Test Playwright de la boucle complète.
-8. Répétition espacée (Leitner), pack sécurité et confidentialité, génération IA derrière son interrupteur.
-9. Deck v8 et documents associés.
+8. Fait : pack sécurité et confidentialité (`docs/security-privacy-pack.md`) ; test de la répétition espacée sur un cours publié (`tests/leitner.spec.js`, la fonction existait déjà) ; sondage en une question à la fin d'une partie sur un cours (« Did this help you revise? », une fois par cours et par appareil, traduit FR/ES/KO).
+9. Fait : deck v8 et documents associés (hors dépôt, dans les fichiers du projet : `pitch/Qwebbo-ESADE-pitch-v8.pptx` et `pitch/v8/`).
+10. Reste : génération IA derrière son interrupteur (demande une clé et un accord de dépense), mesures Lighthouse avant/après, CSP du site étudiant, bouton « supprimer mon compte », mise à jour de `README.md` et `docs/esade-acces.md` quand la barrière sera refermée.
 
 ## Questions ouvertes pour Aloys
 - D'où vient « 4 000 joueurs uniques » ? La base ne le confirme pas (voir l'audit, point 2).

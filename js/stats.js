@@ -42,6 +42,23 @@ async function recordPlay(){
   if(BANK.demo){if(window.QwebboCourse)QwebboCourse.demoAdd("play",row);return}   // demo: kept in this browser, never sent
   try{await tpkInsert("play_stats",row)}catch(e){console.warn(e)}
 }
+// One question after a game on a professor's course: "Did this help you revise?" 1 to 5. Asked once per course and device, anonymous like the statistics.
+function surveyAsk(){
+  const old=document.getElementById("survey");if(old)old.remove();
+  if(!BANK||!BANK.course||!statsOn())return;
+  const key="qwebbo-survey-"+BANK.id;try{if(localStorage.getItem(key))return}catch(e){return}
+  const box=el("div","survey");box.id="survey";box.setAttribute("role","group");
+  const q=el("p","survey-q",tl("Did this help you revise?"));q.id="surveyQ";box.setAttribute("aria-labelledby","surveyQ");box.appendChild(q);
+  const row=el("div","chips");box.appendChild(row);
+  for(let v=1;v<=5;v++){const b=el("button","chip",String(v));b.type="button";b.setAttribute("aria-label",tl("{n} out of 5",{n:v}));
+    b.onclick=async()=>{try{localStorage.setItem(key,String(v))}catch(e){}
+      box.textContent="";box.appendChild(el("p","survey-q",tl("Thank you!")));
+      if(BANK.demo){if(window.QwebboCourse)QwebboCourse.demoAdd("survey",{quiz:BANK.id,score:v});return}
+      try{await tpkInsert("course_survey",{course:BANK.id,player:await statsPlayer(BANK.id),score:v})}catch(e){console.warn(e)}};
+    row.appendChild(b)}
+  box.appendChild(el("p","muted survey-h",tl("1 = not at all · 5 = a lot")));
+  const at=document.getElementById("endSess");if(at)at.insertAdjacentElement("afterend",box);
+}
 
 // ---------- stats page ----------
 function statsKeyLs(id){return "tpk-statskey-"+id}

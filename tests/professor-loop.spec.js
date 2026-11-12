@@ -111,6 +111,11 @@ test.describe("Professor loop (demo mode)", () => {
       await student.locator("#rNext").click();
     }
     await expect(student.locator("#end")).toBeVisible();
+    // one-question survey, asked once per course and kept in the demo store
+    await expect(student.locator("#survey")).toContainText("Did this help you revise?");
+    await student.locator("#survey .chip", { hasText: "5" }).click();
+    await expect(student.locator("#survey")).toHaveText("Thank you!");
+    expect(await student.evaluate(() => Object.values(JSON.parse(localStorage.getItem("qwebbo-demo")).stats).map(x => x.survey.length).reduce((a, b) => a + b, 0))).toBeGreaterThan(0);
     expect(calls.filter(u => /supabase\.co/.test(u))).toEqual([]);   // no call to the database (the library file itself is a static download, unused in demo mode)
 
     // 6. the professor sees it: one student is below the anonymity threshold, so no figure is shown

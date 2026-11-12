@@ -491,3 +491,9 @@ html[data-theme="dark"] .off-bar{background:#2B2A45}
 .qico,.qchip-l,.bankpanel .bk-ico{display:grid;place-items:center}
 .quizgrid .qico{box-shadow:0 8px 14px -8px rgba(0,0,0,.35),inset 0 0 0 1.5px rgba(255,255,255,.9)}
 .bankpanel .bk-ico{width:52px;height:52px;border-radius:16px}
+/* one-question survey on the end screen of a professor's course */
+.survey{margin:10px 0;padding:12px 14px;border:1px solid var(--line,#E6E4F2);border-radius:14px;text-align:center}
+.survey-q{font-weight:800;margin:0 0 8px}
+.survey .chips{justify-content:center;gap:8px}
+.survey .chip{min-width:48px;min-height:48px;font-weight:800}
+.survey-h{font-size:13px;margin:8px 0 0}
