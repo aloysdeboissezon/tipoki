@@ -180,7 +180,7 @@ function lsKey(k){return BANK.id==="socio"?"socio-"+k:"tpk-"+k+"-"+BANK.id}
 function loadBank(raw){
   const b=applyTr(qmeta(normBank(raw)));   // title, subject and chapter names in the interface language
   BANK=b;SESS={...b.sess};Q=b.Q.slice();TQ=b.TQ.slice();NHQ=Q.length;NHT=TQ.length;
-  if(b.facts&&b.facts.length)expandFacts(b.facts,b.lang);
+  if(b.facts&&b.facts.length&&!b.noExpand)expandFacts(b.facts,b.lang);   // noExpand: a professor's course only plays the questions the professor approved
   BANK=factsForLang(b);
   diffInit();
   ALL_S=Object.keys(SESS).map(Number).sort((x,y)=>x-y);
@@ -300,8 +300,13 @@ async function useBank(id){
   let b=bankCache[id];
   if(!b){
     let data=null;
-    if(sb&&navigator.onLine){try{const r=await sb.from("quizzes").select("id,title,subject,lang,data").eq("id",id).maybeSingle();if(!r.error)data=r.data}catch(e){}}
-    if(data)tpkSaveData("quiz-"+id,data);   // a copy on the device, for offline
+    // a professor's course (js/course.js): served only to a verified email of its school; in demo mode it comes from this browser
+    if(window.QwebboCourse){const c=await QwebboCourse.load(id);
+      if(c&&c.denied){toast(tl(c.denied==="login"?"Sign in with your school email to open this course.":"This course is reserved for its school's verified email addresses."));return false}
+      if(c&&c.data)data=c.data}
+    if(!data&&sb&&navigator.onLine){try{const r=await sb.from("quizzes").select("id,title,subject,lang,data").eq("id",id).maybeSingle();if(!r.error)data=r.data}catch(e){}}
+    if(data&&data.data&&data.data.course){}   // a course is never copied for offline: access is checked each time
+    else if(data)tpkSaveData("quiz-"+id,data);   // a copy on the device, for offline
     else data=await tpkLoadData("quiz-"+id);
     if(!data)return false;
     b=bankCache[id]={...data.data,id:data.id,title:data.title,subject:data.subject,lang:data.lang}}

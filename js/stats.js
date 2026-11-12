@@ -29,7 +29,7 @@ async function recordExam(ex){
   try{await tpkInsert("play_stats",{quiz:BANK.id,game:ex.sid,player:await statsPlayer(BANK.id),mode:"exam",n:ex.deck.length,correct,qs})}catch(e){console.warn(e)}
 }
 async function recordPlay(){
-  if(!statsOn()||!sb||!G||!G.deck||!BANK)return;
+  if(!statsOn()||!(sb||BANK&&BANK.demo)||!G||!G.deck||!BANK)return;
   const game=statsGameId();
   if(statsSent===game)return;
   const mine=(P[me]&&P[me].ans)||{};if(!Object.keys(mine).length)return;   // joined but never answered: not counted
@@ -37,6 +37,9 @@ async function recordPlay(){
   const qs={};let correct=0;
   G.deck.forEach((d,i)=>{const ok=isRight(mine[i],i);qs[d.t!=null?"t"+d.t:"m"+d.id]=ok?1:0;if(ok)correct++});
   const row={quiz:BANK.id,game,player:await statsPlayer(BANK.id),mode:mode==="multi"?"multi":G.review?"review":"solo",n:G.deck.length,correct,qs};
+  // a professor's course also records WHICH wrong option was picked (original option number), for "most chosen wrong answer" on the class dashboard
+  if(BANK.course){const w={};G.deck.forEach((d,i)=>{const a=mine[i];if(d.t==null&&a&&a.c!=null&&d.o&&d.o[a.c]!==0&&d.o[a.c]!=null)w["m"+d.id]=d.o[a.c]});row.w=w}
+  if(BANK.demo){if(window.QwebboCourse)QwebboCourse.demoAdd("play",row);return}   // demo: kept in this browser, never sent
   try{await tpkInsert("play_stats",row)}catch(e){console.warn(e)}
 }
 

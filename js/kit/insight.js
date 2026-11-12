@@ -2,7 +2,7 @@
 // Runs in the browser (professor space, demo mode) and in Node (tests). No name ever enters this file: a student is a random id hashed per course.
 //
 // rows    = [{ player, at (ISO date), game, mode, n, correct, qs:{ "m3":1, "t0":0 }, w:{ "m3":2 } }]   one row per finished game per device; w = wrong option picked (optional)
-// bank    = QwebboKit.toBank(kit)  (bank.keys maps "m3" -> item id), kit = the course kit
+// bank    = QwebboKit.toBank(kit)  (bank.keys maps "m3" -> item id), or null when the keys of qs are already item ids; kit = the course kit
 // opts    = { enrolled, reports:[{item, status:"open"|"fixed"|"dismissed"}], survey:[1..5], now, minStudents }
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory();
@@ -32,7 +32,7 @@
     rows.forEach(r => { const t = +new Date(r.at), wk = weekOf(t);
       (activeByWeek[wk] = activeByWeek[wk] || new Set()).add(r.player);
       if (firstSeen[r.player] == null) firstSeen[r.player] = t;
-      Object.keys(r.qs).forEach(k => { const ok = +r.qs[k] === 1, id = (bank.keys || {})[k]; if (!id || !byId[id]) return;   // answers to items that were unpublished since are left out
+      Object.keys(r.qs).forEach(k => { const ok = +r.qs[k] === 1, id = bank && bank.keys ? bank.keys[k] : k;   // without a bank, the rows already use item ids if (!id || !byId[id]) return;   // answers to items that were unpublished since are left out
         answers++; if (ok) correct++;
         const q = perQ[id] || (perQ[id] = { n: 0, wrong: 0, players: new Set(), picks: {} }); q.n++; if (!ok) q.wrong++; q.players.add(r.player);
         if (!ok && r.w && r.w[k] != null) q.picks[r.w[k]] = (q.picks[r.w[k]] || 0) + 1;

@@ -2,13 +2,15 @@
 // Install: the whole app shell (page, scripts, styles, quiz banks, images, Supabase client, fonts) is stored, so the app opens and the built-in quizzes play with no network.
 // Fetch: the page is network first with a short timeout (a new deploy shows up on the next visit; a weak connection falls back to the stored copy).
 // Supabase API calls, analytics and the video are never touched (the page queues its own writes, see js/offline.js).
-const CACHE="qwebbo-v28",SHELL_PAGE="/",NET_MS=4000;
+const CACHE="qwebbo-v29",SHELL_PAGE="/",NET_MS=4000;
 const CDN=/^https:\/\/(cdn\.jsdelivr\.net|fonts\.googleapis\.com|fonts\.gstatic\.com)\//;
 self.addEventListener("install",e=>{e.waitUntil((async()=>{
   const c=await caches.open(CACHE);
   try{
     const res=await timeout(fetch(SHELL_PAGE,{cache:"reload"}),15000);await c.put(SHELL_PAGE,res.clone());
     const html=await res.text(),urls=new Set(["/manifest.webmanifest","/favicon.svg","/apple-touch-icon.png","/img/icon-192.png","/img/icon-512.png","/img/logo.svg","/img/logo-dark.svg","/img/mark.svg","/img/esade.png","/about.html","/contact.html","/privacy.html","/terms.html","/legal.html"]);
+    // the professor space and its demo also work offline (its own files are read from prof.html, like the shell's)
+    try{const pr=await timeout(fetch("/prof.html",{cache:"reload"}),15000);if(pr.ok){await c.put("/prof.html",pr.clone());for(const m of (await pr.text()).matchAll(/(?:src|href)="([^"#]+)"/g)){const u=new URL(m[1],location.origin+"/");if(u.origin===location.origin||CDN.test(u.href))urls.add(u.href)}urls.add("/js/vendor/pdfjs/pdf.min.mjs");urls.add("/js/vendor/pdfjs/pdf.worker.min.mjs")}}catch(err){}
     for(const m of html.matchAll(/(?:src|href|data-lazy)="([^"#]+)"/g)){
       const u=new URL(m[1],location.origin+SHELL_PAGE);
       if(u.origin===location.origin?!u.pathname.startsWith("/_vercel/"):CDN.test(u.href))urls.add(u.href)}
