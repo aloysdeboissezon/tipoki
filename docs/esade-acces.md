@@ -35,7 +35,7 @@ Supabase → Authentication → Email Templates. Pour **« Magic Link »** puis 
 - Subject : `Your qwebbo code: {{ .Token }}`
 - Message body (code seul, sans lien) : coller le contenu de `supabase/email-templates/magic-link.html` (identique pour « Confirm signup », fichier `confirm-signup.html`; le logo et l’icône sont servis depuis `qwebbo.com/img/` donc visibles après déploiement). Save.
 
-Authentication → Providers → Email : « Confirm email » activé, « Email OTP Length » : 6 ou 8 (les deux marchent).
+Authentication → Providers → Email : « Confirm email » activé, « Email OTP Length » : **6** (recommandé ; le site accepte 6 à 10 chiffres). Puis Authentication → Email Templates → « Confirm signup » et « Magic Link » : coller le contenu de `supabase/email-templates/confirm-signup.html` (logo qwebbo, icône copier, code non cliquable).
 
 ### 5. Fusionner la PR (quand tu dis « publie »)
 Vercel déploie tout seul. Aucune variable à régler (la fonction utilise la clé publique du site ; facultatif : `SUPABASE_URL` et `SUPABASE_ANON_KEY` dans Vercel → Settings → Environment Variables).
