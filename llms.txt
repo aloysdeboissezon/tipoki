@@ -8,3 +8,6 @@ Qwebbo is an education technology product. It is not a streamer, Twitch channel 
 - [Home](https://qwebbo.com/): the app
 - [About and FAQ](https://qwebbo.com/about.html): what Qwebbo is and who it is for
 - [Contact](https://qwebbo.com/contact.html): contact@qwebbo.com
+- [Flashcards](https://qwebbo.com/flashcards.html): Qwebbo flashcards from course notes
+- [Quiz](https://qwebbo.com/quiz.html): Qwebbo revision quizzes, solo or live multiplayer
+- [Exam mode](https://qwebbo.com/exam-mode.html): practise under exam conditions
