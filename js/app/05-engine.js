@@ -44,6 +44,7 @@ async function insertGame(g){
 async function createGame(){
   showErr("createErr","");if(needNick())return;
   if(!settings.sess.size){showErr("createErr",tl("Choose at least {unit}.",{unit:unit(2)}));return}
+  if(!poolSize()){showErr("createErr",tl("No question matches this choice. Change the format, the level or the chapters."));return}
   lsSet("socio-nick",myNick());
   $("createBtn").disabled=true;
   try{
@@ -113,6 +114,7 @@ async function joinGame(c){
 }
 function startSolo(customDeck,opt){
   if(!customDeck&&!settings.sess.size){showErr("createErr",tl("Choose at least {unit}.",{unit:unit(2)}));return}
+  if(!customDeck&&!poolSize()){showErr("createErr",tl("No question matches this choice. Change the format, the level or the chapters."));return}   // e.g. "typed answer" on a course that has none: an empty game used to crash
   leaveGame(true);
   mode="solo";code=null;
   G={host:me,status:"q",qi:0,deck:customDeck||buildDeck(null,0,null,{diff:settings.diff}),T:settings.T,created:Date.now(),seq:1,inf:!customDeck&&settings.len===LEN_INF,review:!!customDeck,sess:[...settings.sess],fmt:settings.fmt,diff:settings.diff};

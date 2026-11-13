@@ -19,7 +19,7 @@ Vendre à ESADE une licence non exclusive à 80 000 € par an, après un pilote
 - Les questions fabriquées automatiquement à partir des fiches sont désactivées pour les cours de professeurs (`noExpand`) : rien n'arrive aux étudiants sans approbation.
 
 ## Fait
-- Tests de référence : 183 verts (13/11).
+- Tests de référence : 187 verts (13/11).
 - Audit : `docs/audit-2026-11-12.md`.
 - Validateur partagé + `tools/check-kit.js` (toutes les banques, toutes les langues).
 - Modules kit : format, imports (JSON, CSV, GIFT, Moodle XML, liste collée), exports (CSV, GIFT, Moodle XML, pages imprimables), indicateurs.

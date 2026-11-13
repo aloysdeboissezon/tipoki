@@ -560,6 +560,7 @@ var KO={
 "Offline, will retry":"오프라인, 다시 시도할게요",
 "Saved online as {u}":"{u}(으)로 온라인에 저장됨",
 "Sign out":"로그아웃",
+"No question matches this choice. Change the format, the level or the chapters.":"이 선택에 맞는 문제가 없습니다. 형식, 난이도 또는 단원을 바꿔 보세요.",
 "You still own courses in the professor space. Ask your school to hand them over first, then try again.":"교수 공간에 아직 강의가 있습니다. 학교에 이전을 요청한 뒤 다시 시도하세요.",
 "Account deleted. Your progress stays on this device.":"계정이 삭제되었습니다. 진행 상황은 이 기기에 남아 있습니다.",
 "Delete for good":"영구 삭제",

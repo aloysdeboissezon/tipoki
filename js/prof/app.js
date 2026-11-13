@@ -311,6 +311,14 @@
         btn("Moodle XML", () => download(base + ".moodle.xml", K.toMoodleXml(course.kit, opt), "application/xml;charset=utf-8"), "ghost", { id: "expXml", disabled: !appr.length }),
         btn("Spreadsheet (CSV)", () => download(base + ".csv", K.toCsv(course.kit, opt), "text/csv;charset=utf-8"), "ghost", { id: "expCsv", disabled: !appr.length })),
       h("p", { class: "muted small", text: "PDF: the page opens ready to print; choose “Save as PDF”. Moodle: Question bank → Import → GIFT or Moodle XML; chapters arrive as categories." })),
+      // what a student can play: they pick 5, 10, 15, 20, 30 or all questions among the approved ones of the chapters they select
+      (() => { const play = appr.filter(i => i.type !== "card"), chs = (course.kit.chapters || []).map(c => { const it = play.filter(i => i.s === c.n); return { c, n: it.length, typed: it.filter(i => i.type === "typed").length }; });
+        const thin = chs.filter(x => x.n < 5);
+        return h("div", { class: "card", id: "playable" }, h("h2", { text: "What students can play" }),
+          h("p", { class: "muted", text: play.length + " approved question" + (play.length === 1 ? "" : "s") + ". Students choose the length of each game themselves (5, 10, 15, 20, 30 or all), among the chapters they select; questions they have not seen yet come first." }),
+          h("div", { class: "scroll" }, h("table", { id: "playTable" }, h("thead", null, h("tr", null, h("th", { text: "Chapter" }), h("th", { class: "num", text: "Questions" }), h("th", { class: "num", text: "of which typed answer" }))),
+            h("tbody", null, chs.map(x => h("tr", { "data-ch": String(x.c.n) }, h("td", { text: x.c.n + ". " + (x.c.name || "") }), h("td", { class: "num", text: String(x.n) }), h("td", { class: "num", text: String(x.typed) })))))),
+          thin.length ? h("p", { class: "small", id: "playThin", text: (thin.length === 1 ? "Chapter " + thin[0].c.n + " has" : "Chapters " + thin.map(x => x.c.n).join(", ") + " have") + " fewer than 5 approved questions: a student who revises " + (thin.length === 1 ? "it" : "one of them") + " alone gets a very short game. Approve or add a few more if you want it to stand on its own." }) : null); })(),
       h("div", { class: "card" }, h("h2", { text: "Mock exam" }), bp.n ? [h("p", { text: bp.n + " questions in " + bp.minutes + " minutes, weighted like the approved bank:" }),
         h("ul", null, bp.chapters.map(c => h("li", { text: c.n + ". " + c.name + ": " + c.questions + " question" + (c.questions === 1 ? "" : "s") }))),
         h("p", { class: "muted small", text: "Students start it from “Exam mode” on the course page; the practice test above is the paper version." })] : h("p", { class: "muted", text: "Approve some questions first." })));

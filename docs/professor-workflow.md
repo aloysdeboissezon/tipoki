@@ -41,6 +41,15 @@ All tables are closed to the public API (row-level security on, no policy). The 
 | School admin | The same for every course of the school. |
 | Qwebbo (database owner) | Add schools and staff. No screen for it yet: two SQL inserts. |
 
+## How many questions a game has
+
+- **The professor decides which questions exist, not how long a game is.** Students can only play approved items. Questions made automatically from course cards are switched off for professor courses (`noExpand`), so the number of playable questions is exactly the number of approved questions (cards are not questions).
+- **The student decides the length of each game**: 5, 10, 15 (default), 20, 30, 50, all, or endless. Only the lengths the current choice can fill are offered; "All N" appears when fewer than 50 questions match. The choice depends on the chapters ticked, the format (mix, multiple choice, typed answer) and the level (`poolSize` in `js/app/02-profile.js`).
+- **Which questions come**: those not seen yet on this device first, then the rest (`orderPool`, `buildDeck` in `js/app/03-quiz-data.js`). In "mix", multiple-choice and typed questions alternate until one kind runs out. A multiplayer game uses the host's settings for everyone.
+- **Example**: 3 chapters, 40 approved questions (34 choice, 6 typed). The student is offered 5, 10, 15, 20, 30, All 40 and endless. A mix game of 15 has 9 choice and 6 typed questions, alternating. With only chapter 3 ticked (10 questions), the offer becomes 5, 10 and endless.
+- **Empty choice**: if nothing matches (for example "typed answer" on a course with no typed question), the page says so and the game does not start.
+- **For the professor**: the Publish tab has a card "What students can play", with the approved questions per chapter and a note for chapters under 5 questions. There is no setting to impose or recommend a length (see "Not built yet").
+
 ## Failure cases
 
 | Case | Behaviour |
@@ -82,6 +91,7 @@ Same road as an import. The edge function receives the page-numbered text, draft
 
 ## Not built yet
 
+- A recommended or imposed game length per course (today the student chooses; the professor sees the counts per chapter in the Publish tab).
 - Storing the original files (private bucket with access rules): today only the text is kept.
 - A screen to manage schools and staff.
 - The interface of the professor space in Spanish and Catalan (English only today).
