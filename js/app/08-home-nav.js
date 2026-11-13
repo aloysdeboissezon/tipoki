@@ -64,7 +64,8 @@ function carouselUpdate(){
   const box=$("quizGrid");if(!box)return;const r=box.getBoundingClientRect(),mid=r.left+r.width/2;
   const cards=[...box.querySelectorAll(".qcard:not([hidden])")],dots=$("cDots");let best=0,bd=1e9;
   if(dots.childElementCount!==cards.length){dots.textContent="";cards.forEach((c,i)=>{const d=el("button","cdot");d.type="button";d.setAttribute("aria-label",c.querySelector("b").textContent);d.onclick=()=>c.scrollIntoView({behavior:RM?"auto":"smooth",inline:"center",block:"nearest"});dots.appendChild(d)})}
-  cards.forEach((c,i)=>{const b=c.getBoundingClientRect();if(!b.width)return;
+  const rects=cards.map(c=>c.getBoundingClientRect());   // read every position first, then write: mixing both forces a new layout per card
+  cards.forEach((c,i)=>{const b=rects[i];if(!b.width)return;
     const ad=Math.abs(b.left+b.width/2-mid);if(ad<bd){bd=ad;best=i}
     const d=Math.min(1,ad/(b.width*1.1));
     c.style.setProperty("--s",(1-.14*d).toFixed(3));c.style.setProperty("--o",(1-.4*d).toFixed(3));c.style.zIndex=String(10-Math.round(d*10))});

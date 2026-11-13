@@ -65,3 +65,12 @@
 .sync-dlg.page .sync-card{width:min(100%,520px);min-height:100%;border-radius:0;background:transparent;padding:24px 20px 40px}
 .onb-acct{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line2);padding-top:12px;margin-top:6px}
 .onb-acct p{margin:0;font-size:14px}
+/* delete-account confirmation inside the account dialog */
+.ac-del{display:flex;flex-direction:column;gap:10px;border:2px solid var(--bad);background:var(--bad-bg);border-radius:14px;padding:12px}
+.ac-del[hidden]{display:none}
+.ac-del .sync-help{margin:0;color:var(--ink)}
+.btn.danger{background:var(--bad);color:#FFFFFF;box-shadow:0 5px 0 #8E2114}
+.btn.danger:active:not(:disabled){box-shadow:0 1px 0 #8E2114}
+#acDel{color:var(--bad)}
+.onb-acct{flex-wrap:wrap}
+#onbDel{color:var(--bad);font-size:14px}

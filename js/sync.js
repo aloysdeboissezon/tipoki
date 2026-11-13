@@ -179,12 +179,18 @@ dlg.innerHTML=`<div class="sync-card" id="syncCard">
   <div class="sync-field"><label class="label" for="onbCountry">Your country (optional)</label><select id="onbCountry" class="country-sel"></select></div>
   <p class="err" id="onbErr" hidden></p>
   <div class="row sync-actions"><button type="button" class="btn ghost" id="onbSkip">Skip</button><button type="button" class="btn" id="onbDone">Done</button></div>
-  <div class="onb-acct" id="onbAcctBox" hidden><p class="muted" id="onbAcct"></p><button type="button" class="linkbtn" id="onbOut">Sign out</button></div>
+  <div class="onb-acct" id="onbAcctBox" hidden><p class="muted" id="onbAcct"></p><button type="button" class="linkbtn" id="onbOut">Sign out</button> <button type="button" class="linkbtn" id="onbDel">Delete my account</button></div>
 </div>
 <div class="sync-view" data-v="account">
   <h2>Account</h2>
   <p class="muted sync-help" id="acInfo"></p>
   <div class="row sync-actions"><button type="button" class="btn ghost" id="acClose">Close</button><button type="button" class="btn" id="acOut">Sign out</button></div>
+  <p class="sync-foot"><button type="button" class="linkbtn" id="acDel">Delete my account</button></p>
+  <div class="ac-del" id="acDelBox" hidden>
+    <p class="sync-help">This deletes your online account and the progress saved with it. It cannot be undone. What is on this device stays.</p>
+    <p class="err" id="acErr" hidden></p>
+    <div class="row sync-actions"><button type="button" class="btn ghost" id="acDelNo">Keep my account</button><button type="button" class="btn danger" id="acDelYes">Delete for good</button></div>
+  </div>
 </div>
 <form class="sync-view" id="emailForm" data-v="email" novalidate hidden>
   <h2>Continue with Email</h2>
@@ -220,7 +226,7 @@ dlg.innerHTML=`<div class="sync-card" id="syncCard">
   <p class="muted sync-help">Find your scores, mistakes to review and flashcards on any device. No email needed.</p>
   <div class="chips sync-tabs" role="group" aria-label="Account"><button type="button" class="chip" data-m="new">New account</button><button type="button" class="chip" data-m="in">I have one</button></div>
   <div class="sync-field"><label class="label" for="syncUser">Username</label><input type="text" id="syncUser" maxlength="20" autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="e.g. alex_martin"></div>
-  <div class="sync-field"><label class="label" for="syncPass">Password</label><input type="password" id="syncPass" maxlength="100" placeholder="At least 6 characters"></div>
+  <div class="sync-field"><label class="label" for="syncPass">Password</label><input type="password" id="syncPass" maxlength="100" placeholder="At least 8 characters"></div>
   <p class="muted sync-foot" id="syncFoot">There's no email, so keep your password somewhere safe: it's the only way back to your progress.</p>
   <p class="err" id="syncErr" hidden></p>
   <div class="row sync-actions"><button type="button" class="btn ghost" id="syncCancel">Cancel</button><button type="submit" class="btn" id="syncGo">Create account</button></div>
@@ -232,7 +238,7 @@ let dmode="new";
 function setMode(m){m=m==="link"?"new":m;dmode=m;dlg.querySelectorAll(".sync-tabs .chip").forEach(b=>b.setAttribute("aria-pressed",b.dataset.m===m));
   q("syncGo").textContent=m==="new"?tl("Create account"):tl("Sign in");
   q("syncPass").autocomplete=m==="new"?"new-password":"current-password";
-  q("syncPass").placeholder=m==="new"?tl("At least 6 characters"):tl("Your password");
+  q("syncPass").placeholder=m==="new"?tl("At least 8 characters"):tl("Your password");
   q("syncFoot").hidden=m!=="new";err("")}
 dlg.querySelectorAll(".sync-tabs .chip").forEach(b=>b.onclick=()=>setMode(b.dataset.m));
 function err(m){q("syncErr").textContent=m;q("syncErr").hidden=!m}
@@ -259,7 +265,7 @@ function onbEnd(save){
   put("tpk-onboarded","1");closeDlg()}
 const t0=f=>{try{f()}catch(e){}};
 function openDlg(m){lastFocus=document.activeElement;
-  if(m==="account"){q("acInfo").innerHTML=tl("Saved online as {u}",{u:"<b>"+esc2(acct?acct.u:"")+"</b>"})+(esade?"<br>"+tl("ESADE verified: {e}",{e:"<b>"+esc2(esade.e)+"</b>"}):"");show("account");dlg.hidden=false;document.body.classList.add("noscroll");return}linking=m==="link";perr("pvErr","");sentTo=null;
+  if(m==="account"){q("acDelBox").hidden=true;q("acDel").hidden=false;q("acInfo").innerHTML=tl("Saved online as {u}",{u:"<b>"+esc2(acct?acct.u:"")+"</b>"})+(esade?"<br>"+tl("ESADE verified: {e}",{e:"<b>"+esc2(esade.e)+"</b>"}):"");show("account");dlg.hidden=false;document.body.classList.add("noscroll");return}linking=m==="link";perr("pvErr","");sentTo=null;
   q("pvEmail").hidden=!AUTH.email;q("pvPhone").hidden=!AUTH.phone;q("pvGoogle").hidden=!AUTH.google;q("pvApple").hidden=!AUTH.apple;
   q("pvOr").hidden=!AUTH.email||!(AUTH.phone||AUTH.google||AUTH.apple);
   q("pvLegacy").hidden=linking;   // adding an email to a username account: no new username
@@ -277,6 +283,10 @@ dlg.addEventListener("click",e=>{if(e.target===dlg)closeDlg()});
 q("pvCancel").onclick=closeDlg;
 q("onbSkip").onclick=()=>onbEnd(false);q("onbOut").onclick=()=>{closeDlg();signOut()};q("onbDone").onclick=()=>onbEnd(true);q("onbNick").addEventListener("input",()=>{onbPaint();const c=tpkNick.check(q("onbNick").value);perr("onbErr",c?tpkNick.msg(c):"")});
 q("onbAv").onclick=q("onbPh").onclick=()=>{const f=$("pfpIn");if(f)f.click()};q("acClose").onclick=closeDlg;q("acOut").onclick=()=>{closeDlg();signOut()};
+q("acDel").onclick=()=>{q("acDelBox").hidden=false;q("acDel").hidden=true;perr("acErr","");q("acDelNo").focus()};
+q("acDelNo").onclick=()=>{q("acDelBox").hidden=true;q("acDel").hidden=false;q("acDel").focus()};
+q("acDelYes").onclick=deleteAccount;
+q("onbDel").onclick=()=>{openDlg("account");q("acDel").onclick()};
 q("pvLegacy").onclick=()=>{show("legacy");setMode("in");q("syncUser").focus()};
 q("syncBack").onclick=()=>show("choose");
 q("emBack").onclick=q("phBack").onclick=()=>{show("choose");sentTo=null};
@@ -416,13 +426,13 @@ if(AUTH_ON){
       setTimeout(()=>{openDlg("new");perr("pvErr",/expired|invalid/i.test(qs.get("error_description"))?AMSG.bad_code:AMSG.fail+" ("+qs.get("error_description").slice(0,80)+")")},800)}}catch(x){}}
 
 const MSG={bad_username:tl("Username: 3 to 20 letters, numbers, dots, dashes or underscores (no spaces)."),
-  bad_password:tl("Password: at least 6 characters."),name_taken:tl("This username is taken. Pick another one, or tap “I have one” if it's yours."),
+  bad_password:tl("Password: at least 8 characters, and not a common one."),name_taken:tl("This username is taken. Pick another one, or tap “I have one” if it's yours."),
   bad_login:tl("Wrong username or password."),locked:tl("Too many wrong passwords. Wait 15 minutes, then try again."),
   slow_down:tl("Too many new accounts from this network. Try again in an hour."),too_big:tl("Your progress is too big to save online.")};
 q("syncForm").onsubmit=async e=>{e.preventDefault();err("");
   const u=q("syncUser").value.trim(),p=q("syncPass").value;
   if(!/^[A-Za-z0-9_.-]{3,20}$/.test(u)){err(MSG.bad_username);q("syncUser").focus();return}
-  if(p.length<6&&dmode==="new"){err(MSG.bad_password);q("syncPass").focus();return}
+  if(p.length<8&&dmode==="new"){err(MSG.bad_password);q("syncPass").focus();return}
   q("syncGo").disabled=true;q("syncGo").textContent=dmode==="new"?tl("Creating…"):tl("Signing in…");
   try{
     if(dmode==="new"){const e0=edits,r=await rpc("tpk_signup",{p_username:u,p_password:p,p_data:snap()});
@@ -438,6 +448,18 @@ async function signOut(){const t=acct&&acct.tok;
   if(get(DIRTY))await push();
   dropAcct();setState("ok");if(t)rpc("tpk_logout",{p_token:t}).catch(()=>{});
   if(typeof toast==="function")toast(tl("Signed out. Your progress stays on this device."))}
+
+// delete the online account (the server removes the account, its sessions and the linked sign-in); local progress stays
+async function deleteAccount(){const t=acct&&acct.tok,b=q("acDelYes");if(!t)return;
+  b.disabled=true;perr("acErr","");
+  try{await rpc("tpk_delete_account",{p_token:t});
+    clearTimeout(timer);dropAcct();put(DIRTY,null);setState("ok");closeDlg();
+    try{await sbA.auth.signOut({scope:"local"})}catch(x){}
+    if(typeof toast==="function")toast(tl("Account deleted. Your progress stays on this device."))}
+  catch(x){
+    if(x.message==="bad_token"){dropAcct();setState("ok");closeDlg();return}
+    perr("acErr",x.message==="owns_courses"?tl("You still own courses in the professor space. Ask your school to hand them over first, then try again."):tl("Can't reach the server. Check your connection and try again."))}
+  finally{b.disabled=false}}
 
 renderLine();renderEntry();
 if(acct){setState("saving");pull();esRefresh()}

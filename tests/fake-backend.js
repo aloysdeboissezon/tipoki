@@ -46,6 +46,13 @@ function makeStore() {
       const tok = "t" + Object.keys(tokens).length; tokens[tok] = key;
       return ok(created ? { username: a.__email, token: tok, rev: 1, created: true } : { username: a.__email, token: tok, rev: accounts[key].rev, data: clone(accounts[key].data) });
     }
+    if (fn === "tpk_delete_account") {
+      const u = tokens[a.p_token]; if (!u) return ok({ error: "bad_token" });
+      if (accounts[u].courses) return { data: null, error: { message: "owns_courses" } };
+      delete accounts[u];
+      for (const [t, v] of Object.entries(tokens)) if (v === u) delete tokens[t];
+      return ok({ deleted: true });
+    }
     if (fn === "tpk_push" || fn === "tpk_pull") {
       const u = tokens[a.p_token]; if (!u) return ok({ error: "bad_token" });
       const acc = accounts[u];

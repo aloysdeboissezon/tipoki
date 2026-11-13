@@ -88,9 +88,9 @@ function tfOrder(q){return TRUEW.test(q.o[0])?[0,1]:[1,0]}
 const TRUEW=/^(Vrai|True|Verdadero|참)$/;
 const TFW={en:["True","False"],fr:["Vrai","Faux"],es:["Verdadero","Falso"],ko:["참","거짓"]};
 const TFL={en:"True or false",fr:"Vrai ou faux",es:"Verdadero o falso",ko:"참 또는 거짓"};
-function applyTr(b){
+function applyTr(b){   // a quiz with cards (facts) is translated only when its cards are too (factsTr), so the questions made from the cards follow
   const tr=window.BANK_TR&&window.BANK_TR[b.id+"."+LANG];
-  if(!tr||b.facts||!b.Q||LANG===b.lang||tr.Q.length!==b.Q.length||(tr.TQ||[]).length!==b.TQ.length)return b;
+  if(!tr||!b.Q||(b.facts&&!(b.factsTr&&b.factsTr[LANG]))||LANG===b.lang||tr.Q.length!==b.Q.length||(tr.TQ||[]).length!==b.TQ.length)return b;
   const T=tr.T||{},W=TFW[LANG]||TFW.en;
   const Q=b.Q.map((q,i)=>{const x=tr.Q[i],r={...q};
     r.q=x[0];r.t=q.tf&&/^(true or false|vrai ou faux)$/i.test(q.t||"")?TFL[LANG]:(T[q.t]||q.t);
@@ -102,7 +102,9 @@ function applyTr(b){
 }
 async function ensureTr(id){
   const m=(window.BANK_META||{})[id];
-  if(m&&m.tr&&m.tr[LANG]&&!(window.BANK_TR&&window.BANK_TR[id+"."+LANG]))await loadScript("js/banks/tr/"+id+"."+LANG+".js?v="+m.tr[LANG])}   // m.tr: language -> content hash (cache busting), made by tools/build-catalog.js
+  if(!(m&&m.tr&&m.tr[LANG])||(window.BANK_TR&&window.BANK_TR[id+"."+LANG]))return;
+  if(ESADE_IDS.includes(id)){const r=await gatedText(id,"tr&lang="+LANG+"&v="+m.tr[LANG]);if(r.text)await runScript(r.text);return}   // ESADE translations are gated like the questions
+  await loadScript("js/banks/tr/"+id+"."+LANG+".js?v="+m.tr[LANG])}   // m.tr: language -> content hash (cache busting), made by tools/build-catalog.js
 // the quiz shown at start (culture is preloaded by index.html) was built before its translation file was fetched: rebuild it once when it is opened
 function trMissing(id){const m=(window.BANK_META||{})[id];return !!(m&&m.tr&&m.tr[LANG]&&LANG!==BANK.lang&&!BANK.qlang)}
 function isT(qi){return G.deck[qi].t!=null}
@@ -115,13 +117,17 @@ function qT(qi){return (G.T+(isT(qi)?10:0)+qExtra(qOf(qi)))*1000}
 function qOf(qi){const d=G.deck[qi];return d.t!=null?TQ[d.t]:Q[d.id]}
 
 // ---------- generated questions (deterministic: same on every device) ----------
-function expandFacts(FACTS,lang){
-  const fr=lang==="fr",L=fr?{who:"Qui est-ce ? “",which:"Quel concept ? “",known:t=>"Pour quoi "+t+" est connu·e ?",what:t=>"Que désigne « "+t+" » ?",tWho:"Qui ? “",tName:"Donne le concept : “",lWho:"Qui ?",lDef:"Définition",tf:"Vrai ou faux",T:"Vrai",F:"Faux",sep:" : "}
-    :{who:"Who is this? “",which:"Which concept is this? “",known:t=>"What is "+t+" known for?",what:t=>"What is “"+t+"”?",tWho:"Who? “",tName:"Name the concept: “",lWho:"Who?",lDef:tl("Definition"),tf:"True or false",T:"True",F:"False",sep:": "};
+// TR (optional): the facts translated, parallel to FACTS ([term, definition] each). The questions are then written in that language,
+// but chosen from the original facts, so every language gets the same questions in the same order (saved progress and class statistics stay valid).
+function expandFacts(FACTS,lang,TR){
+  const LL={fr:{who:"Qui est-ce ? “",which:"Quel concept ? “",known:t=>"Pour quoi "+t+" est connu·e ?",what:t=>"Que désigne « "+t+" » ?",tWho:"Qui ? “",tName:"Donne le concept : “",lWho:"Qui ?",lDef:"Définition",tf:"Vrai ou faux",T:"Vrai",F:"Faux",sep:" : "},
+    es:{who:"¿Quién es? “",which:"¿Qué concepto es? “",known:t=>"¿Por qué se conoce a "+t+"?",what:t=>"¿Qué es «"+t+"»?",tWho:"¿Quién? “",tName:"Nombra el concepto: “",lWho:"¿Quién?",lDef:"Definición",tf:"Verdadero o falso",T:"Verdadero",F:"Falso",sep:": "},
+    en:{who:"Who is this? “",which:"Which concept is this? “",known:t=>"What is "+t+" known for?",what:t=>"What is “"+t+"”?",tWho:"Who? “",tName:"Name the concept: “",lWho:"Who?",lDef:tl("Definition"),tf:"True or false",T:"True",F:"False",sep:": "}};
+  const L=LL[lang]||LL.en;
   function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
   const R=rng(20261022);
   const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=(R()*(i+1))|0;[a[i],a[j]]=[a[j],a[i]]}return a};
-  const F=FACTS.map(x=>({s:x[0],c:x[1],k:x[2],t:x[3],d:x[4],al:x[5]?x[5].split(";"):[]}));
+  const F=FACTS.map((x,i)=>({s:x[0],c:x[1],k:x[2],t:x[3],d:x[4],al:x[5]?x[5].split(";"):[],T:TR?TR[i][0]:x[3],D:TR?TR[i][1]:x[4]}));
   const byK={c:F.filter(f=>f.k==="c"),p:F.filter(f=>f.k==="p")};
   function others(f,n,field,sameCat){
     const pool=byK[f.k].filter(g=>g.t!==f.t&&g.d!==f.d);
@@ -139,20 +145,20 @@ function expandFacts(FACTS,lang){
   for(const f of F){
     const P=f.k==="p";
     for(let v=0;v<2;v++){   // definition -> term
-      const o=others(f,3,"t",true);if(o.length===3)gq.push({s:f.s,t:P?L.lWho:L.lDef,q:(P?L.who:L.which)+f.d+"”",o:[f.t,...o.map(g=>g.t)],a:0,e:f.t+" — "+f.d+"."});
+      const o=others(f,3,"t",true);if(o.length===3)gq.push({s:f.s,t:P?L.lWho:L.lDef,q:(P?L.who:L.which)+f.D+"”",o:[f.T,...o.map(g=>g.T)],a:0,e:f.T+" — "+f.D+"."});
     }
     for(let v=0;v<2;v++){   // term -> definition
-      const o=others(f,3,"d",true);if(o.length===3)gq.push({s:f.s,t:P?L.lWho:tl("Concept"),q:P?L.known(f.t):L.what(f.t),o:[f.d,...o.map(g=>g.d)],a:0,e:f.t+" — "+f.d+"."});
+      const o=others(f,3,"d",true);if(o.length===3)gq.push({s:f.s,t:P?L.lWho:tl("Concept"),q:P?L.known(f.T):L.what(f.T),o:[f.D,...o.map(g=>g.D)],a:0,e:f.T+" — "+f.D+"."});
     }
     // true / false (true version and false version with a definition from another concept)
-    gq.push({s:f.s,t:L.tf,q:"“"+f.t+"” — "+f.d+".",o:[L.T,L.F],a:0,e:L.T+L.sep+f.t+" — "+f.d+".",tf:true});
+    gq.push({s:f.s,t:L.tf,q:"“"+f.T+"” — "+f.D+".",o:[L.T,L.F],a:0,e:L.T+L.sep+f.T+" — "+f.D+".",tf:true});
     const o1=others(f,1,"d",false)[0];
-    if(o1)gq.push({s:f.s,t:L.tf,q:"“"+f.t+"” — "+o1.d+".",o:[L.F,L.T],a:0,e:L.F+L.sep+"“"+f.t+"” = "+f.d+" (“"+o1.t+"” = "+o1.d+").",tf:true});
+    if(o1)gq.push({s:f.s,t:L.tf,q:"“"+f.T+"” — "+o1.D+".",o:[L.F,L.T],a:0,e:L.F+L.sep+"“"+f.T+"” = "+f.D+" (“"+o1.T+"” = "+o1.D+").",tf:true});
     // typed
     if(clean(f.t).length<=30){
       const va=variants(f),vs=va.map(sq);
       const n=byK[f.k].filter(g=>g.t!==f.t&&!variants(g).some(x=>va.includes(x))&&!sub(g.t,f.t)&&vs.some(v=>lev(sq(g.t),v)<=Math.max(3,Math.round(v.length*.4)))).map(g=>clean(g.t));
-      gt.push({s:f.s,q:(P?L.tWho:L.tName)+f.d+"”",a:va,e:f.t+" — "+f.d+".",n:n.length?n:undefined});
+      gt.push({s:f.s,q:(P?L.tWho:L.tName)+f.D+"”",a:TR?[...new Set([clean(f.T),...va])]:va,e:f.T+" — "+f.D+".",n:n.length?n:undefined});   // a translated term is accepted, and so is the original
     }
   }
   Q.push(...gq);TQ.push(...gt);
@@ -180,7 +186,8 @@ function lsKey(k){return BANK.id==="socio"?"socio-"+k:"tpk-"+k+"-"+BANK.id}
 function loadBank(raw){
   const b=applyTr(qmeta(normBank(raw)));   // title, subject and chapter names in the interface language
   BANK=b;SESS={...b.sess};Q=b.Q.slice();TQ=b.TQ.slice();NHQ=Q.length;NHT=TQ.length;
-  if(b.facts&&b.facts.length&&!b.noExpand)expandFacts(b.facts,b.lang);   // noExpand: a professor's course only plays the questions the professor approved
+  if(b.facts&&b.facts.length&&!b.noExpand){const ft=b.qlang&&b.factsTr&&b.factsTr[b.qlang];   // questions translated: the generated ones follow, when the cards are translated too
+    if(ft&&ft.length===b.facts.length)expandFacts(b.facts,b.qlang,ft);else expandFacts(b.facts,b.lang)}   // noExpand: a professor's course only plays the questions the professor approved
   BANK=factsForLang(b);
   diffInit();
   ALL_S=Object.keys(SESS).map(Number).sort((x,y)=>x-y);
@@ -274,7 +281,9 @@ async function gatedText(id,k){
     return r.ok?{text:await r.text()}:{}}catch(e){return {}}}
 async function gatedBlob(id,k){const t=window.tpkEsade?tpkEsade.token():"";
   try{const r=await fetch("/api/esade?k="+k+"&id="+encodeURIComponent(id),{cache:"no-store",headers:t?{Authorization:"Bearer "+t}:{}});return r.ok?await r.blob():null}catch(e){return null}}
-function runScript(text){const s=document.createElement("script");s.textContent=text;document.head.appendChild(s);s.remove()}
+// run a gated bank: through a short-lived blob: address, because the Content-Security-Policy forbids inline script text (vercel.json)
+function runScript(text){return new Promise(res=>{const u=URL.createObjectURL(new Blob([text],{type:"text/javascript"})),s=document.createElement("script");
+  s.src=u;s.onload=s.onerror=()=>{URL.revokeObjectURL(u);s.remove();res()};document.head.appendChild(s)})}
 function esadeVerified(){if(esadeOpen())return true;try{return !!JSON.parse(localStorage.getItem("qwebbo-esade")||"null")}catch(e){return false}}
 function askEsade(after){if(window.tpkEsade)tpkEsade.open(after);else if(typeof toast==="function")toast(tl("Can't reach the server. Check your connection and try again."))}
 async function ensureBank(id){
@@ -284,7 +293,7 @@ async function ensureBank(id){
     const [b,sh]=await Promise.all([gatedText(id,"bank"),m&&m.sheet?gatedText(id,"sheet"):{text:""}]);
     if(b.denied||sh.denied){esadeDenied=true;return false}
     if(!b.text||sh.text===undefined)return false;
-    runScript(b.text);if(sh.text)runScript(sh.text);
+    await runScript(b.text);if(sh.text)await runScript(sh.text);
   }else{
     const [ok]=await Promise.all([loadScript("js/banks/"+id+".js"),m&&m.sheet?loadScript("js/sheets/"+id+".js"):0]);
     if(!ok)return false}

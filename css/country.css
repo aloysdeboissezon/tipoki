@@ -1,5 +1,5 @@
 /* Country flag next to names. The font only holds flags, so Windows (which has no flag emoji) shows them too. */
-@font-face{font-family:"Twemoji Country Flags";unicode-range:U+1F1E6-1F1FF,U+1F3F4,U+E0062-E007F;src:url("TwemojiCountryFlags.woff2") format("woff2");font-display:swap}
+/* the flag font (77 KB) is added by js/country.js only on systems that cannot draw flag emoji themselves (mainly Windows) */
 .flag,.country-sel,.country-sel option,.nm,.lg-nm,.pl,.pod .nm{font-family:"Twemoji Country Flags",var(--f-body),system-ui,sans-serif}
 .country-sel{font-size:16px;font-weight:600;padding:10px 12px;min-height:44px;border-radius:16px;border:1px solid var(--line);background:var(--field,#FAFAFD);color:var(--ink);width:100%;min-width:0;text-overflow:ellipsis}
 .country-sel:focus{border-color:var(--hl);box-shadow:0 0 0 4px var(--hl-soft);outline:none}
