@@ -72,3 +72,24 @@ test("Culture générale is fully Korean for a Korean visitor (questions, answer
   expect(r.typed).toBe(0);
   expect(r.lang.join(" ")).not.toMatch(/Comment dit-on/);
 });
+
+// ESADE courses: the Spanish questions come from the gated API like the questions themselves, and the questions made from the
+// course cards follow, so a Spanish student plays the whole course in Spanish with the same question numbers as in English.
+test("an ESADE course is played in Spanish, hand-written and card questions alike, with the same numbering as in English", async ({ page }) => {
+  const trCalls = [];
+  page.on("request", r => { if (/\/api\/esade\?k=tr/.test(r.url())) trCalls.push(r.url()); });
+  await openSite(page, { path: "/?lang=es" });
+  await openQuiz(page, "compta2");
+  await firstQuestion(page);
+  const s = await page.evaluate(() => ({ lang: BANK.qlang, nhq: NHQ, nq: Q.length, nt: TQ.length, first: Q[0].q, gen: Q[NHQ].q, cards: BANK.facts[0][3] }));
+  expect(trCalls.length).toBe(1);
+  expect(s.lang).toBe("es");
+  expect(s.first).toMatch(/[¿áéíóúñ]/);
+  expect(s.gen).toMatch(/^(¿Quién es\?|¿Qué concepto es\?|¿Por qué se conoce|¿Qué es «|«)/);
+  // the same number of questions as an English visitor gets
+  const page2 = await page.context().newPage();
+  await openSite(page2);
+  await openQuiz(page2, "compta2");
+  const en = await page2.evaluate(() => ({ nhq: NHQ, nq: Q.length, nt: TQ.length }));
+  expect({ nhq: s.nhq, nq: s.nq, nt: s.nt }).toEqual(en);
+});

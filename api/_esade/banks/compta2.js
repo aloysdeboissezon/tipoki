@@ -157,17 +157,17 @@ function upstream(o){
 // ---------- equity method ----------
 function eqm(o){
   const q0=Q.length,t0=TQ.length;
-  const{s,nm:nme,p,price,eq0,eqN,lead,eq0t,imp}=o;
-  const stmt=(lead||"P buys "+pc(p)+" of the shares of A")+` for €${f(price)}. At that date A's equity is €${f(eq0)}${eq0t?" ("+eq0t+")":""}. At the consolidation date A's equity is €${f(eqN)}.`;
+  const{s,nm:nme,p,price,eq0,eqN,lead,eq0t,imp}=o,X=o.inv||"A";   // X: the associate
+  const stmt=(lead||"P buys "+pc(p)+" of the shares of "+X)+` for €${f(price)}. At that date ${X}'s equity is €${f(eq0)}${eq0t?" ("+eq0t+")":""}. At the consolidation date ${X}'s equity is €${f(eqN)}.`;
   const g=price-p*eq0,sh=p*(eqN-eq0),cv=price+sh,fin=imp!=null?cv-imp:cv;
   const ask=a=>stmt+(imp!=null?` The investment has been impaired by €${f(imp)}.`:"")+"\n\n"+a;
   nm(s,nme,ask("What is the goodwill of the associate (€)? (It is not shown separately in the consolidated balance sheet.)"),g,[price-eq0,p*eq0,price,sh],`${f(price)} − ${pc(p)} × ${f(eq0)} = ${f(g)}.`,2);
-  nm(s,nme,ask("What is the group's share of the post-acquisition change in A's equity (€)?"),sh,[eqN-eq0,p*eqN,p*eq0,(1-p)*(eqN-eq0)],`${pc(p)} × (${f(eqN)} − ${f(eq0)}) = ${f(sh)}.`,2);
-  nm(s,nme,ask("What is the carrying amount of the investment in A in the consolidated balance sheet (€)?"),fin,[price,p*eqN,price+(eqN-eq0),imp!=null?cv:price-sh],
+  nm(s,nme,ask("What is the group's share of the post-acquisition change in "+X+"'s equity (€)?"),sh,[eqN-eq0,p*eqN,p*eq0,(1-p)*(eqN-eq0)],`${pc(p)} × (${f(eqN)} − ${f(eq0)}) = ${f(sh)}.`,2);
+  nm(s,nme,ask("What is the carrying amount of the investment in "+X+" in the consolidated balance sheet (€)?"),fin,[price,p*eqN,price+(eqN-eq0),imp!=null?cv:price-sh],
     `${f(price)} (cost, goodwill included) ${sh<0?"−":"+"} ${f(Math.abs(sh))} (share of change in equity)${imp!=null?" − "+f(imp)+" (impairment)":""} = ${f(fin)}.`,3);
-  tn(s,ask("What is the value of the equity investment in A in the consolidated balance sheet (€)?"),fin,`${f(price)} ${sh<0?"−":"+"} ${f(Math.abs(sh))}${imp!=null?" − "+f(imp):""} = ${f(fin)}.`,3);
+  tn(s,ask("What is the value of the equity investment in "+X+" in the consolidated balance sheet (€)?"),fin,`${f(price)} ${sh<0?"−":"+"} ${f(Math.abs(sh))}${imp!=null?" − "+f(imp):""} = ${f(fin)}.`,3);
   tn(s,ask("What amount is credited to the group's reserves for the associate (€)? Ignore the sign."),Math.abs(sh),`${pc(p)} × (${f(eqN)} − ${f(eq0)}) = ${f(sh)}.`,2);
-  figFrom(q0,t0,{k:"bridge",items:[{l:"Cost of the investment",v:price},{l:"Group share of the change in A's equity",v:sh},...(imp!=null?[{l:"Impairment",v:-imp}]:[]),{l:"Carrying amount in the group balance sheet",v:fin,tot:1}],cap:"Equity method: the investment starts at cost and is moved by the group's share of the associate's results."});
+  figFrom(q0,t0,{k:"bridge",items:[{l:"Cost of the investment",v:price},{l:"Group share of the change in "+X+"'s equity",v:sh},...(imp!=null?[{l:"Impairment",v:-imp}]:[]),{l:"Carrying amount in the group balance sheet",v:fin,tot:1}],cap:"Equity method: the investment starts at cost and is moved by the group's share of the associate's results."});
 }
 
 // ---------- classification drills ----------
@@ -506,7 +506,7 @@ m(5,"Joint ventures","How is the investment in a joint venture accounted for in 
 
 // slide example 1 (P buys 40% of A) and Case 1 (A buys 25% of C), then practice
 eqm({s:5,nm:"Slide example",p:.4,price:340000,eq0:800000,eqN:1100000,eq0t:"share capital 300,000 + retained earnings 500,000",lead:"P (which also has a subsidiary N) buys 40% of the shares of A"});
-eqm({s:5,nm:"Case 1 (C)",p:.25,price:65000,eq0:150000,eqN:290000,eq0t:"capital 100,000 + retained earnings 50,000",lead:"A (which also has a subsidiary B) buys 25% of the shares of C"});
+eqm({s:5,nm:"Case 1 (C)",inv:"C",p:.25,price:65000,eq0:150000,eqN:290000,eq0t:"capital 100,000 + retained earnings 50,000",lead:"A (which also has a subsidiary B) buys 25% of the shares of C"});
 eqm({s:5,nm:"Practice",p:.3,price:50000,eq0:120000,eqN:200000,eq0t:"capital 100,000 + retained earnings 20,000",lead:"P buys 30% of the shares of A"});
 eqm({s:5,nm:"Practice",p:.45,price:300000,eq0:600000,eqN:540000,lead:"P buys 45% of the shares of A"});
 eqm({s:5,nm:"Practice",p:.35,price:210000,eq0:500000,eqN:900000,imp:20000,lead:"P buys 35% of the shares of A"});

@@ -2,6 +2,7 @@
 // The files live in api/_esade/, which is NOT a public folder: the only way to read them is this function, and it first asks Supabase
 // whether the account behind the sign-in token has a verified ESADE email (SQL function esade_status, see supabase/migrations/add_esade_access.sql).
 //   GET /api/esade?k=bank|sheet|pdf&id=<quiz id>      header: Authorization: Bearer <account token>
+//   GET /api/esade?k=tr&id=<quiz id>&lang=es           the questions in another language (api/_esade/tr/<id>.<lang>.js), same rules
 //   200 the file · 401 no or expired token · 403 account without a verified ESADE email · 404 unknown file · 503 Supabase unreachable
 const fs = require("fs");
 const path = require("path");
@@ -12,7 +13,7 @@ const DIR = path.join(__dirname, "_esade");
 // TEMPORARY OPEN MODE: true = the ESADE quizzes are served to everyone (no ESADE login needed). Set to false to require a verified ESADE email again.
 // Keep it equal to ESADE_OPEN in js/app/03-quiz-data.js (a test checks they match).
 const ESADE_OPEN = true;
-const KINDS = { bank: ["banks", "js", "text/javascript; charset=utf-8"], sheet: ["sheets", "js", "text/javascript; charset=utf-8"], pdf: ["pdf", "pdf", "application/pdf"] };
+const KINDS = { bank: ["banks", "js", "text/javascript; charset=utf-8"], sheet: ["sheets", "js", "text/javascript; charset=utf-8"], pdf: ["pdf", "pdf", "application/pdf"], tr: ["tr", "js", "text/javascript; charset=utf-8"] };
 
 // asks the database: "ok" | "bad_token" | "not_esade"; throws when Supabase can't be reached
 async function checkWithSupabase(token) {
@@ -43,7 +44,8 @@ function createHandler({ check = checkWithSupabase, dir = DIR, open = ESADE_OPEN
     if (req.method !== "GET") return err(405, "method");
     const u = new URL(req.url, "http://x"), kind = KINDS[u.searchParams.get("k")], id = u.searchParams.get("id") || "";
     const m = /^Bearer ([A-Za-z0-9._-]{16,200})$/.exec(String(req.headers.authorization || ""));
-    if (!kind || !/^[a-z0-9]{1,30}$/.test(id)) return err(404, "not_found");
+    const lang = u.searchParams.get("lang") || "";
+    if (!kind || !/^[a-z0-9]{1,30}$/.test(id) || (kind[0] === "tr" && !/^(en|fr|es|ko)$/.test(lang))) return err(404, "not_found");
     if (!open) {
       if (!m) return err(401, "login");
       let verdict;
@@ -52,7 +54,7 @@ function createHandler({ check = checkWithSupabase, dir = DIR, open = ESADE_OPEN
       if (verdict !== "ok") return err(403, "esade_only");
     }
     let buf;
-    try { buf = fs.readFileSync(path.join(dir, kind[0], id + ".js")); } catch (e) { return err(404, "not_found"); }
+    try { buf = fs.readFileSync(path.join(dir, kind[0], id + (kind[0] === "tr" ? "." + lang : "") + ".js")); } catch (e) { return err(404, "not_found"); }
     if (kind[1] === "pdf") buf = Buffer.from(String(require(path.join(dir, "pdf", id + ".js"))), "base64");
     send(200, kind[2], buf);
   };

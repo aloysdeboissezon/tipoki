@@ -1,6 +1,6 @@
 # qwebbo: security and privacy pack
 
-For a school's IT, security and data-protection teams. Status on 12 November 2026.
+For a school's IT, security and data-protection teams. Status on 13 November 2026.
 This page separates what is **in place today**, what is **built and waiting to be switched on**, and what is **not done yet**. Nothing here is a legal commitment: commitments go into the contract and its data-protection annex.
 
 ## 1. Summary
@@ -45,7 +45,7 @@ Not collected: date of birth, student number, grades, location, contacts, paymen
 - Row-level security is enabled on every table of the database (checked on 12 November 2026: 18 tables out of 18).
 - Students: sign in with a 6-digit code sent to their email. A school course opens only when the account's school address is verified and the device is one of the two allowed.
 - Professors and school administrators: listed per school in `school_staff`. A professor sees only the courses of their own school. Every create, edit, approve, publish and unpublish action is written to an activity log (`course_audit`) that the application cannot edit.
-- The rules above are tested: `npm run test:sql` runs 30 access checks against a local database (a student cannot read a draft, a professor cannot read another school, statistics stay hidden under 5 students, and so on).
+- The rules above are tested: `npm run test:sql` runs the access checks against a local database (a student cannot read a draft, a professor cannot read another school, statistics stay hidden under 5 students, weak passwords are refused, a deleted account leaves no session behind, and so on).
 
 ## 5. Anonymity of class insight
 
@@ -68,17 +68,19 @@ Not collected: date of birth, student number, grades, location, contacts, paymen
 
 | Item | Today | Proposed for the contract |
 |---|---|---|
-| Student account | Kept until deleted on request (by email) | Deleted within 30 days of a request, and at the end of the contract |
+| Student account | Deleted at once by the student (“Delete my account” in the profile), or on request by email | Deleted within 30 days of a request, and at the end of the contract |
 | Play statistics | Kept | Deleted or irreversibly aggregated 12 months after the end of the course |
 | Course kits | Kept while the course exists | Returned (export) and deleted within 30 days of the end of the contract |
 | Backups | 30 days | 30 days |
 
-A self-service "delete my account" button does not exist yet (see section 9).
+Self-service deletion: the profile has a “Delete my account” button, with a confirmation step. The database function `tpk_delete_account` removes the account, all its sessions and the linked sign-in record in one step. Progress kept on the device itself stays on the device. An account that still owns professor courses is refused, so a course is never left without an owner. **Built and tested; switched on when the owner runs `supabase/migrations/account_security.sql`.**
 
 ## 8. Security measures in place
 
 - HTTPS everywhere; security headers on all pages (`nosniff`, `Referrer-Policy`, `Permissions-Policy`, `X-Frame-Options`).
-- The professor space has a strict Content-Security-Policy and does not build pages from raw HTML strings, so imported course text cannot inject script.
+- Content-Security-Policy on the student app and on the professor space: scripts only from the site itself and the pinned Supabase client, no inline script, no plugins, no framing by other sites. The whole end-to-end test suite runs under the production policy, and one test fails on any policy violation.
+- The professor space does not build pages from raw HTML strings, so imported course text cannot inject script.
+- Passwords for username accounts: at least 8 characters, not the username, and not one of the most common passwords (checked by the database, not only the browser). Sign-in by emailed code needs no password at all.
 - Imports and exports neutralise spreadsheet formulas (CSV injection).
 - Secrets (database keys, email credentials) live only in the Supabase and Vercel settings, never in the source code.
 - Rate limits on writes (for example, play statistics are capped per hour) and a nickname filter.
@@ -91,8 +93,8 @@ A self-service "delete my account" button does not exist yet (see section 9).
 |---|---|---|
 | The source repository is public, and it contains the school course banks | Anyone can read the course questions | Make the repository private (owner action, one click) |
 | The school gate is temporarily open in production (`ESADE_OPEN = true`) | School quizzes can be opened without signing in | Set back to `false` once code delivery by email is verified on phones |
-| No Content-Security-Policy on the main student site yet | Less defence in depth against script injection | Add after replacing the remaining inline handlers; the professor space already has one |
-| No self-service account deletion | Deletion depends on a manual request | Add a button and a database function before the pilot |
+| Self-service account deletion is built but not switched on | Until then, deletion depends on a manual request | Owner runs `supabase/migrations/account_security.sql` |
+| Three old database functions from a removed feature can still be called | Unwanted rows in an unused table | Owner runs `supabase/migrations/close_unused_functions.sql` (closes them, deletes nothing) |
 | The professor-space database migration is not applied in production yet | The professor space runs in demo mode only | Owner runs `supabase/migrations/add_professor_space.sql` |
 | No external penetration test | Unknown unknowns | Offer the school's security team a test window before the pilot |
 | One maintainer | Continuity | Export rights from day one; continuity terms in the contract |

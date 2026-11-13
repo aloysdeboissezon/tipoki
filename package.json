@@ -5,7 +5,7 @@
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "check": "node tools/check-kit.js && node tools/check-tr.js && node tools/build-catalog.js --check",
-    "test:sql": "bash tools/test-professor-sql.sh"
+    "test:sql": "bash tools/test-professor-sql.sh && bash tools/test-account-sql.sh"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0"
