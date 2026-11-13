@@ -274,7 +274,9 @@ async function gatedText(id,k){
     return r.ok?{text:await r.text()}:{}}catch(e){return {}}}
 async function gatedBlob(id,k){const t=window.tpkEsade?tpkEsade.token():"";
   try{const r=await fetch("/api/esade?k="+k+"&id="+encodeURIComponent(id),{cache:"no-store",headers:t?{Authorization:"Bearer "+t}:{}});return r.ok?await r.blob():null}catch(e){return null}}
-function runScript(text){const s=document.createElement("script");s.textContent=text;document.head.appendChild(s);s.remove()}
+// run a gated bank: through a short-lived blob: address, because the Content-Security-Policy forbids inline script text (vercel.json)
+function runScript(text){return new Promise(res=>{const u=URL.createObjectURL(new Blob([text],{type:"text/javascript"})),s=document.createElement("script");
+  s.src=u;s.onload=s.onerror=()=>{URL.revokeObjectURL(u);s.remove();res()};document.head.appendChild(s)})}
 function esadeVerified(){if(esadeOpen())return true;try{return !!JSON.parse(localStorage.getItem("qwebbo-esade")||"null")}catch(e){return false}}
 function askEsade(after){if(window.tpkEsade)tpkEsade.open(after);else if(typeof toast==="function")toast(tl("Can't reach the server. Check your connection and try again."))}
 async function ensureBank(id){
@@ -284,7 +286,7 @@ async function ensureBank(id){
     const [b,sh]=await Promise.all([gatedText(id,"bank"),m&&m.sheet?gatedText(id,"sheet"):{text:""}]);
     if(b.denied||sh.denied){esadeDenied=true;return false}
     if(!b.text||sh.text===undefined)return false;
-    runScript(b.text);if(sh.text)runScript(sh.text);
+    await runScript(b.text);if(sh.text)await runScript(sh.text);
   }else{
     const [ok]=await Promise.all([loadScript("js/banks/"+id+".js"),m&&m.sheet?loadScript("js/sheets/"+id+".js"):0]);
     if(!ok)return false}

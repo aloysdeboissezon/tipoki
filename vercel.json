@@ -45,6 +45,13 @@
       "continue": true
     },
     {
+      "src": "/(index\\.html)?",
+      "headers": {
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' blob: https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' blob: data:; connect-src 'self' https://eowcxqqkewijzgemqbhi.supabase.co wss://eowcxqqkewijzgemqbhi.supabase.co https://en.wikipedia.org https://cdn.jsdelivr.net https://fonts.googleapis.com https://fonts.gstatic.com; frame-src https://open.spotify.com https://widget.deezer.com; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+      },
+      "continue": true
+    },
+    {
       "src": "/prof(\\.html)?",
       "headers": {
         "Content-Security-Policy": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://eowcxqqkewijzgemqbhi.supabase.co; worker-src 'self' blob:; frame-src blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'",

@@ -7,15 +7,7 @@
 <meta name="description" content="Qwebbo is a free study app that turns your course notes into quizzes and flashcards. Study solo, play live with friends, and prepare your exams.">
 <meta name="theme-color" content="#4B2FE0">
 <meta name="color-scheme" content="light dark">
-<script>
-// theme before first paint: the visitor's saved choice, otherwise the system setting (followed live until they pick one)
-(function(){var d=document.documentElement,m=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)"),s=null;try{s=localStorage.getItem("tpk-theme")}catch(e){}
-  function set(t){d.setAttribute("data-theme",t);var c=document.querySelector('meta[name="theme-color"]');if(c)c.content=t==="dark"?"#100F1F":"#4B2FE0"}
-  set(s==="dark"||s==="light"?s:(m&&m.matches?"dark":"light"));
-  if(m&&m.addEventListener)m.addEventListener("change",function(e){var k=null;try{k=localStorage.getItem("tpk-theme")}catch(x){}if(!k)set(e.matches?"dark":"light")});
-  window.tpkSetTheme=set})();
-</script>
-<script>try{var t=localStorage.getItem("tpk-tsize");if(t==="1"||t==="2")document.documentElement.setAttribute("data-tsize",t)}catch(e){}</script>
+<script src="js/boot.js?v=20261113a"></script>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/manifest.webmanifest">
@@ -36,14 +28,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Nunito:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Nunito:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" media="print" data-async-css>
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Nunito:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap"></noscript>
 <link rel="stylesheet" href="css/style.css?v=20261105b">
 <link rel="stylesheet" href="css/music.css?v=20261105b">
 <link rel="stylesheet" href="css/exam.css?v=20261105b">
 <link rel="stylesheet" href="css/weak.css?v=20261105b">
 <link rel="stylesheet" href="css/plan.css?v=20261105b">
-<link rel="stylesheet" href="css/sync.css?v=20261103j">
+<link rel="stylesheet" href="css/sync.css?v=20261113a">
 <link rel="stylesheet" href="css/search.css?v=20261105b">
 <link rel="stylesheet" href="css/sheet.css?v=20261105b">
 <link rel="stylesheet" href="css/figs.css?v=20261105b">
@@ -58,7 +50,6 @@
 <link rel="stylesheet" href="css/country.css?v=20261105b">
 <link rel="stylesheet" href="css/reactions.css?v=20261105b">
 <!-- Vercel Web Analytics (page views, visitors) -->
-<script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};</script>
 <script defer src="/_vercel/insights/script.js"></script>
 
 </head>
@@ -440,7 +431,6 @@
 </div>
 
 <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script>try{window.TPK_CH=new URLSearchParams(location.search).get("ch")}catch(e){}</script>
 <!-- quizzes loaded on demand (see js/catalog.js); listed here so the service worker stores them for offline use -->
 <meta name="tpk-lazy" data-lazy="js/banks/energie.js?v=20261105b">
 <meta name="tpk-lazy" data-lazy="js/banks/uspop.js?v=20261106b">
@@ -473,9 +463,9 @@
 <meta name="tpk-lazy" data-lazy="js/sheets/structure.js?v=20261105c">
 <meta name="tpk-lazy" data-lazy="js/sheets/energie.js?v=20261105b">
 <script defer src="js/errlog.js?v=20261105b"></script>
-<script defer src="js/i18n-es.js?v=20261112b"></script>
-<script defer src="js/i18n-ko.js?v=20261112b"></script>
-<script defer src="js/i18n.js?v=20261112b"></script>
+<script defer src="js/i18n-es.js?v=20261113a"></script>
+<script defer src="js/i18n-ko.js?v=20261113a"></script>
+<script defer src="js/i18n.js?v=20261113a"></script>
 <script defer src="js/qicons.js?v=20261105b"></script>
 <script defer src="js/catalog.js?v=20261105b"></script>
 <script defer src="js/qmeta.js?v=20261104a"></script>
@@ -489,7 +479,7 @@
 <script defer src="js/nickfilter.js?v=20261105f"></script>
 <script defer src="js/app/01-core.js?v=20261103j"></script>
 <script defer src="js/app/02-profile.js?v=20261105b"></script>
-<script defer src="js/app/03-quiz-data.js?v=20261112a"></script>
+<script defer src="js/app/03-quiz-data.js?v=20261113a"></script>
 <script defer src="js/app/04-media.js?v=20261105b"></script>
 <script defer src="js/app/05-engine.js?v=20261105a"></script>
 <script defer src="js/app/06-game.js?v=20261105b"></script>
@@ -514,12 +504,11 @@
 <script defer src="js/music.js?v=20261105b"></script>
 <script defer src="js/tour.js?v=20261105b"></script>
 <script defer src="js/theme.js?v=20261105b"></script>
-<script defer src="js/sync.js?v=20261105d"></script>
+<script defer src="js/sync.js?v=20261113a"></script>
 <script defer src="js/options.js?v=20261104a"></script>
 <script defer src="js/vendor/gsap.min.js?v=20261105b"></script>
 <script defer src="js/vendor/lenis.min.js?v=20261105b"></script>
 <script defer src="js/motion.js?v=20261105b"></script>
-<script>if("serviceWorker"in navigator&&(location.protocol==="https:"||location.hostname==="localhost"))addEventListener("load",function(){navigator.serviceWorker.register("/sw.js").catch(function(){})})</script>
 
 </body>
 </html>

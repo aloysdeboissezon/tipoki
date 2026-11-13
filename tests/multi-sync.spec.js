@@ -74,7 +74,7 @@ test.describe("save progress online", () => {
     const a = await phone(browser, store, { "socio-nick": "Alice" });
     await a.page.locator("#syncIn").click();
     await a.page.locator("#syncUser").fill("alice.test");
-    await a.page.locator("#syncPass").fill("secret1");
+    await a.page.locator("#syncPass").fill("secret12");
     await a.page.locator("#syncGo").click();
     await expect(a.page.locator("#syncLine")).toContainText("Saved online as alice.test");
     expect(store.accounts["alice.test"]).toBeTruthy();
@@ -90,7 +90,7 @@ test.describe("save progress online", () => {
     await b.page.locator("#syncPass").fill("wrongpass");
     await b.page.locator("#syncGo").click();
     await expect(b.page.locator("#syncErr")).toContainText("Wrong username or password");
-    await b.page.locator("#syncPass").fill("secret1");
+    await b.page.locator("#syncPass").fill("secret12");
     await b.page.locator("#syncGo").click();
     await expect(b.page.locator("#syncLine")).toContainText("Saved online as alice.test");
     await a.context.close(); await b.context.close();
@@ -104,11 +104,50 @@ test.describe("save progress online", () => {
     await a.page.locator("#syncUser").fill("newuser");
     await a.page.locator("#syncPass").fill("123");
     await a.page.locator("#syncGo").click();
-    await expect(a.page.locator("#syncErr")).toContainText("at least 6");
+    await expect(a.page.locator("#syncErr")).toContainText("at least 8");
     await a.page.locator("#syncUser").fill("taken");
-    await a.page.locator("#syncPass").fill("abcdef1");
+    await a.page.locator("#syncPass").fill("abcdef12");
     await a.page.locator("#syncGo").click();
     await expect(a.page.locator("#syncErr")).toContainText("taken");
     await a.context.close();
   });
+  test("a signed-in student can delete their online account from the profile, after confirming", async ({ browser }) => {
+    const store = makeStore();
+    const a = await phone(browser, store, { "socio-nick": "Alice" });
+    await a.page.locator("#syncIn").click();
+    await a.page.locator("#syncUser").fill("bye.test");
+    await a.page.locator("#syncPass").fill("secret12");
+    await a.page.locator("#syncGo").click();
+    await expect(a.page.locator("#syncLine")).toContainText("Saved online as bye.test");
+    await a.page.locator("#accBtn").click();
+    await a.page.locator("#onbDel").click();
+    await expect(a.page.locator("#acDelBox")).toBeVisible();
+    await a.page.locator("#acDelNo").click();                       // changing one's mind keeps everything
+    await expect(a.page.locator("#acDelBox")).toBeHidden();
+    expect(store.accounts["bye.test"]).toBeTruthy();
+    await a.page.locator("#acDel").click();
+    await a.page.locator("#acDelYes").click();
+    await expect(a.page.locator("#syncLine")).toContainText("only on this device");
+    expect(store.accounts["bye.test"]).toBeFalsy();
+    expect(await a.page.evaluate(() => localStorage.getItem("socio-nick"))).toBe("Alice");   // local progress stays
+    await a.context.close();
+  });
+
+  test("deleting is refused with an explanation while the account still owns professor courses", async ({ browser }) => {
+    const store = makeStore();
+    const a = await phone(browser, store, {});
+    await a.page.locator("#syncIn").click();
+    await a.page.locator("#syncUser").fill("prof.test");
+    await a.page.locator("#syncPass").fill("secret12");
+    await a.page.locator("#syncGo").click();
+    await expect(a.page.locator("#syncLine")).toContainText("Saved online as prof.test");
+    store.accounts["prof.test"].courses = 1;
+    await a.page.locator("#accBtn").click();
+    await a.page.locator("#onbDel").click();
+    await a.page.locator("#acDelYes").click();
+    await expect(a.page.locator("#acErr")).toContainText("professor space");
+    expect(store.accounts["prof.test"]).toBeTruthy();
+    await a.context.close();
+  });
 });
+
