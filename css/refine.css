@@ -497,3 +497,5 @@ html[data-theme="dark"] .off-bar{background:#2B2A45}
 .survey .chips{justify-content:center;gap:8px}
 .survey .chip{min-width:48px;min-height:48px;font-weight:800}
 .survey-h{font-size:13px;margin:8px 0 0}
+/* answer screen: room for the "Correct answer" / "Your answer" labels, which sit on the top edge of the tiles and touched the question above */
+#reveal #rTiles{margin-top:16px}

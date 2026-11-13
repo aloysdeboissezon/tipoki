@@ -103,7 +103,7 @@ function renderSettings(){
   [av,settings.len].forEach(n=>{if(n&&n!==LEN_INF&&n<=Math.max(50,settings.len)&&!lens.includes(n)){lens.push(n);lens.sort((a,b)=>a===LEN_INF?1:b===LEN_INF?-1:a-b)}});
   lens.forEach(n=>{const b=el("button","chip",n===LEN_INF?"∞":n===av&&!LENS.includes(n)?tl("All {n}",{n}):String(n));if(n===LEN_INF)b.title=tl("Endless questions, until the host ends the game");else if(n===av)b.title=tl("Every question in the {units} you picked",{units:unit(1)});
     b.setAttribute("aria-pressed",settings.len===n);b.onclick=()=>{settings.lenWant=n;renderSettings()};lc.appendChild(b)});
-  $("lenAvail").textContent=av?tl("{n} available",{n:av.toLocaleString(LOCALE)}):"";
+  $("lenAvail").textContent=av?tl("{n} available",{n:av.toLocaleString(LOCALE)}):(settings.sess.size?tl("No question matches this choice. Change the format, the level or the chapters."):"");
   const fc=$("fmtChips");fc.textContent="";
   [["mix",tl("Mix")],["mcq",tl("Multiple choice")],["typed",tl("Typed answer")]].forEach(([k,l])=>{const b=el("button","chip",l);b.setAttribute("aria-pressed",settings.fmt===k);b.onclick=()=>{settings.fmt=k;renderSettings()};fc.appendChild(b)});
   const dc=$("diffChips");dc.textContent="";

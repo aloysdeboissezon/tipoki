@@ -548,6 +548,7 @@ var ES={
 "Offline, will retry":"Sin conexión, se reintentará",
 "Saved online as {u}":"Guardado en línea como {u}",
 "Sign out":"Cerrar sesión",
+"No question matches this choice. Change the format, the level or the chapters.":"Ninguna pregunta coincide con esta selección. Cambia el formato, el nivel o los capítulos.",
 "You still own courses in the professor space. Ask your school to hand them over first, then try again.":"Todavía tienes cursos en el espacio del profesor. Pide a tu escuela que los transfiera y vuelve a intentarlo.",
 "Account deleted. Your progress stays on this device.":"Cuenta eliminada. Tu progreso se queda en este dispositivo.",
 "Delete for good":"Eliminar definitivamente",

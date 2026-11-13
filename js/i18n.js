@@ -571,6 +571,7 @@ var FR={
 "Offline, will retry":"Hors ligne, nouvel essai bientôt",
 "Saved online as {u}":"Sauvegardé en ligne sous {u}",
 "Sign out":"Se déconnecter",
+"No question matches this choice. Change the format, the level or the chapters.":"Aucune question ne correspond à ce choix. Change le format, le niveau ou les chapitres.",
 "You still own courses in the professor space. Ask your school to hand them over first, then try again.":"Tu as encore des cours dans l'espace professeur. Demande à ton école de les transférer, puis réessaie.",
 "Account deleted. Your progress stays on this device.":"Compte supprimé. Ta progression reste sur cet appareil.",
 "Delete for good":"Supprimer définitivement",
