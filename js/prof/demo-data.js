@@ -64,8 +64,16 @@
         rows.push({ player, at: new Date(at).toISOString(), game: "demo-" + p + "-" + k, mode: R() < 0.3 ? "multi" : "solo", n, correct, qs, w });
       }
     }
+    // time spent: a separate generator, so the answers above stay exactly as they were. Each game row gets its duration; some students also did flashcards and read the sheet.
+    const S = rng(20261114), study = [];
+    rows.forEach(r => { study.push({ player: r.player, at: new Date(+new Date(r.at) + 6e5).toISOString(), kind: "quiz", secs: Math.round(r.n * (20 + S() * 25)), n: 0 }); });
+    for (let p = 0; p < 44; p++) { const player = "demo" + String(p).padStart(3, "0") + "a1b2c3d4", c = Math.floor(S() * S() * 5), sh = S() < 0.4 ? 1 + Math.floor(S() * 3) : 0, ex = S() < 0.25 ? 1 : 0;
+      for (let k = 0; k < c; k++) { const n = 10 + Math.floor(S() * 25); study.push({ player, at: new Date(start + (2 + Math.floor(S() * 30)) * DAY + 10 * 36e5).toISOString(), kind: "cards", secs: Math.round(n * (6 + S() * 8)), n }); }
+      for (let k = 0; k < sh; k++) study.push({ player, at: new Date(start + (3 + Math.floor(S() * 28)) * DAY + 15 * 36e5).toISOString(), kind: "sheet", secs: 240 + Math.round(S() * 900), n: 0 });
+      if (ex) study.push({ player, at: new Date(start + (25 + Math.floor(S() * 8)) * DAY + 11 * 36e5).toISOString(), kind: "exam", secs: 1200 + Math.round(S() * 1500), n: 0 });
+      if (ex) rows.push({ player, at: new Date(start + 30 * DAY + 11 * 36e5).toISOString(), game: "demo-x-" + p, mode: "exam", n: 20, correct: 8 + Math.floor(S() * 10), qs: {}, w: {} }); }
     const survey = []; for (let i = 0; i < 31; i++) survey.push(R() < 0.55 ? 5 : R() < 0.7 ? 4 : R() < 0.7 ? 3 : 2);
-    return { rows, survey, reports: [{ id: 1, item: "d18", key: "", reason: "unclear", status: "open", at: new Date(now - 3 * DAY).toISOString() }, { id: 2, item: "d05", key: "", reason: "wrong", status: "dismissed", at: new Date(now - 9 * DAY).toISOString() }] };
+    return { rows, study, survey, reports: [{ id: 1, item: "d18", key: "", reason: "unclear", status: "open", at: new Date(now - 3 * DAY).toISOString() }, { id: 2, item: "d05", key: "", reason: "wrong", status: "dismissed", at: new Date(now - 9 * DAY).toISOString() }] };
   }
   window.QwebboDemoData = { FILE, PAGES, KIT, fakeClass, COURSE_ID: "00000000-0000-4000-8000-00000000d3e0", CODE: "DEMO26" };
 })();

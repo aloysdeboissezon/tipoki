@@ -7,15 +7,32 @@ async function statsPlayer(quiz){const txt=statsSid()+":"+quiz;
   catch(e){let a=0x811c9dc5,b=0x9747b28c;for(const c of txt){a=Math.imul(a^c.charCodeAt(0),16777619);b=Math.imul(b^c.charCodeAt(0),2246822519)}return "f"+(a>>>0).toString(16).padStart(8,"0")+(b>>>0).toString(16).padStart(8,"0")}}
 // Switch in Options ("Anonymous usage stats"): off = nothing is sent at all. Writes made offline wait in the queue of js/offline.js.
 function statsOn(){return lsGet("tpk-nostats")!=="1"}
-let statsSent=null,startSent=null;
+// Time spent, for a professor's course only (Class insight): one anonymous row per study session {kind: quiz | exam | cards | sheet, secs, n}.
+// Only time the page is visible counts, and one session counts at most 30 minutes, so a tab left open does not inflate the figure.
+const STUDY_CAP=1800;
+function studyClock(){let acc=0,t=document.visibilityState==="visible"?Date.now():0;
+  const on=()=>{if(document.visibilityState==="visible"){if(!t)t=Date.now()}else if(t){acc+=Date.now()-t;t=0}};
+  document.addEventListener("visibilitychange",on);
+  return {stop(){document.removeEventListener("visibilitychange",on);if(t){acc+=Date.now()-t;t=0}return Math.min(STUDY_CAP,Math.round(acc/1000))}}}
+async function recordStudy(kind,secs,n){
+  if(!statsOn()||!BANK||!BANK.course||!(secs>=1))return;
+  const row={quiz:BANK.id,player:await statsPlayer(BANK.id),kind,secs:Math.min(STUDY_CAP,Math.round(secs)),n:n||0};
+  if(BANK.demo){if(window.QwebboCourse)QwebboCourse.demoAdd("study",row);return}
+  if(!sb)return;
+  try{await tpkInsert("study_stats",row)}catch(e){console.warn(e)}
+}
+let statsSent=null,startSent=null,quizClock=null;
 function statsGameId(){return mode==="multi"?code+"-"+G.created:"s"+G.created+"-"+statsSid().slice(0,6)}
 // a game that starts: with the finished-game row this tells how many are abandoned halfway
 async function recordStart(){
+  if(BANK&&BANK.course&&G&&G.deck&&G.status==="q"){const id=statsGameId();   // time of the session, also in demo mode (no backend there)
+    if(!quizClock||quizClock.game!==id){if(quizClock)quizClock.stop();quizClock=studyClock();quizClock.game=id}}
   if(!statsOn()||!sb||!G||!G.deck||!BANK||G.status!=="q")return;
   const game=statsGameId();if(startSent===game)return;startSent=game;
   try{await tpkInsert("play_starts",{quiz:BANK.id,game,player:await statsPlayer(BANK.id),mode:mode==="multi"?"multi":G.review?"review":"solo"})}catch(e){console.warn(e)}
 }
 async function recordExamStart(ex){
+  if(BANK&&BANK.course)ex.clock=studyClock();
   if(!statsOn()||!sb||!BANK)return;
   ex.sid="x"+ex.startAt+"-"+statsSid().slice(0,6);
   try{await tpkInsert("play_starts",{quiz:BANK.id,game:ex.sid,player:await statsPlayer(BANK.id),mode:"exam"})}catch(e){console.warn(e)}
@@ -25,7 +42,8 @@ async function recordExam(ex){
   if(!ex.sid)ex.sid="x"+ex.startAt+"-"+statsSid().slice(0,6);   // exam resumed after a reload
   const qs={};let correct=0;
   ex.deck.forEach((d,i)=>{const ok=ex.res[i]===1;qs[d.t!=null?"t"+d.t:"m"+d.id]=ok?1:0;if(ok)correct++});
-  if(!ex.deck.length||ex.res.every(r=>r===-1))return;   // handed in blank: not counted
+  if(!ex.deck.length||ex.res.every(r=>r===-1)){if(ex.clock){ex.clock.stop();ex.clock=null}return}   // handed in blank: not counted
+  if(ex.clock){recordStudy("exam",ex.clock.stop());ex.clock=null}
   try{await tpkInsert("play_stats",{quiz:BANK.id,game:ex.sid,player:await statsPlayer(BANK.id),mode:"exam",n:ex.deck.length,correct,qs})}catch(e){console.warn(e)}
 }
 async function recordPlay(){
@@ -34,6 +52,7 @@ async function recordPlay(){
   if(statsSent===game)return;
   const mine=(P[me]&&P[me].ans)||{};if(!Object.keys(mine).length)return;   // joined but never answered: not counted
   statsSent=game;
+  if(quizClock){recordStudy("quiz",quizClock.stop());quizClock=null}
   const qs={};let correct=0;
   G.deck.forEach((d,i)=>{const ok=isRight(mine[i],i);qs[d.t!=null?"t"+d.t:"m"+d.id]=ok?1:0;if(ok)correct++});
   const row={quiz:BANK.id,game,player:await statsPlayer(BANK.id),mode:mode==="multi"?"multi":G.review?"review":"solo",n:G.deck.length,correct,qs};

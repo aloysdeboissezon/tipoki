@@ -113,6 +113,24 @@ test.describe("Class insight", () => {
     expect(lines[0].status).toBe("met");
     expect(lines[1].status).toBe("below");
   });
+  test("activity by kind, time and class hours", () => {
+    const k = kit(), rows = [], study = [];
+    for (let p = 1; p <= 6; p++) { rows.push({ player: "p" + p, at: "2026-10-12T10:00:00Z", game: "g" + p, mode: p <= 4 ? "solo" : "exam", n: 2, correct: 1, qs: { q1: 1, q2: 0 }, w: {} });
+      study.push({ player: "p" + p, at: "2026-10-12T10:00:00Z", kind: "cards", secs: 600, n: 10 }, { player: "p" + p, at: "2026-10-12T10:20:00Z", kind: p <= 4 ? "quiz" : "exam", secs: 300, n: 0 }); }
+    study.push({ player: "p1", at: "2026-10-13T10:00:00Z", kind: "sheet", secs: 900, n: 0 });
+    const a = IN.compute(rows, k, null, { study, now: Date.UTC(2026, 9, 27) }).activity;
+    expect(a.tracked).toBe(true);
+    expect(a.kinds.cards).toMatchObject({ students: 6, sessions: 6, secs: 3600, cards: 60 });
+    expect(a.kinds.sheet).toMatchObject({ students: 1, sessions: 1, secs: 900 });
+    expect(a.kinds.quiz).toMatchObject({ students: 4, sessions: 4, secs: 1200 });
+    expect(a.kinds.exam).toMatchObject({ students: 2, sessions: 2, secs: 600 });
+    expect(a.secs).toBe(6300);
+    expect(IN.fmtDuration(a.secs)).toBe("1 h 45");
+    expect(IN.classHours(a.secs, 50)).toBeCloseTo(2.1);
+    expect(a.students[0]).toMatchObject({ id: 1, secs: 1800 });   // p1: cards + quiz + sheet
+    expect(JSON.stringify(a)).not.toMatch(/"p\d"/);                // no real player id leaves the module
+    expect(IN.compute(rows, k, null, { now: Date.UTC(2026, 9, 27) }).activity.tracked).toBe(false);   // older data: no durations
+  });
   test("answers to items that are no longer published are left out", () => {
     const rows = [1, 2, 3, 4, 5].map(p => row("p" + p, 0, { q1: 1, gone: 0 }));
     expect(IN.compute(rows, k, null, {}).answers).toBe(5);

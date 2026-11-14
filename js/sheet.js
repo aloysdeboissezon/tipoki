@@ -2,7 +2,7 @@
 // the PDF next to it (sheets/<quiz id>.pdf) is produced from this same rendering by tools/make-pdfs.js
 (function(){
   const btn=$("sheetBtn");
-  let root=null,lastFocus=null;
+  let root=null,lastFocus=null,clock=null;
   const get=()=>BANK&&window.SHEETS&&window.SHEETS[BANK.id];
   // the PDF of an ESADE quiz is not a public file: it comes from /api/esade (with the account token) and is saved from memory
   function setPdf(a,S){const id=BANK.id,name=(S.file||id)+".pdf";a.setAttribute("download",name);
@@ -75,12 +75,14 @@
     root.append(bar,stage);
     lastFocus=document.activeElement;
     document.body.append(root);document.body.classList.add("sheet-open");
+    if(BANK&&BANK.course&&typeof studyClock==="function"&&!clock)clock=studyClock();
     root.scrollTop=0;close.focus({preventScroll:true});
     if(typeof at==="number"){const t=root.querySelector("#dc-"+at);if(t)setTimeout(()=>t.scrollIntoView({block:"start"}),30)}
   }
   function hide(){
     if(!root)return;
     root.remove();root=null;document.body.classList.remove("sheet-open");
+    if(clock){const secs=clock.stop();clock=null;if(secs>=5&&typeof recordStudy==="function")recordStudy("sheet",secs)}
     if(lastFocus&&lastFocus.focus)lastFocus.focus({preventScroll:true});
   }
   const panel=$("sheetPanel"),pdf=$("sheetPdf");

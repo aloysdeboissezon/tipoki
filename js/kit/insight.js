@@ -3,7 +3,8 @@
 //
 // rows    = [{ player, at (ISO date), game, mode, n, correct, qs:{ "m3":1, "t0":0 }, w:{ "m3":2 } }]   one row per finished game per device; w = wrong option picked (optional)
 // bank    = QwebboKit.toBank(kit)  (bank.keys maps "m3" -> item id), or null when the keys of qs are already item ids; kit = the course kit
-// opts    = { enrolled, reports:[{item, status:"open"|"fixed"|"dismissed"}], survey:[1..5], now, minStudents }
+// study   = opts.study = [{ player, at, kind: quiz|exam|cards|sheet, secs, n }]   one row per study session (time spent); quizzes and exams also have their row in rows (mode solo|multi|review|exam)
+// opts    = { enrolled, study, reports:[{item, status:"open"|"fixed"|"dismissed"}], survey:[1..5], now, minStudents }
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory();
   else root.QwebboInsight = factory();
@@ -12,6 +13,7 @@
   const MIN_STUDENTS = 5;          // no statistic is shown for fewer students than this: one student must never be recognisable
   const TARGETS = { activation: 0.6, weekly: 0.5, gain: 0.1, accuracy: 0.95, satisfaction: 4 };   // the pilot's success criteria
   const WEEK = 7 * 864e5;
+  const CLASS_MINUTES = 50;        // default length of one "class hour" used to express the study time of the class (the professor can change it)
   const weekOf = t => { const d = new Date(t); const day = (d.getUTCDay() + 6) % 7; return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() - day); };   // Monday 00:00 UTC
   const pct = (a, b) => (b ? a / b : null);
 
@@ -53,6 +55,8 @@
     out.weeklyEngagement = scored.length ? scored.reduce((a, s) => a + s.back / s.base, 0) / scored.length : null;
     out.weeklyActive = series.length ? series[series.length - 1].active : 0;
 
+    out.activity = activity(rows, opts.study || []);
+
     // accuracy by topic (chapter, then topic), weakest first
     const topics = {};
     Object.keys(perQ).forEach(id => { const it = byId[id], ch = kit.chapters.find(c => c.n === it.s), key = it.s + "|" + (it.topic || "");
@@ -83,6 +87,33 @@
     return out;
   }
 
+  // What the class did, by kind of activity, and the same per anonymous student (numbered by first activity, never a name).
+  // quiz = solo, multiplayer and mistake-review games; exam = exam mode; cards = flashcard rounds; sheet = study sheet read in the app.
+  const KINDS = ["cards", "sheet", "quiz", "exam"];
+  function activity(rows, study) {
+    const per = {}, tot = {}, order = [];
+    const who = p => { if (!per[p]) { per[p] = { id: order.length + 1, secs: 0, last: 0 }; KINDS.forEach(k => { per[p][k] = { sessions: 0, secs: 0, n: 0, answers: 0, correct: 0 }; }); order.push(p); } return per[p]; };
+    KINDS.forEach(k => { tot[k] = { students: new Set(), sessions: 0, secs: 0, n: 0, answers: 0, correct: 0 }; });
+    const add = (p, k, d, t) => { const s = who(p)[k], g = tot[k]; s.sessions += d.sessions || 0; s.secs += d.secs || 0; s.n += d.n || 0; s.answers += d.answers || 0; s.correct += d.correct || 0;
+      g.sessions += d.sessions || 0; g.secs += d.secs || 0; g.n += d.n || 0; g.answers += d.answers || 0; g.correct += d.correct || 0; g.students.add(p); per[p].last = Math.max(per[p].last, t); };
+    const seen = new Set();
+    rows.forEach(r => { const k = r.mode === "exam" ? "exam" : "quiz", t = +new Date(r.at), key = k + "|" + r.player + "|" + (r.game || r.at);
+      if (seen.has(key)) return; seen.add(key); add(r.player, k, { sessions: 1, answers: r.n || 0, correct: r.correct || 0 }, t); });
+    let tracked = false;
+    study.forEach(x => { if (!x || !x.player || KINDS.indexOf(x.kind) < 0) return; tracked = true; const secs = Math.max(0, Math.min(7200, +x.secs || 0));
+      // cards and sheets have no play row: each study row is one session; quizzes and exams already counted their sessions above
+      add(x.player, x.kind, { secs, n: x.n || 0, sessions: x.kind === "cards" || x.kind === "sheet" ? 1 : 0 }, +new Date(x.at)); per[x.player].secs += secs; });
+    const kinds = {}; let secs = 0;
+    KINDS.forEach(k => { const g = tot[k]; secs += g.secs; kinds[k] = { students: g.students.size, sessions: g.sessions, secs: g.secs, cards: g.n, accuracy: g.answers ? g.correct / g.answers : null }; });
+    const students = order.map(p => { const s = per[p], o = { id: s.id, secs: s.secs, last: s.last ? new Date(s.last).toISOString() : null };
+      KINDS.forEach(k => { o[k] = { sessions: s[k].sessions, secs: s[k].secs, cards: s[k].n, accuracy: s[k].answers ? s[k].correct / s[k].answers : null }; }); return o; })
+      .sort((a, b) => b.secs - a.secs || b.id - a.id).slice(0, 200);
+    return { tracked, kinds, secs, students, perStudentSecs: order.length ? secs / order.length : 0, listed: students.length, total: order.length };
+  }
+  // seconds -> "1 h 05" / "12 min"; class hours = seconds / (minutes of one class hour * 60)
+  const fmtDuration = secs => { const m = Math.round(secs / 60); return m < 60 ? m + " min" : Math.floor(m / 60) + " h " + String(m % 60).padStart(2, "0"); };
+  const classHours = (secs, classMinutes) => secs / 60 / (classMinutes || CLASS_MINUTES);
+
   // The pilot's success criteria as five lines: value, target, met / not met / not enough data yet.
   function kpis(r) {
     const line = (id, label, value, target, show, how) => ({ id, label, value, target, show, how, status: value == null ? "no-data" : value >= target ? "met" : "below" });
@@ -95,5 +126,5 @@
       line("satisfaction", "Student satisfaction", r.tooFew || !r.satisfaction ? null : r.satisfaction.mean, TARGETS.satisfaction, r.tooFew || !r.satisfaction || r.satisfaction.mean == null ? "n/a" : r.satisfaction.mean.toFixed(1) + " / 5 (" + r.satisfaction.n + " answers)", "One question after a game: “Did this help you revise?” from 1 to 5."),
     ];
   }
-  return { compute, kpis, MIN_STUDENTS, TARGETS };
+  return { compute, kpis, fmtDuration, classHours, MIN_STUDENTS, TARGETS, CLASS_MINUTES, KINDS };
 });

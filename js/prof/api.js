@@ -52,7 +52,7 @@
         else if (state === "archived") { c.published = null; stamp(c, [{ action: "archive" }]); }
         c.state = state; save(s); return clone(c); },
       async stats(id) { const s = load(), c = s.courses[id], st = s.stats[id] || { rows: [], survey: [], reports: [] };
-        return { rows: rowsToItems(st.rows, c ? c.keymaps : []), survey: st.survey || [], reports: clone(st.reports || []) }; },
+        return { rows: rowsToItems(st.rows, c ? c.keymaps : []), study: clone(st.study || []), survey: st.survey || [], reports: clone(st.reports || []) }; },
       async setReport(id, rid, status) { const s = load(), r = ((s.stats[id] || {}).reports || []).find(x => x.id === rid); if (r) { r.status = status; stamp(s.courses[id], [{ action: "report_" + status, item: r.item }]); save(s); } },
       async reset() { const s = seed(); save(s); return true; },
     };
@@ -68,7 +68,7 @@
       getCourse: id => call("prof_course_get", { p_id: id }),
       saveCourse: (id, patch, entries) => call("prof_course_save", { p_id: id, p_patch: patch, p_audit: entries || [] }),
       setState: async (id, state, kit) => call("prof_course_state", { p_id: id, p_state: state, p_bank: state === "published" ? window.QwebboKit.toBank(kit) : null }),
-      stats: async id => { const r = await call("prof_course_stats", { p_id: id }); return { rows: rowsToItems(r.rows || [], r.keymaps || []), survey: r.survey || [], reports: r.reports || [], hidden: !!r.hidden, students: r.students }; },
+      stats: async id => { const r = await call("prof_course_stats", { p_id: id }); return { rows: rowsToItems(r.rows || [], r.keymaps || []), study: r.study || [], survey: r.survey || [], reports: r.reports || [], hidden: !!r.hidden, students: r.students }; },
       setReport: (id, rid, status) => call("prof_report_set", { p_id: id, p_report: rid, p_status: status }),
     };
   }

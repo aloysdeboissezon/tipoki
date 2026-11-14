@@ -33,6 +33,7 @@
   }
   // demo: finished games, reports and survey answers are kept in the demo store, in the same shape as the server tables
   function demoAdd(kind, row) { const s = store(); if (!s || !s.stats) return; const id = row.quiz, st = s.stats[id] || (s.stats[id] = { rows: [], survey: [], reports: [] });
+    if (kind === "study") (st.study = st.study || []).push({ player: row.player, at: new Date().toISOString(), kind: row.kind, secs: row.secs, n: row.n || 0 });
     if (kind === "play") st.rows.push({ player: row.player, at: new Date().toISOString(), game: row.game, mode: row.mode, n: row.n, correct: row.correct, qs: row.qs, w: row.w || {} });
     if (kind === "survey") st.survey.push(row.score);
     if (kind === "report") { const c = s.courses[id], item = c && c.published && c.published.keys[row.q]; st.reports.push({ id: Date.now(), item, key: row.q, reason: row.reason, status: "open", at: new Date().toISOString() }); }
