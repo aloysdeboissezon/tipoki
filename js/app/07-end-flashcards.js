@@ -55,6 +55,8 @@ document.addEventListener("keydown",e=>{
 });
 // ---------- flashcards (built from the quiz's facts: term on one side, definition on the other) ----------
 let FC={deck:[],i:0,flip:false,res:{}};
+// a finished or abandoned round of flashcards is one study session for the professor's Class insight (course only)
+function fcReport(){if(!FC.clock)return;const n=Object.keys(FC.res).length,secs=FC.clock.stop();FC.clock=null;if(n&&typeof recordStudy==="function")recordStudy("cards",secs,n)}
 function fcStore(){try{return JSON.parse(lsGet(lsKey("cards"))||"{}")}catch(e){return {}}}   // term -> 1 got it, 0 not yet
 // spaced repetition (Leitner boxes) kept apart from the 1/0 above: term -> {b: box, d: due timestamp, t: last review}
 const FC_GAPS=[0,1,3,7,16,35],FC_SOON=10*60e3,FC_DAY=864e5;   // days between reviews per box; a missed card is back in 10 min
@@ -90,7 +92,8 @@ function startCards(list){
   if(!list){if(!settings.sess.size){showErr("fcErr",tl("Choose at least {unit}.",{unit:unit(2)}));return}
     list=fcPick();if(!list.length){showErr("fcErr",settings.fcSet==="all"?tl("No cards in these {units}.",{units:unit(1)}):tl("Nothing to review right now. Pick “All” to go through them again."));return}}
   list=settings.fcOrd==="course"?list.slice().sort((a,b)=>a[0]-b[0]):shuffle(list);
-  FC={deck:list,i:0,flip:false,res:{}};
+  if(FC.clock)FC.clock.stop();
+  FC={deck:list,i:0,flip:false,res:{},clock:BANK&&BANK.course&&typeof studyClock==="function"?studyClock():null};
   show("cards");renderCard();
 }
 function renderCard(){
@@ -102,6 +105,7 @@ function renderCard(){
     $("fcSess").hidden=true;$("fcNum").textContent=tl(n>1?"{n} cards studied":"1 card studied",{n});
     $("fcDoneTitle").textContent=bad?tl(bad>1?"Round done! {n} cards to go over again.":"Round done! 1 card to go over again.",{n:bad}):tl("Round done! You know them all.");
     $("fcDoneOk").textContent=ok;$("fcDoneBad").textContent=bad;
+    fcReport();
     $("fcRedo").hidden=!bad;$("fcRedo").textContent=tl("Review the {n} again",{n:bad});
     if(!bad){sfx("win");confetti(80)}
     return;
@@ -138,7 +142,7 @@ $("fcAgain").onclick=()=>fcAnswer(false);
 $("fcPrev").onclick=()=>{if(FC.i>0){FC.i--;renderCard()}};
 $("fcRedo").onclick=()=>startCards(FC.deck.filter((f,i)=>FC.res[i]===0));
 $("fcRestart").onclick=()=>startCards(FC.deck.slice());
-$("fcQuit").onclick=$("fcHome").onclick=()=>{show("topic");renderCardsPanel()};
+$("fcQuit").onclick=$("fcHome").onclick=()=>{fcReport();show("topic");renderCardsPanel()};
 // swipe the flipped card: right = got it, left = not yet
 const fcDrag={x:0,y:0,on:false,moved:false};
 $("fcCard").addEventListener("pointerdown",e=>{fcDrag.on=true;fcDrag.moved=false;fcDrag.x=e.clientX;fcDrag.y=e.clientY});

@@ -116,6 +116,11 @@ test.describe("Professor loop (demo mode)", () => {
     await student.locator("#survey .chip", { hasText: "5" }).click();
     await expect(student.locator("#survey")).toHaveText("Thank you!");
     expect(await student.evaluate(() => Object.values(JSON.parse(localStorage.getItem("qwebbo-demo")).stats).map(x => x.survey.length).reduce((a, b) => a + b, 0))).toBeGreaterThan(0);
+    // the finished quiz also left one anonymous study-time row (kind + seconds, no name)
+    const sessions = await student.evaluate(() => Object.values(JSON.parse(localStorage.getItem("qwebbo-demo")).stats).flatMap(x => x.study || []));
+    expect(sessions.length).toBeGreaterThan(0);
+    expect(Object.keys(sessions[0]).sort()).toEqual(["at", "kind", "n", "player", "secs"]);
+    expect(sessions[0].kind).toBe("quiz");
     expect(calls.filter(u => /supabase\.co/.test(u))).toEqual([]);   // no call to the database (the library file itself is a static download, unused in demo mode)
 
     // 6. the professor sees it: one student is below the anonymity threshold, so no figure is shown
@@ -130,6 +135,19 @@ test.describe("Professor loop (demo mode)", () => {
     await page.goto("/prof.html?demo=1#/c/00000000-0000-4000-8000-00000000d3e0/insight");
     await expect(page.locator("#kStudents")).toHaveText("44 / 60");
     await expect(page.locator("#reexplain li").first()).toContainText("Intragroup transactions");
+    // what students did by activity, time in class hours (stated clearly), per anonymous student, and dates day-first
+    await expect(page.locator('#activityTable tr[data-kind="cards"]')).toContainText("Flashcards");
+    await expect(page.locator("#activityTable tbody tr")).toHaveCount(4);
+    await expect(page.locator("#kClassHours")).toContainText("class hours");
+    await expect(page.locator("#classHours")).toContainText("1 class hour = ");
+    await page.selectOption("#classMin", "60");
+    await expect(page.locator("#classHours")).toContainText("÷ 60");
+    expect(await page.locator("#studentTable tbody tr").count()).toBeGreaterThan(5);
+    expect(await page.locator("#studentTable tbody tr").first().textContent()).toMatch(/Student \d+/);
+    const weekLabels = await page.locator(".bars div span:last-child").allTextContents();
+    expect(weekLabels.length).toBeGreaterThan(0);
+    for (const w of weekLabels) expect(w).toMatch(/^\d{2}\/\d{2}$/);
+    expect(weekLabels.some(w => +w.slice(0, 2) > 12)).toBe(true);   // day first: a "13", "27"... in front proves it is not month-first
     await expect(page.locator("#hardTable tbody tr")).toHaveCount(10);
     await expect(page.locator("#reports li")).toHaveCount(1);
     await page.click('.tabs [data-tab="pilot"]');

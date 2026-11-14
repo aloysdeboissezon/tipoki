@@ -17,7 +17,11 @@
   function put(el) { for (let i = 1; i < arguments.length; i++) { const c = arguments[i]; if (c == null || c === false) continue; (Array.isArray(c) ? c : [c]).forEach(x => { if (Array.isArray(x)) put(el, x); else if (x != null && x !== false) el.append(x.nodeType ? x : document.createTextNode(String(x))); }); } return el; }
   const btn = (label, onclick, cls, attrs) => h("button", { type: "button", class: "btn " + (cls || ""), onclick, ...(attrs || {}) }, label);
   const pct = v => (v == null ? "n/a" : Math.round(v * 100) + "%");
-  const date = s => { try { return new Date(s).toLocaleString("en-GB", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }); } catch (e) { return s; } };
+  // dates always day first (14/11/2026), never the US month-first order; the language follows the site's saved language, else the browser's
+  const LOCS = { fr: "fr-FR", es: "es-ES", ca: "ca-ES", ko: "ko-KR", en: "en-GB" };
+  const LOC = (() => { let l = ""; try { l = localStorage.getItem("tpk-lang") || ""; } catch (e) {} if (!LOCS[l]) l = String(navigator.language || "en").slice(0, 2).toLowerCase(); return LOCS[l] || "en-GB"; })();
+  const date = s => { try { return new Date(s).toLocaleString(LOC, { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" }); } catch (e) { return s; } };
+  const day = (s, short) => { try { return new Date(String(s).length === 10 ? s + "T12:00:00" : s).toLocaleDateString(LOC, short ? { day: "2-digit", month: "2-digit" } : { day: "2-digit", month: "2-digit", year: "numeric" }); } catch (e) { return s; } };
   let toastT = null;
   function toast(msg) { let t = $("toast"); if (!t) { t = h("div", { id: "toast", class: "toast", role: "status" }); document.body.append(t); } t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, 3200); }
   function download(name, text, type) { const a = h("a", { href: URL.createObjectURL(new Blob([text], { type: type || "text/plain;charset=utf-8" })), download: name }); document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000); }
@@ -331,18 +335,40 @@
   }
 
   // ---------- 5 and 6. class insight and pilot report ----------
-  async function insight() { const st = await api.stats(course.id); return { st, r: st.hidden ? { tooFew: true, students: st.students || 0, minStudents: IN.MIN_STUDENTS, reports: { open: 0, fixed: 0, dismissed: 0 }, contentAccuracy: null } : IN.compute(st.rows, course.kit, null, { enrolled: course.enrolled, reports: st.reports, survey: st.survey }) }; }
+  async function insight() { const st = await api.stats(course.id); return { st, r: st.hidden ? { tooFew: true, students: st.students || 0, minStudents: IN.MIN_STUDENTS, reports: { open: 0, fixed: 0, dismissed: 0 }, contentAccuracy: null } : IN.compute(st.rows, course.kit, null, { enrolled: course.enrolled, reports: st.reports, survey: st.survey, study: st.study }) }; }
   const kpi = (v, label, id) => h("div", { class: "kpi" }, h("b", { id, text: v }), h("span", { text: label }));
   const meter = v => { const m = h("span", { class: "meter" + (v < 0.6 ? " low" : "") }, h("i")); m.firstChild.style.width = Math.round(v * 100) + "%"; return m; };
+  // What the class did by kind of activity, the cumulated time expressed in class hours, and the same per anonymous student
+  const KIND_LABEL = { cards: "Flashcards", sheet: "Study sheets", quiz: "Quizzes", exam: "Exam mode" };
+  function classMinutes() { let v = 0; try { v = +localStorage.getItem("qwebbo-class-min"); } catch (e) {} return [45, 50, 60, 90].includes(v) ? v : IN.CLASS_MINUTES; }
+  function activityCards(root, r) {
+    const a = r.activity, cm = classMinutes(), time = secs => (a.tracked ? IN.fmtDuration(secs) : "—");
+    const detail = (k, g) => k === "cards" ? g.cards + " cards studied" : (k === "quiz" || k === "exam") ? (g.accuracy == null ? "" : pct(g.accuracy) + " correct answers") : (g.students ? "" : "not opened yet");
+    put(root, h("div", { class: "card", id: "activity" }, h("h2", { text: "What students did" }),
+      h("p", { class: "muted small", text: "Per kind of activity, for the whole class. Time counts only while the page is open and visible, at most 30 minutes per session." + (a.tracked ? "" : " Durations are recorded from the update that added them: earlier sessions have none.") }),
+      h("div", { class: "scroll" }, h("table", { id: "activityTable" }, h("thead", null, h("tr", null, h("th", { text: "Activity" }), h("th", { class: "num", text: "Students" }), h("th", { class: "num", text: "Sessions" }), h("th", { class: "num", text: "Time" }), h("th", { text: "Detail" }))),
+        h("tbody", null, IN.KINDS.map(k => { const g = a.kinds[k]; return h("tr", { "data-kind": k }, h("td", { text: KIND_LABEL[k] }), h("td", { class: "num", text: g.students }), h("td", { class: "num", text: g.sessions }), h("td", { class: "num", text: g.secs || a.tracked ? time(g.secs) : "—" }), h("td", { class: "muted", text: detail(k, g) })); }))))));
+    const sel = h("select", { id: "classMin", "aria-label": "Minutes in one class hour", onchange: e => { try { localStorage.setItem("qwebbo-class-min", e.target.value); } catch (x) {} renderCourse(); } }, [45, 50, 60, 90].map(m => h("option", { value: m }, m + " min")));
+    sel.value = String(cm); sel.style.width = "auto";
+    put(root, h("div", { class: "card", id: "classHours" }, h("h2", { text: "Time spent, in class hours" }),
+      a.tracked ? h("div", { class: "kpis" }, kpi(IN.fmtDuration(a.secs), "cumulated study time of the class", "kTime"), kpi(IN.classHours(a.secs, cm).toFixed(1) + " class hours", "equivalent in class hours", "kClassHours"), kpi(IN.fmtDuration(a.perStudentSecs), "per student on average", "kPerStudent")) : h("p", { class: "muted", text: "No duration recorded yet. It appears after the first study session since this update." }),
+      h("label", { class: "small" }, "1 class hour = ", sel, h("span", { class: "muted", text: "  (class hours = cumulated minutes ÷ " + cm + ")" }))));
+    if (!a.students.length) return;
+    put(root, h("div", { class: "card", id: "perStudent" }, h("h2", { text: "Activity by student (anonymous)" }),
+      h("p", { class: "muted small", text: "“Student 12” is a random identifier of this course, never a name; the numbering follows the order of first activity. Sessions per activity, then time." + (a.total > a.listed ? " The " + a.listed + " most active students are listed (out of " + a.total + ")." : "") }),
+      h("div", { class: "scroll" }, h("table", { id: "studentTable" }, h("thead", null, h("tr", null, h("th", { text: "Student" }), IN.KINDS.map(k => h("th", { class: "num", text: KIND_LABEL[k] })), h("th", { class: "num", text: "Time" }), h("th", { text: "Last seen" }))),
+        h("tbody", null, a.students.map(s => h("tr", null, h("td", { text: "Student " + s.id }), IN.KINDS.map(k => h("td", { class: "num", text: s[k].sessions || "·" })), h("td", { class: "num", text: time(s.secs) }), h("td", { text: s.last ? day(s.last) : "—" }))))))));
+  }
   async function tabInsight(root) {
     put(root, h("p", { class: "muted", text: "Loading…" }));
     const { st, r } = await insight(); root.replaceChildren();
     put(root, h("p", { class: "muted small", text: "Aggregate and anonymous: a student is a random number, never a name. No figure is shown for fewer than " + r.minStudents + " students." }));
     if (r.tooFew) { put(root, h("div", { class: "card", id: "tooFew" }, h("h2", { text: "Not enough students yet" }), h("p", { text: (r.students || 0) + " student" + (r.students === 1 ? " has" : "s have") + " played so far. Figures appear from " + r.minStudents + " students, so that nobody can be recognised." }))); return reportsCard(root, st); }
     put(root, h("div", { class: "kpis" }, kpi(r.students + (r.enrolled ? " / " + r.enrolled : ""), r.enrolled ? "students activated (" + pct(r.activation) + ")" : "students who played", "kStudents"), kpi(String(r.weeklyActive), "active this week"), kpi(r.sessionsPerStudent.toFixed(1), "sessions per student"), kpi(pct(r.accuracy), "correct answers (" + r.answers.toLocaleString("en") + " answers)", "kAccuracy")));
+    activityCards(root, r);
     if (r.reexplain.length) put(root, h("div", { class: "card", id: "reexplain" }, h("h2", { text: "What to re-explain next lecture" }), h("ol", null, r.reexplain.map(t => h("li", null, h("b", { text: t.chapter + (t.topic ? ": " + t.topic : "") }), " — " + pct(t.accuracy) + " correct over " + t.answers + " answers." + (t.example ? " Typical miss: “" + t.example + "”" : "") + (t.topWrong ? " Most chosen wrong answer: “" + t.topWrong + "”." : ""))))));
     const max = Math.max(1, ...r.weeks.map(w => w.active));
-    put(root, h("div", { class: "card" }, h("h2", { text: "Students active each week" }), h("div", { class: "bars", role: "img", "aria-label": "Students active per week: " + r.weeks.map(w => w.week + " " + w.active).join(", ") }, r.weeks.map(w => { const i = h("i"); i.style.height = Math.round(w.active / max * 100) + "%"; return h("div", null, h("span", { text: w.active }), i, h("span", { text: w.week.slice(5) })); }))));
+    put(root, h("div", { class: "card" }, h("h2", { text: "Students active each week" }), h("p", { class: "muted small", text: "Each bar is the week starting on that day (dd/mm)." }), h("div", { class: "bars", role: "img", "aria-label": "Students active per week: " + r.weeks.map(w => day(w.week) + " " + w.active).join(", ") }, r.weeks.map(w => { const i = h("i"); i.style.height = Math.round(w.active / max * 100) + "%"; return h("div", null, h("span", { text: w.active }), i, h("span", { text: day(w.week, true) })); }))));
     put(root, h("div", { class: "card" }, h("h2", { text: "Accuracy by topic" }), h("div", { class: "scroll" }, h("table", { id: "topicTable" }, h("thead", null, h("tr", null, h("th", { text: "Chapter" }), h("th", { text: "Topic" }), h("th", { text: "Correct" }), h("th", { class: "num", text: "Answers" }), h("th", { class: "num", text: "Students" }))),
       h("tbody", null, r.topics.map(t => h("tr", null, h("td", { text: t.chapter }), h("td", { text: t.topic || "—" }), h("td", null, meter(t.accuracy), pct(t.accuracy)), h("td", { class: "num", text: t.answers }), h("td", { class: "num", text: t.students }))))))));
     put(root, h("div", { class: "card" }, h("h2", { text: "The 10 hardest questions" }), h("div", { class: "scroll" }, h("table", { id: "hardTable" }, h("thead", null, h("tr", null, h("th", { text: "Question" }), h("th", { class: "num", text: "Missed" }), h("th", { text: "Most chosen wrong answer" }))),

@@ -2,7 +2,7 @@
 // Install: the whole app shell (page, scripts, styles, quiz banks, images, Supabase client, fonts) is stored, so the app opens and the built-in quizzes play with no network.
 // Fetch: the page is network first with a short timeout (a new deploy shows up on the next visit; a weak connection falls back to the stored copy).
 // Supabase API calls, analytics and the video are never touched (the page queues its own writes, see js/offline.js).
-const CACHE="qwebbo-v32",SHELL_PAGE="/",NET_MS=4000;
+const CACHE="qwebbo-v33",SHELL_PAGE="/",NET_MS=4000;
 const CDN=/^https:\/\/(cdn\.jsdelivr\.net|fonts\.googleapis\.com|fonts\.gstatic\.com)\//;
 self.addEventListener("install",e=>{e.waitUntil((async()=>{
   const c=await caches.open(CACHE);
