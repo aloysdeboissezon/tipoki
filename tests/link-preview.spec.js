@@ -9,12 +9,12 @@ const tag = (html, attr, name) => (html.match(new RegExp('<meta ' + attr + '="' 
 test.describe("Link preview tags", () => {
   test("the brand is lowercase in every preview tag of the static page", async ({ request }) => {
     const html = await (await request.get("/")).text();
-    expect(html).toMatch(/<title>Qwebbo – /);   // the page title starts with a capital on purpose since the SEO change of PR #179 (search engines mixed the name up with a streamer); the preview tags stay lowercase
+    expect(html).toMatch(/<title>qwebbo – /);   // the brand is always lowercase, title included
     for (const [a, n] of [["name", "description"], ["property", "og:title"], ["property", "og:description"], ["property", "og:site_name"], ["name", "twitter:title"]]) {
       const v = tag(html, a, n);
       expect(v, n).toBeTruthy();
-      if (!/description/.test(n)) expect(v, n).not.toMatch(/Qwebbo/);   // the descriptions say "Qwebbo" on purpose (PR #179)
-      expect(v, n).toMatch(/qwebbo/i);
+      expect(v, n).not.toMatch(/Qwebbo/);
+      if (!/title|site_name/.test(n) || n === "og:site_name") expect(v, n).toMatch(/qwebbo/);
     }
   });
 

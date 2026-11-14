@@ -10,7 +10,7 @@
   else root.QwebboKit = factory();
 })(typeof self !== "undefined" ? self : this, function () {
   "use strict";
-  const LICENCE = school => "Licensed to " + (school || "the school") + " for internal educational use. Platform, method and question sets © Qwebbo. Course material © its authors.";
+  const LICENCE = school => "Licensed to " + (school || "the school") + " for internal educational use. Platform, method and question sets © qwebbo. Course material © its authors.";
   const uid = () => "i" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
   const str = (x, n) => String(x == null ? "" : x).replace(/\r/g, "").trim().slice(0, n || 2000);
   const TRUE = /^(true|vrai|verdadero|t|v|1|yes|oui|si|sí)$/i, FALSE = /^(false|faux|falso|f|0|no|non)$/i;
@@ -149,8 +149,8 @@
   }
   const srcLine = it => it.src && it.src.file ? " [Source: " + it.src.file + (it.src.page != null ? ", p. " + it.src.page : "") + "]" : "";
   function toGift(kit, opts) {
-    const out = ["// " + LICENCE(opts && opts.school), "// " + (kit.title || "Course") + ": exported from Qwebbo. Import in Moodle: Question bank > Import > GIFT format.", ""];
-    const base = "$course$/top/Qwebbo/" + String(kit.title || "Course").replace(/[\/\n]/g, " ");
+    const out = ["// " + LICENCE(opts && opts.school), "// " + (kit.title || "Course") + ": exported from qwebbo. Import in Moodle: Question bank > Import > GIFT format.", ""];
+    const base = "$course$/top/qwebbo/" + String(kit.title || "Course").replace(/[\/\n]/g, " ");
     kit.chapters.forEach(c => { const its = pick(kit, opts).filter(i => i.s === c.n && i.type !== "card"); if (!its.length) return;
       out.push("$CATEGORY: " + base + "/" + String(c.name).replace(/[\/\n]/g, " "), "");
       its.forEach((it, k) => { const name = "::" + giftEsc("Ch" + c.n + " Q" + (k + 1) + (it.topic ? " " + it.topic : "")) + "::", fb = giftEsc((it.e || "") + srcLine(it));
@@ -166,7 +166,7 @@
   const html = s => cdata("<p>" + xe(s).replace(/\n/g, "<br>") + "</p>");
   function toMoodleXml(kit, opts) {
     const out = ['<?xml version="1.0" encoding="UTF-8"?>', "<!-- " + xe(LICENCE(opts && opts.school)).replace(/--/g, "- -") + " -->", "<quiz>"];
-    const base = "$course$/top/Qwebbo/" + String(kit.title || "Course").replace(/[\/\n]/g, " ");
+    const base = "$course$/top/qwebbo/" + String(kit.title || "Course").replace(/[\/\n]/g, " ");
     kit.chapters.forEach(c => { const its = pick(kit, opts).filter(i => i.s === c.n && i.type !== "card"); if (!its.length) return;
       out.push('<question type="category"><category><text>' + xe(base + "/" + String(c.name).replace(/[\/\n]/g, " ")) + "</text></category></question>");
       its.forEach((it, k) => { const type = it.type === "mcq" ? "multichoice" : it.type === "tf" ? "truefalse" : "shortanswer";
