@@ -14,7 +14,7 @@ test.describe("/api/esade", () => {
   });
 
   test("an ESADE token gets the quiz, its study sheet and its PDF, never cached", async ({ request }) => {
-    for (const id of ["socio", "compta2", "populism", "regression"]) {
+    for (const id of ["socio", "compta2", "populism", "regression", "justice"]) {
       const r = await request.get(`/api/esade?k=bank&id=${id}`, { headers: OK });
       expect(r.status(), id).toBe(200);
       expect(await r.text()).toContain("window.BANK_" + id.toUpperCase());
@@ -34,11 +34,11 @@ test.describe("/api/esade", () => {
   });
 
   test("the ESADE files are not public: not at their old addresses, not in api/_esade, and not in the page", async ({ request }) => {
-    for (const u of ["/js/banks/socio.js", "/js/banks/compta2.js", "/js/banks/populism.js", "/js/banks/regression.js", "/js/sheets/socio.js",
+    for (const u of ["/js/banks/socio.js", "/js/banks/compta2.js", "/js/banks/populism.js", "/js/banks/regression.js", "/js/banks/justice.js", "/js/sheets/socio.js",
       "/sheets/socio.pdf", "/sheets/compta2.pdf", "/sheets/populism.pdf", "/api/_esade/banks/socio.js", "/api/esade.js"])
       expect((await request.get(u)).status(), u).toBe(404);
     const html = await (await request.get("/")).text();
-    expect(html).not.toMatch(/banks\/(socio|compta2|populism|regression)\.js|sheets\/(socio|compta2|populism)/);
+    expect(html).not.toMatch(/banks\/(socio|compta2|populism|regression|justice)\.js|sheets\/(socio|compta2|populism)/);
   });
 
   test("every quiz the page treats as ESADE has its file behind the gate, and nothing else is there", async ({ page }) => {

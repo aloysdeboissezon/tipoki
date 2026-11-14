@@ -2,7 +2,7 @@
 // Usage: node tools/build-catalog.js          rewrites js/catalog.js
 //        node tools/build-catalog.js --check  exits 1 when js/catalog.js is out of date (run it after editing a bank)
 const fs=require("fs"),path=require("path");
-const LAZY=["socio","culture","energie","populism","compta2","uspop","gastro","ukculture","startups","brands","barcelona","finance","econ","strategy","jargon","bigtech","worldtour","emoji","internet","hits","screen","sports","gamer","kids","myths","foodtravel","countryclues","oddemoji","braintraps","kwave","korea","structure","regression"];   // culture is the quiz the page opens on (it ships in the first load); the ESADE ones (socio, compta2, populism, regression) live in api/_esade
+const LAZY=["socio","culture","energie","populism","compta2","uspop","gastro","ukculture","startups","brands","barcelona","finance","econ","strategy","jargon","bigtech","worldtour","emoji","internet","hits","screen","sports","gamer","kids","myths","foodtravel","countryclues","oddemoji","braintraps","kwave","korea","structure","regression","justice"];   // culture is the quiz the page opens on (it ships in the first load); the ESADE ones (socio, compta2, populism, regression, justice) live in api/_esade
 const root=path.join(__dirname,"..");const {bankFile,sheetFile}=require("./bankpath");
 const meta={};
 for(const id of LAZY){

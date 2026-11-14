@@ -4,7 +4,7 @@ Envoie ton cours, qwebbo en fait un quiz. Joue seul ou en multi avec tes potes (
 
 ## Structure
 - `index.html`, `css/style.css`, `js/app/*.js` (le moteur, en 8 fichiers chargés dans l'ordre) : le site (statique, aucun build).
-- `api/_esade/` : les quiz réservés ESADE (socio, compta2, populism, regression : questions, fiches, PDF), servis seulement par `api/esade.js` aux comptes avec une adresse ESADE vérifiée. Voir `docs/esade-acces.md`.
+- `api/_esade/` : les quiz réservés ESADE (socio, compta2, populism, regression, justice : questions, fiches, PDF), servis seulement par `api/esade.js` aux comptes avec une adresse ESADE vérifiée. Voir `docs/esade-acces.md`.
 - `supabase/functions/generate-quiz/` : fonction serveur qui transforme un PDF ou un texte en quiz avec Claude.
 - Base Supabase `socio-trivia` : tables `games`, `players` (multi), `quizzes` (quiz générés), `gen_log` (limites d'usage).
 

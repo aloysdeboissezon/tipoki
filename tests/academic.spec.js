@@ -3,7 +3,7 @@
 const { test, expect } = require("@playwright/test");
 const { openSite, openQuiz } = require("./helpers");
 
-const ESADE = ["socio", "compta2", "populism", "regression"];
+const ESADE = ["socio", "compta2", "populism", "regression", "justice"];
 const ACADEMIC = [...ESADE, "energie", "structure"];
 const OK = { Authorization: "Bearer e2e-esade-token-0000000000" };
 
