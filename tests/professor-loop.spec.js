@@ -73,7 +73,7 @@ test.describe("Professor loop (demo mode)", () => {
     const [dl] = await Promise.all([page.waitForEvent("download"), page.click("#expGift")]);
     const gift = fs.readFileSync(await dl.path(), "utf8");
     expect(gift).toContain("Licensed to Demo Business School for internal educational use");
-    expect(gift).toContain("$CATEGORY: $course$/top/Qwebbo/Accounting II (test)/Groups and control");
+    expect(gift).toContain("$CATEGORY: $course$/top/qwebbo/Accounting II (test)/Groups and control");
     expect(gift).not.toContain("Two companies with the same shareholders".repeat(2));
     const [dx] = await Promise.all([page.waitForEvent("download"), page.click("#expXml")]);
     expect(fs.readFileSync(await dx.path(), "utf8")).toMatch(/<question type="multichoice">[\s\S]*<single>true<\/single>/);
