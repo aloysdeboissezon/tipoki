@@ -109,8 +109,12 @@ async function ensureTr(id){
 function trMissing(id){const m=(window.BANK_META||{})[id];return !!(m&&m.tr&&m.tr[LANG]&&LANG!==BANK.lang&&!BANK.qlang)}
 function isT(qi){return G.deck[qi].t!=null}
 // typed answers get 10 s more; a question can carry its own extra time `x` (seconds, set in the bank data, e.g. calculation exercises);
-// otherwise a long statement gets up to 30 s more to read it. Same data on every device, so multiplayer stays in sync.
-function qExtra(q){return q.x!=null?q.x:(q.q.length>170?Math.min(30,Math.ceil((q.q.length-170)/25)):0)}
+// otherwise a long statement (or a long question plus its four options) gets up to 30 s more to read it. Same data on every device, so multiplayer stays in sync.
+function qExtra(q){
+  if(q.x!=null)return q.x;
+  const lq=q.q.length>170?Math.min(30,Math.ceil((q.q.length-170)/25)):0;
+  const rd=q.q.length+(q.o&&!q.tf?q.o.reduce((n,o)=>n+String(o).length,0):0);   // multiple choice: the four options also have to be read
+  return Math.max(lq,rd>400?Math.min(30,Math.ceil((rd-400)/25)):0)}
 function isHard(qi){return (qOf(qi).x||0)>=HARD_X}
 const HARD_X=20;
 function qT(qi){return (G.T+(isT(qi)?10:0)+qExtra(qOf(qi)))*1000}
