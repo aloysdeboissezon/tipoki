@@ -114,7 +114,7 @@ var ES={
 "Podium":"Podio","Sessions":"Sesiones","Question":"Pregunta","Question {i} / {n}":"Pregunta {i} / {n}","Pause":"Pausa","question {n}":"pregunta {n}","questions":"preguntas",
 "Switch to French":"Cambiar a francés","Switch to English":"Cambiar a inglés",
 // quiz screen
-"← Other quizzes":"← Otros quizzes",
+"← Other courses":"← Otros cursos",
 "You're studying":"Estás estudiando",
 "Exam":"Examen",
 "Flashcards":"Tarjetas",
@@ -494,7 +494,6 @@ var ES={
 "By quiz":"Por quiz",
 "Open this quiz's stats":"Abrir las estadísticas de este quiz",
 "Print / PDF":"Imprimir / PDF",
-"Anonymous usage stats":"Estadísticas de uso anónimas",
 "Counts finished and abandoned games without any name, cookie or email, to see how qwebbo is used.":"Cuenta las partidas terminadas y abandonadas sin ningún nombre, cookie ni correo, para saber cómo se usa qwebbo.",
 "Refresh":"Actualizar",
 "Loading…":"Cargando…",

@@ -14,17 +14,12 @@ test.describe("Options page", () => {
     await expect(page.locator("#optDlg")).toBeHidden();
   });
 
-  test("animations toggle is remembered and applied", async ({ page }) => {
-    await openSite(page);
+  test("no switch for animations or anonymous stats (both always on)", async ({ page }) => {
+    await openSite(page, { storage: { "tpk-motion": "off", "tpk-nostats": "1" } });
     await page.locator("#optBtn").click();
-    const row = page.locator(".opt-row", { hasText: "Animations" });
-    await expect(row.locator("button")).toHaveText("On");
-    await row.locator("button").click();
-    await expect(row.locator("button")).toHaveText("Off");
-    await expect(page.locator("html")).toHaveAttribute("data-motion", "off");
-    expect(await page.evaluate(() => localStorage.getItem("tpk-motion"))).toBe("off");
-    await page.reload();
-    await expect(page.locator("html")).toHaveAttribute("data-motion", "off");
+    await expect(page.locator(".opt-row", { hasText: "Animations" })).toHaveCount(0);
+    await expect(page.locator(".opt-row", { hasText: "Anonymous usage stats" })).toHaveCount(0);
+    await expect(page.locator("html")).not.toHaveAttribute("data-motion", "off");
   });
 
   test("sound and vibration are separate switches", async ({ page }) => {
