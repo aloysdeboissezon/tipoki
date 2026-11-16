@@ -41,7 +41,7 @@
 <link rel="stylesheet" href="css/figs.css?v=20261105b">
 <link rel="stylesheet" href="css/tour.css?v=20261105b">
 <link rel="stylesheet" href="css/theme.css?v=20261113b">
-<link rel="stylesheet" href="css/compact.css?v=20261105c">
+<link rel="stylesheet" href="css/compact.css?v=20261116b">
 <link rel="stylesheet" href="css/refine.css?v=20261113b">
 <link rel="stylesheet" href="css/finish.css?v=20261105e">
 <link rel="stylesheet" href="css/a11y.css?v=20261105b">
@@ -63,6 +63,7 @@
 
   <!-- HOME: 1) pick what to revise -->
   <section id="home" style="display:flex;flex-direction:column;gap:16px">
+    <div class="acad-head" id="acadHead"><img src="img/esade.png" alt="ESADE" width="44" height="44"><div><h1>ESADE course quizzes</h1><p>Quizzes, flashcards, study sheets and exams for your courses.</p></div></div>
     <div class="hero">
       <h1 class="slogan"><span>Learn,</span> <span>compete,</span> <span>master.</span></h1>
       <p>Pick what you want to study, then play solo or with friends.</p>
@@ -98,18 +99,15 @@
       <div class="qempty" id="quizEmpty" hidden><svg class="qe-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21M8 10.5h5"/></svg><p>No quiz found for “<b id="quizEmptyQ"></b>”.</p><button type="button" class="linkbtn" id="quizEmptyClear">Clear search</button></div>
     </div>
     <div class="panel" id="joinPanel">
-      <h2>Got a code from a friend?</h2>
-      <div class="joinrow"><input type="text" id="codeIn" class="codein" maxlength="4" placeholder="Enter code..." autocomplete="off" autocapitalize="characters" aria-label="Game code"><button class="btn dark" id="joinBtn">Join</button></div>
+      <div class="joinrow"><label class="join-t" for="codeIn">Friend's code?</label><input type="text" id="codeIn" class="codein" maxlength="4" placeholder="Code" autocomplete="off" autocapitalize="characters" aria-label="Game code"><button class="btn dark" id="joinBtn">Join</button></div>
       <p class="err" id="joinErr" hidden></p>
-      <p class="muted">Rise to your friend's challenge!</p>
     </div>
 
     <div id="meHome">
     <div class="panel me-panel">
       <label class="pfp" id="pfpBtn" title="Add your profile picture"><input type="file" id="pfpIn" accept="image/*" hidden><span class="av big" id="pfpAv"></span><span class="pfp-add" aria-hidden="true">+</span></label>
       <div class="me-main">
-        <label class="label" for="nick">Your first name or nickname</label>
-        <input type="text" id="nick" maxlength="18" placeholder="e.g. Alex" autocomplete="given-name">
+        <input type="text" id="nick" maxlength="18" placeholder="Your first name or nickname" aria-label="Your first name or nickname" autocomplete="given-name">
         <select id="country" class="country-sel" aria-label="Your country (optional)" autocomplete="country"></select>
         <div class="me-sub"><button type="button" class="linkbtn" id="pfpDel" hidden>Remove photo</button></div>
         <p class="err" id="nickErr" hidden></p>
@@ -463,9 +461,9 @@
 <meta name="tpk-lazy" data-lazy="js/sheets/structure.js?v=20261105c">
 <meta name="tpk-lazy" data-lazy="js/sheets/energie.js?v=20261105b">
 <script defer src="js/errlog.js?v=20261105b"></script>
-<script defer src="js/i18n-es.js?v=20261113b"></script>
-<script defer src="js/i18n-ko.js?v=20261113b"></script>
-<script defer src="js/i18n.js?v=20261113b"></script>
+<script defer src="js/i18n-es.js?v=20261116a"></script>
+<script defer src="js/i18n-ko.js?v=20261116a"></script>
+<script defer src="js/i18n.js?v=20261116a"></script>
 <script defer src="js/qicons.js?v=20261105b"></script>
 <script defer src="js/catalog.js?v=20261105b"></script>
 <script defer src="js/qmeta.js?v=20261104a"></script>
@@ -484,7 +482,7 @@
 <script defer src="js/app/05-engine.js?v=20261113b"></script>
 <script defer src="js/app/06-game.js?v=20261105b"></script>
 <script defer src="js/app/07-end-flashcards.js?v=20261114a"></script>
-<script defer src="js/app/08-home-nav.js?v=20261113a"></script>
+<script defer src="js/app/08-home-nav.js?v=20261116a"></script>
 <script defer src="js/stats.js?v=20261114a"></script>
 <script defer src="js/exam.js?v=20261105b"></script>
 <script defer src="js/examresume.js?v=20261105b"></script>
