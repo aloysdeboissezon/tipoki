@@ -3,7 +3,7 @@
 
 /* ---------- home ---------- */
 #home{display:flex}
-#home #resumeHome{order:0}#home .hero{order:1}#home #pickPanel{order:2}#home .tour{order:3}#home #joinPanel{order:4}#home #meHome{order:5}#home #multiNote{order:6}
+#home #joinPanel{order:-2}#home .acad-head{order:-1}#home #resumeHome{order:0}#home .hero{order:1}#home #pickPanel{order:2}#home .tour{order:3}#home #meHome{order:5}#home #multiNote{order:6}
 .hero{padding:clamp(16px,4vw,28px);gap:6px;border-radius:24px}
 .hero h1{font-size:clamp(26px,6.5vw,44px)}
 .hero p{font-size:clamp(14px,2.2vw,17px)}
@@ -373,7 +373,7 @@
 
 /* home: friend-code row is shorter (44-46px tap targets), placeholder is plain text */
 #joinPanel .codein{font-size:22px!important;padding:6px 14px!important;height:46px;min-height:0}
-#joinPanel .codein::placeholder{letter-spacing:0;text-transform:none;font:600 16px var(--f-body);opacity:.6}
+#joinPanel .codein::placeholder{letter-spacing:0;text-transform:none;font:600 14px var(--f-body);opacity:.6}
 #joinPanel .joinrow .btn{min-height:46px;height:46px;padding:0 22px;font-size:17px}
 /* home profile block: label on top, avatar centred against the name + country rows */
 #meHome .me-panel{display:grid;grid-template-columns:64px 1fr;gap:6px 16px;align-items:center}
@@ -383,3 +383,23 @@
 #meHome #nick,#meHome #country{grid-column:2}
 #meHome .me-sub,#meHome #nickErr{grid-column:2}
 #meHome .me-main>*:not(.label):not(#nick):not(#country){grid-column:1/-1}
+
+/* home: friend-code block is one line at the very top; profile block has no label (the placeholder says it) */
+#joinPanel{padding:10px 14px}
+#joinPanel .joinrow{align-items:center;flex-wrap:nowrap;gap:10px}
+#joinPanel .join-t{flex:1 1 auto;min-width:0;font:800 15px/1.2 var(--f-body);color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#joinPanel .codein{flex:none;width:92px;padding-left:8px!important;padding-right:8px!important;letter-spacing:.2em}
+#joinPanel .joinrow .btn{padding:0 14px}
+#joinPanel .err{margin:6px 0 0}
+#meHome .me-panel{padding:10px 14px;row-gap:8px}
+#meHome .pfp{grid-row:1/span 2}
+@media (max-width:380px){#joinPanel .join-t{font-size:13.5px}#joinPanel .codein{width:76px}}
+
+/* ESADE space (?space=esade, or an ESADE quiz link): only the ESADE quizzes, no game extras, no promo video */
+.acad-head{display:none}
+html.space-esade .acad-head{display:flex;align-items:center;gap:14px;padding:4px 2px}
+.acad-head img{width:44px;height:44px;border-radius:10px;flex:none}
+.acad-head h1{font:800 clamp(20px,5vw,28px)/1.15 var(--f-display);margin:0;color:var(--ink)}
+.acad-head p{margin:2px 0 0;font-size:14px;color:var(--muted,var(--ink));opacity:.8}
+html.space-esade #home .hero,html.space-esade #home .tour,html.space-esade #esadeBtn,html.space-esade .sitefoot .space-out{display:none!important}
+#joinPanel .codein::placeholder{font-size:14px}

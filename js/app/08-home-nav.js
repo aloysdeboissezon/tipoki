@@ -28,6 +28,13 @@ function fold(s){return String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/
 function quizHay(q){return fold([q.title,q.title0,q.subject,q.subject0,q.kw].concat(Object.values(q.sess||(q.data&&q.data.sess)||{}),Object.values(q.sess0||{}),Object.values(q.tags||{}),Object.values(q.tags0||{})).join(" "))}
 // ESADE collection: to put a new quiz in it, add its id here (or give its bank/catalog entry group:"esade")
 function isEsade(q){return ESADE_IDS.includes(q.id)||q.group==="esade"}   // ESADE_IDS: js/app/03-quiz-data.js
+// ESADE space: opened by ?space=esade or by a link to an ESADE quiz, remembered on this device; ?space=all goes back to the full site.
+// It shows only the ESADE quizzes, in an academic layout (no slogan, game goals or promo video).
+const spaceEsade=(()=>{let on=lsGet("tpk-space")==="esade";
+  try{const p=new URLSearchParams(location.search),sp=p.get("space"),q=p.get("quiz");
+    if(sp==="esade"||(q&&ESADE_IDS.includes(q)))on=true;else if(sp==="all")on=false;
+    if(sp){p.delete("space");const r=p.toString();history.replaceState(null,"",location.pathname+(r?"?"+r:""))}}catch(e){}
+  lsSet("tpk-space",on?"esade":"");document.documentElement.classList.toggle("space-esade",on);return on})();
 let esadeOn=lsGet("tpk-esade")==="1"&&esadeVerified(),favOn=false,lastQuizList=null;
 function setEsade(on){esadeOn=on;lsSet("tpk-esade",on?"1":"0");renderQuizGrid(lastQuizList||quizList());$("quizGrid").scrollLeft=0}
 function setFavOn(on){favOn=on;renderQuizGrid(lastQuizList||quizList());$("quizGrid").scrollLeft=0}
@@ -40,7 +47,7 @@ const LOCAL_QUIZZES={fr:["gastro"],es:["barcelona"],ko:["kwave","korea"]};
 function quizLang(id){const m=window.QMETA&&QMETA[id];if(!m)return "";return ["en","fr","es","ko"].find(l=>!m[l])||""}
 function langFit(q){const L=window.LANG||"en";return (quizLang(q.id)===L||(LOCAL_QUIZZES[L]||[]).includes(q.id))?1:0}
 function renderQuizGrid(all){
-  lastQuizList=all;const favs=favGet();let list=all.filter(q=>(favOn?favs.includes(q.id):true)&&(esadeOn||favOn?(!esadeOn||isEsade(q)):!isEsade(q)));
+  lastQuizList=all;const favs=favGet(),eo=esadeOn||spaceEsade;let list=all.filter(q=>(favOn?favs.includes(q.id):true)&&(eo||favOn?(!eo||isEsade(q)):!isEsade(q)));
   const eb=$("esadeBtn"),ver=esadeVerified();eb.setAttribute("aria-pressed",esadeOn?"true":"false");eb.classList.toggle("verified",ver);eb.classList.toggle("locked",!ver);
   eb.title=eb.ariaLabel=ver?tl("Show only the ESADE quizzes"):tl("ESADE only: verify your ESADE email to unlock");
   const fb=$("favBtn");fb.setAttribute("aria-pressed",favOn?"true":"false");fb.classList.toggle("has",favs.length>0);
@@ -55,7 +62,7 @@ function renderQuizGrid(all){
   const L=$("qList");L.textContent="";
   list.forEach((q,i)=>{const b=el("button","qchip");b.type="button";b.dataset.hay=quizHay(q);b.dataset.id=q.id;b.dataset.i=i%8;
     const li=el("span","qchip-l");li.innerHTML=quizIcon(q);b.append(li,el("b",null,q.title),heart(q),el("span","qgo","›"));b.onclick=()=>openQuiz(q.id,b);L.appendChild(b)});
-  $("qAllT").textContent=tl(favOn&&esadeOn?"ESADE favorites ({n})":favOn?"Favorites ({n})":esadeOn?"ESADE quizzes ({n})":"All quizzes ({n})",{n:list.length});
+  $("qAllT").textContent=tl(favOn&&eo?"ESADE favorites ({n})":favOn?"Favorites ({n})":eo?"ESADE quizzes ({n})":"All quizzes ({n})",{n:list.length});
   filterQuizzes();renderProgressUI();carouselUpdate();
 }
 // every typed word must appear somewhere in the quiz's title, subject, keywords or chapter names

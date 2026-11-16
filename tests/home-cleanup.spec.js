@@ -18,11 +18,16 @@ test.describe("Home page cleanup", () => {
     await expect(page.locator("#quizGrid .qesade")).toHaveCount(0);   // normal quizzes carry no ESADE logo
   });
 
-  test("friend-code helper is a single short line; profile block is compact with the avatar on the left", async ({ page }) => {
+  test("friend-code block is one line at the top; profile block has no label and is compact with the avatar on the left", async ({ page }) => {
     await openSite(page);
-    const help = page.locator("#joinPanel p.muted");
-    await expect(help).toHaveText("Rise to your friend's challenge!");
-    expect(await help.evaluate(e => e.getBoundingClientRect().height < parseFloat(getComputedStyle(e).lineHeight) * 1.5)).toBe(true);
+    const jp = await page.locator("#joinPanel").boundingBox(), pk = await page.locator("#pickPanel").boundingBox();
+    expect(jp.y).toBeLessThan(pk.y);
+    expect(jp.height).toBeLessThan(72);   // one row
+    const t = await page.locator("#joinPanel .join-t").boundingBox(), ci0 = await page.locator("#codeIn").boundingBox(), jb0 = await page.locator("#joinBtn").boundingBox();
+    expect(Math.abs(t.y + t.height / 2 - (ci0.y + ci0.height / 2))).toBeLessThan(6);
+    expect(Math.abs(jb0.y - ci0.y)).toBeLessThan(6);
+    await expect(page.locator("#meHome .label")).toHaveCount(0);
+    await expect(page.locator("#nick")).toHaveAttribute("placeholder", "Your first name or nickname");
     await expect(page.locator(".me-hint")).toHaveCount(0);
     await expect(page.locator("#pfpPick")).toHaveCount(0);
     await expect(page.locator("#pfpDel")).toBeHidden();
@@ -34,11 +39,38 @@ test.describe("Home page cleanup", () => {
     expect(a.y).toBeLessThan(c.y + c.height);
     expect(a.y + a.height).toBeGreaterThan(n.y);
     // friend-code row: plain placeholder, compact controls; avatar centred on the name + country rows
-    await expect(page.locator("#codeIn")).toHaveAttribute("placeholder", "Enter code...");
+    await expect(page.locator("#codeIn")).toHaveAttribute("placeholder", "Code");
     const ci = await page.locator("#codeIn").boundingBox(), jb = await page.locator("#joinBtn").boundingBox();
     expect(ci.height).toBeLessThanOrEqual(48); expect(ci.height).toBeGreaterThanOrEqual(44);
     expect(jb.height).toBeLessThanOrEqual(48); expect(jb.height).toBeGreaterThanOrEqual(44);
     const mid = (n.y + c.y + c.height) / 2;
     expect(Math.abs(a.y + a.height / 2 - mid)).toBeLessThan(8);
+  });
+});
+
+test.describe("ESADE space", () => {
+  test("?space=esade shows only ESADE quizzes, no promo, and sticks; ?space=all restores the full site", async ({ page }) => {
+    await openSite(page);
+    await expect(page.locator("#tour")).toBeVisible();
+    await page.goto("/?space=esade");
+    await expect(page.locator("#acadHead")).toBeVisible();
+    await expect(page.locator("#tour")).toBeHidden();
+    await expect(page.locator("#home .hero")).toBeHidden();
+    const ids = await page.locator("#quizGrid .qcard").evaluateAll(n => n.map(x => x.dataset.id));
+    expect(ids.length).toBeGreaterThan(3);
+    expect(ids).toContain("resistance");
+    expect(ids).not.toContain("culture");
+    await page.goto("/");
+    await expect(page.locator("#acadHead")).toBeVisible();   // remembered on this device
+    await page.goto("/?space=all");
+    await expect(page.locator("#acadHead")).toBeHidden();
+    await expect(page.locator("#tour")).toBeVisible();
+  });
+  test("an ESADE quiz link opens the quiz and the ESADE space", async ({ page }) => {
+    await openSite(page, { path: "/?quiz=resistance" });
+    await expect(page.locator("#topic")).toBeVisible();
+    await page.locator("#topicBack").click();
+    await expect(page.locator("#acadHead")).toBeVisible();
+    await expect(page.locator("#quizGrid .qcard[data-id=culture]")).toHaveCount(0);
   });
 });
