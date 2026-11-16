@@ -114,7 +114,7 @@ function qExtra(q){
   if(q.x!=null)return q.x;
   const lq=q.q.length>170?Math.min(30,Math.ceil((q.q.length-170)/25)):0;
   const rd=q.q.length+(q.o&&!q.tf?q.o.reduce((n,o)=>n+String(o).length,0):0);   // multiple choice: the four options also have to be read
-  return Math.max(lq,rd>400?Math.min(30,Math.ceil((rd-400)/25)):0)}
+  return Math.max(lq,rd>300?Math.min(30,Math.ceil((rd-300)/25)):0)}
 function isHard(qi){return (qOf(qi).x||0)>=HARD_X}
 const HARD_X=20;
 function qT(qi){return (G.T+(isT(qi)?10:0)+qExtra(qOf(qi)))*1000}
