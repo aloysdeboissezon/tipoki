@@ -48,26 +48,26 @@ test.describe("Home page cleanup", () => {
   });
 });
 
-test.describe("ESADE space", () => {
-  test("by default the home shows only ESADE quizzes and the tutorial; ?space=all restores the full site and sticks", async ({ page }) => {
-    await openSite(page, { storage: { "tpk-space": "" } });
+test.describe("ESADE-only site", () => {
+  test("the home shows only ESADE quizzes and the tutorial, with no way to reach the others", async ({ page }) => {
+    await openSite(page, { esadeOnly: true });
     await expect(page.locator("#acadHead")).toBeVisible();
     await expect(page.locator("#tour")).toBeVisible();
     await expect(page.locator("#home .hero")).toBeHidden();
+    await expect(page.locator("#esadeBtn")).toBeHidden();
     const ids = await page.locator("#quizGrid .qcard").evaluateAll(n => n.map(x => x.dataset.id));
     expect(ids.length).toBeGreaterThan(3);
     expect(ids).toContain("resistance");
-    expect(ids).not.toContain("culture");
-    await page.goto("/?space=all");
-    await expect(page.locator("#acadHead")).toBeHidden();
-    await expect(page.locator("#quizGrid .qcard[data-id=culture]")).toBeAttached();
-    await page.goto("/");
-    await expect(page.locator("#acadHead")).toBeHidden();
-    await page.goto("/?space=esade");
-    await expect(page.locator("#acadHead")).toBeVisible();
+    for (const id of ids) expect(["socio", "compta2", "populism", "regression", "justice", "resistance"]).toContain(id);
+    expect(await page.locator("#qList .qchip").evaluateAll(n => n.map(x => x.dataset.id))).toEqual(ids);
+    await page.goto("/?space=all");   // the old switch does nothing
+    await expect(page.locator("#quizGrid .qcard[data-id=culture]")).toHaveCount(0);
+    await page.goto("/?quiz=culture");   // a link to a non-ESADE quiz stays on the ESADE home
+    await expect(page.locator("#topic")).toBeHidden();
+    await expect(page.locator("#quizGrid .qcard[data-id=culture]")).toHaveCount(0);
   });
   test("an ESADE quiz link opens the quiz; going back shows only ESADE quizzes", async ({ page }) => {
-    await openSite(page, { path: "/?quiz=resistance", storage: { "tpk-space": "" } });
+    await openSite(page, { path: "/?quiz=resistance", esadeOnly: true });
     await expect(page.locator("#topic")).toBeVisible();
     await page.locator("#topicBack").click();
     await expect(page.locator("#acadHead")).toBeVisible();

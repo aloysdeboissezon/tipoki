@@ -61,8 +61,9 @@ test.describe("temporary open mode", () => {
     });
     expect((await run(true)).status).toBe(200);
     expect((await run(false)).status).toBe(401);
+    await page.addInitScript(() => { window.__fullSite = true; });
     // in the browser, open mode makes the ESADE logo a plain filter button (no lock, no pop-up)
-    await page.goto("/?space=all");
+    await page.goto("/");
     await expect(page.locator("#esadeBtn")).not.toHaveClass(/locked/);
     await page.locator("#esadeBtn").click();
     await expect(page.locator("#esadeForm")).toBeHidden();
