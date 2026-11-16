@@ -27,15 +27,21 @@ const label=c=>flag(c)+" "+name(c);
 // names are looked up once and compared with one collator (localeCompare with a locale builds a new one at every call: slow on phones)
 function sorted(){const loc=window.LANG||"en",nm={};CC.forEach(c=>nm[c]=name(c));let col;try{col=new Intl.Collator(loc).compare}catch(e){col=(a,b)=>a<b?-1:a>b?1:0}
   return CC.slice().sort((a,b)=>col(nm[a],nm[b]))}
-// the picker in the profile card
+// the picker in the profile card. Open list: flag + country name. Closed: the flag alone, so the box stays small and sits on the name's row.
+function collapse(s){Array.prototype.forEach.call(s.options,o=>{o.textContent=(o.selected&&o.dataset.f)?o.dataset.f:o.dataset.full})}
+function expand(s){Array.prototype.forEach.call(s.options,o=>{o.textContent=o.dataset.full})}
 function paint(){const s=document.getElementById("country");if(!s)return;
-  if(!s.options.length){const o0=document.createElement("option");o0.value="";o0.textContent=window.tl?tl("No flag"):"No flag";s.appendChild(o0);
-    sorted().forEach(c=>{const o=document.createElement("option");o.value=c;o.textContent=label(c);s.appendChild(o)})}
-  s.value=mine()}
+  const loc=window.LANG||"en";
+  if(!s.options.length||s.dataset.loc!==loc){s.textContent="";s.dataset.loc=loc;
+    const o0=document.createElement("option");o0.value="";o0.dataset.full=window.tl?tl("No flag"):"No flag";o0.dataset.f="\u{1F310}";s.appendChild(o0);
+    sorted().forEach(c=>{const o=document.createElement("option");o.value=c;o.dataset.full=label(c);o.dataset.f=flag(c);s.appendChild(o)})}
+  s.value=mine();collapse(s)}
 function init(){const s=document.getElementById("country");if(!s)return;paint();
-  s.addEventListener("change",()=>{set(s.value);if(window.renderMe)renderMe()})}
+  ["focus","pointerdown","touchstart","keydown"].forEach(ev=>s.addEventListener(ev,()=>expand(s),{passive:true}));
+  s.addEventListener("change",()=>{set(s.value);collapse(s);if(window.renderMe)renderMe()});
+  s.addEventListener("blur",()=>collapse(s))}
 // a small flag element for rows built with el()
 function flagEl(c){const f=flag(c);if(!f)return null;const e=document.createElement("span");e.className="flag";e.textContent=f;e.title=name(c);e.setAttribute("role","img");e.setAttribute("aria-label",name(c));return e}
-window.tpkCountry={codes:CC,ok,flag,name,mine,set,paint,flagEl,guess};
+window.tpkCountry={expand:()=>{const s=document.getElementById("country");if(s)expand(s)},codes:CC,ok,flag,name,mine,set,paint,flagEl,guess};
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();

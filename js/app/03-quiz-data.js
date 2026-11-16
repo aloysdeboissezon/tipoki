@@ -330,9 +330,24 @@ function rememberQuiz(b){if(BUILTIN[b.id])return;const l=myQuizzes().filter(x=>x
 function esc(t){return String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 function genCode(){const A="ABCDEFGHJKLMNPQRSTUVWXYZ";let s="";for(let i=0;i<4;i++)s+=A[Math.floor(Math.random()*A.length)];return s}
 
-$("codeIn").addEventListener("input",e=>{e.target.value=e.target.value.toUpperCase().replace(/[^A-Z]/g,"")});
-$("codeIn").addEventListener("keydown",e=>{if(e.key==="Enter")$("joinBtn").click()});
-$("joinBtn").onclick=()=>{const c=$("codeIn").value.trim();if(c.length!==4){showErr("joinErr",tl("The code is 4 letters."));return}joinGame(c)};
+// friend's code: 4 side-by-side boxes (one letter each). Typing moves on, Backspace goes back, a pasted code fills them all.
+const CODEBOX=[0,1,2,3].map(i=>$("cb"+i));
+const codeGet=()=>CODEBOX.map(b=>b.value).join("");
+function codeSet(c){c=String(c||"").toUpperCase().replace(/[^A-Z]/g,"").slice(0,4);CODEBOX.forEach((b,i)=>b.value=c[i]||"")}
+window.tpkCode={get:codeGet,set:codeSet};
+CODEBOX.forEach((b,i)=>{
+  b.addEventListener("input",()=>{
+    const v=b.value.toUpperCase().replace(/[^A-Z]/g,"");
+    if(v.length>1){let k=i;for(const ch of v){if(k>3)break;CODEBOX[k++].value=ch}CODEBOX[Math.min(k,3)].focus();return}   // several letters at once (autofill, fast typing)
+    b.value=v;if(v&&i<3)CODEBOX[i+1].focus()});
+  b.addEventListener("keydown",e=>{
+    if(e.key==="Enter"){$("joinBtn").click();return}
+    if(e.key==="Backspace"&&!b.value&&i>0){e.preventDefault();CODEBOX[i-1].value="";CODEBOX[i-1].focus()}
+    else if(e.key==="ArrowLeft"&&i>0){e.preventDefault();CODEBOX[i-1].focus()}
+    else if(e.key==="ArrowRight"&&i<3){e.preventDefault();CODEBOX[i+1].focus()}});
+  b.addEventListener("paste",e=>{const t=(e.clipboardData||window.clipboardData).getData("text");e.preventDefault();codeSet(t);CODEBOX[Math.min(codeGet().length,3)].focus()});
+  b.addEventListener("focus",()=>{try{b.select()}catch(e){}})});
+$("joinBtn").onclick=()=>{const c=codeGet();if(c.length!==4){showErr("joinErr",tl("The code is 4 letters."));return}joinGame(c)};
 $("soloBtn").onclick=()=>startSolo();
 $("missBtn").onclick=()=>playMissed();
 function showErr(id,msg){const e=$(id);e.style.color="";e.textContent=msg;e.hidden=!msg}

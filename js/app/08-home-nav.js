@@ -226,7 +226,7 @@ if(sb){setMultiNote(true)}else setMultiNote(false);
   if(!await useBank(id)){if(!esadeDenied)toast(tl("Quiz not found"));return}
   show("topic")})();
 (()=>{let c=null;try{c=(new URLSearchParams(location.search).get("code")||"").toUpperCase().replace(/[^A-Z]/g,"").slice(0,4)}catch(e){}
-  if(!c||c.length!==4)return;$("codeIn").value=c;
+  if(!c||c.length!==4)return;window.tpkCode.set(c);
   try{history.replaceState(null,"",location.pathname)}catch(e){}
   if(sb&&lsGet("socio-nick"))joinGame(c);
   else{$("nick").focus();showErr("joinErr",tl("Enter your first name, then tap Join."));$("joinErr").style.color="var(--hl)"}})();

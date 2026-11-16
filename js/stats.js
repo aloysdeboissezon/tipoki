@@ -5,8 +5,8 @@ function statsSid(){let s=lsGet("tpk-sid");if(!s){s=Math.random().toString(36).s
 async function statsPlayer(quiz){const txt=statsSid()+":"+quiz;
   try{const h=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(txt));return [...new Uint8Array(h)].slice(0,16).map(b=>b.toString(16).padStart(2,"0")).join("")}
   catch(e){let a=0x811c9dc5,b=0x9747b28c;for(const c of txt){a=Math.imul(a^c.charCodeAt(0),16777619);b=Math.imul(b^c.charCodeAt(0),2246822519)}return "f"+(a>>>0).toString(16).padStart(8,"0")+(b>>>0).toString(16).padStart(8,"0")}}
-// Switch in Options ("Anonymous usage stats"): off = nothing is sent at all. Writes made offline wait in the queue of js/offline.js.
-function statsOn(){return lsGet("tpk-nostats")!=="1"}
+// Always on, no setting (stated in the privacy policy and the terms): the rows carry no name, photo, email, account or cookie. Writes made offline wait in the queue of js/offline.js.
+function statsOn(){return true}
 // Time spent, for a professor's course only (Class insight): one anonymous row per study session {kind: quiz | exam | cards | sheet, secs, n}.
 // Only time the page is visible counts, and one session counts at most 30 minutes, so a tab left open does not inflate the figure.
 const STUDY_CAP=1800;

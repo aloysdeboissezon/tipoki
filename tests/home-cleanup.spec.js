@@ -23,7 +23,7 @@ test.describe("Home page cleanup", () => {
     const jp = await page.locator("#joinPanel").boundingBox(), pk = await page.locator("#pickPanel").boundingBox();
     expect(jp.y).toBeLessThan(pk.y);
     expect(jp.height).toBeLessThan(72);   // one row
-    const t = await page.locator("#joinPanel .join-t").boundingBox(), ci0 = await page.locator("#codeIn").boundingBox(), jb0 = await page.locator("#joinBtn").boundingBox();
+    const t = await page.locator("#joinPanel .join-t").boundingBox(), ci0 = await page.locator("#codeBoxes").boundingBox(), jb0 = await page.locator("#joinBtn").boundingBox();
     expect(Math.abs(t.y + t.height / 2 - (ci0.y + ci0.height / 2))).toBeLessThan(6);
     expect(Math.abs(jb0.y - ci0.y)).toBeLessThan(6);
     await expect(page.locator("#meHome .label")).toHaveCount(0);
@@ -36,15 +36,16 @@ test.describe("Home page cleanup", () => {
     await expect(pfp.locator(".pfp-add")).toBeAttached();
     const a = await pfp.boundingBox(), n = await page.locator("#nick").boundingBox(), c = await page.locator("#country").boundingBox();
     expect(a.x + a.width).toBeLessThanOrEqual(n.x);
-    expect(a.y).toBeLessThan(c.y + c.height);
+    // the flag picker sits to the right of the name, on the same row
+    expect(c.x).toBeGreaterThanOrEqual(n.x + n.width - 1);
+    expect(Math.abs(c.y + c.height / 2 - (n.y + n.height / 2))).toBeLessThan(4);
     expect(a.y + a.height).toBeGreaterThan(n.y);
     // friend-code row: plain placeholder, compact controls; avatar centred on the name + country rows
-    await expect(page.locator("#codeIn")).toHaveAttribute("placeholder", "Code");
-    const ci = await page.locator("#codeIn").boundingBox(), jb = await page.locator("#joinBtn").boundingBox();
+    await expect(page.locator("#codeBoxes input")).toHaveCount(4);
+    const ci = await page.locator("#cb0").boundingBox(), jb = await page.locator("#joinBtn").boundingBox();
     expect(ci.height).toBeLessThanOrEqual(48); expect(ci.height).toBeGreaterThanOrEqual(44);
     expect(jb.height).toBeLessThanOrEqual(48); expect(jb.height).toBeGreaterThanOrEqual(44);
-    const mid = (n.y + c.y + c.height) / 2;
-    expect(Math.abs(a.y + a.height / 2 - mid)).toBeLessThan(8);
+    expect(Math.abs(a.y + a.height / 2 - (n.y + n.height / 2))).toBeLessThan(8);
   });
 });
 

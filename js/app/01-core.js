@@ -32,7 +32,7 @@ me=lsGet("socio-pid");if(!me){me="p"+Math.random().toString(36).slice(2,12)+Date
 try{sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}})}catch(e){sb=null}
 function setMultiNote(ok){
   const n=$("multiNote");n.hidden=ok;
-  $("createBtn").disabled=!ok;$("joinBtn").disabled=!ok;$("codeIn").disabled=!ok;
+  $("createBtn").disabled=!ok;$("joinBtn").disabled=!ok;document.querySelectorAll("#codeBoxes input").forEach(b=>b.disabled=!ok);
   if(!ok)n.textContent=tl("Can't reach the server. Check your internet connection, then reload the page. Solo mode still works.");
 }
 

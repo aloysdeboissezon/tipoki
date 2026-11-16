@@ -254,7 +254,7 @@ function openOnb(name,edit){
   q("onbSkip").textContent=edit?tl("Close"):tl("Skip");
   q("onbTitle").textContent=edit?tl("Your profile"):tl("Set up your profile");
   if(edit)q("onbAcct").innerHTML=tl("Saved online as {u}",{u:"<b>"+esc2(acct?acct.u:"")+"</b>"});
-  const sel=q("onbCountry");if(window.tpkCountry){tpkCountry.paint();sel.innerHTML=($("country")||{}).innerHTML||"";sel.value=tpkCountry.mine()}
+  const sel=q("onbCountry");if(window.tpkCountry){tpkCountry.paint();tpkCountry.expand();sel.innerHTML=($("country")||{}).innerHTML||"";tpkCountry.paint();sel.value=tpkCountry.mine()}
   q("onbNick").value=((get("socio-nick")||"").trim()||(name?name.charAt(0).toUpperCase()+name.slice(1):"")).slice(0,18);if(tpkNick.check(q("onbNick").value))q("onbNick").value="";perr("onbErr","");onbPaint();
   lastFocus=null;show("onb");dlg.hidden=false;document.body.classList.add("noscroll")}
 function onbEnd(save){

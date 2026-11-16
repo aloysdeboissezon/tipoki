@@ -1,13 +1,11 @@
 // ---------- Options: one place for the settings that used to be scattered ----------
-// Sound and vibration are separate here; animations can be turned off by hand; local data can be wiped.
-// Keys: "tpk-haptic" (on|off, unset = follows the sound), "tpk-motion" (off = no animations).
+// Sound and vibration are separate here; local data can be wiped. Animations and anonymous usage counts are always on (no setting).
+// Keys: "tpk-haptic" (on|off, unset = follows the sound).
 (function(){
 const root=document.documentElement,topr=document.querySelector(".topr");if(!topr)return;
 function get(k){try{return localStorage.getItem(k)}catch(e){return null}}
 function set(k,v){try{localStorage.setItem(k,v)}catch(e){}}
-function motionOff(){return get("tpk-motion")==="off"}
-function applyMotion(){if(motionOff())root.setAttribute("data-motion","off");else root.removeAttribute("data-motion")}
-applyMotion();
+root.removeAttribute("data-motion");   // an old "animations off" choice no longer applies
 
 const gear=document.createElement("button");gear.type="button";gear.className="iconbtn";gear.id="optBtn";
 gear.title=tl("Options");gear.setAttribute("aria-label",tl("Options"));gear.setAttribute("aria-haspopup","dialog");
@@ -35,8 +33,6 @@ function build(){
   rows.textContent="";items.length=0;
   items.push(toggle(tl("Sound effects"),()=>soundOn,()=>{$("soundBtn").click()}));
   items.push(toggle(tl("Vibration"),hapticOn,()=>{set("tpk-haptic",hapticOn()?"off":"on");if(hapticOn()&&navigator.vibrate)navigator.vibrate(40)}));
-  items.push(toggle(tl("Animations"),()=>!motionOff(),()=>{set("tpk-motion",motionOff()?"on":"off");applyMotion()}));
-  items.push(toggle(tl("Anonymous usage stats"),()=>get("tpk-nostats")!=="1",()=>{set("tpk-nostats",get("tpk-nostats")==="1"?"0":"1")}));
   items.forEach(i=>rows.appendChild(i.row));
   const an=document.createElement("p");an.className="muted opt-note";an.textContent=tl("Counts finished and abandoned games without any name, cookie or email, to see how qwebbo is used.");rows.appendChild(an);
   // shortcuts to the settings that live elsewhere
