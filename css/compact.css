@@ -395,11 +395,11 @@
 #meHome .pfp{grid-row:1/span 2}
 @media (max-width:380px){#joinPanel .join-t{font-size:13.5px}#joinPanel .codein{width:76px}}
 
-/* ESADE space (?space=esade, or an ESADE quiz link): only the ESADE quizzes, no game extras, no promo video */
+/* ESADE space (default; ?space=all leaves it): only the ESADE quizzes, no game extras */
 .acad-head{display:none}
 html.space-esade .acad-head{display:flex;align-items:center;gap:14px;padding:4px 2px}
 .acad-head img{width:44px;height:44px;border-radius:10px;flex:none}
 .acad-head h1{font:800 clamp(20px,5vw,28px)/1.15 var(--f-display);margin:0;color:var(--ink)}
 .acad-head p{margin:2px 0 0;font-size:14px;color:var(--muted,var(--ink));opacity:.8}
-html.space-esade #home .hero,html.space-esade #home .tour,html.space-esade #esadeBtn,html.space-esade .sitefoot .space-out{display:none!important}
+html.space-esade #home .hero,html.space-esade #esadeBtn,html.space-esade .sitefoot .space-out{display:none!important}
 #joinPanel .codein::placeholder{font-size:14px}
