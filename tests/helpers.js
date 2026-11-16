@@ -34,6 +34,7 @@ async function openSite(page, { path = "/", storage = {}, esade = true } = {}) {
     storage = { "qwebbo-esade": JSON.stringify({ e: "student@esade.edu" }), ...storage };
     await page.route(/\/api\/esade\?/, route => route.continue({ headers: { ...route.request().headers(), authorization: "Bearer e2e-esade-token-0000000000" } }));
   }
+  storage = { "tpk-space": "all", ...storage };   // the tests start on the full site unless they ask for the ESADE space
   await page.route(/^https?:\/\/(?!localhost)/, route => {
     const url = route.request().url();
     if (/supabase-js/.test(url)) return route.fulfill({ contentType: "text/javascript", body: FAKE_SUPABASE });

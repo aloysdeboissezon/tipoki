@@ -28,13 +28,13 @@ function fold(s){return String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/
 function quizHay(q){return fold([q.title,q.title0,q.subject,q.subject0,q.kw].concat(Object.values(q.sess||(q.data&&q.data.sess)||{}),Object.values(q.sess0||{}),Object.values(q.tags||{}),Object.values(q.tags0||{})).join(" "))}
 // ESADE collection: to put a new quiz in it, add its id here (or give its bank/catalog entry group:"esade")
 function isEsade(q){return ESADE_IDS.includes(q.id)||q.group==="esade"}   // ESADE_IDS: js/app/03-quiz-data.js
-// ESADE space: opened by ?space=esade or by a link to an ESADE quiz, remembered on this device; ?space=all goes back to the full site.
-// It shows only the ESADE quizzes, in an academic layout (no slogan, game goals or promo video).
-const spaceEsade=(()=>{let on=lsGet("tpk-space")==="esade";
-  try{const p=new URLSearchParams(location.search),sp=p.get("space"),q=p.get("quiz");
-    if(sp==="esade"||(q&&ESADE_IDS.includes(q)))on=true;else if(sp==="all")on=false;
+// ESADE space is the default: the home shows only the ESADE quizzes in an academic layout (no slogan or game goals).
+// ?space=all opens the full site (remembered on this device); ?space=esade goes back.
+const spaceEsade=(()=>{let on=lsGet("tpk-space")!=="all";
+  try{const p=new URLSearchParams(location.search),sp=p.get("space");
+    if(sp==="all")on=false;else if(sp==="esade")on=true;
     if(sp){p.delete("space");const r=p.toString();history.replaceState(null,"",location.pathname+(r?"?"+r:""))}}catch(e){}
-  lsSet("tpk-space",on?"esade":"");document.documentElement.classList.toggle("space-esade",on);return on})();
+  lsSet("tpk-space",on?"":"all");document.documentElement.classList.toggle("space-esade",on);return on})();
 let esadeOn=lsGet("tpk-esade")==="1"&&esadeVerified(),favOn=false,lastQuizList=null;
 function setEsade(on){esadeOn=on;lsSet("tpk-esade",on?"1":"0");renderQuizGrid(lastQuizList||quizList());$("quizGrid").scrollLeft=0}
 function setFavOn(on){favOn=on;renderQuizGrid(lastQuizList||quizList());$("quizGrid").scrollLeft=0}
