@@ -75,8 +75,6 @@ var KO={
 "{n} selected":"{n}개 선택됨",
 "Rise to your friend's challenge!":"친구의 도전을 받아들이세요!",
 "Friend's code?":"친구 코드가 있나요?",
-"ESADE course quizzes":"ESADE 강의 퀴즈",
-"Quizzes, flashcards, study sheets and exams for your courses.":"강의별 퀴즈, 플래시카드, 학습 자료, 시험 모드.",
 "Enter code...":"코드 입력...",
 "No code? Ask your friend, or open the link they sent you.":"코드가 없나요? 친구에게 물어보거나 받은 링크를 열어보세요.",
 "No open games right now.":"지금 열려 있는 게임이 없어요.",

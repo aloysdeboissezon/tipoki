@@ -3,7 +3,7 @@
 
 /* ---------- home ---------- */
 #home{display:flex}
-#home #joinPanel{order:-2}#home .acad-head{order:-1}#home #resumeHome{order:0}#home .hero{order:1}#home #pickPanel{order:2}#home .tour{order:3}#home #meHome{order:5}#home #multiNote{order:6}
+#home #joinPanel{order:-2}#home #resumeHome{order:0}#home .hero{order:1}#home #pickPanel{order:2}#home .tour{order:3}#home #meHome{order:5}#home #multiNote{order:6}
 .hero{padding:clamp(16px,4vw,28px);gap:6px;border-radius:24px}
 .hero h1{font-size:clamp(26px,6.5vw,44px)}
 .hero p{font-size:clamp(14px,2.2vw,17px)}
@@ -395,11 +395,5 @@
 #meHome .pfp{grid-row:1/span 2}
 @media (max-width:380px){#joinPanel .join-t{font-size:13.5px}#joinPanel .codein{width:76px}}
 
-/* ESADE space (the only mode): only the ESADE quizzes, no game extras */
-.acad-head{display:none}
-html.space-esade .acad-head{display:flex;align-items:center;gap:14px;padding:4px 2px}
-.acad-head img{width:44px;height:44px;border-radius:10px;flex:none}
-.acad-head h1{font:800 clamp(20px,5vw,28px)/1.15 var(--f-display);margin:0;color:var(--ink)}
-.acad-head p{margin:2px 0 0;font-size:14px;color:var(--muted,var(--ink));opacity:.8}
-html.space-esade #home .hero,html.space-esade #esadeBtn,html.space-esade .sitefoot .space-out{display:none!important}
-#joinPanel .codein::placeholder{font-size:14px}
+/* ESADE-only site: the ESADE filter button has nothing left to filter */
+html.space-esade #esadeBtn{display:none!important}

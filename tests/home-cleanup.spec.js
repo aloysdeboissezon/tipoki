@@ -51,9 +51,8 @@ test.describe("Home page cleanup", () => {
 test.describe("ESADE-only site", () => {
   test("the home shows only ESADE quizzes and the tutorial, with no way to reach the others", async ({ page }) => {
     await openSite(page, { esadeOnly: true });
-    await expect(page.locator("#acadHead")).toBeVisible();
     await expect(page.locator("#tour")).toBeVisible();
-    await expect(page.locator("#home .hero")).toBeHidden();
+    await expect(page.locator("#home .hero")).toBeVisible();
     await expect(page.locator("#esadeBtn")).toBeHidden();
     const ids = await page.locator("#quizGrid .qcard").evaluateAll(n => n.map(x => x.dataset.id));
     expect(ids.length).toBeGreaterThan(3);
@@ -70,7 +69,6 @@ test.describe("ESADE-only site", () => {
     await openSite(page, { path: "/?quiz=resistance", esadeOnly: true });
     await expect(page.locator("#topic")).toBeVisible();
     await page.locator("#topicBack").click();
-    await expect(page.locator("#acadHead")).toBeVisible();
     await expect(page.locator("#quizGrid .qcard[data-id=culture]")).toHaveCount(0);
   });
 });
