@@ -499,3 +499,10 @@ html[data-theme="dark"] .off-bar{background:#2B2A45}
 .survey-h{font-size:13px;margin:8px 0 0}
 /* answer screen: room for the "Correct answer" / "Your answer" labels, which sit on the top edge of the tiles and touched the question above */
 #reveal #rTiles{margin-top:16px}
+
+/* mode pills: the label always fits its tile (scales with the tile width, any language), and every tile keeps the same pill + description position */
+#topic[data-mode=menu] .mcard{container-type:inline-size}
+#topic[data-mode=menu] .mcard>b{font-size:min(clamp(12px,4.2vw,19px),calc((100cqw - 20px)/13.5));overflow:hidden;text-overflow:ellipsis}
+@media (min-width:900px){#topic[data-mode=menu] .mcard>b{font-size:min(clamp(12px,1.45vw,20px),calc((100cqw - 20px)/13.5))}}
+#topic[data-mode=menu] .mcard>span:not(.mc-pv){display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden}
+@media (min-width:700px){#topic[data-mode=menu] .mcard>span:not(.mc-pv){min-height:5em}}
