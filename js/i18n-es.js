@@ -74,8 +74,6 @@ var ES={
 "{n} selected":"{n} seleccionados",
 "Rise to your friend's challenge!":"Acepta el desafío de tu amigo.",
 "Friend's code?":"¿Código amigo?",
-"ESADE course quizzes":"Quizzes de los cursos de ESADE",
-"Quizzes, flashcards, study sheets and exams for your courses.":"Quizzes, flashcards, fichas de estudio y exámenes para tus cursos.",
 "Enter code...":"Introduce el código...",
 "No code? Ask your friend, or open the link they sent you.":"¿No tienes código? Pídeselo a tu amigo o abre el enlace que te envió.",
 "No open games right now.":"No hay partidas abiertas ahora mismo.",
