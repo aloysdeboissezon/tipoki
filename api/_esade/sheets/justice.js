@@ -50,11 +50,11 @@ sections:[
 {title:"Mbembe: precolonial Africa, abode and carceral spaces",lead:"Borders made to be crossed.",blocks:[
  {t:"table",head:["Theme","Mbembe's argument"],rows:[
   ["Borders","Precolonial borders existed but were <b>porous and permeable</b>: a border is there to be crossed."],
-  ["Motor of change","<b>Mobility</b>, not class struggle; space was organised by continuous movement."],
+  ["Motor of change","<b>Mobility</b>, not class struggle; space was organized by continuous movement."],
   ["Sovereignty","Exercised through <b>networks and crossroads</b>, not bordered territory (Soyinka, Achebe, Tutuola; Dogon cosmogonies, Griaule)."],
   ["Wealth","<b>Wealth in people</b> over wealth in things."],
   ["Membership","A repertoire of alternatives to citizen or foreigner: alliances through trade, marriage or religion; you dominated by integrating foreigners."],
   ["Debt","A <b>constitutive debt</b> to the living, the dead and the unborn, humans and non-humans, not an expropriatory one."]]},
  {t:"p",x:"<b>Right of abode</b>: a new fundamental right in Ghana's constitution, a cornerstone for a borderless Africa. History shows displacement and confinement: plantations, Black Codes, Pig Laws, chain gangs, the Code de l'indigénat, Bantustans and labour reserves, today's US carceral complex."},
- {t:"key",title:"The conclusion to remember",items:["The scramble for Africa made the continent a <b>carceral space</b> and each person a potential illegal migrant.","To finish decolonisation: <b>bring down colonial boundaries</b> and make Africa a vast space of circulation.","Link the readings: the Report redistributes <i>resources</i> across borders, Mbembe asks to redistribute the <i>freedom to move</i>."]}]}
+ {t:"key",title:"The conclusion to remember",items:["The scramble for Africa made the continent a <b>carceral space</b> and each person a potential illegal migrant.","To finish decolonization: <b>bring down colonial boundaries</b> and make Africa a vast space of circulation.","Link the readings: the Report redistributes <i>resources</i> across borders, Mbembe asks to redistribute the <i>freedom to move</i>."]}]}
 ]};
