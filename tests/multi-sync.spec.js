@@ -1,4 +1,5 @@
 const { test, expect } = require("@playwright/test");
+const typeCode = async (page, code) => { await page.locator("#cb0").click(); await page.keyboard.type(code); };
 const { makeStore, connect, openShared } = require("./fake-backend");
 const { openQuiz, answerRight } = require("./helpers");
 
@@ -27,7 +28,7 @@ test.describe("multiplayer", () => {
     const code = (await a.page.locator("#lobbyCode").innerText()).trim();
     expect(code).toMatch(/^[A-Z]{4}$/);
 
-    await b.page.locator("#codeIn").fill(code);
+    await typeCode(b.page, code);
     await b.page.locator("#joinBtn").click();
     await expect(b.page.locator("#lobby")).toBeVisible();
     await expect(b.page.locator("#lobbyWait")).toBeVisible();
@@ -60,7 +61,7 @@ test.describe("multiplayer", () => {
   test("a wrong code shows a message", async ({ browser }) => {
     const store = makeStore();
     const a = await phone(browser, store, { "socio-nick": "Alice" });
-    await a.page.locator("#codeIn").fill("ZZZZ");
+    await typeCode(a.page, "ZZZZ");
     await a.page.locator("#joinBtn").click();
     await expect(a.page.locator("#joinErr")).toBeVisible();
     await a.context.close();

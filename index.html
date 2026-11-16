@@ -41,7 +41,7 @@
 <link rel="stylesheet" href="css/figs.css?v=20261105b">
 <link rel="stylesheet" href="css/tour.css?v=20261105b">
 <link rel="stylesheet" href="css/theme.css?v=20261113b">
-<link rel="stylesheet" href="css/compact.css?v=20261116e">
+<link rel="stylesheet" href="css/compact.css?v=20261116h">
 <link rel="stylesheet" href="css/refine.css?v=20261113b">
 <link rel="stylesheet" href="css/finish.css?v=20261105e">
 <link rel="stylesheet" href="css/a11y.css?v=20261105b">
@@ -89,7 +89,7 @@
       <div class="steph"><span class="stepn">1</span><h2>What do you want to study?</h2><button type="button" class="fav-btn" id="favBtn" aria-pressed="false" title="Show only my favorite quizzes" aria-label="Favorite quizzes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.8 4.2 13.4A5 5 0 0 1 11 6.2l1 1 1-1a5 5 0 0 1 6.8 7.2z"/></svg></button><button type="button" class="esade-btn" id="esadeBtn" aria-pressed="false" title="Show only the ESADE quizzes" aria-label="ESADE quizzes"><img class="esade-logo" src="/img/esade.png" width="28" height="28" alt="ESADE" decoding="async"></button></div>
       <div class="qsearch" role="search">
         <svg class="qs-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
-        <input type="search" id="quizSearch" placeholder="Search quizzes…" title="Title, subject, chapter or keyword" aria-label="Search quizzes" aria-controls="quizGrid" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
+        <input type="search" id="quizSearch" placeholder="Search courses…" title="Title, subject, chapter or keyword" aria-label="Search courses" aria-controls="quizGrid" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
         <button type="button" class="qs-clear" id="quizSearchClear" aria-label="Clear search" hidden>×</button>
       </div>
       <div class="quizgrid" id="quizGrid" aria-live="polite"></div>
@@ -98,7 +98,7 @@
       <div class="qempty" id="quizEmpty" hidden><svg class="qe-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21M8 10.5h5"/></svg><p>No quiz found for “<b id="quizEmptyQ"></b>”.</p><button type="button" class="linkbtn" id="quizEmptyClear">Clear search</button></div>
     </div>
     <div class="panel" id="joinPanel">
-      <div class="joinrow"><label class="join-t" for="codeIn">Friend's code?</label><input type="text" id="codeIn" class="codein" maxlength="4" placeholder="Code" autocomplete="off" autocapitalize="characters" aria-label="Game code"><button class="btn dark" id="joinBtn">Join</button></div>
+      <div class="joinrow"><label class="join-t" id="codeLbl" for="cb0">Friend's code?</label><div class="codebox" id="codeBoxes" role="group" aria-labelledby="codeLbl"><input type="text" id="cb0" maxlength="1" inputmode="text" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" aria-label="1"><input type="text" id="cb1" maxlength="1" inputmode="text" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" aria-label="2"><input type="text" id="cb2" maxlength="1" inputmode="text" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" aria-label="3"><input type="text" id="cb3" maxlength="1" inputmode="text" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" aria-label="4"></div><button class="btn dark" id="joinBtn">Join</button></div>
       <p class="err" id="joinErr" hidden></p>
     </div>
 
@@ -472,16 +472,16 @@
 <script defer src="js/figs.js?v=20261105b"></script>
 <script defer src="js/figtags.js?v=20261105b"></script>
 <script defer src="js/explain.js?v=20261105b"></script>
-<script defer src="js/country.js?v=20261113a"></script>
+<script defer src="js/country.js?v=20261116a"></script>
 <script defer src="js/nickfilter.js?v=20261105f"></script>
-<script defer src="js/app/01-core.js?v=20261103j"></script>
+<script defer src="js/app/01-core.js?v=20261116a"></script>
 <script defer src="js/app/02-profile.js?v=20261113b"></script>
-<script defer src="js/app/03-quiz-data.js?v=20261113a"></script>
+<script defer src="js/app/03-quiz-data.js?v=20261116a"></script>
 <script defer src="js/app/04-media.js?v=20261105b"></script>
 <script defer src="js/app/05-engine.js?v=20261113b"></script>
 <script defer src="js/app/06-game.js?v=20261105b"></script>
 <script defer src="js/app/07-end-flashcards.js?v=20261114a"></script>
-<script defer src="js/app/08-home-nav.js?v=20261116c"></script>
+<script defer src="js/app/08-home-nav.js?v=20261116d"></script>
 <script defer src="js/stats.js?v=20261114a"></script>
 <script defer src="js/exam.js?v=20261105b"></script>
 <script defer src="js/examresume.js?v=20261105b"></script>
@@ -501,7 +501,7 @@
 <script defer src="js/music.js?v=20261105b"></script>
 <script defer src="js/tour.js?v=20261105b"></script>
 <script defer src="js/theme.js?v=20261105b"></script>
-<script defer src="js/sync.js?v=20261113a"></script>
+<script defer src="js/sync.js?v=20261116a"></script>
 <script defer src="js/options.js?v=20261104a"></script>
 <script defer src="js/vendor/gsap.min.js?v=20261105b"></script>
 <script defer src="js/vendor/lenis.min.js?v=20261105b"></script>

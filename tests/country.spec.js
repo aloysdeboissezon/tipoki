@@ -1,4 +1,5 @@
 const { test, expect } = require("@playwright/test");
+const typeCode = async (page, code) => { await page.locator("#cb0").click(); await page.keyboard.type(code); };
 const { makeStore, connect, openShared } = require("./fake-backend");
 const { openQuiz } = require("./helpers");
 
@@ -34,7 +35,7 @@ test.describe("country flag", () => {
     await a.page.locator("#createBtn").click();
     await expect(a.page.locator("#lobby")).toBeVisible();
     const code = (await a.page.locator("#lobbyCode").innerText()).trim();
-    for (const p of [b, c]) { await p.page.locator("#codeIn").fill(code); await p.page.locator("#joinBtn").click(); await expect(p.page.locator("#lobby")).toBeVisible(); }
+    for (const p of [b, c]) { await typeCode(p.page, code); await p.page.locator("#joinBtn").click(); await expect(p.page.locator("#lobby")).toBeVisible(); }
     const lobby = a.page.locator("#lobbyPlayers");
     await expect(lobby).toContainText("Charles (2)", { timeout: 10_000 });    // second French Charles
     await expect(lobby).toContainText("🇫🇷");
