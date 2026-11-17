@@ -63,8 +63,14 @@ test.describe("pause and resume", () => {
 
     await page.locator("#question .pausebtn").click();
     await expect(page.locator("#topic")).toBeVisible();
-    await page.locator("#modeBack").click(); // the resume card sits on the quiz page's main menu
-    await expect(page.locator("#resumeCard")).toBeVisible();
+    // the quiz page opens on the setup screen: a "Resume" button sits at the top, like "Pause" in the game
+    await expect(page.locator("#resumeTop")).toBeVisible();
+    await expect(page.locator("#resumeTop")).toBeInViewport();
+    await page.screenshot({ path: process.env.SHOT || "/tmp/resume.png" });
+    await page.locator("#resumeTop").click();
+    await expect(page.locator("#question, #reveal").first()).toBeVisible();
+    await expect(page.locator("#qNum")).toContainText("Question 2 / 5");
+    await page.locator("#question .pausebtn, #reveal .pausebtn").first().click();
     await expect(page.locator("#resumeSub")).toContainText("1 / 1 correct");
 
     // survives a reload
