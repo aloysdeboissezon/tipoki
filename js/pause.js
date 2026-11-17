@@ -29,7 +29,7 @@
   const btns=[mk(document.querySelector("#question .hud>.row")),mk(document.querySelector("#reveal .hud>.row"))];
   // "Resume" mirrors "Pause": a button at the top of the quiz page (in every study mode) that reopens the paused game of this quiz
   const rb=el("button","btn ghost pausebtn resumebtn",tl("Resume"));rb.type="button";rb.id="resumeTop";rb.hidden=true;rb.onclick=()=>resumeSolo();
-  const rrow=$("topicBack").parentNode;rrow.style.cssText="display:flex;align-items:center;justify-content:space-between;gap:10px";rrow.appendChild(rb);   // same look as Pause, top right of the quiz page
+  const rrow=$("topicBack").parentNode;rrow.style.cssText="display:flex;align-items:center;justify-content:space-between;gap:10px";rrow.insertBefore(rb,rrow.firstChild);   // same look as Pause, top right of the quiz page
   function showResume(){const s=savedSolo();rb.hidden=!(s&&BANK&&s.bank===BANK.id&&!mode)}
   const oShow=show;
   show=function(id){oShow(id);if(id==="topic"){render();showResume()}const on=mode==="solo"&&(id==="question"||id==="reveal");btns.forEach(b=>b.hidden=!on)};
