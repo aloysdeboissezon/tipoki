@@ -509,7 +509,6 @@ var KO={
 "By quiz":"퀴즈별",
 "Open this quiz's stats":"이 퀴즈의 통계 열기",
 "Print / PDF":"인쇄 / PDF",
-"Counts finished and abandoned games without any name, cookie or email, to see how qwebbo is used.":"이름, 쿠키, 이메일 없이 끝낸 게임과 중단한 게임의 수만 세어서 qwebbo가 어떻게 쓰이는지 파악해요.",
 "Refresh":"새로고침",
 "Loading…":"불러오는 중…",
 "Can't reach the server, try again.":"서버에 연결할 수 없어요. 다시 시도해주세요.",

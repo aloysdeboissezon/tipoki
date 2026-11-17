@@ -34,7 +34,6 @@ function build(){
   items.push(toggle(tl("Sound effects"),()=>soundOn,()=>{$("soundBtn").click()}));
   items.push(toggle(tl("Vibration"),hapticOn,()=>{set("tpk-haptic",hapticOn()?"off":"on");if(hapticOn()&&navigator.vibrate)navigator.vibrate(40)}));
   items.forEach(i=>rows.appendChild(i.row));
-  const an=document.createElement("p");an.className="muted opt-note";an.textContent=tl("Counts finished and abandoned games without any name, cookie or email, to see how qwebbo is used.");rows.appendChild(an);
   // shortcuts to the settings that live elsewhere
   const sh=document.createElement("div");sh.className="opt-links";
   [["sizeBtn",tl("Text size")],["themeBtn",tl("Theme")]].forEach(([id,t])=>{
