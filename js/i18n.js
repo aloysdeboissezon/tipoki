@@ -517,7 +517,6 @@ var FR={
 "By quiz":"Par quiz",
 "Open this quiz's stats":"Ouvrir les stats de ce quiz",
 "Print / PDF":"Imprimer / PDF",
-"Counts finished and abandoned games without any name, cookie or email, to see how qwebbo is used.":"Compte les parties terminées et abandonnées sans nom, cookie ni e-mail, pour savoir comment qwebbo est utilisé.",
 "Refresh":"Actualiser",
 "Loading…":"Chargement…",
 "Can't reach the server, try again.":"Serveur injoignable, réessaie.",
