@@ -23,12 +23,16 @@
   // ----- solo quiz games -----
   function pauseGame(){
     if(mode!=="solo"||!G)return;
-    saveSolo(true);leaveGame(false);toast(tl("Game paused. Resume it from this quiz page."));
+    saveSolo(true);leaveGame(false);   // the "Resume" button that appears at the top of the quiz page says it all
   }
   function mk(host){const b=el("button","btn ghost pausebtn",tl("Pause"));b.type="button";b.hidden=true;b.onclick=pauseGame;host.appendChild(b);return b}
   const btns=[mk(document.querySelector("#question .hud>.row")),mk(document.querySelector("#reveal .hud>.row"))];
+  // "Resume" mirrors "Pause": a button at the top of the quiz page (in every study mode) that reopens the paused game of this quiz
+  const rb=el("button","btn ghost pausebtn resumebtn",tl("Resume"));rb.type="button";rb.id="resumeTop";rb.hidden=true;rb.onclick=()=>resumeSolo();
+  const rrow=$("topicBack").parentNode;rrow.style.cssText="display:flex;align-items:center;justify-content:space-between;gap:10px";rrow.appendChild(rb);   // same look as Pause, top right of the quiz page
+  function showResume(){const s=savedSolo();rb.hidden=!(s&&BANK&&s.bank===BANK.id&&!mode)}
   const oShow=show;
-  show=function(id){oShow(id);if(id==="topic")render();const on=mode==="solo"&&(id==="question"||id==="reveal");btns.forEach(b=>b.hidden=!on)};
+  show=function(id){oShow(id);if(id==="topic"){render();showResume()}const on=mode==="solo"&&(id==="question"||id==="reveal");btns.forEach(b=>b.hidden=!on)};
   // ----- flashcards -----
   const KEY="tpk-cardrun",MAX_AGE=7*864e5;
   function load(){try{const s=JSON.parse(lsGet(KEY)||"null");if(s&&s.bank&&Array.isArray(s.terms)&&s.terms.length&&Date.now()-s.at<MAX_AGE)return s}catch(e){}return null}
