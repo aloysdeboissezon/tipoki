@@ -79,10 +79,10 @@ test.describe("About, contact and legal pages", () => {
     }
   });
 
-  test("privacy policy mentions what the code stores: no cookies, accounts, analytics opt-out", async ({ page }) => {
+  test("privacy policy mentions what the code stores: no cookies, accounts, anonymous stats", async ({ page }) => {
     await page.goto("/privacy.html");
     const t = await page.locator("main .lang:visible").innerText();
-    for (const w of ["no cookies", "password", "Anthropic", "Vercel", "Supabase", "Options"]) expect(t.toLowerCase()).toContain(w.toLowerCase());
+    for (const w of ["no cookies", "password", "Anthropic", "Vercel", "Supabase"]) expect(t.toLowerCase()).toContain(w.toLowerCase());
   });
 
   test("every language of a page has the same sections", async ({ page }) => {

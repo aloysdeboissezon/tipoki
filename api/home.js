@@ -6,10 +6,10 @@ const fs = require("fs");
 const path = require("path");
 
 const TEXTS = {
-  en: { title: "qwebbo – Quizzes and flashcards from your course notes", desc: "qwebbo turns your course notes into quizzes and flashcards. Study solo, play live with friends, and prepare your exams.", locale: "en_US" },
-  fr: { title: "qwebbo – Quiz et flashcards à partir de tes cours", desc: "qwebbo transforme tes cours en quiz et flashcards. Révise seul, joue en direct avec tes amis et prépare tes examens.", locale: "fr_FR" },
-  es: { title: "qwebbo – Quizzes y flashcards a partir de tus apuntes", desc: "qwebbo convierte tus apuntes en quizzes y flashcards. Estudia solo, juega en directo con tus amigos y prepara tus exámenes.", locale: "es_ES" },
-  ko: { title: "qwebbo – 내 노트로 만드는 퀴즈와 플래시카드", desc: "qwebbo는 수업 노트를 퀴즈와 플래시카드로 바꿔줘요. 혼자 공부하고, 친구들과 실시간으로 플레이하고, 시험을 준비하세요.", locale: "ko_KR" },
+  en: { title: "qwebbo – Quizzes and flashcards to revise your courses", desc: "qwebbo gives you quizzes and flashcards to revise your courses. Study solo, play live with friends, and prepare your exams.", locale: "en_US" },
+  fr: { title: "qwebbo – Quiz et flashcards pour réviser tes cours", desc: "qwebbo te propose des quiz et des flashcards pour réviser tes cours. Révise seul, joue en direct avec tes amis et prépare tes examens.", locale: "fr_FR" },
+  es: { title: "qwebbo – Quizzes y flashcards para repasar tus cursos", desc: "qwebbo te ofrece quizzes y flashcards para repasar tus cursos. Estudia solo, juega en directo con tus amigos y prepara tus exámenes.", locale: "es_ES" },
+  ko: { title: "qwebbo – 수업 복습용 퀴즈와 플래시카드", desc: "qwebbo는 수업 복습용 퀴즈와 플래시카드를 제공해요. 혼자 공부하고, 친구들과 실시간으로 플레이하고, 시험을 준비하세요.", locale: "ko_KR" },
 };
 
 const esc = s => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
