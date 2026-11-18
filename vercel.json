@@ -71,6 +71,10 @@
       "dest": "/api/home"
     },
     {
+      "src": "/quiz-compta",
+      "dest": "/quiz-compta.html"
+    },
+    {
       "handle": "filesystem"
     }
   ]
