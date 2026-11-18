@@ -237,7 +237,7 @@ var FR={
 "{n} question":"{n} question",
 "{n} card":"{n} carte",
 "{n} cards":"{n} cartes",
-"Tutorial":"Tutoriel","Quiz compta 2":"Quiz compta 2","Cheat sheet, 20 mock tests, flashcards & exam tactics":"Fiche de révision, 20 tests blancs, flashcards et tactiques d'examen",
+"Tutorial":"Tutoriel","Quiz compta 3":"Quiz compta 3","Cheat sheet, 20 mock tests, flashcards & exam tactics":"Fiche de révision, 20 tests blancs, flashcards et tactiques d'examen",
 "← Options":"← Options",
 "Answer questions solo or challenge your friends in a live game.":"Réponds aux questions seul ou défie tes amis en direct.",
 "Flip, memorize, repeat. The ones you miss come back soon.":"Retourne, mémorise, répète. Celles que tu rates reviennent vite.",
