@@ -48,6 +48,12 @@ test.describe("Accounting test 3", () => {
     await openQuiz(page, "acct3");
     const r = await page.evaluate(() => { const i = TQ.findIndex(q => /quick ratio\?/.test(q.q)); return ["0.9", "0,90", "0.91", "0.93", "9"].map(x => checkTyped(x, TQ[i].a, TQ[i].n)); });
     expect(r).toEqual([true, true, true, false, false]);
+    // close values pass too (3 % or the page's tolerance, whichever is wider), in any usual number format
+    const close = await page.evaluate(() => { const at = k => TQ.find(q => new RegExp(k).test(q.q));
+      const t = (k, x) => checkTyped(x, at(k).a, at(k).n, at(k).num);
+      return [t("days of sales are in receivables", "30"), t("days of sales are in receivables", "31 days"), t("days of sales are in receivables", "32"),
+        t("diluted shares. What is net income", "1,190"), t("diluted shares. What is net income", "1200 €"), t("quick ratio\\?", "0.92"), t("quick ratio\\?", "0.95"), t("quick ratio\\?", "abc")]; });
+    expect(close).toEqual([true, true, false, true, true, true, false, false]);
   });
 
   test("the right answer shown is the exact value, not the edge of the tolerance", async ({ page }) => {

@@ -19,7 +19,7 @@ function variants(a,tol){let st=Math.pow(10,-Math.max(dec(a),dec(tol)));while(2*
   return [...out]}
 for(const q of all){if(ref.has(q))continue;const s=S[q.t];if(!s)throw new Error("topic "+q.t);
   if(q.type==="mcq"){ref.set(q,{m:Q.length});Q.push({s,t:"",q:q.q,o:[q.opts[q.a],...q.opts.filter((x,i)=>i!==q.a)],a:0,e:q.exp,d:2})}
-  else{ref.set(q,{t:TQ.length});TQ.push({s,q:q.q+(q.unit&&q.unit!=="x"&&!q.q.includes("("+q.unit)?" Answer in "+q.unit+".":""),a:variants(q.a,q.tol).concat(q.unit==="days"||q.unit==="years"?[q.a+" "+q.unit]:[]),e:q.exp,d:3})}}
+  else{ref.set(q,{t:TQ.length});TQ.push({s,q:q.q+(q.unit&&q.unit!=="x"&&!q.q.includes("("+q.unit)?" Answer in "+q.unit+".":""),a:variants(q.a,q.tol).concat(q.unit==="days"||q.unit==="years"?[q.a+" "+q.unit]:[]),num:[q.a,+Math.max(q.tol,Math.abs(q.a)*0.03).toFixed(4)],e:q.exp,d:3})}}
 const EXAMS=L.TESTS.map(t=>({n:t.n,t:t.t,min:13,items:t.ix.map(q=>ref.get(q))}));
 (async()=>{
   const {chromium}=require("playwright");const b=await chromium.launch();const p=await b.newPage();
