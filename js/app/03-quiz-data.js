@@ -68,7 +68,13 @@ function closeTo(n,v){const nc=n.replace(/ /g,""),vc=v.replace(/ /g,"");if(!vc)r
   const words=n.split(" "),vws=v.split(" ");
   if(vws.every(vw=>wordHit(words,vw)))return true;                       // every word of the answer is present (typos ok)
   return false}
-function checkTyped(input,variants,wrong){
+// a number typed for a numeric question ("30,4 days", "€1,200", "12.5 %"), or null when the answer is not just a number
+function typedNum(s){let t=String(s).trim().toLowerCase().replace(/[€$£%\s]|\b(days?|years?|times|x|eur|euros?)\b/g,"").replace(/[−–]/g,"-");
+  if(/^-?\d{1,3}(,\d{3})+(\.\d+)?$/.test(t))t=t.replace(/,/g,"");else t=t.replace(",",".");
+  return /^-?(\d+\.?\d*|\.\d+)$/.test(t)?parseFloat(t):null}
+// num ([value, tolerance], optional on a typed question): any number close enough to the value is right
+function checkTyped(input,variants,wrong,num){
+  if(num){const v=typedNum(input);if(v!==null)return Math.abs(v-num[0])<=num[1]+1e-9}
   // a decimal such as 1.8 or 0,4 must not pass for 18 or 4 (norm() drops punctuation): refuse it when no accepted answer is a decimal
   const DEC=/\d[.,]\d{1,2}(?!\d)/;if(DEC.test(input)&&!variants.some(v=>DEC.test(String(v))))return false;
   const n=norm(input);if(!n)return false;

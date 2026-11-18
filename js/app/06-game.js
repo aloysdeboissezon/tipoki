@@ -71,7 +71,7 @@ function sendTyped(){
   if(local.qPause)return;
   const txt=$("qInput").value.trim().slice(0,80);if(!txt)return;
   const ms=performance.now()-local.shownAt;if(ms<0||ms>qT(G.qi))return;
-  writeAnswer(G.qi,{txt,ok:checkTyped(txt,TQ[G.deck[G.qi].t].a,TQ[G.deck[G.qi].t].n),ms:Math.round(ms)});
+  writeAnswer(G.qi,{txt,ok:checkTyped(txt,TQ[G.deck[G.qi].t].a,TQ[G.deck[G.qi].t].n,TQ[G.deck[G.qi].t].num),ms:Math.round(ms)});
 }
 $("qSend").onclick=sendTyped;
 $("qInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();sendTyped()}});

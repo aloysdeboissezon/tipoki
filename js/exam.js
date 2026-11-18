@@ -109,7 +109,7 @@ function exTick(){
   if(warn&&left>0&&left<=10000){const s=Math.ceil(left/1000);if(EX.lastTick!==s){EX.lastTick=s;sfx("tick")}}
   if(left<=0)handInExam(true)}
 setInterval(exTick,250);
-function exRight(d,a){if(!exAnswered(a))return false;if(d.t!=null)return checkTyped(a.txt,TQ[d.t].a,TQ[d.t].n);return d.o[a.c]===0}
+function exRight(d,a){if(!exAnswered(a))return false;if(d.t!=null)return checkTyped(a.txt,TQ[d.t].a,TQ[d.t].n,TQ[d.t].num);return d.o[a.c]===0}
 function handInExam(timeUp){
   if(!EX.on)return;EX.on=false;EX.timeUp=timeUp;EX.usedMs=EX.total?Math.min(EX.total,Date.now()-EX.startAt):Date.now()-EX.startAt;
   EX.res=EX.deck.map((d,i)=>exAnswered(EX.ans[i])?(exRight(d,EX.ans[i])?1:0):-1);   // 1 right, 0 wrong, -1 blank
