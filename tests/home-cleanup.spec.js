@@ -60,7 +60,7 @@ test.describe("ESADE-only site", () => {
     const ids = await page.locator("#quizGrid .qcard").evaluateAll(n => n.map(x => x.dataset.id));
     expect(ids.length).toBeGreaterThan(3);
     expect(ids).toContain("resistance");
-    for (const id of ids) expect(["socio", "compta2", "populism", "regression", "justice", "resistance", "quizcompta"]).toContain(id);
+    for (const id of ids) expect(["socio", "compta2", "populism", "regression", "justice", "resistance", "acct3"]).toContain(id);
     expect(await page.locator("#qList .qchip").evaluateAll(n => n.map(x => x.dataset.id))).toEqual(ids);
     await page.goto("/?space=all");   // the old switch does nothing
     await expect(page.locator("#quizGrid .qcard[data-id=culture]")).toHaveCount(0);

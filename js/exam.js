@@ -1,7 +1,7 @@
 // ---------- exam mode: N random questions, one clock for the whole exam, no correction until you hand in, grade out of 20 ----------
 // uses the sessions and format picked in the game settings; answers can be changed until the end
 let EX={deck:[],ans:[],i:0,endAt:0,startAt:0,on:false,total:0,timeUp:false,rev:"bad"};
-let exOpt={len:20,pace:45};
+let exOpt={len:20,pace:45,mock:-1,mockBank:""};   // mock: index in BANK.exams (fixed past-paper style exams), -1 = random exam
 const EX_LENS=[20,40,"all"],EX_PACES=[[0,"No time limit"],[30,"30 s"],[45,"45 s"],[60,"1 min"],[90,"1 min 30"]];
 function exQ(d){return d.t!=null?TQ[d.t]:Q[d.id]}
 function exAvail(){   // questions the deck builder can draw from (same text counted once)
@@ -15,9 +15,20 @@ function exFmtG(g){return fmtDec(g)}
 function exClock(ms){const s=Math.max(0,Math.ceil(ms/1000)),h=Math.floor(s/3600),m=Math.floor(s%3600/60),r=s%60;
   return (h?h+":"+String(m).padStart(2,"0"):String(m))+":"+String(r).padStart(2,"0")}
 function exDur(ms){const m=Math.round(ms/60000);return m<60?m+" min":Math.floor(m/60)+" h"+(m%60?" "+String(m%60).padStart(2,"0"):"")}
+// a quiz can ship fixed mock exams (BANK.exams: [{n, t, min, items:[{m: index in Q} | {t: index in TQ}]}]), each with its own clock
+function exMock(){if(!BANK||!BANK.exams||exOpt.mockBank!==BANK.id){exOpt.mock=-1;exOpt.mockBank=BANK?BANK.id:""}return exOpt.mock>=0?BANK.exams[exOpt.mock]:null}
+function exMockBest(i){try{return lsGet("fa-best-"+i)}catch(e){return null}}   // same key as the exam-lab page (quiz-compta.html)
+function renderMockChips(){
+  const w=$("exMockWrap"),ex=BANK&&BANK.exams;w.hidden=!ex;if(!ex)return;
+  const mc=$("exMockChips");mc.textContent="";
+  [-1,...ex.map((x,i)=>i)].forEach(i=>{const b=el("button","chip",i<0?tl("Random"):tl("Test {n}",{n:ex[i].n}));b.setAttribute("aria-pressed",exOpt.mock===i);
+    if(i>=0){const best=exMockBest(i);b.title=ex[i].t+(best!==null?" · "+tl("Best: {b}",{b:best+" / "+(BANK.examRule?BANK.examRule.max:10)}):"")}
+    b.onclick=()=>{exOpt.mock=i;renderExamPanel()};mc.appendChild(b)})}
 function renderExamPanel(){
   if(!BANK)return;
   const n=exAvail();$("examPanel").hidden=$("examJump").hidden=!n;if(!n)return;
+  const mk=exMock();renderMockChips();document.querySelector("#examPanel .ex-set").hidden=!!mk;
+  if(mk){const k=mk.items.length;$("exSum").textContent=tl("{n} questions · {d} on the clock",{n:k,d:exDur(mk.min*60000)})+(BANK.examRule?" · "+tl("scored +{r} / {w} / 0",{r:BANK.examRule.right,w:fmtDec(BANK.examRule.wrong).replace("-","−")}):"");}
   $("exUnits").textContent=unit(1);
   const lc=$("exLenChips");lc.textContent="";
   EX_LENS.filter(k=>k==="all"||k<n).forEach(k=>{const b=el("button","chip",k==="all"?tl("All ({n})",{n}):String(k));
@@ -25,12 +36,18 @@ function renderExamPanel(){
   const pc=$("exPaceChips");pc.textContent="";
   EX_PACES.forEach(([s,l])=>{const b=el("button","chip",l);b.setAttribute("aria-pressed",exOpt.pace===s);b.onclick=()=>{exOpt.pace=s;renderExamPanel()};pc.appendChild(b)});
   const c=exCount();
-  $("exSum").textContent=!exOpt.pace?tl(c>1?"{n} questions · no time limit":"1 question · no time limit",{n:c}):tl(c>1?"{n} questions · {d} on the clock":"1 question · {d} on the clock",{n:c,d:exDur(c*exOpt.pace*1000)});
+  if(!mk)$("exSum").textContent=!exOpt.pace?tl(c>1?"{n} questions · no time limit":"1 question · no time limit",{n:c}):tl(c>1?"{n} questions · {d} on the clock":"1 question · {d} on the clock",{n:c,d:exDur(c*exOpt.pace*1000)});
   const h=exHist();$("exBest").hidden=!h.length;
   if(h.length)$("exBest").textContent=tl("Last exam: {g}/20 · Best: {b}/20",{g:exFmtG(h[0].g),b:exFmtG(Math.max(...h.map(x=>x.g)))});
   showErr("exErr","");
 }
 function startExam(){
+  const mk=exMock();
+  if(mk){const deck=mk.items.map(x=>x.t!=null?{t:x.t}:{id:x.m,o:Q[x.m].tf?tfOrder(Q[x.m]):shuffle(Q[x.m].o.map((_,k)=>k))});
+    EX={deck,ans:deck.map(()=>null),i:0,startAt:Date.now(),total:mk.min*60000,on:true,timeUp:false,rev:"bad",mock:exOpt.mock};
+    EX.endAt=EX.startAt+EX.total;$("exBar").parentNode.hidden=false;$("exClock").setAttribute("aria-label",tl("Time left"));
+    show("exam");$("exPlay").hidden=false;$("exDone").hidden=true;$("exConfirm").hidden=true;
+    sfx("go");renderExQ();exTick();if(typeof recordExamStart==="function")recordExamStart(EX);return}
   if(!settings.sess.size){showErr("exErr",tl("Choose at least {unit}.",{unit:unit(2)}));return}
   const n=exCount();if(!n){showErr("exErr",tl("No questions in these {units}.",{units:unit(1)}));return}
   const deck=buildDeck([...settings.sess],exOpt.len==="all"?1e6:n,settings.fmt);
@@ -97,6 +114,9 @@ function handInExam(timeUp){
   if(!EX.on)return;EX.on=false;EX.timeUp=timeUp;EX.usedMs=EX.total?Math.min(EX.total,Date.now()-EX.startAt):Date.now()-EX.startAt;
   EX.res=EX.deck.map((d,i)=>exAnswered(EX.ans[i])?(exRight(d,EX.ans[i])?1:0):-1);   // 1 right, 0 wrong, -1 blank
   const n=EX.deck.length,ok=EX.res.filter(r=>r===1).length;EX.grade=Math.round(ok/n*200)/10;
+  // mock exam: the course's own scoring (e.g. +2 right, −0.5 wrong multiple choice, 0 blank), best kept per mock exam
+  const R=BANK.examRule;if(EX.mock!=null&&R){EX.score=EX.deck.reduce((t,d,i)=>t+(EX.res[i]===1?R.right:EX.res[i]===0&&d.t==null?R.wrong:0),0);
+    try{const o=parseFloat(exMockBest(EX.mock));if(isNaN(o)||EX.score>o)lsSet("fa-best-"+EX.mock,String(EX.score))}catch(e){}}
   // mistakes go to the "Review my mistakes" bank of the quiz, right answers leave it
   let mb=missBank();EX.deck.forEach((d,i)=>{const k=d.t!=null?"t"+d.t:"m"+d.id;mb=mb.filter(x=>x!==k);if(EX.res[i]!==1)mb.push(k)});
   lsSet(lsKey("miss"),JSON.stringify(mb.slice(-300)));renderMissBtn();
@@ -114,6 +134,7 @@ function renderExDone(){
   $("exOk").textContent=ok;$("exBad").textContent=bad;$("exBlank").textContent=blank;
   const bys={};EX.deck.forEach((d,i)=>{const s=exQ(d).s;bys[s]=bys[s]||[0,0];bys[s][1]++;if(r[i]===1)bys[s][0]++});
   $("exMeta").textContent=(EX.total?tl("{ok} / {n} correct · time used {a} of {b}",{ok,n,a:exClock(EX.usedMs),b:exClock(EX.total)}):tl("{ok} / {n} correct · time used {a}",{ok,n,a:exClock(EX.usedMs)}))+
+    (EX.mock!=null&&BANK.examRule?" · "+tl("Exam score: {s} / {m}",{s:fmtDec(EX.score),m:BANK.examRule.max}):"")+
     (Object.keys(bys).length>1?" · "+tl("by {unit}: {list}",{unit:unit(0),list:Object.keys(bys).sort((a,b)=>a-b).map(s=>sLabel(s)+" "+bys[s][0]+"/"+bys[s][1]).join(", ")}):"");
   $("exMissBtn").hidden=ok===n;
   if(EX.grade>=10){sfx("win");confetti(EX.grade>=16?200:90)}else sfx("bad");
