@@ -22,7 +22,9 @@ async function openQuiz(id,btn){
 // quizzes you opened most recently come first on the home screen
 function recentGet(){try{return JSON.parse(lsGet("tpk-recent")||"{}")}catch(e){return {}}}
 function recentMark(id){const r=recentGet();r[id]=Date.now();const ks=Object.keys(r);if(ks.length>40)ks.sort((a,b)=>r[a]-r[b]).slice(0,ks.length-40).forEach(k=>delete r[k]);lsSet("tpk-recent",JSON.stringify(r))}
-function quizList(extra){const seen=new Set();return Object.keys(BUILTIN).map(id=>{const b=BUILTIN[id]()||(window.BANK_META||{})[id]||{};return qmeta({id,group:b.group,title:b.title,subject:b.subject,kw:b.kw,sess:b.sess,tags:b.tags})}).concat(myQuizzes(),extra||[]).filter(q=>!seen.has(q.id)&&seen.add(q.id))}
+// quizzes that live on their own page (link) instead of the quiz screen
+const LINK_QUIZZES=[{id:"quizcompta",link:"/quiz-compta",group:"esade",title:"Quiz compta 3",subject:"Cheat sheet, 20 mock tests, flashcards & exam tactics",kw:"financial analysis accounting ratios compta"}];
+function quizList(extra){const seen=new Set();return Object.keys(BUILTIN).map(id=>{const b=BUILTIN[id]()||(window.BANK_META||{})[id]||{};return qmeta({id,group:b.group,title:b.title,subject:b.subject,kw:b.kw,sess:b.sess,tags:b.tags})}).concat(LINK_QUIZZES.map(q=>Object.assign({},q,{title:tl(q.title),subject:tl(q.subject)})),myQuizzes(),extra||[]).filter(q=>!seen.has(q.id)&&seen.add(q.id))}
 // search: lowercase, no accents, punctuation as spaces, so "energie" finds "Énergie électrique"
 function fold(s){return String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()}
 function quizHay(q){return fold([q.title,q.title0,q.subject,q.subject0,q.kw].concat(Object.values(q.sess||(q.data&&q.data.sess)||{}),Object.values(q.sess0||{}),Object.values(q.tags||{}),Object.values(q.tags0||{})).join(" "))}
@@ -54,10 +56,10 @@ function renderQuizGrid(all){
   list.forEach(q=>{const c=el("button","qcard");c.type="button";c.dataset.hay=quizHay(q);c.dataset.id=q.id;
     const ico=el("span","qico");ico.innerHTML=quizIcon(q);
     const t=el("span","qtxt");t.append(el("b",null,q.title));if(q.subject)t.append(el("small",null,q.subject));const qb=el("span","qbest");qb.hidden=true;t.append(qb);
-    c.append(ico,t,el("span","qgo","›"),heart(q));if(isEsade(q)){const eb=el("img","qesade");eb.src="/img/esade.png";eb.alt="ESADE";eb.width=eb.height=24;eb.decoding="async";c.append(eb)}c.onclick=()=>openQuiz(q.id,c);box.appendChild(c)});
+    c.append(ico,t,el("span","qgo","›"),heart(q));if(isEsade(q)){const eb=el("img","qesade");eb.src="/img/esade.png";eb.alt="ESADE";eb.width=eb.height=24;eb.decoding="async";c.append(eb)}c.onclick=()=>q.link?(recentMark(q.id),location.href=q.link):openQuiz(q.id,c);box.appendChild(c)});
   const L=$("qList");L.textContent="";
   list.forEach((q,i)=>{const b=el("button","qchip");b.type="button";b.dataset.hay=quizHay(q);b.dataset.id=q.id;b.dataset.i=i%8;
-    const li=el("span","qchip-l");li.innerHTML=quizIcon(q);b.append(li,el("b",null,q.title),heart(q),el("span","qgo","›"));b.onclick=()=>openQuiz(q.id,b);L.appendChild(b)});
+    const li=el("span","qchip-l");li.innerHTML=quizIcon(q);b.append(li,el("b",null,q.title),heart(q),el("span","qgo","›"));b.onclick=()=>q.link?(recentMark(q.id),location.href=q.link):openQuiz(q.id,b);L.appendChild(b)});
   $("qAllT").textContent=tl(favOn&&eo?"ESADE favorites ({n})":favOn?"Favorites ({n})":eo?"ESADE quizzes ({n})":"All quizzes ({n})",{n:list.length});
   filterQuizzes();renderProgressUI();carouselUpdate();
 }

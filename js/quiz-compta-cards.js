@@ -1,4 +1,4 @@
-// Flashcards for the Quiz compta 2 page, built from the page's own question bank (TESTS in quiz-compta.js)
+// Flashcards for the Quiz compta 3 page, built from the page's own question bank (TESTS in quiz-compta.js)
 (function(){
   var seen={},cards=[];
   TESTS.forEach(function(t){t.ix.forEach(function(q){if(seen[q.q])return;seen[q.q]=1;cards.push(q)})});
