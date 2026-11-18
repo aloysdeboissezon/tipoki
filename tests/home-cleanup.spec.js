@@ -20,10 +20,12 @@ test.describe("Home page cleanup", () => {
 
   test("friend-code block is one line at the top; profile block has no label and is compact with the avatar on the left", async ({ page }) => {
     await openSite(page);
-    const jp = await page.locator("#joinPanel").boundingBox(), pk = await page.locator("#pickPanel").boundingBox();
+    // the home panels animate in on load: read every box in the same frame, once the row has stopped moving
+    const boxes = () => page.evaluate(() => Object.fromEntries(["#joinPanel", "#pickPanel", "#joinPanel .join-t", "#codeBoxes", "#joinBtn"].map(s => { const r = document.querySelector(s).getBoundingClientRect(); return [s, { x: r.x, y: r.y, width: r.width, height: r.height }]; })));
+    await expect.poll(async () => { const a = await boxes(); await page.waitForTimeout(200); const b = await boxes(); return Object.keys(a).reduce((d, k) => d + Math.abs(a[k].y - b[k].y) + Math.abs(a[k].height - b[k].height), 0); }).toBeLessThan(0.5);
+    const B = await boxes(), jp = B["#joinPanel"], pk = B["#pickPanel"], t = B["#joinPanel .join-t"], ci0 = B["#codeBoxes"], jb0 = B["#joinBtn"];
     expect(jp.y).toBeLessThan(pk.y);
     expect(jp.height).toBeLessThan(72);   // one row
-    const t = await page.locator("#joinPanel .join-t").boundingBox(), ci0 = await page.locator("#codeBoxes").boundingBox(), jb0 = await page.locator("#joinBtn").boundingBox();
     expect(Math.abs(t.y + t.height / 2 - (ci0.y + ci0.height / 2))).toBeLessThan(6);
     expect(Math.abs(jb0.y - ci0.y)).toBeLessThan(6);
     await expect(page.locator("#meHome .label")).toHaveCount(0);
