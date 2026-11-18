@@ -14,7 +14,7 @@ test.describe("/api/esade", () => {
   });
 
   test("an ESADE token gets the quiz, its study sheet and its PDF, never cached", async ({ request }) => {
-    for (const id of ["socio", "compta2", "populism", "regression", "justice", "resistance"]) {
+    for (const id of ["socio", "compta2", "acct3", "populism", "regression", "justice", "resistance"]) {
       const r = await request.get(`/api/esade?k=bank&id=${id}`, { headers: OK });
       expect(r.status(), id).toBe(200);
       expect(await r.text()).toContain("window.BANK_" + id.toUpperCase());
