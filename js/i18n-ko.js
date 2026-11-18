@@ -232,7 +232,7 @@ var KO={
 "{n} question":"문제 {n}개",
 "{n} card":"카드 {n}장",
 "{n} cards":"카드 {n}장",
-"Tutorial":"튜토리얼",
+"Tutorial":"튜토리얼","Quiz compta 2":"회계 퀴즈 2","Cheat sheet, 20 mock tests, flashcards & exam tactics":"요약 노트, 모의고사 20회, 플래시카드, 시험 전략",
 "← Options":"← 옵션",
 "Answer questions solo or challenge your friends in a live game.":"혼자 문제를 풀거나 실시간 게임으로 친구들에게 도전하세요.",
 "Flip, memorize, repeat. The ones you miss come back soon.":"뒤집고, 외우고, 반복하세요. 틀린 카드는 곧 다시 나와요.",

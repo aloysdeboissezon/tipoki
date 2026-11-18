@@ -214,7 +214,7 @@ var ES={
 "{n} question":"{n} pregunta",
 "{n} card":"{n} tarjeta",
 "{n} cards":"{n} tarjetas",
-"Tutorial":"Tutorial",
+"Tutorial":"Tutorial","Quiz compta 2":"Quiz contabilidad 2","Cheat sheet, 20 mock tests, flashcards & exam tactics":"Chuleta, 20 exámenes de prueba, flashcards y tácticas de examen",
 "← Options":"← Opciones",
 "Answer questions solo or challenge your friends in a live game.":"Responde preguntas por tu cuenta o rétate con tus amigos en una partida en directo.",
 "Flip, memorize, repeat. The ones you miss come back soon.":"Gira, memoriza, repite. Las que falles vuelven pronto.",
