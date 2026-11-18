@@ -15,11 +15,11 @@ const all=[L.OV,L.LQ,L.LT,L.PR,L.MK,...L.NEW].flat(),Q=[],TQ=[],ref=new Map();
 const dec=x=>{const s=String(x);return s.includes(".")?s.split(".")[1].length:0};
 // accepted typed answers: every value within the page's tolerance, at the precision of the answer
 function variants(a,tol){let st=Math.pow(10,-Math.max(dec(a),dec(tol)));while(2*tol/st>40)st*=10;
-  const out=new Set();for(let v=a-tol-1e-9;v<=a+tol+1e-9;v+=st){const r=Math.round(v/st)*st;if(Math.abs(r-a)<=tol+1e-9){const f=r.toFixed(Math.max(0,-Math.round(Math.log10(st))));out.add(f);out.add(String(+f))}}
-  out.add(String(a));return [...out]}
+  const out=new Set([String(a)]);for(let v=a-tol-1e-9;v<=a+tol+1e-9;v+=st){const r=Math.round(v/st)*st;if(Math.abs(r-a)<=tol+1e-9){const f=r.toFixed(Math.max(0,-Math.round(Math.log10(st))));out.add(f);out.add(String(+f))}}
+  return [...out]}
 for(const q of all){if(ref.has(q))continue;const s=S[q.t];if(!s)throw new Error("topic "+q.t);
   if(q.type==="mcq"){ref.set(q,{m:Q.length});Q.push({s,t:"",q:q.q,o:[q.opts[q.a],...q.opts.filter((x,i)=>i!==q.a)],a:0,e:q.exp,d:2})}
-  else{ref.set(q,{t:TQ.length});TQ.push({s,q:q.q+(q.unit&&q.unit!=="x"?" Answer in "+(q.unit==="%"?"%":q.unit)+".":""),a:variants(q.a,q.tol),e:q.exp+" (accepted: "+(q.a-q.tol).toFixed(dec(q.a))+" to "+(q.a+q.tol).toFixed(dec(q.a))+")",d:3})}}
+  else{ref.set(q,{t:TQ.length});TQ.push({s,q:q.q+(q.unit&&q.unit!=="x"&&!q.q.includes("("+q.unit)?" Answer in "+q.unit+".":""),a:variants(q.a,q.tol).concat(q.unit==="days"||q.unit==="years"?[q.a+" "+q.unit]:[]),e:q.exp,d:3})}}
 const EXAMS=L.TESTS.map(t=>({n:t.n,t:t.t,min:13,items:t.ix.map(q=>ref.get(q))}));
 (async()=>{
   const {chromium}=require("playwright");const b=await chromium.launch();const p=await b.newPage();

@@ -49,4 +49,13 @@ test.describe("Accounting test 3", () => {
     const r = await page.evaluate(() => { const i = TQ.findIndex(q => /quick ratio\?/.test(q.q)); return ["0.9", "0,90", "0.91", "0.93", "9"].map(x => checkTyped(x, TQ[i].a, TQ[i].n)); });
     expect(r).toEqual([true, true, true, false, false]);
   });
+
+  test("the right answer shown is the exact value, not the edge of the tolerance", async ({ page }) => {
+    await openSite(page);
+    await openQuiz(page, "acct3");
+    const shown = await page.evaluate(() => ["share price", "working capital", "quick ratio\\?", "days of sales are in receivables"].map(k => TQ.find(q => new RegExp(k).test(q.q)).a[0]));
+    expect(shown).toEqual(["20", "100", "0.9", "30.4"]);
+    const ok = await page.evaluate(() => { const q = TQ.find(q => /days of sales are in receivables/.test(q.q)); return ["30.4 days", "30,4", "30.6", "31"].map(x => checkTyped(x, q.a, q.n)); });
+    expect(ok).toEqual([true, true, true, false]);
+  });
 });
